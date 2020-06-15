@@ -10,17 +10,17 @@ module "default_label" {
   tags       = var.tags
 }
 
-# if you do not set the 
+# if you do not set the
 # `service_cidr`
 # `dns_service_ip`
-# `docker_bridge_cidr` 
+# `docker_bridge_cidr`
 # AKS will default to ==> 10.0.0.0/16
 variable "vnet_cidr" {
   default = ["10.1.0.0/16"]
 }
 
 module "aks_bootstrap" {
-  source                  = "../../../terraform-azurerm-amido-aks"
+  source                  = "../../../aks"
   resource_namer          = module.default_label.id
   resource_group_location = var.resource_group_location
   spn_object_id           = data.azurerm_client_config.current.object_id

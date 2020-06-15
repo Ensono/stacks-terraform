@@ -7,6 +7,7 @@ DESCRIPTION:
 
 PRE_REQUISITES:
 ---
+NB: below only qualifies if you have run the [amido-stacks-cli](https://amido.github.io/stacks/docs/getting_started_demo) to create your component repo
 NB: Because AzureDNS is not a supported LetsEncrypt plugin to authenticate an SSL certificate
 As such you must first run the infrastructure once with a sample selfsigned cert included in the repo
 
@@ -17,8 +18,6 @@ $ docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
 docker: $ chmod +x /usr/data/aux_scripts/certbot.sh && cd /usr/data/aux_scripts
 docker: $ ./certbot.sh your.domain.com email@domain.com pfxPassword1 # password is optional if ommitted will default to Password1
 ```
-
-./certbot.sh nonprod.amidostacks.com stacks@amido.com
 
 Use only the subdomain as is - the script will add the wildcard so your certificate is valid for all values in that subdomain
 
