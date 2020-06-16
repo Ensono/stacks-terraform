@@ -1,9 +1,12 @@
-# CSR library
+# ClientSide UI module
 
 Deploys and bootstraps the following components in Azure
 
  - Blob storage as a static website
  - CDN endpoint + TLS + DNS record 
+    - Only MS CDN is available
+
+For information or examples on how to upload to storage see [amido-scaffolding-cli]()
 
 
 ## Providers
@@ -34,10 +37,11 @@ Deploys and bootstraps the following components in Azure
 | name\_environment | n/a | `string` | n/a | yes |
 | name\_project | n/a | `string` | n/a | yes |
 | resource\_group\_location | n/a | `string` | `"uksouth"` | no |
-| resource\_namer | n/a | `string` | n/a | yes |
+| resource\_namer | Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted | `string` | n/a | yes |
 | resource\_tags | n/a | `map(string)` | `{}` | no |
+| response\_header\_cdn | Custom Response Headers for Microsoft CDN. Can be used with security and auditing requirements | `list(map(string))` | <pre>[<br>  {<br>    "action": "Append",<br>    "name": "Content-Security-Policy",<br>    "value": "default-src * 'unsafe-inline' 'unsafe-eval'"<br>  }<br>]</pre> | no |
 | stage | n/a | `string` | `"dev"` | no |
-| subscription\_id | ########################################### AUTHENTICATION ########################################### | `any` | n/a | yes |
+| subscription\_id | Subscription Id should be gotten by the caller using the client\_config data lookup | `string` | n/a | yes |
 | tags | n/a | `map(string)` | `{}` | no |
 
 ## Outputs

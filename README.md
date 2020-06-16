@@ -21,8 +21,3 @@ run and test any changes locally
 ```bash
 docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
 ```
-
-
-##### Suggested improvements
- - standalon CDN library for TF with flags to create the DNS for custom domain or just the profile
-   - could be useful when you want to have a profile managed centrally custom domains managed on a per deployment basis

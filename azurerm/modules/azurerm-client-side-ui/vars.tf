@@ -1,7 +1,10 @@
 ############################################
 # AUTHENTICATION
 ############################################
-variable "subscription_id" {}
+variable "subscription_id" {
+  type = string
+  description = "Subscription Id should be gotten by the caller using the client_config data lookup "
+}
 ############################################
 # NAMING
 ############################################
@@ -55,7 +58,7 @@ variable "location_name_map" {
 
 ###########################
 # DNS
-########################### 
+###########################
 
 variable "create_dns_zone" {
   type        = bool
@@ -73,7 +76,7 @@ variable "dns_record" {
 }
 
 variable "dns_resource_group" {
-  type = string 
+  type = string
   description = "RG for the DNS Zone if adding to an existing one"
   default = "amido-nonprod-dns"
 }
@@ -94,6 +97,7 @@ variable "resource_tags" {
 
 variable "resource_namer" {
   type = string
+  description = "Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted"
 }
 
 
@@ -139,11 +143,12 @@ variable "account_tier" {
 ########################
 variable "response_header_cdn" {
   type = list(map(string))
+  description = "Custom Response Headers for Microsoft CDN. Can be used with security and auditing requirements"
   default = [
     {
-      action = "Append" # - (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite.
-      name = "Content-Security-Policy" # - (Required) The header name.
-      value = "default-src * 'unsafe-inline' 'unsafe-eval'" 
+      action = "Append"
+      name = "Content-Security-Policy"
+      value = "default-src * 'unsafe-inline' 'unsafe-eval'"
     }
   ]
 }
