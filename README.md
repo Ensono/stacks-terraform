@@ -19,5 +19,5 @@ e.g.: `terraform-docs markdown table path/to/my/module`
 ##### Local testing
 run and test any changes locally
 ```bash
-docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
+docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.4 /bin/bash
 ```

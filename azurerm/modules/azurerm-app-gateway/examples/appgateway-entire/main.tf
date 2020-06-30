@@ -20,12 +20,12 @@ variable "vnet_cidr" {
 }
 
 module "aks_bootstrap" {
-  source                  = "../../../aks"
+  source                  = "../../../azurerm-aks"
   resource_namer          = module.default_label.id
   resource_group_location = var.resource_group_location
   spn_object_id           = data.azurerm_client_config.current.object_id
   tenant_id               = data.azurerm_client_config.current.tenant_id
-  cluster_version         = "1.15.7"
+  cluster_version         = "1.16.7"
   name_environment        = "nonprod"
   name_project            = var.name_project
   name_company            = var.name_company
