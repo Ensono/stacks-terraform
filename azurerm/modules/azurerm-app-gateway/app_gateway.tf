@@ -2,7 +2,7 @@ resource "azurerm_subnet" "frontend" {
   name                 = var.resource_namer
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefix       = var.subnet_front_end_prefix
+  address_prefixes       = [var.subnet_front_end_prefix]
   depends_on          = [var.vnet_name]
 }
 

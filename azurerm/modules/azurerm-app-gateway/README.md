@@ -15,7 +15,7 @@ Once complete please run the cert creation process for your domain:
 ```
 cd $CreatedProjectDir
 $ docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
-docker: $ chmod +x /usr/data/aux_scripts/certbot.sh && cd /usr/data/aux_scripts
+docker: $ cd /usr/data && chmod +x certbot.sh 
 docker: $ ./certbot.sh your.domain.com email@domain.com pfxPassword1 # password is optional if ommitted will default to Password1
 ```
 

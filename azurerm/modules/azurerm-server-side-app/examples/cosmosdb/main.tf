@@ -1,0 +1,36 @@
+########
+# Application level stuff will live here
+# Each module is conditionally created within this app infra definition interface and can be re-used across app types e.g. SSR webapp, API only
+########
+
+data "azurerm_client_config" "current" {}
+
+# Naming convention
+module "default_label" {
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
+  namespace  = "${var.name_company}-${var.name_project}"
+  stage      = var.stage
+  name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
+  attributes = var.attributes
+  delimiter  = "-"
+  tags       = var.tags
+}
+
+module "app" {
+  source = "../../"
+  create_cosmosdb                      = var.create_cosmosdb
+  resource_namer                       = module.default_label.id
+  resource_tags                        = module.default_label.tags
+  cosmosdb_sql_container               = var.cosmosdb_sql_container
+  cosmosdb_sql_container_partition_key = var.cosmosdb_sql_container_partition_key
+  cosmosdb_kind                        = var.cosmosdb_kind
+  cosmosdb_offer_type                  = var.cosmosdb_offer_type
+  create_cache                         = var.create_cache
+  create_dns_record                    = true
+  dns_record                           = var.dns_record
+  dns_zone_name                        = var.dns_zone_name
+  dns_zone_resource_group              = var.dns_zone_resource_group != "" ? var.dns_zone_resource_group : var.core_resource_group
+  dns_a_records                        = [data.azurerm_public_ip.app_gateway.ip_address]
+  # Alternatively if you want you can pass in the IP directly and remove the need for a lookup
+  # dns_a_records                        = ["0.1.23.45"]
+}

@@ -15,7 +15,6 @@ Docs should be descriptive as to what it does and contain an `Inputs`, `Outputs`
 
 e.g.: `terraform-docs markdown table path/to/my/module`
 
-
 ##### Local testing
 run and test any changes locally
 ```bash

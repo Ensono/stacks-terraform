@@ -7,7 +7,7 @@ module "default_label" {
   name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
   attributes = var.attributes
   delimiter  = "-"
-  tags       = var.tags
+  tags       = map("CostCenter", var.resource_group_location, )
 }
 
 # if you do not set the
@@ -25,7 +25,7 @@ module "aks_bootstrap" {
   resource_group_location = var.resource_group_location
   spn_object_id           = data.azurerm_client_config.current.object_id
   tenant_id               = data.azurerm_client_config.current.tenant_id
-  cluster_version         = "1.16.7"
+  cluster_version         = "1.16.9"
   name_environment        = "nonprod"
   name_project            = var.name_project
   name_company            = var.name_company
@@ -50,7 +50,7 @@ module "aks_bootstrap" {
 
 module "ssl_app_gateway" {
   source                    = "../../"
-  resource_namer            = "${module.default_label.id}"
+  resource_namer            = module.default_label.id
   resource_group_name       = module.aks_bootstrap.resource_group_name
   resource_group_location   = var.resource_group_location
   create_ssl_cert           = true

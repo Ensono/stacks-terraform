@@ -22,6 +22,7 @@ resource "azurerm_cosmosdb_account" "default" {
     location          = var.resource_group_location
     failover_priority = 0
   }
+  tags = var.resource_tags
   lifecycle {
     ignore_changes = [
       tags,

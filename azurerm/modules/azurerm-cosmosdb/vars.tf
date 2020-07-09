@@ -5,27 +5,13 @@
 # NAMING
 ############################################
 
-variable "name_company" {
+variable "resource_namer" {
+  type = string
+  description = "User defined naming convention applied to all resources created as part of this module"
 }
 
-variable "name_environment" {
-}
-
-variable "name_component" {
-}
-
-variable "name_project" {
-}
-
-############################################
-# RESOURCE GROUP INFORMATION
-############################################
-
-variable "resource_group_location_env" {
-  default = "uksouth"
-}
-
-variable "resource_group_tags" {
+variable "resource_tags" {
+  description = "Map of tags to be applied to all resources created as part of this module"
   type    = map(string)
   default = {}
 }
@@ -73,14 +59,9 @@ variable "resource_group_name" {
 ###########################
 # CONDITIONAL SETTINGS
 ##########################
+
 variable "create_cosmosdb" {
   type    = bool
   default = false
 }
 
-###########################
-
-variable "resource_namer" {
-  type    = string
-  default = "genericname"
-}
