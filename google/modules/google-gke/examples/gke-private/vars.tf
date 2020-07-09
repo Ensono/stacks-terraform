@@ -61,5 +61,5 @@ variable "cluster_version" {
 variable "is_cluster_private" {
   type        = bool
   description = "Set cluster private"
-  default     = false
+  default     = true
 }
