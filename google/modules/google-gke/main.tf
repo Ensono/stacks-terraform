@@ -9,8 +9,8 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "gke_cluster" {
-  source = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.4.3"
-  name = var.resource_namer
+  source   = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.4.3"
+  name     = var.resource_namer
   project  = var.project
   location = var.location
   # We're deploying the cluster in the 'public' subnetwork to allow outbound internet access
@@ -23,7 +23,7 @@ module "gke_cluster" {
 
   enable_private_nodes = var.is_cluster_private
 
-  master_ipv4_cidr_block = ""
+  master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   alternative_default_service_account = var.override_default_node_pool_service_account ? module.gke_service_account.email : null
 
@@ -105,10 +105,10 @@ resource "google_container_node_pool" "node_pool" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "gke_service_account" {
-  source = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-service-account?ref=v0.4.3"
-  name        = substr(replace(var.resource_namer, "-", ""), 0, 31)
-  project     = var.project
-  description = var.cluster_service_account_description
+  source                = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-service-account?ref=v0.4.3"
+  name                  = substr(replace(var.resource_namer, "-", ""), 0, 31)
+  project               = var.project
+  description           = var.cluster_service_account_description
   service_account_roles = var.service_account_roles
 }
 

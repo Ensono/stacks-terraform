@@ -71,6 +71,12 @@ variable "cluster_service_account_description" {
   default     = "Example GKE Cluster Service Account managed by Terraform"
 }
 
+variable "master_ipv4_cidr_block" {
+  description = "The IP range in CIDR notation (size must be /28) to use for the hosted master network. This range will be used for assigning internal IP addresses to the master or set of masters, as well as the ILB VIP. This range must not overlap with any other ranges in use within the cluster's network."
+  type        = string
+  default     = "10.5.0.0/28"
+}
+
 # For the example, we recommend a /16 network for the VPC. Note that when changing the size of the network,
 # you will have to adjust the 'cidr_subnetwork_width_delta' in the 'vpc_network' -module accordingly.
 variable "vpc_cidr_block" {
@@ -94,9 +100,9 @@ variable "enable_vertical_pod_autoscaling" {
 }
 
 variable "service_account_roles" {
-  type = list(string)
+  type        = list(string)
   description = "Additional Service account roles for GKE"
-  default = []
+  default     = []
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # TEST PARAMETERS
@@ -149,7 +155,7 @@ variable "cluster_version" {
 }
 
 variable "is_cluster_private" {
-  type = bool
+  type        = bool
   description = "Set cluster private"
-  default = false
+  default     = false
 }
