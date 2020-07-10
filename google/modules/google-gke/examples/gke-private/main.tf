@@ -11,7 +11,7 @@ module "default_label" {
 
 data "google_client_config" "current" {}
 
-module "gke-private" {
+module "gke_cluster" {
   source             = "../../"
   stage              = var.stage
   name_project       = var.name_project
