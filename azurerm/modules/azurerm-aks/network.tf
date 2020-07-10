@@ -17,7 +17,7 @@ resource "azurerm_virtual_network" "default" {
   resource_group_name = azurerm_resource_group.default.name
   address_space       = var.vnet_cidr
   location            = var.resource_group_location
-  depends_on = [azurerm_resource_group.default]
+  depends_on          = [azurerm_resource_group.default]
   lifecycle {
     ignore_changes = [
       tags,
@@ -31,8 +31,8 @@ resource "azurerm_subnet" "default" {
   resource_group_name = azurerm_resource_group.default.name
   # this can stay referencing above as they get created or not together
   virtual_network_name = azurerm_virtual_network.default.0.name
-  address_prefix       = var.subnet_prefixes[count.index]
-  depends_on          = [azurerm_virtual_network.default]
+  address_prefixes       = [ var.subnet_prefixes[count.index] ]
+  depends_on           = [azurerm_virtual_network.default]
 }
 
 # TODO: enable this for custom networking within the cluster
@@ -57,13 +57,13 @@ resource "azurerm_subnet" "default" {
 # }
 
 # DNS
-# this is the base which will hold all your ingress records 
+# this is the base which will hold all your ingress records
 # ensure you provide the NS records to the TLD owner
 resource "azurerm_dns_zone" "default" {
   count               = var.create_dns_zone ? 1 : 0
   name                = var.dns_zone
   resource_group_name = azurerm_resource_group.default.name
-  depends_on = [azurerm_resource_group.default]
+  depends_on          = [azurerm_resource_group.default]
   lifecycle {
     ignore_changes = [
       tags,
@@ -75,7 +75,7 @@ resource "azurerm_private_dns_zone" "default" {
   count               = var.create_dns_zone ? 1 : 0
   name                = var.internal_dns_zone
   resource_group_name = azurerm_resource_group.default.name
-  depends_on = [azurerm_resource_group.default]
+  depends_on          = [azurerm_resource_group.default]
   lifecycle {
     ignore_changes = [
       tags,

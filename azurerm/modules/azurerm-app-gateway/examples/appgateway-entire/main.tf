@@ -25,8 +25,8 @@ module "aks_bootstrap" {
   resource_group_location = var.resource_group_location
   spn_object_id           = data.azurerm_client_config.current.object_id
   tenant_id               = data.azurerm_client_config.current.tenant_id
-  cluster_version         = "1.16.9"
-  name_environment        = "nonprod"
+  cluster_version         = var.cluster_version
+  name_environment        = var.name_environment
   name_project            = var.name_project
   name_company            = var.name_company
   name_component          = var.name_component
@@ -35,7 +35,6 @@ module "aks_bootstrap" {
   internal_dns_zone       = var.internal_dns_zone
   create_acr              = var.create_acr
   acr_registry_name       = replace(module.default_label.id, "-", "")
-  acr_resource_group      = module.default_label.id
   create_aksvnet          = var.create_aksvnet
   vnet_name               = module.default_label.id
   vnet_cidr               = var.vnet_cidr
@@ -45,7 +44,8 @@ module "aks_bootstrap" {
   aks_ingress_private_ip  = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
   create_user_identiy     = var.create_user_identiy
   enable_auto_scaling     = true
-  log_application_type    = "Node.JS"
+  log_application_type    = var.log_application_type
+  key_vault_name          = var.key_vault_name
 }
 
 module "ssl_app_gateway" {

@@ -1,13 +1,13 @@
 resource "azurerm_storage_account" "default" {
-  count                    = var.create_ssl_cert ? 1 : 0
-  name                     = substr(replace(var.resource_namer, "-", ""), 0, 24)
-  resource_group_name      = var.resource_group_name
-  location                 = var.resource_group_location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  access_tier              = "Hot"
+  count                     = var.create_ssl_cert ? 1 : 0
+  name                      = substr(replace(var.resource_namer, "-", ""), 0, 24)
+  resource_group_name       = var.resource_group_name
+  location                  = var.resource_group_location
+  account_tier              = "Standard"
+  account_replication_type  = "LRS"
+  access_tier               = "Hot"
   enable_https_traffic_only = false
-  tags = {}
+  tags                      = {}
   lifecycle {
     ignore_changes = [
       tags,

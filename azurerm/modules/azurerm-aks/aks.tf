@@ -1,4 +1,4 @@
-# acr 
+# acr
 resource "azurerm_container_registry" "registry" {
   count               = var.create_acr ? 1 : 0
   name                = replace(var.acr_registry_name, "-", "")
@@ -21,12 +21,13 @@ resource "tls_private_key" "ssh_key" {
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
-  count               = var.create_aks ? 1 : 0
-  name                = var.resource_namer
-  location            = var.resource_group_location
-  resource_group_name = azurerm_resource_group.default.name
-  dns_prefix          = var.dns_prefix
-  kubernetes_version  = var.cluster_version
+  count                   = var.create_aks ? 1 : 0
+  name                    = var.resource_namer
+  location                = var.resource_group_location
+  resource_group_name     = azurerm_resource_group.default.name
+  dns_prefix              = var.dns_prefix
+  kubernetes_version      = var.cluster_version
+  private_cluster_enabled = var.is_cluster_private
   linux_profile {
     admin_username = var.admin_username
     ssh_key {
@@ -36,7 +37,7 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    availability_zones = ["1", "2", "3"]
+    availability_zones  = ["1", "2", "3"]
     type                = var.nodepool_type # "VirtualMachineScaleSets" # default
     enable_auto_scaling = var.enable_auto_scaling
     max_count           = var.max_nodes
@@ -96,9 +97,12 @@ resource "azurerm_kubernetes_cluster" "default" {
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR
 data "azurerm_container_registry" "acr_registry" {
-  count = var.create_acr ? 0 : 1
-  name = var.acr_registry_name
+  count               = var.create_acr ? 0 : 1
+  name                = var.acr_registry_name
   resource_group_name = var.acr_resource_group
+  depends_on = [
+    var.acr_resource_group
+  ]
 }
 
 resource "azurerm_role_assignment" "acr" {
@@ -126,9 +130,9 @@ data "azurerm_user_assigned_identity" "aks_rg_id" {
 }
 
 resource "azurerm_role_assignment" "acr2" {
-  scope                = var.create_acr ? azurerm_container_registry.registry.0.id : data.azurerm_container_registry.acr_registry.0.id
-  role_definition_name = "Contributor"
-  principal_id         = data.azurerm_user_assigned_identity.aks_rg_id.principal_id 
+  scope                            = var.create_acr ? azurerm_container_registry.registry.0.id : data.azurerm_container_registry.acr_registry.0.id
+  role_definition_name             = "Contributor"
+  principal_id                     = data.azurerm_user_assigned_identity.aks_rg_id.principal_id
   skip_service_principal_aad_check = true
   depends_on = [
     azurerm_kubernetes_cluster.default

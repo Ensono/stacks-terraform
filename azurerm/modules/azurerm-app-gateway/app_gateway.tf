@@ -2,23 +2,23 @@ resource "azurerm_subnet" "frontend" {
   name                 = var.resource_namer
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefixes       = [var.subnet_front_end_prefix]
-  depends_on          = [var.vnet_name]
+  address_prefixes     = [var.subnet_front_end_prefix]
+  depends_on           = [var.vnet_name]
 }
 
 resource "azurerm_subnet" "backend" {
   name                 = "backend"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefix       = var.subnet_backend_end_prefix
-  depends_on          = [var.vnet_name]
+  address_prefixes       = [var.subnet_backend_end_prefix]
+  depends_on           = [var.vnet_name]
 }
 
 resource "azurerm_public_ip" "app_gateway" {
-  name                 = var.resource_namer
-  resource_group_name  = var.resource_group_name
-  location             = var.resource_group_location
-  allocation_method    = "Dynamic"
+  name                = var.resource_namer
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
+  allocation_method   = "Dynamic"
   lifecycle {
     ignore_changes = [
       tags,
@@ -41,9 +41,9 @@ locals {
 
 resource "azurerm_application_gateway" "network" {
   name                = var.resource_namer
-  resource_group_name  = var.resource_group_name
+  resource_group_name = var.resource_group_name
 
-  location            = var.resource_group_location
+  location = var.resource_group_location
 
   sku {
     name     = "Standard_Small"
@@ -83,15 +83,15 @@ resource "azurerm_application_gateway" "network" {
 
   ssl_certificate {
     name     = "frontend"
-    data     = filebase64("${abspath(path.root)}/certs/${var.dns_zone}.pfx")
+    data     = filebase64("${abspath(path.root)}/certs/${var.cert_name}")
     password = var.pfx_password
   }
 
   redirect_configuration {
-    name = "letsencrypt_auth_challange"
-    redirect_type = "Permanent"
-    target_url  = "${azurerm_storage_account.default.0.primary_blob_endpoint}public"
-    include_path = true
+    name                 = "letsencrypt_auth_challange"
+    redirect_type        = "Permanent"
+    target_url           = "${azurerm_storage_account.default.0.primary_blob_endpoint}public"
+    include_path         = true
     include_query_string = true
   }
 
@@ -100,9 +100,9 @@ resource "azurerm_application_gateway" "network" {
     default_backend_address_pool_name  = local.backend_address_pool_name
     default_backend_http_settings_name = local.http_setting_name
     path_rule {
-      name                       = "letsencrypt"
+      name                        = "letsencrypt"
       redirect_configuration_name = "letsencrypt_auth_challange"
-      paths                      = ["/.well-known/acme-challenge/*"]
+      paths                       = ["/.well-known/acme-challenge/*"]
     }
   }
 
@@ -112,18 +112,18 @@ resource "azurerm_application_gateway" "network" {
   }
 
   backend_address_pool {
-    name = local.backend_address_pool_name
+    name         = local.backend_address_pool_name
     ip_addresses = [var.aks_ingress_public_ip]
   }
 
   probe {
-    name = "k8s-probe"
-    host = "127.0.0.1"
-    protocol = "Http"
-    interval = 15
+    name                = "k8s-probe"
+    host                = "127.0.0.1"
+    protocol            = "Http"
+    interval            = 15
     unhealthy_threshold = 4
-    timeout = 15
-    path = "/healthz"
+    timeout             = 15
+    path                = "/healthz"
     match {
       status_code = ["200"]
     }
@@ -147,20 +147,20 @@ resource "azurerm_application_gateway" "network" {
   }
 
   request_routing_rule {
-    name                       = "${local.request_routing_rule_name}-letsencrypt"
-    rule_type                  = "PathBasedRouting"
-    http_listener_name         = local.listener_name
+    name                        = "${local.request_routing_rule_name}-letsencrypt"
+    rule_type                   = "PathBasedRouting"
+    http_listener_name          = local.listener_name
     redirect_configuration_name = "letsencrypt_auth_challange"
-    url_path_map_name =  "PathBasedRoutingRulePathMap"
+    url_path_map_name           = "PathBasedRoutingRulePathMap"
   }
 
   # ssl_policy = var.ssl_policy
   ssl_policy { # block supports the following:
-    policy_type = lookup(var.ssl_policy, "policy_type")
-    policy_name = lookup(var.ssl_policy, "policy_name")
+    policy_type          = lookup(var.ssl_policy, "policy_type")
+    policy_name          = lookup(var.ssl_policy, "policy_name")
     min_protocol_version = lookup(var.ssl_policy, "min_protocol_version")
-    disabled_protocols = lookup(var.ssl_policy, "disabled_protocols")
-    cipher_suites = lookup(var.ssl_policy, "cipher_suites")
+    disabled_protocols   = lookup(var.ssl_policy, "disabled_protocols")
+    cipher_suites        = lookup(var.ssl_policy, "cipher_suites")
   }
 
   lifecycle {

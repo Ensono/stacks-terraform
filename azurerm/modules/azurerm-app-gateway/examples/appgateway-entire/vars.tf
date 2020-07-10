@@ -8,23 +8,29 @@
 
 variable "name_company" {
   type    = string
-  default = "amido"
+  default = "replace_company_name"
 }
 
 variable "name_project" {
   type    = string
-  default = "stacks-node"
+  default = "replace_project_name"
 
 }
 
 variable "name_component" {
   type    = string
-  default = "infra"
+  default = "replace_component_name"
 }
+
+variable "name_environment" {
+  type    = string
+  default = "nonprod"
+}
+
 
 variable "stage" {
   type    = string
-  default = "nonprod"
+  default = "dev"
 }
 
 variable "attributes" {
@@ -36,27 +42,10 @@ variable "tags" {
   default = {}
 }
 
-############################################
-# AZURE INFORMATION
-############################################
-
-# RELYING PURELY ON ENVIRONMENT VARIABLES as the user can control these from their own environment
-
-variable "client_secret" {
-  type = string
-}
-
-############################################
-# RESOURCE INFORMATION
-############################################
-variable "resource_group_location" {
-  type    = string
-  default = "uksouth"
-}
-
-# Each region must have corresponding a shortend name for resource naming purposes 
+# Each region must have corresponding a shortend name for resource naming purposes
 variable "location_name_map" {
   type = map(string)
+
   default = {
     northeurope   = "eun"
     westeurope    = "euw"
@@ -70,9 +59,19 @@ variable "location_name_map" {
   }
 }
 
-# ###########################
-# # DNS SETTINGS
-# ##########################
+############################################
+# AZURE INFORMATION
+############################################
+
+variable "client_secret" {
+  type = string
+}
+
+variable "resource_group_location" {
+  type    = string
+  default = "uksouth"
+}
+
 variable "dns_zone" {
   type    = string
   default = "nonprod.amidostacks.com"
@@ -87,7 +86,6 @@ variable "pfx_password" {
   type = string
   default = "Password1"
 }
-
 
 # ###########################
 # # CONDITIONALS
@@ -107,24 +105,35 @@ variable "create_user_identiy" {
   default = true
 }
 
+variable "cluster_version" {
+  type = string
+  default = "1.16.7"
+}
 
 variable "create_acr" {
+  description = ""
   type = bool
   default = true
 }
 
-###########################
-# AppGateway SETTINGS
-##########################
+variable "acr_resource_group" {
+  type = string
+  default = ""
+}
 
-variable "ssl_policy" {
-  type = object({policy_type=string,policy_name=string,min_protocol_version=string,disabled_protocols=list(string),cipher_suites=list(string)})
-  description = "SSL policy definition, defaults to latest Predefined settings with min protocol of TLSv1.2"
-  default = {
-    "policy_type"="Predefined",
-    "policy_name"="AppGwSslPolicy20170401S",
-    "min_protocol_version"="TLSv1_2",
-    "disabled_protocols"=null,
-    "cipher_suites"=null
-  }
+variable "is_cluster_private" {
+  type        = bool
+  description = "Set cluster private - API only accessible over internal network"
+  default     = false
+}
+
+variable "log_application_type" {
+  type    = string
+  default = "other"
+}
+
+variable key_vault_name {
+  description = "Key Vault name - if not specificied will default to computed naming convention"
+  type = string
+  default = ""
 }

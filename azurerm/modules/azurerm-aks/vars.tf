@@ -8,17 +8,17 @@
 
 variable "name_company" {
   description = "Company Name - should/will be used in conventional resource naming"
-  type = string
+  type        = string
 }
 
 variable "name_project" {
   description = "Project Name - should/will be used in conventional resource naming"
-  type = string
+  type        = string
 }
 
 variable "name_component" {
   description = "Component Name - should/will be used in conventional resource naming. Typically this will be a logical name for this part of the system i.e. `API` || `middleware` or more generic like `Billing`"
-  type = string
+  type        = string
 }
 
 variable "name_environment" {
@@ -32,13 +32,13 @@ variable "stage" {
 
 variable "attributes" {
   description = "Additional attributes for tagging"
-  default = []
+  default     = []
 }
 
 variable "tags" {
   description = "Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically"
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }
 
 ############################################
@@ -53,14 +53,14 @@ variable "tags" {
 
 variable "resource_group_location" {
   description = "Location of the RG"
-  type    = string
-  default = "uksouth"
+  type        = string
+  default     = "uksouth"
 }
 
 variable "resource_group_tags" {
   description = "Tags at a RG level"
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }
 
 
@@ -69,8 +69,8 @@ variable "resource_group_tags" {
 ##########################
 variable "create_user_identiy" {
   description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 ###########################
@@ -79,36 +79,36 @@ variable "create_user_identiy" {
 
 variable "create_aksvnet" {
   description = "Whether to create an AKS VNET specifically or use an existing one - if false you must supply an existing VNET name and a vnet_cidr for subnets"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "vnet_name" {
   description = "VNET name if create_aks_vnet is false"
-  type    = string
-  default = "changeme"
+  type        = string
+  default     = "changeme"
 }
 
 variable "vnet_cidr" {
   description = "CIDR block notation for VNET"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "subnet_prefixes" {
   description = "Prefix for subnet - should be in the form of x.x.x.x/x"
-  type    = list(string)
-  default = [""]
+  type        = list(string)
+  default     = [""]
 }
 
 variable "subnet_front_end_prefix" {
   description = "Prefix for front end subnet - should be in the form of x.x.x.x/x"
-  type = string
+  type        = string
 }
 
 variable "subnet_names" {
   description = "Names for subnets"
-  type    = list(string)
-  default = [""]
+  type        = list(string)
+  default     = [""]
 }
 
 ###########################
@@ -116,20 +116,20 @@ variable "subnet_names" {
 ##########################
 variable "dns_zone" {
   description = "Dns zone name - e.g. nonprod.domain.com, you should avoid using an APEX zone"
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "create_dns_zone" {
   description = "whether to create a DNS zone"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "internal_dns_zone" {
   description = "Internal DNS zone name - e.g. nonprod.domain.internal"
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 ###########################
@@ -137,32 +137,32 @@ variable "internal_dns_zone" {
 ##########################
 variable "create_acr" {
   description = "whether to create a ACR"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "acr_resource_group" {
   description = "Supply your own resource group name for ACR"
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "acr_registry_name" {
   description = "ACR name"
-  type    = string
-  default = "myacrregistry"
+  type        = string
+  default     = "myacrregistry"
 }
 
 variable "registry_admin_enabled" {
   description = "Whether ACR admin is enabled"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "registry_sku" {
   description = "ACR SKU"
-  type    = string
-  default = "Standard"
+  type        = string
+  default     = "Standard"
 }
 
 ###########################
@@ -171,19 +171,19 @@ variable "registry_sku" {
 
 variable "create_aks" {
   description = "Whether KAS gets created"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "cluster_version" {
   description = "Specify AKS cluster version - please refer to MS for latest updates on the available versions. NB: opt for stable versions where possible"
-  type    = string
-  default = "1.15.7"
+  type        = string
+  default     = "1.15.7"
 }
 
 variable cluster_name {
   description = "Name for the cluster"
-  default = "akscluster"
+  default     = "akscluster"
 }
 
 variable "tenant_id" {
@@ -269,13 +269,19 @@ variable "vm_size" {
   default = "Standard_DS2_v2"
 }
 
+variable "is_cluster_private" {
+  type        = bool
+  description = "Set cluster private"
+  default     = false
+}
+
 ###########################
 # MISC SETTINGS
 ##########################
 variable "resource_namer" {
   description = "This should be a uniformly created string - ideally using something like cloudposse label module to ensure conventions on naming are followed throughout organization. this value is used in all the places within the module to name resources - additionally it changes the string to ensure it conforms to Azure standards where appropriate - i.e. blob/KV/ACR names are stripped of non alphanumeric characters and in some cases strings are sliced to conform to max char length"
-  type    = string
-  default = "genericname"
+  type        = string
+  default     = "genericname"
 }
 
 variable "retention_in_days" {
@@ -284,6 +290,13 @@ variable "retention_in_days" {
 }
 
 variable "log_application_type" {
+  description = "Log application type"
   type    = string
   default = "other"
+}
+
+variable key_vault_name {
+  description = "Key Vault name - if not specificied will default to computed naming convention"
+  type = string
+  default = ""
 }

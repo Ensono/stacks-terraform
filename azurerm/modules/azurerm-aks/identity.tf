@@ -4,7 +4,7 @@
 # KEY VAULT
 resource "azurerm_key_vault" "default" {
   count                       = 1
-  name                        = substr(var.resource_namer, 0, 24)
+  name                        = var.key_vault_name != "" ? var.key_vault_name : substr(var.resource_namer, 0, 24)
   location                    = var.resource_group_location
   resource_group_name         = azurerm_resource_group.default.name
   enabled_for_disk_encryption = true
@@ -48,10 +48,10 @@ resource "azurerm_key_vault" "default" {
 }
 
 resource "azurerm_user_assigned_identity" "default" {
-  count                       = var.create_user_identiy ? 1 : 0
-  location                    = var.resource_group_location
-  resource_group_name         = azurerm_resource_group.default.name
-  name = var.resource_namer
+  count               = var.create_user_identiy ? 1 : 0
+  location            = var.resource_group_location
+  resource_group_name = azurerm_resource_group.default.name
+  name                = var.resource_namer
   lifecycle {
     ignore_changes = [
       tags,
