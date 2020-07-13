@@ -277,7 +277,13 @@ variable "vm_size" {
 
 variable "is_cluster_private" {
   type        = bool
-  description = "Set cluster private"
+  description = "Whether or not expose the Ingress over internet"
+  default     = false
+}
+
+variable "private_cluster_enabled" {
+  type        = bool
+  description = "Set cluster access private"
   default     = false
 }
 

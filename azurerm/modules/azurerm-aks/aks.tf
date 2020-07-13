@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   resource_group_name     = azurerm_resource_group.default.name
   dns_prefix              = var.dns_prefix
   kubernetes_version      = var.cluster_version
-  private_cluster_enabled = var.is_cluster_private
+  private_cluster_enabled = var.private_cluster_enabled
   linux_profile {
     admin_username = var.admin_username
     ssh_key {
@@ -142,6 +142,7 @@ resource "azurerm_role_assignment" "acr2" {
   }
 }
 
+# MSI must have permissions to create subnets
 # Ensure if using private networks
 resource "azurerm_role_assignment" "network" {
   scope                = local.vnet_id
@@ -150,28 +151,6 @@ resource "azurerm_role_assignment" "network" {
   depends_on = [
     azurerm_kubernetes_cluster.default
   ]
-}
-
-# Potentially redundant PRivate ip can be assigned directly in YAML provided it's available in user defined network
-# MSI must have permissions to create subnets
-resource "azurerm_network_interface" "internal_ingress" {
-  name                = var.resource_namer
-  location            = var.resource_group_location
-  resource_group_name = azurerm_kubernetes_cluster.default.0.node_resource_group
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.default.0.id
-    private_ip_address_allocation = "Static"
-    private_ip_address            = cidrhost(var.subnet_prefixes.0, -3)
-  }
-  depends_on = [
-    azurerm_kubernetes_cluster.default
-  ]
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
 
 resource "azurerm_public_ip" "external_ingress" {

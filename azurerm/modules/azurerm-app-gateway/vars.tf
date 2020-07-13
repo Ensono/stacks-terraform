@@ -94,11 +94,7 @@ variable "dns_zone" {
   default = ""
 }
 
-variable "aks_ingress_private_ip" {
-  type = string
-}
-
-variable "aks_ingress_public_ip" {
+variable "aks_ingress_ip" {
   type = string
 }
 
