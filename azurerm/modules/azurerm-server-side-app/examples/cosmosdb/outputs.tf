@@ -35,11 +35,6 @@ output "resource_group" {
   value       = module.app.resource_group
 }
 
-output "dns_fqdn" {
-  description = "DNS FQDN value if created"
-  value = module.app.dns_fqdn
-}
-
 output "dns_name" {
   description = "DNS Name if created"
   value = module.app.dns_name

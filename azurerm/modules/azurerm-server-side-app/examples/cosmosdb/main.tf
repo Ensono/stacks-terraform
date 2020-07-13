@@ -26,11 +26,14 @@ module "app" {
   cosmosdb_kind                        = var.cosmosdb_kind
   cosmosdb_offer_type                  = var.cosmosdb_offer_type
   create_cache                         = var.create_cache
-  create_dns_record                    = true
+  create_dns_record                    = var.create_dns_record
   dns_record                           = var.dns_record
+  core_resource_group                  = var.core_resource_group
   dns_zone_name                        = var.dns_zone_name
   dns_zone_resource_group              = var.dns_zone_resource_group != "" ? var.dns_zone_resource_group : var.core_resource_group
   dns_a_records                        = [data.azurerm_public_ip.app_gateway.ip_address]
+  subscription_id                      = data.azurerm_client_config.current.subscription_id
+  create_cdn_endpoint                  = var.create_cdn_endpoint
   # Alternatively if you want you can pass in the IP directly and remove the need for a lookup
   # dns_a_records                        = ["0.1.23.45"]
 }

@@ -189,7 +189,8 @@ variable "cache_redis_maxmemory_policy" {
 
 variable "cdn_profile_name" {
   type = string
-  description = ""
+  default = ""
+  description = "Provide your own profile name "
 }
 
 ########################
