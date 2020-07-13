@@ -30,6 +30,7 @@ module "cosmosdb" {
   resource_namer                       = var.resource_namer
   resource_tags                        = var.resource_tags
   resource_group_name                  = azurerm_resource_group.default.name
+  resource_group_location              = var.resource_group_location
   cosmosdb_sql_container               = var.cosmosdb_sql_container
   cosmosdb_sql_container_partition_key = var.cosmosdb_sql_container_partition_key
   cosmosdb_kind                        = var.cosmosdb_kind
