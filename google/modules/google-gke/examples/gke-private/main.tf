@@ -28,4 +28,5 @@ module "gke_cluster" {
   enable_legacy_abac = false
   service_account_roles = []
   is_cluster_private        = var.is_cluster_private
+  master_ipv4_cidr_block    = "10.5.0.0/28"
 }
