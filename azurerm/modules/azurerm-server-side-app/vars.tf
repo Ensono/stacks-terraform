@@ -93,7 +93,7 @@ variable "dns_zone_name_internal" {
 }
 
 variable "dns_zone_resource_group" {
-  description = "Name of the Resource group holding the DNS zone. Most commonly this would be part of core/shared services setup."
+  description = "Name of the Resource group holding the DNS zone. Most commonly this would be part of core/shared services setup. Can be overridden here if you manage DNS in a separate"
   type    = string
   default = ""
 }
@@ -184,13 +184,13 @@ variable "cache_redis_maxmemory_policy" {
 }
 
 ####################
-# CDN Options
+# Core RG Options
 ####################
 
-variable "cdn_profile_name" {
+variable "core_resource_group" {
   type = string
   default = ""
-  description = "Provide your own profile name "
+  description = "Provide the name of the core resource group"
 }
 
 ########################
