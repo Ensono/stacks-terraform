@@ -86,7 +86,13 @@ variable "create_aksvnet" {
 variable "vnet_name" {
   description = "VNET name if create_aks_vnet is false"
   type        = string
-  default     = "changeme"
+  default     = ""
+}
+
+variable "vnet_name_resource_group" {
+  description = "VNET resource group name if user supplying an existing network"
+  type        = string
+  default     = ""
 }
 
 variable "vnet_cidr" {

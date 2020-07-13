@@ -142,6 +142,18 @@ resource "azurerm_role_assignment" "acr2" {
   }
 }
 
+# Ensure if using private networks
+resource "azurerm_role_assignment" "network" {
+  scope                = local.vnet_id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_kubernetes_cluster.default.0.identity.0.principal_id
+  depends_on = [
+    azurerm_kubernetes_cluster.default
+  ]
+}
+
+# Potentially redundant PRivate ip can be assigned directly in YAML provided it's available in user defined network
+# MSI must have permissions to create subnets
 resource "azurerm_network_interface" "internal_ingress" {
   name                = var.resource_namer
   location            = var.resource_group_location

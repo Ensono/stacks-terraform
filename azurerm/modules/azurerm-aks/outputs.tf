@@ -1,16 +1,16 @@
 output "vnet_name" {
   description = "Created VNET name.\nName can be deduced however it's better to create a direct dependency"
-  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.name : ""
+  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.name : data.azurerm_virtual_network.default.0.name
 }
 
 output "vnet_address_space" {
   description = "Specified VNET address space"
-  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.address_space : []
+  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.address_space : data.azurerm_virtual_network.default.0.address_space
 }
 
 output "vnet_address_id" {
   description = "Specified VNET Id"
-  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.id : ""
+  value       = var.create_aksvnet ? azurerm_virtual_network.default.0.id : data.azurerm_virtual_network.default.0.id
 }
 
 output "resource_group_name" {

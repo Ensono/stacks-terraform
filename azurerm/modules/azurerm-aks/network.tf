@@ -10,6 +10,17 @@ resource "azurerm_resource_group" "default" {
   }
 }
 
+locals {
+  vnet_name = var.create_aksvnet ? azurerm_virtual_network.default.0.name : data.azurerm_virtual_network.default.0.name
+  vnet_id = var.create_aksvnet ? azurerm_virtual_network.default.0.id : data.azurerm_virtual_network.default.0.id
+}
+
+data "azurerm_virtual_network" "default" {
+  count               = var.create_aksvnet ? 0 : 1
+  name                = var.vnet_name
+  resource_group_name = var.vnet_name_resource_group
+}
+
 # NETWORK
 resource "azurerm_virtual_network" "default" {
   count               = var.create_aksvnet ? 1 : 0
