@@ -83,7 +83,7 @@ resource "azurerm_application_gateway" "network" {
 
   ssl_certificate {
     name     = "frontend"
-    data     = filebase64("${abspath(path.root)}/certs/${var.cert_name}")
+    data     = acme_certificate.default.certificate_p12
     password = var.pfx_password
   }
 

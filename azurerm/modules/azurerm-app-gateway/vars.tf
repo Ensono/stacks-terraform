@@ -141,3 +141,7 @@ variable "pfx_password" {
   default = "Password1"
 }
 
+variable acme_email {
+  type = string
+  description = "Email for Acme registration, must be a valid email"
+}

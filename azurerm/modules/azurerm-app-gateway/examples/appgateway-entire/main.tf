@@ -4,7 +4,8 @@ module "default_label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
   namespace  = format("%s-%s", var.name_company, var.name_project)
   stage      = var.stage
-  name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
+  # name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
+  name       = var.name_component
   attributes = var.attributes
   delimiter  = "-"
   tags       = map("CostCenter", var.resource_group_location, )
@@ -64,4 +65,5 @@ module "ssl_app_gateway" {
   subnet_front_end_prefix   = cidrsubnet(var.vnet_cidr.0, 4, 3)
   subnet_backend_end_prefix = cidrsubnet(var.vnet_cidr.0, 4, 4)
   subnet_names              = ["k8s1"]
+  acme_email                = var.acme_email
 }
