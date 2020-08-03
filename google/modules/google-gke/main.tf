@@ -1,11 +1,11 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY A GKE PUBLIC CLUSTER IN GOOGLE CLOUD PLATFORM
-# This is an example of how to use the gke-cluster module to deploy a public Kubernetes cluster in GCP with a
+# DEPLOY A GKE CLUSTER IN GOOGLE CLOUD PLATFORM
+# This is an example of how to use the gke-cluster module to deploy a Kubernetes cluster in GCP with a
 # Load Balancer in front of it.
 # ---------------------------------------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY A PUBLIC CLUSTER IN GOOGLE CLOUD PLATFORM
+# DEPLOY A CLUSTER IN GOOGLE CLOUD PLATFORM
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "gke_cluster" {
@@ -13,13 +13,12 @@ module "gke_cluster" {
   name     = var.resource_namer
   project  = var.project
   location = var.location
-  # We're deploying the cluster in the 'public' subnetwork to allow outbound internet access
   # See the network access tier table for full details:
   # https://github.com/gruntwork-io/terraform-google-network/tree/master/modules/vpc-network#access-tier
   network = module.vpc_network.network
 
-  subnetwork                   = module.vpc_network.public_subnetwork
-  cluster_secondary_range_name = module.vpc_network.public_subnetwork_secondary_range_name
+  subnetwork                   = var.is_cluster_private ? module.vpc_network.private_subnetwork : module.vpc_network.public_subnetwork
+  cluster_secondary_range_name = var.is_cluster_private ? module.vpc_network.private_subnetwork_secondary_range_name : module.vpc_network.public_subnetwork_secondary_range_name
 
   enable_private_nodes = var.is_cluster_private
 
@@ -71,11 +70,10 @@ resource "google_container_node_pool" "node_pool" {
 
     labels = merge(var.tags, map("all-pools-example", "true"))
 
-    # Add a public tag to the instances. See the network access tier table for full details:
+    # Add a tag to the instances. See the network access tier table for full details:
     # https://github.com/gruntwork-io/terraform-google-network/tree/master/modules/vpc-network#access-tier
     tags = [
-      module.vpc_network.public,
-      "public-pool-example",
+      var.is_cluster_private ? module.vpc_network.private : module.vpc_network.public
     ]
 
     disk_size_gb = "30"
