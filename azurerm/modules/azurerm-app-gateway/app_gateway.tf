@@ -87,24 +87,24 @@ resource "azurerm_application_gateway" "network" {
     password = var.pfx_password
   }
 
-  redirect_configuration {
-    name                 = "letsencrypt_auth_challange"
-    redirect_type        = "Permanent"
-    target_url           = "${azurerm_storage_account.default.0.primary_blob_endpoint}public"
-    include_path         = true
-    include_query_string = true
-  }
+  # redirect_configuration {
+  #   name                 = "letsencrypt_auth_challange"
+  #   redirect_type        = "Permanent"
+  #   target_url           = "${azurerm_storage_account.default.0.primary_blob_endpoint}public"
+  #   include_path         = true
+  #   include_query_string = true
+  # }
 
-  url_path_map {
-    name                               = "PathBasedRoutingRulePathMap"
-    default_backend_address_pool_name  = local.backend_address_pool_name
-    default_backend_http_settings_name = local.http_setting_name
-    path_rule {
-      name                        = "letsencrypt"
-      redirect_configuration_name = "letsencrypt_auth_challange"
-      paths                       = ["/.well-known/acme-challenge/*"]
-    }
-  }
+  # url_path_map {
+  #   name                               = "PathBasedRoutingRulePathMap"
+  #   default_backend_address_pool_name  = local.backend_address_pool_name
+  #   default_backend_http_settings_name = local.http_setting_name
+  #   path_rule {
+  #     name                        = "letsencrypt"
+  #     redirect_configuration_name = "letsencrypt_auth_challange"
+  #     paths                       = ["/.well-known/acme-challenge/*"]
+  #   }
+  # }
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
@@ -146,13 +146,13 @@ resource "azurerm_application_gateway" "network" {
     backend_http_settings_name = local.http_setting_name
   }
 
-  request_routing_rule {
-    name                        = "${local.request_routing_rule_name}-letsencrypt"
-    rule_type                   = "PathBasedRouting"
-    http_listener_name          = local.listener_name
-    redirect_configuration_name = "letsencrypt_auth_challange"
-    url_path_map_name           = "PathBasedRoutingRulePathMap"
-  }
+  # request_routing_rule {
+  #   name                        = "${local.request_routing_rule_name}-letsencrypt"
+  #   rule_type                   = "PathBasedRouting"
+  #   http_listener_name          = local.listener_name
+  #   redirect_configuration_name = "letsencrypt_auth_challange"
+  #   url_path_map_name           = "PathBasedRoutingRulePathMap"
+  # }
 
   # ssl_policy = var.ssl_policy
   ssl_policy { # block supports the following:
