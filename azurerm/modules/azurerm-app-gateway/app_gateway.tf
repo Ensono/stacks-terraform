@@ -36,6 +36,7 @@ locals {
   listener_name                  = "${var.vnet_name}-httplstn"
   listener_name_ssl              = "${var.vnet_name}-httplstn_ssl"
   request_routing_rule_name      = "${var.vnet_name}-rqrt"
+  request_routing_rule_name_ssl  = "${var.vnet_name}-rqrt_ssl"
   redirect_configuration_name    = "${var.vnet_name}-rdrcfg"
 }
 
@@ -122,6 +123,14 @@ resource "azurerm_application_gateway" "network" {
   request_routing_rule {
     name                       = local.request_routing_rule_name
     rule_type                  = "Basic"
+    http_listener_name         = local.listener_name
+    backend_address_pool_name  = local.backend_address_pool_name
+    backend_http_settings_name = local.http_setting_name
+  }
+
+  request_routing_rule {
+    name                       = local.request_routing_rule_name_ssl
+    rule_type                  = "Basic"
     http_listener_name         = local.listener_name_ssl
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
@@ -142,4 +151,3 @@ resource "azurerm_application_gateway" "network" {
     ]
   }
 }
-

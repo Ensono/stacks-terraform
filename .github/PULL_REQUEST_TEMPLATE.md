@@ -17,23 +17,23 @@ feat: repo base files - 949
 A description of the change.
 
 <!--
-If you have access, to link to the Azure Devops Ticket type `AB#{ID}` in this PR or commit message, 
+If you have access, to link to the Azure Devops Ticket type `AB#{ID}` in this PR or commit message,
 e.g. Implements `AB#1228 - Link tickets to GitHub`
 -->
 
 #### 🤔 Why
-		
+
 Why it's needed, background context.
-		
+
 #### 🛠 How
-		
+
 More in-depth discussion of the change or implementation.
 
 #### 👀 Evidence
-		
+
 Screenshots / external resources / links / etc.
 Link to documentation updated with changes impacted in the PR.
-		 
+
 #### 🕵️ How to test
 
 Notes on how a reviewer can test the changes, e.g. how to run the tests.
