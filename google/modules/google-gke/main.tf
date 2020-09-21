@@ -31,6 +31,8 @@ module "gke_cluster" {
   # Additional Configuration
   enable_legacy_abac = var.enable_legacy_abac
   kubernetes_version = var.cluster_version
+
+  resource_labels = var.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
