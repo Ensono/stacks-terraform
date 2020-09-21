@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "gke_cluster" {
-  source   = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.4.3"
+  source   = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.5.0"
   name     = var.resource_namer
   project  = var.project
   location = var.location
