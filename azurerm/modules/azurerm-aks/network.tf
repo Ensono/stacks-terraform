@@ -1,3 +1,8 @@
+# Configure data to access the SPN that has been used to deploy the environment
+# This will be used to set the SPN as an owner on the resource group
+data "azurerm_client_config" "spn_client" {
+}
+
 # Always create and manage an RG as part of this library
 resource "azurerm_resource_group" "default" {
   name     = var.resource_namer
@@ -8,6 +13,14 @@ resource "azurerm_resource_group" "default" {
       tags,
     ]
   }
+}
+
+# Use a role assignment to set the SPN as an owner on the resource group
+# This will allow the SPN to change role assignments of resources contained in the group
+resource "azurerm_role_assignment" "rg_owner" {
+    scope = azurerm_resource_group.default.id
+    role_definition_name = "Owner"
+    principal_id = data.azurerm_client_config.spn_client.object_id
 }
 
 locals {
