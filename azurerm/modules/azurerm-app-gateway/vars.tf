@@ -46,6 +46,12 @@ variable "resource_group_name" {
   type = string
 }
 
+variable "dns_resource_group" {
+  type = string
+  description = "RG that contains the existing DNS zones, if the zones are not being created here"
+  default = null
+}
+
 ###########################
 # CONDITIONAL SETTINGS
 ##########################

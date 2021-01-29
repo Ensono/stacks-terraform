@@ -132,6 +132,12 @@ variable "create_dns_zone" {
   default     = true
 }
 
+variable "dns_resource_group" {
+  type = string
+  description = "RG that contains the existing DNS zones, if the zones are not being created here"
+  default = null
+}
+
 variable "internal_dns_zone" {
   description = "Internal DNS zone name - e.g. nonprod.domain.internal"
   type        = string

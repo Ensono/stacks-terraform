@@ -110,7 +110,7 @@ resource "azurerm_private_dns_zone" "default" {
 resource "azurerm_private_dns_zone_virtual_network_link" "default" {
   name                  = var.resource_namer
   virtual_network_id    = azurerm_virtual_network.default.0.id
-  resource_group_name   = azurerm_resource_group.default.name
+  resource_group_name   = local.dns_resource_group
   private_dns_zone_name = var.internal_dns_zone
   depends_on = [
     azurerm_virtual_network.default,
