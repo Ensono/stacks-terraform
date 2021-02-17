@@ -90,3 +90,9 @@ variable "load_balancer_ip" {
   type = string  
 }
 
+variable "create_apex_record" {
+  description = "If true then create apex record and the value of dns_record will be ignored"
+  type = bool
+  default = false
+}
+

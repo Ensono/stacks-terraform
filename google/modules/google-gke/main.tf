@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "gke_cluster" {
-  source   = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.4.3"
+  source   = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-cluster?ref=v0.5.0"
   name     = var.resource_namer
   project  = var.project
   location = var.location
@@ -31,6 +31,8 @@ module "gke_cluster" {
   # Additional Configuration
   enable_legacy_abac = var.enable_legacy_abac
   kubernetes_version = var.cluster_version
+
+  resource_labels = var.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
