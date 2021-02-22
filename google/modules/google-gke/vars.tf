@@ -159,3 +159,17 @@ variable "is_cluster_private" {
   description = "Set cluster private"
   default     = false
 }
+
+variable "node_machine_type" {
+  type = string
+  default = "n1-standard-1"
+}
+
+variable "min_node_count" {
+  type = number
+  default = 1
+}
+variable "max_node_count" {
+  type = number
+  default = 5
+}
