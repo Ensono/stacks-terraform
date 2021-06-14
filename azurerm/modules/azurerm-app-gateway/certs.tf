@@ -1,8 +1,3 @@
-provider "acme" {
-  # USe Staging endpoint
-  server_url = "https://acme-v02.api.letsencrypt.org/directory"
-}
-
 resource "tls_private_key" "reg_key" {
   algorithm = "RSA"
 }
@@ -40,5 +35,3 @@ resource "acme_certificate" "default" {
     }
   }
 }
-
-

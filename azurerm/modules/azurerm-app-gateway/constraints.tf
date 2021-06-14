@@ -1,8 +1,19 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
   required_providers {
-    azurerm = "~> 2.5"
-    null    = "~> 2.1"
-    tls     = "~> 2.1"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 2.5"
+    }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 2.1"
+    }
+
+    acme = {
+      source  = "vancluever/acme"
+      version = "~> 2.0"
+    }
   }
 }
