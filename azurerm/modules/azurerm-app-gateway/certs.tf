@@ -23,8 +23,8 @@ resource "tls_cert_request" "req" {
 
 # NEED TO CREATE A REQUEST INLINE to ensure we can access the p12 cert since it's empty if used cert_req_pem
 resource "acme_certificate" "default" {
-  account_key_pem         = acme_registration.reg.account_key_pem
-  common_name             = "*.${var.dns_zone}"
+  account_key_pem = acme_registration.reg.account_key_pem
+  common_name     = "*.${var.dns_zone}"
   # subject_alternative_names = ["*.${var.dns_zone}", var.dns_zone]
   # certificate_request_pem = tls_cert_request.req.cert_request_pem
   certificate_p12_password = var.pfx_password

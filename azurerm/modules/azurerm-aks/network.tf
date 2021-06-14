@@ -18,14 +18,14 @@ resource "azurerm_resource_group" "default" {
 # Use a role assignment to set the SPN as an owner on the resource group
 # This will allow the SPN to change role assignments of resources contained in the group
 resource "azurerm_role_assignment" "rg_owner" {
-    scope = azurerm_resource_group.default.id
-    role_definition_name = "Owner"
-    principal_id = data.azurerm_client_config.spn_client.object_id
+  scope                = azurerm_resource_group.default.id
+  role_definition_name = "Owner"
+  principal_id         = data.azurerm_client_config.spn_client.object_id
 }
 
 locals {
   vnet_name = var.create_aksvnet ? azurerm_virtual_network.default.0.name : data.azurerm_virtual_network.default.0.name
-  vnet_id = var.create_aksvnet ? azurerm_virtual_network.default.0.id : data.azurerm_virtual_network.default.0.id
+  vnet_id   = var.create_aksvnet ? azurerm_virtual_network.default.0.id : data.azurerm_virtual_network.default.0.id
 }
 
 data "azurerm_virtual_network" "default" {
@@ -55,7 +55,7 @@ resource "azurerm_subnet" "default" {
   resource_group_name = azurerm_resource_group.default.name
   # this can stay referencing above as they get created or not together
   virtual_network_name = azurerm_virtual_network.default.0.name
-  address_prefixes       = [ var.subnet_prefixes[count.index] ]
+  address_prefixes     = [var.subnet_prefixes[count.index]]
   depends_on           = [azurerm_virtual_network.default]
 }
 

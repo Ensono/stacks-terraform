@@ -9,13 +9,13 @@ resource "azurerm_resource_group" "default" {
 # an alternative way of managing this would be through K8s operators
 ####
 resource "azurerm_dns_a_record" "default" {
-  count               = var.create_dns_record && !var.create_cdn_endpoint ? 1 : 0
+  count               = var.create_dns_record && ! var.create_cdn_endpoint ? 1 : 0
   name                = var.dns_record
   zone_name           = var.dns_zone_name
   resource_group_name = var.dns_zone_resource_group
   ttl                 = var.dns_ttl
   records             = var.dns_a_records
-  tags = var.resource_tags
+  tags                = var.resource_tags
   lifecycle {
     ignore_changes = [
       tags,
@@ -49,9 +49,9 @@ resource "azurerm_redis_cache" "default" {
   minimum_tls_version = var.cache_minimum_tls_version
   redis_configuration {
     enable_authentication = var.cache_redis_enable_authentication
-    maxmemory_reserved = var.cache_redis_maxmemory_reserved
-    maxmemory_delta    = var.cache_redis_maxmemory_delta
-    maxmemory_policy   = var.cache_redis_maxmemory_policy
+    maxmemory_reserved    = var.cache_redis_maxmemory_reserved
+    maxmemory_delta       = var.cache_redis_maxmemory_delta
+    maxmemory_policy      = var.cache_redis_maxmemory_policy
   }
   tags = var.resource_tags
   lifecycle {

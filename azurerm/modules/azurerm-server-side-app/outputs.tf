@@ -33,10 +33,10 @@ output "redis_cache_hostname" {
 
 output "resource_group" {
   description = "Resource Group name for the app"
-  value = azurerm_resource_group.default.name
+  value       = azurerm_resource_group.default.name
 }
 
 output "dns_name" {
   description = "DNS Name"
-  value = var.create_dns_record && !var.create_cdn_endpoint ? trimsuffix(azurerm_dns_a_record.default.0.fqdn, ".") : var.create_cdn_endpoint ? trimsuffix(azurerm_dns_cname_record.default.0.fqdn, ".") : ""
+  value       = var.create_dns_record && ! var.create_cdn_endpoint ? trimsuffix(azurerm_dns_a_record.default.0.fqdn, ".") : var.create_cdn_endpoint ? trimsuffix(azurerm_dns_cname_record.default.0.fqdn, ".") : ""
 }

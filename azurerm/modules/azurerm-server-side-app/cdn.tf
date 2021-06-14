@@ -24,28 +24,28 @@ resource "azurerm_cdn_endpoint" "default" {
   }
   origin_host_header = var.dns_a_records.0
   global_delivery_rule {
-      dynamic "modify_response_header_action" {
-        for_each = var.response_header_cdn
-        iterator = response_header
-        content {
-          action = response_header.value["action"] # (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite.
-          name = response_header.value["name"] # (Required) The header name.
-          value = response_header.value["value"]== "" ? null : response_header.value["value"] #(Optional) The value of the header. Only needed when action is set to Append or overwrite.
-        }
+    dynamic "modify_response_header_action" {
+      for_each = var.response_header_cdn
+      iterator = response_header
+      content {
+        action = response_header.value["action"]                                              # (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite.
+        name   = response_header.value["name"]                                                # (Required) The header name.
+        value  = response_header.value["value"] == "" ? null : response_header.value["value"] #(Optional) The value of the header. Only needed when action is set to Append or overwrite.
       }
+    }
   }
   delivery_rule {
     name = "DefaultHTTPRedirect"
     # order = length(var.response_header_cdn) * 10
     order = 1
     request_scheme_condition {
-      match_values = toset(["HTTP"]) # (Required) Valid values are HTTP and HTTPS.
-      operator = "Equal" # (Optional) Valid values are Equal.
-      negate_condition = false # (Optional) Defaults to false.
+      match_values     = toset(["HTTP"]) # (Required) Valid values are HTTP and HTTPS.
+      operator         = "Equal"         # (Optional) Valid values are Equal.
+      negate_condition = false           # (Optional) Defaults to false.
     }
     url_redirect_action {
       redirect_type = "Moved"
-      protocol = "Https"
+      protocol      = "Https"
     }
   }
 
@@ -67,7 +67,7 @@ resource "azurerm_dns_cname_record" "default" {
 
 # Workaround for setting custom domain on the CDN
 resource "null_resource" "custom_domain" {
-  count               = var.create_cdn_endpoint ? 1 : 0
+  count = var.create_cdn_endpoint ? 1 : 0
   triggers = {
     trigger_hostname = azurerm_dns_cname_record.default.0.fqdn
   }
@@ -99,7 +99,7 @@ resource "null_resource" "custom_domain" {
 #   --resource-group ${azurerm_resource_group.default.name} \
 #   --subscription ${var.subscription_id}
 resource "null_resource" "custom_domain_ssl" {
-  count               = var.create_cdn_endpoint ? 1 : 0
+  count = var.create_cdn_endpoint ? 1 : 0
   triggers = {
     # trigger_hostname = lookup(sort(azurerm_cdn_endpoint.default.origin)[0], "host_name")
     trigger_hostname = azurerm_dns_cname_record.default.0.fqdn

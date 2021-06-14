@@ -83,7 +83,7 @@ variable "internal_dns_zone" {
 }
 
 variable "pfx_password" {
-  type = string
+  type    = string
   default = "Password1"
 }
 
@@ -106,18 +106,18 @@ variable "create_user_identiy" {
 }
 
 variable "cluster_version" {
-  type = string
+  type    = string
   default = "1.16.7"
 }
 
 variable "create_acr" {
   description = ""
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "acr_resource_group" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -134,11 +134,11 @@ variable "log_application_type" {
 
 variable key_vault_name {
   description = "Key Vault name - if not specificied will default to computed naming convention"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable acme_email {
-  type = string
+  type        = string
   description = "Email for Acme registration, must be a valid email"
 }

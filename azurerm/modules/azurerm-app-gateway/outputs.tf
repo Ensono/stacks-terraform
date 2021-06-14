@@ -11,12 +11,12 @@ output "app_gateway_ip" {
 
 output "certificate_pem" {
   description = "PEM key of certificate, can be used internally"
-  value = acme_certificate.default.certificate_pem
-  sensitive = true
+  value       = acme_certificate.default.certificate_pem
+  sensitive   = true
 }
 
 output "issuer_pem" {
   description = "PEM key of certificate, can be used internally together certificate to create a full cert"
-  value = acme_certificate.default.issuer_pem
-  sensitive = true
+  value       = acme_certificate.default.issuer_pem
+  sensitive   = true
 }

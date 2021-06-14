@@ -133,9 +133,9 @@ variable "create_dns_zone" {
 }
 
 variable "dns_resource_group" {
-  type = string
+  type        = string
   description = "RG that contains the existing DNS zones, if the zones are not being created here"
-  default = null
+  default     = null
 }
 
 variable "internal_dns_zone" {
@@ -309,12 +309,12 @@ variable "retention_in_days" {
 
 variable "log_application_type" {
   description = "Log application type"
-  type    = string
-  default = "other"
+  type        = string
+  default     = "other"
 }
 
 variable key_vault_name {
   description = "Key Vault name - if not specificied will default to computed naming convention"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }

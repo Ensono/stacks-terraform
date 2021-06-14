@@ -69,13 +69,13 @@ variable "resource_group_location" {
 
 variable "app_gateway_frontend_ip_name" {
   description = ""
-  type = string
+  type        = string
 }
 
 variable "dns_record" {
   description = ""
-  type = string
-  default = "app"
+  type        = string
+  default     = "app"
 }
 
 variable "dns_zone_name" {
@@ -89,7 +89,7 @@ variable "dns_zone_resource_group" {
 }
 
 variable "core_resource_group" {
-  type    = string
+  type = string
 }
 
 variable "internal_dns_zone_name" {
@@ -103,47 +103,47 @@ variable "internal_dns_zone_name" {
 ##########################
 variable "create_cosmosdb" {
   description = "Whether to create a cosmosdb or not for this application"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "create_cache" {
-  type = bool
+  type        = bool
   description = "Whether to create a RedisCache"
-  default = false
+  default     = false
 }
 
 variable "create_dns_record" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable create_cdn_endpoint {
-  type = bool
+  type    = bool
   default = false
 }
 ###########################
 # CosmosDB SETTINGS
 ##########################
 variable "cosmosdb_sql_container" {
-  type = string
+  type        = string
   description = "Specify the SQLContainer name in CosmosDB"
-  default = "Menu"
+  default     = "Menu"
 }
 
 variable "cosmosdb_sql_container_partition_key" {
-  type = string
-  default = "/id"
+  type        = string
+  default     = "/id"
   description = "Specify partition key"
 }
 
 variable "cosmosdb_kind" {
-  type = string
-  default = "GlobalDocumentDB"
+  type        = string
+  default     = "GlobalDocumentDB"
   description = "Specify the CosmosDB kind"
 }
 variable "cosmosdb_offer_type" {
-  type = string
-  default = "Standard"
+  type        = string
+  default     = "Standard"
   description = "Specify the offer type"
 }

@@ -37,5 +37,5 @@ output "resource_group" {
 
 output "dns_name" {
   description = "DNS Name if created"
-  value = module.app.dns_name
+  value       = module.app.dns_name
 }
