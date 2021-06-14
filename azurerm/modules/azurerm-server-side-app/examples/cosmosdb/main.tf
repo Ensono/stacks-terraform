@@ -17,7 +17,7 @@ module "default_label" {
 }
 
 module "app" {
-  source = "../../"
+  source                               = "../../"
   create_cosmosdb                      = var.create_cosmosdb
   resource_namer                       = module.default_label.id
   resource_tags                        = module.default_label.tags

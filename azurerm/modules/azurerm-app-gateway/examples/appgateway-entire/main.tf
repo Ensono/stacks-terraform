@@ -1,9 +1,9 @@
 data "azurerm_client_config" "current" {}
 
 module "default_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  namespace  = format("%s-%s", var.name_company, var.name_project)
-  stage      = var.stage
+  source    = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
+  namespace = format("%s-%s", var.name_company, var.name_project)
+  stage     = var.stage
   # name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
   name       = var.name_component
   attributes = var.attributes
@@ -43,7 +43,7 @@ module "aks_bootstrap" {
   subnet_prefixes         = [cidrsubnet(var.vnet_cidr.0, 4, 0)]
   subnet_names            = ["k8s1"]
   aks_ingress_private_ip  = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
-  private_cluster_enabled      = false
+  private_cluster_enabled = false
   create_user_identiy     = var.create_user_identiy
   enable_auto_scaling     = true
   log_application_type    = var.log_application_type

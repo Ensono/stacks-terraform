@@ -114,9 +114,9 @@ variable "dns_record" {
 }
 
 variable "dns_resource_group" {
-  type = string 
+  type        = string
   description = "RG for the DNS Zone if adding to an existing one"
-  default = "amido-nonprod-dns"
+  default     = "amido-nonprod-dns"
 }
 
 ########################
@@ -126,36 +126,36 @@ variable "response_header_cdn" {
   type = list(map(string))
   default = [
     {
-      action = "Append" # - (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite.
-      name = "Content-Security-Policy" # - (Required) The header name.
-      value = "default-src * 'unsafe-inline' 'unsafe-eval'" # Currently there is a 100 character limit in Azure for this header value
+      action = "Append"                                      # - (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite.
+      name   = "Content-Security-Policy"                     # - (Required) The header name.
+      value  = "default-src * 'unsafe-inline' 'unsafe-eval'" # Currently there is a 100 character limit in Azure for this header value
       # Best Practices header should look similar to this: "default-src 'none';script-src 'self';connect-src 'self';img-src 'self';style-src 'self';base-uri 'self';form-action 'self'"
       # Additionally you should *(wildcard).domains to create extra layer of security
     },
     {
       action = "Append"
-      name = "Cache-Control"
-      value = "no-cache"
+      name   = "Cache-Control"
+      value  = "no-cache"
     },
     {
       action = "Append"
-      name = "X-Frame-Options"
-      value = "SAMEORIGIN"
+      name   = "X-Frame-Options"
+      value  = "SAMEORIGIN"
     },
     {
       action = "Append"
-      name = "X-Content-Type-Options"
-      value = "nosniff"
+      name   = "X-Content-Type-Options"
+      value  = "nosniff"
     },
     {
       action = "Append"
-      name = "Strict-Transport-Security"
-      value = "max-age=63072000"
+      name   = "Strict-Transport-Security"
+      value  = "max-age=63072000"
     },
     {
       action = "Append"
-      name = "Referrer-Policy"
-      value = "no-referrer-when-downgrade"
+      name   = "Referrer-Policy"
+      value  = "no-referrer-when-downgrade"
     }
   ]
 }

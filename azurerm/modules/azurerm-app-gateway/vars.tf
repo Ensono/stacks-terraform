@@ -47,9 +47,9 @@ variable "resource_group_name" {
 }
 
 variable "dns_resource_group" {
-  type = string
+  type        = string
   description = "RG that contains the existing DNS zones, if the zones are not being created here"
-  default = null
+  default     = null
 }
 
 ###########################
@@ -129,8 +129,8 @@ variable "ssl_policy" {
 }
 
 variable cert_name {
-  type = string
-  default = "sample.cert.pfx"
+  type        = string
+  default     = "sample.cert.pfx"
   description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
 }
 ###########################
@@ -148,6 +148,6 @@ variable "pfx_password" {
 }
 
 variable acme_email {
-  type = string
+  type        = string
   description = "Email for Acme registration, must be a valid email"
 }

@@ -60,19 +60,19 @@ output "aks_ingress_public_ip" {
 
 output "key_vault_name" {
   description = "Key Vault name, either as specified or computed if not"
-  value = module.aks_bootstrap.key_vault_name
+  value       = module.aks_bootstrap.key_vault_name
 }
 
 output "certificate_pem" {
   description = "PEM key of certificate, can be used internally"
-  value = module.ssl_app_gateway.certificate_pem
-  sensitive = true
+  value       = module.ssl_app_gateway.certificate_pem
+  sensitive   = true
 }
 
 output "issuer_pem" {
   description = "PEM key of certificate, can be used internally together certificate to create a full cert"
-  value = module.ssl_app_gateway.issuer_pem
-  sensitive = true
+  value       = module.ssl_app_gateway.issuer_pem
+  sensitive   = true
 }
 
 output "app_gateway_ip" {

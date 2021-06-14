@@ -10,7 +10,7 @@ resource "azurerm_subnet" "backend" {
   name                 = "backend"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefixes       = [var.subnet_backend_end_prefix]
+  address_prefixes     = [var.subnet_backend_end_prefix]
   depends_on           = [var.vnet_name]
 }
 
