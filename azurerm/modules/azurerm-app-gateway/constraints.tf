@@ -12,7 +12,7 @@ terraform {
     }
 
     acme = {
-      source  = "hashicorp/acme"
+      source  = "vancluever/acme"
       version = "~> 2.0"
     }
   }
