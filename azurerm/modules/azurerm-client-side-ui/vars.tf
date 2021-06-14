@@ -2,7 +2,7 @@
 # AUTHENTICATION
 ############################################
 variable "subscription_id" {
-  type = string
+  type        = string
   description = "Subscription Id should be gotten by the caller using the client_config data lookup "
 }
 ############################################
@@ -76,9 +76,9 @@ variable "dns_record" {
 }
 
 variable "dns_resource_group" {
-  type = string
+  type        = string
   description = "RG for the DNS Zone if adding to an existing one"
-  default = "amido-nonprod-dns"
+  default     = "amido-nonprod-dns"
 }
 
 
@@ -96,7 +96,7 @@ variable "resource_tags" {
 }
 
 variable "resource_namer" {
-  type = string
+  type        = string
   description = "Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted"
 }
 
@@ -142,13 +142,13 @@ variable "account_tier" {
 # CDN Response Headers #
 ########################
 variable "response_header_cdn" {
-  type = list(map(string))
+  type        = list(map(string))
   description = "Custom Response Headers for Microsoft CDN. Can be used with security and auditing requirements"
   default = [
     {
       action = "Append"
-      name = "Content-Security-Policy"
-      value = "default-src * 'unsafe-inline' 'unsafe-eval'"
+      name   = "Content-Security-Policy"
+      value  = "default-src * 'unsafe-inline' 'unsafe-eval'"
     }
   ]
 }

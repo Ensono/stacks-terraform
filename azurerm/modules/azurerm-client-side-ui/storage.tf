@@ -8,7 +8,7 @@ resource "azurerm_storage_account" "default" {
   enable_https_traffic_only = true
   tags                      = var.resource_tags
   static_website {
-    index_document = var.index_doc
+    index_document     = var.index_doc
     error_404_document = var.error_doc == "" ? var.index_doc : var.error_doc
   }
   lifecycle {
