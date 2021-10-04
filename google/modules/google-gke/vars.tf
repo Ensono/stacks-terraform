@@ -151,7 +151,7 @@ variable "enable_legacy_abac" {
 
 variable "cluster_version" {
   type    = string
-  default = "1.15.11-gke.17"
+  default = "1.17.9-gke.1504"
 }
 
 variable "is_cluster_private" {
