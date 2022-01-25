@@ -119,5 +119,5 @@ output "dns_base_domain" {
 }
 
 output "dns_base_domain_internal" {
-  value = azurerm_private_dns_zone.0.default.name
+  value = azurerm_private_dns_zone.default.0.name
 }
