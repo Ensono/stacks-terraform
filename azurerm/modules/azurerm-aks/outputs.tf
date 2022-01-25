@@ -107,17 +107,17 @@ output "app_insights_name" {
 #########################################
 
 output "dns_resource_group_name" {
-  value = azurerm_dns_zone.default.0.resource_group_name
+  value = var.dns_resource_group
 }
 
 output "dns_internal_resource_group_name" {
-  value = azurerm_dns_zone.default.0.resource_group_name
+  value = var.dns_resource_group
 }
 
 output "dns_base_domain" {
-  value = azurerm_dns_zone.default.0.name
+  value = var.dns_zone
 }
 
 output "dns_base_domain_internal" {
-  value = azurerm_private_dns_zone.default.0.name
+  value = var.internal_dns_zone
 }
