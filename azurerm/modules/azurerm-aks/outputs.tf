@@ -89,3 +89,43 @@ output "aks_ingress_public_ip" {
 output "key_vault_name" {
   value = azurerm_key_vault.default.0.name
 }
+
+
+#########################################
+# Application Insights
+#########################################
+
+output "app_insights_resource_group_name" {
+  value = azurerm_log_analytics_workspace.default.resource_group_name
+}
+output "app_insights_name" {
+  value = azurerm_log_analytics_workspace.default.name
+}
+
+output "app_insights_id" {
+  value = azurerm_log_analytics_workspace.default.id
+}
+
+output "app_insights_key" {
+  value = azurerm_log_analytics_workspace.default.primary_shared_key
+}
+
+#########################################
+# DNS settings
+#########################################
+
+output "dns_resource_group_name" {
+  value = var.dns_resource_group
+}
+
+output "dns_internal_resource_group_name" {
+  value = var.dns_resource_group
+}
+
+output "dns_base_domain" {
+  value = var.dns_zone
+}
+
+output "dns_base_domain_internal" {
+  value = var.internal_dns_zone
+}
