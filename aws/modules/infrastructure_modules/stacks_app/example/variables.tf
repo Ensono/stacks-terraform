@@ -1,11 +1,11 @@
 variable "enable_zone" {
   description = "Conditionally create route53 zones"
-  type        = number
+  type        = bool
 }
 
 variable "enable_dynamodb" {
   description = "Conditionally create dynamodb"
-  type        = number
+  type        = bool
 }
 
 variable "tags" {
@@ -13,17 +13,10 @@ variable "tags" {
   type        = map(string)
 }
 
-################
-# Route 53 Zones
-################
 variable "public_zones" {
-  type        = map(any)
   description = "Map of Route53 zone parameters"
+  type        = map(any)
 }
-
-############
-# Dynamo DB
-############
 
 variable "table_name" {
   description = "The name of the table, this needs to be unique within a region."
