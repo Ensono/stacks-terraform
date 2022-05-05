@@ -76,7 +76,7 @@ variable "eks_desired_nodes" {
 # Route 53 Zones
 variable "enable_zone" {
   description = "Conditionally create route53 zones"
-  type        = number
+  type        = bool
 }
 variable "public_zones" {
   type        = map(any)
