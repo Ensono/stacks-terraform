@@ -77,6 +77,6 @@ module "route53_zones" {
   source  = "terraform-aws-modules/route53/aws//modules/zones"
   version = "~> 2.0"
 
-  count = var.enable_zone
+  count = var.enable_zone ? 1 : 0
   zones = var.public_zones
 }
