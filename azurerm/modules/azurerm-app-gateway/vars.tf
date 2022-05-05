@@ -60,6 +60,11 @@ variable "create_ssl_cert" {
   default = true
 }
 
+variable "disable_complete_propagation" {
+  type    = bool
+  default = false
+}
+
 
 # ###########################
 # # NETWORK SETTINGS
@@ -128,7 +133,7 @@ variable "ssl_policy" {
   }
 }
 
-variable cert_name {
+variable "cert_name" {
   type        = string
   default     = "sample.cert.pfx"
   description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
@@ -147,7 +152,7 @@ variable "pfx_password" {
   default = "Password1"
 }
 
-variable acme_email {
+variable "acme_email" {
   type        = string
   description = "Email for Acme registration, must be a valid email"
 }

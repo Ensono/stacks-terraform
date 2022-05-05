@@ -28,6 +28,9 @@ resource "acme_certificate" "default" {
   # subject_alternative_names = ["*.${var.dns_zone}", var.dns_zone]
   # certificate_request_pem = tls_cert_request.req.cert_request_pem
   certificate_p12_password = var.pfx_password
+
+  disable_complete_propagation = var.disable_complete_propagation
+
   dns_challenge {
     provider = "azure"
     config = {
