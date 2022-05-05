@@ -1,7 +1,9 @@
+# EKS Cluster 
+#############
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
-
   version                         = "17.24.0"
+  
   vpc_id                          = module.vpc.vpc_id
   subnets                         = module.vpc.private_subnets
   cluster_name                    = local.cluster_name
@@ -55,7 +57,8 @@ module "eks" {
   map_users = var.map_users
 }
 
-
+# KMS 
+#####
 module "eks_kms_key" {
   source = "../../resource_modules/identity/kms_key"
 
@@ -66,4 +69,14 @@ module "eks_kms_key" {
   policy                  = data.aws_iam_policy_document.eks_secret_encryption_kms_key_policy.json
   enable_key_rotation     = true
 
+}
+
+# Route 53 
+##########
+module "route53_zones" {
+  source  = "terraform-aws-modules/route53/aws//modules/zones"
+  version = "~> 2.0"
+
+  count = var.enable_zone
+  zones = var.public_zones
 }
