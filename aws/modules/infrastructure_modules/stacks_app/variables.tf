@@ -1,8 +1,3 @@
-variable "enable_zone" {
-  description = "Conditionally create route53 zones"
-  type        = number
-}
-
 variable "enable_dynamodb" {
   description = "Conditionally create dynamodb"
   type        = number
@@ -11,14 +6,6 @@ variable "enable_dynamodb" {
 variable "tags" {
   description = "Meta data for labelling the infrastructure"
   type        = map(string)
-}
-
-################
-# Route 53 Zones
-################
-variable "public_zones" {
-  type        = map(any)
-  description = "Map of Route53 zone parameters"
 }
 
 ############
