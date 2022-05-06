@@ -1,8 +1,3 @@
-variable "enable_zone" {
-  description = "Conditionally create route53 zones"
-  type        = bool
-}
-
 variable "enable_dynamodb" {
   description = "Conditionally create dynamodb"
   type        = bool
