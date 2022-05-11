@@ -1,16 +1,25 @@
 variable "enable_dynamodb" {
-  description = "Conditionally create dynamodb"
+  description = "Whether to create dynamodb table."
   type        = bool
 }
 
+variable "enable_queue" {
+  description = "Whether to create SQS queue."
+  type        = bool
+}
 variable "tags" {
-  description = "Meta data for labelling the infrastructure"
+  description = "Meta data for labelling the infrastructure."
   type        = map(string)
 }
 
-variable "public_zones" {
-  description = "Map of Route53 zone parameters"
-  type        = map(any)
+variable "env" {
+  description = "Name of the deployment environment, like dev, staging, nonprod, prod."
+  type        = string
+}
+
+variable "queue_name" {
+  description = "This is the human-readable name of the queue. If omitted, Terraform will assign a random name."
+  type        = string
 }
 
 variable "table_name" {
@@ -29,5 +38,5 @@ variable "attribute_name" {
 }
 
 variable "attribute_type" {
-  description = "Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data"
+  description = "Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data."
 }

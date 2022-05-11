@@ -1,17 +1,23 @@
-variable "enable_dynamodb" {
-  description = "Conditionally create dynamodb"
-  type        = number
+#############
+# Common Vars
+#############
+variable "env" {
+  description = "Name of the deployment environment, like dev, staging, nonprod, prod."
+  type        = string
 }
-
 variable "tags" {
-  description = "Meta data for labelling the infrastructure"
+  description = "Meta data for labelling the infrastructure."
   type        = map(string)
 }
 
 ############
 # Dynamo DB
 ############
-
+variable "enable_dynamodb" {
+  default     =  0
+  description = "Whether to create dynamodb table."
+  type        = number
+}
 variable "table_name" {
   description = "The name of the table, this needs to be unique within a region."
   type        = string
@@ -28,5 +34,20 @@ variable "attribute_name" {
 }
 
 variable "attribute_type" {
-  description = "Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data"
+  description = "Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data."
+}
+
+############
+# SQS
+############
+variable "queue_name" {
+  description = "This is the human-readable name of the queue. If omitted, Terraform will assign a random name."
+  type        = string
+}
+
+variable "enable_queue" {
+  
+  default     = false
+  description = "Whether to create SQS queue."
+  type        = bool
 }

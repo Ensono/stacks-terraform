@@ -1,10 +1,16 @@
-enable_zone     = true
+# Common configuration
+env            =  "dev"
 
 # Dynamo-DB
-table_name     = "amido"
-hash_key       = "ID"
-attribute_name = "ID"
-attribute_type = "S"
+enable_dynamodb = true
+table_name      = "Menu"
+hash_key        = "ID"
+attribute_name  = "ID"
+attribute_type  = "S"
+
+# SQS
+enable_queue = true
+queue_name = "Menu"
 
 # Tags
 tags = {
