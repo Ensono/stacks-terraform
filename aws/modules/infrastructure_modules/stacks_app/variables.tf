@@ -14,9 +14,9 @@ variable "tags" {
 # Dynamo DB
 ############
 variable "enable_dynamodb" {
-  default     =  0
+  default     =  false
   description = "Whether to create dynamodb table."
-  type        = number
+  type        = bool
 }
 variable "table_name" {
   description = "The name of the table, this needs to be unique within a region."
@@ -40,14 +40,14 @@ variable "attribute_type" {
 ############
 # SQS
 ############
-variable "queue_name" {
-  description = "This is the human-readable name of the queue. If omitted, Terraform will assign a random name."
-  type        = string
-}
-
 variable "enable_queue" {
   
   default     = false
   description = "Whether to create SQS queue."
   type        = bool
 }
+variable "queue_name" {
+  description = "This is the human-readable name of the queue. If omitted, Terraform will assign a random name."
+  type        = string
+}
+

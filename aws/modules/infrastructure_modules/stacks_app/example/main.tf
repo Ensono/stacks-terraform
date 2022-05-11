@@ -10,7 +10,7 @@ module "server_side_app" {
 
   source = "../"
 
-  enable_dynamodb = var.enable_dynamodb ? 1 : 0
+  enable_dynamodb = var.enable_dynamodb
   table_name      = "${var.table_name}-${random_string.random.result}"
   hash_key        = var.hash_key
   attribute_name  = var.attribute_name

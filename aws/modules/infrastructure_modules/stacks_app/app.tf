@@ -5,7 +5,7 @@ module "dynamodb_table" {
   source  = "terraform-aws-modules/dynamodb-table/aws"
   version = "~> 1.2"
 
-  count    = var.enable_dynamodb
+  count    = var.enable_dynamodb ? 1 : 0
   name     = "${var.table_name}-${var.env}"
   hash_key = var.hash_key
 
