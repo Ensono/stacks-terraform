@@ -14,7 +14,7 @@ variable "tags" {
 # Dynamo DB
 ############
 variable "enable_dynamodb" {
-  default     =  false
+  default     = false
   description = "Whether to create dynamodb table."
   type        = bool
 }
@@ -37,11 +37,11 @@ variable "attribute_type" {
   description = "Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data."
 }
 
-############
+######
 # SQS
-############
+######
 variable "enable_queue" {
-  
+
   default     = false
   description = "Whether to create SQS queue."
   type        = bool
@@ -50,4 +50,3 @@ variable "queue_name" {
   description = "This is the human-readable name of the queue. If omitted, Terraform will assign a random name."
   type        = string
 }
-

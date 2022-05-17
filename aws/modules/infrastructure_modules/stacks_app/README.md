@@ -12,8 +12,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_app_queue"></a> [app\_queue](#module\_app\_queue) | terraform-aws-modules/sqs/aws | ~> 2.0 |
 | <a name="module_dynamodb_table"></a> [dynamodb\_table](#module\_dynamodb\_table) | terraform-aws-modules/dynamodb-table/aws | ~> 1.2 |
+| <a name="module_queue"></a> [queue](#module\_queue) | ../../resource_modules/application_integration/sqs | n/a |
 
 ## Resources
 
@@ -25,7 +25,7 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_attribute_name"></a> [attribute\_name](#input\_attribute\_name) | Name of the attribute. | `string` | n/a | yes |
 | <a name="input_attribute_type"></a> [attribute\_type](#input\_attribute\_type) | Type of the attribute, which must be a scalar type: S, N, or B for (S)tring, (N)umber or (B)inary data. | `any` | n/a | yes |
-| <a name="input_enable_dynamodb"></a> [enable\_dynamodb](#input\_enable\_dynamodb) | Whether to create dynamodb table. | `number` | `0` | no |
+| <a name="input_enable_dynamodb"></a> [enable\_dynamodb](#input\_enable\_dynamodb) | Whether to create dynamodb table. | `bool` | `false` | no |
 | <a name="input_enable_queue"></a> [enable\_queue](#input\_enable\_queue) | Whether to create SQS queue. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Name of the deployment environment, like dev, staging, nonprod, prod. | `string` | n/a | yes |
 | <a name="input_hash_key"></a> [hash\_key](#input\_hash\_key) | The attribute to use as the hash (partition) key. | `string` | n/a | yes |
@@ -39,3 +39,5 @@ No resources.
 |------|-------------|
 | <a name="output_dynamodb_table_arn"></a> [dynamodb\_table\_arn](#output\_dynamodb\_table\_arn) | ARN of the DynamoDB table |
 | <a name="output_dynamodb_table_id"></a> [dynamodb\_table\_id](#output\_dynamodb\_table\_id) | ID of the DynamoDB table |
+| <a name="output_sqs_queue_arn"></a> [sqs\_queue\_arn](#output\_sqs\_queue\_arn) | The ARN of the SQS queue |
+| <a name="output_sqs_queue_id"></a> [sqs\_queue\_id](#output\_sqs\_queue\_id) | The URL for the created Amazon SQS queue |
