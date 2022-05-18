@@ -3,14 +3,14 @@ env            =  "dev"
 
 # Dynamo-DB
 enable_dynamodb = true
-table_name      = "Menu"
+table_name      = "menu"
 hash_key        = "ID"
 attribute_name  = "ID"
 attribute_type  = "S"
 
 # SQS
 enable_queue = true
-queue_name = "Menu"
+queue_name = "menu"
 
 # Tags
 tags = {

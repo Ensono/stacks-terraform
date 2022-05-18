@@ -6,7 +6,7 @@ module "dynamodb_table" {
   version = "~> 1.2"
 
   count    = var.enable_dynamodb ? 1 : 0
-  name     = "${var.table_name}-${var.env}"
+  name     = "${var.env}-${var.table_name}"
   hash_key = var.hash_key
 
   attributes = [
@@ -22,11 +22,10 @@ module "dynamodb_table" {
 #####
 # SQS
 #####
-module "app_queue" {
-  source  = "terraform-aws-modules/sqs/aws"
-  version = "~> 2.0"
-  
-  create  = var.enable_queue
-  name    = "${var.queue_name}-${var.env}"
-  tags    = var.tags
+module "queue" {
+  source = "../../resource_modules/application_integration/sqs"
+
+  create = var.enable_queue
+  name   = "${var.env}-${var.queue_name}"
+  tags   = var.tags
 }
