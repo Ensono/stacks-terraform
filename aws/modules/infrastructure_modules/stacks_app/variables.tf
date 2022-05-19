@@ -1,10 +1,6 @@
 #############
 # Common Vars
 #############
-variable "env" {
-  description = "Name of the deployment environment, like dev, staging, nonprod, prod."
-  type        = string
-}
 variable "tags" {
   description = "Meta data for labelling the infrastructure."
   type        = map(string)
