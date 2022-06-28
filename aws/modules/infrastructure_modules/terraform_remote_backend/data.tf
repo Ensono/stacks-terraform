@@ -121,6 +121,7 @@ data "aws_iam_policy_document" "s3_terraform_states_kms_key_policy" {
       identifiers = [
         # "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/TerraformBuilder",
         "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
+        "${data.aws_caller_identity.current.arn}"
       ]
     }
 
