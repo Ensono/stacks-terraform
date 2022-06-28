@@ -52,7 +52,7 @@ locals {
   ########################################
   ## KMS
   ########################################
-  ami_kms_key_name                    = "alias/cmk-${local.region_tag[var.region]}-${var.env}-s3-terraform-backend"
+  ami_kms_key_name                    = "alias/cmk-${local.region_tag[var.region]}-${lower(var.app_name)}-${var.env}-s3-terraform-backend"
   ami_kms_key_description             = "Kms key used for Terraform remote states stored in S3"
   ami_kms_key_deletion_window_in_days = "7"
   ami_kms_key_tags = merge(
