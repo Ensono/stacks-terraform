@@ -23,5 +23,5 @@ output "sqs_queue_arn" {
 }
 output "sns_topic_arn" {
   description = "The ARN of the SNS Topic"
-  value       = var.enable_queue ? module.queue.sns_topic_arn : null
+  value       = var.enable_queue ? module.topic.sns_topic_arn : null
 }
