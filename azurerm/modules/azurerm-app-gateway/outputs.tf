@@ -6,12 +6,12 @@ data "azurerm_public_ip" "default" {
 
 output "app_gateway_resource_group_name" {
   description = "Resource group of the application gateway"
-  value        = azurerm_public_ip.app_gateway.resource_group_name
+  value       = azurerm_public_ip.app_gateway.resource_group_name
 }
 
 output "app_gateway_name" {
   description = "Name of the application gateway"
-  value        = azurerm_public_ip.app_gateway.name
+  value       = azurerm_public_ip.app_gateway.name
 }
 
 output "app_gateway_ip" {

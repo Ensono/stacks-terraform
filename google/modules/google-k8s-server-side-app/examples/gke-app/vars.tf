@@ -54,6 +54,6 @@ variable "dns_record" {
 
 variable "ingress_ip_name" {
   description = "IP name of the load balancer to apply for the dns record"
-  type = string
-  default = "amido-stacks-nonprod-gke-infra-ingress-public"
+  type        = string
+  default     = "amido-stacks-nonprod-gke-infra-ingress-public"
 }

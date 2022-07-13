@@ -193,7 +193,7 @@ variable "cluster_version" {
   default     = "1.19.11"
 }
 
-variable cluster_name {
+variable "cluster_name" {
   description = "Name for the cluster"
   default     = "akscluster"
 }
@@ -313,7 +313,7 @@ variable "log_application_type" {
   default     = "other"
 }
 
-variable key_vault_name {
+variable "key_vault_name" {
   description = "Key Vault name - if not specificied will default to computed naming convention"
   type        = string
   default     = ""

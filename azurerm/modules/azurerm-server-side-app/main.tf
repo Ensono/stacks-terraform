@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "default" {
 # an alternative way of managing this would be through K8s operators
 ####
 resource "azurerm_dns_a_record" "default" {
-  count               = var.create_dns_record && ! var.create_cdn_endpoint ? 1 : 0
+  count               = var.create_dns_record && !var.create_cdn_endpoint ? 1 : 0
   name                = var.dns_record
   zone_name           = var.dns_zone_name
   resource_group_name = var.dns_zone_resource_group

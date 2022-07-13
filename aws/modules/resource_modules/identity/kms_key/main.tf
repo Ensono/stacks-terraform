@@ -10,7 +10,7 @@ resource "aws_kms_key" "this" {
   tags                    = var.tags
   policy                  = var.policy
   enable_key_rotation     = var.enable_key_rotation
-  
+
 }
 
 resource "aws_kms_alias" "this" {
