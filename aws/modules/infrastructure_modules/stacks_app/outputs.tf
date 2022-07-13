@@ -22,3 +22,8 @@ output "sqs_queue_arn" {
   description = "The ARN of the SQS queue"
   value       = length(module.queue) > 0 ? module.queue[*].sqs_queue_arn : null
 }
+
+output "sns_topic_arn" {
+  description = "The ARN of the SNS Topic"
+  value       = length(module.topic) > 0 ? module.topic[*].sns_topic_arn : null
+}
