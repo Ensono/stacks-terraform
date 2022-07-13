@@ -37,5 +37,5 @@ module "topic" {
   tags   = var.tags
 
   create_sqs_subscription    = true
-  subscription_sqs_queue_arn = module.queue.sqs_queue_arn[0] # TBC with lazy evaluation
+  subscription_sqs_queue_arn = module.queue[0].sqs_queue_arn
 }
