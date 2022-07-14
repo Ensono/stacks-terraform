@@ -77,7 +77,7 @@ variable "tags" {
 # }
 variable "dns_zone" {
   description = "DNS zone object"
-  type        = object({name = string, project = string, dns_name = string, description =string, name_servers = list(string), visibility = string})
+  type        = object({ name = string, project = string, dns_name = string, description = string, name_servers = list(string), visibility = string })
 }
 
 variable "dns_record" {
@@ -87,12 +87,12 @@ variable "dns_record" {
 
 variable "load_balancer_ip" {
   description = "IP of the load balancer to apply for the dns record"
-  type = string  
+  type        = string
 }
 
 variable "create_apex_record" {
   description = "If true then create apex record and the value of dns_record will be ignored"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 

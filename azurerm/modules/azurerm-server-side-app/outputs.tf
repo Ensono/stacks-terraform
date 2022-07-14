@@ -38,5 +38,5 @@ output "resource_group" {
 
 output "dns_name" {
   description = "DNS Name"
-  value       = var.create_dns_record && ! var.create_cdn_endpoint ? trimsuffix(azurerm_dns_a_record.default.0.fqdn, ".") : var.create_cdn_endpoint ? trimsuffix(azurerm_dns_cname_record.default.0.fqdn, ".") : ""
+  value       = var.create_dns_record && !var.create_cdn_endpoint ? trimsuffix(azurerm_dns_a_record.default.0.fqdn, ".") : var.create_cdn_endpoint ? trimsuffix(azurerm_dns_cname_record.default.0.fqdn, ".") : ""
 }

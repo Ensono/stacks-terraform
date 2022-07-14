@@ -29,3 +29,13 @@ module "queue" {
   name   = var.queue_name
   tags   = var.tags
 }
+module "topic" {
+  source = "../../resource_modules/application_integration/sns"
+
+  create = var.enable_queue
+  name   = var.queue_name
+  tags   = var.tags
+
+  create_sqs_subscription    = true
+  subscription_sqs_queue_arn = module.queue.sqs_queue_arn
+}

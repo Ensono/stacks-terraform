@@ -161,15 +161,15 @@ variable "is_cluster_private" {
 }
 
 variable "node_machine_type" {
-  type = string
+  type    = string
   default = "n1-standard-1"
 }
 
 variable "min_node_count" {
-  type = number
+  type    = number
   default = 1
 }
 variable "max_node_count" {
-  type = number
+  type    = number
   default = 5
 }

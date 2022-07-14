@@ -15,7 +15,7 @@ resource "google_compute_global_address" "public" {
   ip_version   = "IPV4"
   address_type = "EXTERNAL"
   # network_tier = "PREMIUM"
-  labels       = merge(var.tags, map("ingress", "public"))
+  labels = merge(var.tags, map("ingress", "public"))
 }
 
 data "google_compute_global_address" "public" {

@@ -12,21 +12,21 @@ module "default_label" {
 data "google_client_config" "current" {}
 
 module "gke_cluster" {
-  source             = "../../"
-  stage              = var.stage
-  name_project       = var.name_project
-  name_company       = var.name_company
-  name_component     = var.name_component
-  location           = var.location
-  project            = var.project
-  region             = var.region
-  resource_namer     = module.default_label.id
+  source         = "../../"
+  stage          = var.stage
+  name_project   = var.name_project
+  name_company   = var.name_company
+  name_component = var.name_component
+  location       = var.location
+  project        = var.project
+  region         = var.region
+  resource_namer = module.default_label.id
   # GCP only accepts lower cased k/v maps
-  tags               = tomap(jsondecode(lower(tostring(jsonencode(module.default_label.tags)))))
-  dns_zone           = var.dns_zone
-  cluster_version    = var.cluster_version
-  enable_legacy_abac = false
-  service_account_roles = []
-  is_cluster_private        = var.is_cluster_private
-  master_ipv4_cidr_block    = "10.5.0.0/28"
+  tags                   = tomap(jsondecode(lower(tostring(jsonencode(module.default_label.tags)))))
+  dns_zone               = var.dns_zone
+  cluster_version        = var.cluster_version
+  enable_legacy_abac     = false
+  service_account_roles  = []
+  is_cluster_private     = var.is_cluster_private
+  master_ipv4_cidr_block = "10.5.0.0/28"
 }

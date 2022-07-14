@@ -48,9 +48,9 @@ module "eks" {
   }]
 
   workers_additional_policies = [
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",  # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
-    "arn:aws:iam::aws:policy/SecretsManagerReadWrite", # Provides read/write access to AWS Secrets Manager.
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
+    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",        # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
+    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",            # Provides read/write access to AWS Secrets Manager.
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser" # Grant permissions to read and write to respositores, as well as read lifecycle policies 
   ]
 
