@@ -19,5 +19,5 @@ output "RESOURCE_GROUP_NAME" {
 
 output "ADF_ACCOUNT_NAME" {
   description = "Azure Data Factory Name"
-  value       = azurerm_data_factory.default.name
+  value       = module.adf.ADF_ACCOUNT_NAME
 }

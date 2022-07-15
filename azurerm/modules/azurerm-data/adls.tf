@@ -10,6 +10,7 @@ resource "azurerm_storage_account" "adls" {
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "adls" {
   for_each = var.adls_containers
+
   name               = each.key
   storage_account_id = azurerm_storage_account.adls.id
 }

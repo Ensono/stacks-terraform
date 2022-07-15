@@ -1,6 +1,6 @@
 resource "azurerm_data_factory_dataset_json" "ds_input_blob_config" {
   name                = "ds_input_blob_config"
-  data_factory_id = azurerm_data_factory.default.id
+  data_factory_id     = azurerm_data_factory.default.id
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.default.name
 
   parameters = {
