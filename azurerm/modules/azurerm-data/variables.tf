@@ -13,9 +13,14 @@ variable "resource_group_name" {
   description = "Resource Group Name"
 }
 
-variable "storage_account_name" {
+variable "adls_storage_account_name" {
   type        = string
-  description = "Storage Account Name"
+  description = "ADLS Storage Account Name"
+}
+
+variable "default_storage_account_name" {
+  type        = string
+  description = "Default Storage Account Name"
 }
 
 variable "data_platform_log_analytics_workspace_id" {

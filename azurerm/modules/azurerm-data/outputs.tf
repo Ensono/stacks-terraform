@@ -1,15 +1,15 @@
 output "ADLS_STORAGE_ACCOUNT_NAME" {
-  value = azurerm_storage_account.adls.name
+  value = module.adls.adls_storage_account_id
 }
 
 output "ADF_BLOB_LINKED_SERVICE_NAME" {
-  description = "BLOB LInked Service Name"
+  description = "BLOB Linked Service Name"
   value       = "ls_blob"
 }
 
 output "ADF_STORAGE_ACCOUNT_NAME" {
   description = "The name of the ADF Storage Account"
-  value       = azurerm_storage_account.default.name
+  value       = var.default_storage_account_name
 }
 
 output "RESOURCE_GROUP_NAME" {

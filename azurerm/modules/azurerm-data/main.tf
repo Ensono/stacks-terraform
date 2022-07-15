@@ -3,6 +3,16 @@ resource "azurerm_resource_group" "default" {
   location = var.region
 }
 
+module "adls" {
+  source = "./adls"
+
+  adls_storage_account_name    = var.adls_storage_account_name
+  default_storage_account_name = var.default_storage_account_name
+  platform_scope               = var.platform_scope
+  region                       = var.region
+  resource_group_name          = azurerm_resource_group.default.name
+}
+
 module "adf" {
   source = "./adf"
 
@@ -11,8 +21,8 @@ module "adf" {
   platform_scope                                = var.platform_scope
   region                                        = var.region
   resource_group_name                           = azurerm_resource_group.default.name
-  adls_storage_account_id                       = azurerm_storage_account.adls.id
-  default_storage_account_id                    = azurerm_storage_account.default.id
-  adls_storage_account_primary_dfs_endpoint     = azurerm_storage_account.adls.primary_dfs_endpoint
-  default_storage_account_primary_blob_endpoint = azurerm_storage_account.default.primary_blob_endpoint
+  adls_storage_account_id                       = module.adls.adls_storage_account_id
+  default_storage_account_id                    = module.adls.default_storage_account_id
+  adls_storage_account_primary_dfs_endpoint     = module.adls.adls_storage_account_primary_dfs_endpoint
+  default_storage_account_primary_blob_endpoint = module.adls.default_storage_account_primary_blob_endpoint
 }
