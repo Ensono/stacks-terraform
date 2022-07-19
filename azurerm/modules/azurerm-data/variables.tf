@@ -23,11 +23,6 @@ variable "default_storage_account_name" {
   description = "Default Storage Account Name"
 }
 
-variable "data_platform_log_analytics_workspace_id" {
-  type        = string
-  description = "Data Platform Log Analytics ID"
-}
-
 variable "platform_scope" {
   type        = string
   description = "Platform Scope"

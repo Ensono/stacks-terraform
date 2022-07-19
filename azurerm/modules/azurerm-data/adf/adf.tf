@@ -8,6 +8,8 @@ resource "azurerm_data_factory" "default" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
+  count = var.data_platform_log_analytics_workspace_id != null ? 1 : 0
+
   name                           = "ADF to Log Analytics"
   target_resource_id             = azurerm_data_factory.default.id
   log_analytics_workspace_id     = var.data_platform_log_analytics_workspace_id

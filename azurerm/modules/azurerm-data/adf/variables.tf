@@ -16,6 +16,7 @@ variable "resource_group_name" {
 variable "data_platform_log_analytics_workspace_id" {
   type        = string
   description = "Data Platform Log Analytics ID"
+  default     = null
 }
 
 variable "platform_scope" {

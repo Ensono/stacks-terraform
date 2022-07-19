@@ -17,7 +17,6 @@ module "adf" {
   source = "./adf"
 
   data_factory_name                             = var.data_factory_name
-  data_platform_log_analytics_workspace_id      = var.data_platform_log_analytics_workspace_id
   platform_scope                                = var.platform_scope
   region                                        = var.region
   resource_group_name                           = azurerm_resource_group.default.name

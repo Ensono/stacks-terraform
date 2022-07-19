@@ -6,12 +6,11 @@ provider "azurerm" {
 #####MODULE#######
 
 module "stacks_data" {
-  source                                   = "../"
-  region                                   = "uksouth"
-  data_factory_name                        = "datafactoryname"
-  resource_group_name                      = "resource_group_data"
-  default_storage_account_name             = "defaultstorageaccount"
-  adls_storage_account_name                = "adlsstorageaccount"
-  data_platform_log_analytics_workspace_id = "/subscriptions/89eb3321-bb9b-41d4-ba74-0388b7aaaebf/resourceGroups/adp-uks-sub-nonprod-core-infra-rg/providers/Microsoft.OperationalInsights/workspaces/adp-uks-sub-nonprod-core-infra-la"
-  platform_scope                           = "platformscopestacks"
+  source                       = "../"
+  region                       = "uksouth"
+  data_factory_name            = "datafactoryname"
+  resource_group_name          = "resource_group_data"
+  default_storage_account_name = "defaultstorageaccount"
+  adls_storage_account_name    = "adlsstorageaccount"
+  platform_scope               = "platformscopestacks"
 }
