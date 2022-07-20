@@ -1,5 +1,5 @@
 output "ADLS_STORAGE_ACCOUNT_NAME" {
-  value = module.adls.adls_storage_account_id
+  value = module.adls.adls_storage_account_name
 }
 
 output "ADF_BLOB_LINKED_SERVICE_NAME" {
