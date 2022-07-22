@@ -37,7 +37,7 @@ variable "adls_account_replication_type" {
 variable "adls_containers" {
   type        = set(string)
   description = "ADLS containers to create"
-  default     = ["dev"]
+  default     = ["curated", "staging", "raw"]
 }
 
 variable "application_insights_daily_data_cap_in_gb" {
