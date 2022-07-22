@@ -10,7 +10,7 @@ import (
 )
 
 // An example of a unit test for the Terraform module in examples/hello-world-app
-func TestAzureDeploymentAndDestroy(t *testing.T) {
+func TestAzureDeploymentAdls(t *testing.T) {
 	t.Parallel()
 
 	// A unique ID we can use to namespace all our resource names and ensure they don't clash across parallel tests
@@ -33,19 +33,20 @@ func TestAzureDeploymentAndDestroy(t *testing.T) {
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
-	//defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
-	terraform.InitAndApply(t, terraformOptions)
+	//terraform.InitAndApply(t, terraformOptions)
 
 	// Check that the app is working as expected
-	validateResponse(t, terraformOptions)
+	validateInfrastructure(t, terraformOptions)
 }
 
 // Validate the app is working
-func validateResponse(t *testing.T, terraformOptions *terraform.Options) {
+func validateInfrastructure(t *testing.T, terraformOptions *terraform.Options) {
 	// Run `terraform output` to get the values of output variables
 	adls_account_name := terraform.Output(t, terraformOptions, "ADLS_STORAGE_ACCOUNT_NAME")
+	adls_instances_clientid := terraform.OutputAll(t, terraformOptions)
 
 	//Verify above var is not empty
 	// assert for not nil (good when you expect something)
@@ -53,6 +54,15 @@ func validateResponse(t *testing.T, terraformOptions *terraform.Options) {
 
 		// now we know that object isn't nil, we are safe to make
 		// further assertions without causing any errors
-		assert.Contains(t, adls_account_name, "adls")
+		assert.Contains(t, adls_account_name, "amidostacksadlstest")
+	}
+
+	if assert.NotNil(t, adls_instances_clientid) {
+
+		// now we know that object isn't nil, we are safe to make
+		// further assertions without causing any errors
+
+		// assert.Contains(t, adls_instances_clientid, "04b07795")
+		fmt.Println("adls_instances_clientid ALL ", adls_instances_clientid)
 	}
 }
