@@ -13,4 +13,5 @@ module "stacks_data" {
   default_storage_account_name = "defaultstorageaccount"
   adls_storage_account_name    = "adlsstorageaccount"
   platform_scope               = "platformscopestacks"
+  key_vault_name               = "keyvaultname"
 }

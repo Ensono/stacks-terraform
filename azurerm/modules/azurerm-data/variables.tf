@@ -57,3 +57,8 @@ variable "application_insights_retention_in_days" {
   description = "Number of days data is retained for - this only applies to the classic resource."
   default     = 30
 }
+
+variable "key_vault_name" {
+  type        = string
+  description = "Key Vault Name"
+}
