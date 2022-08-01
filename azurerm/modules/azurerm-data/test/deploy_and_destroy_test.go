@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"testing"
 
 	// "github.com/gruntwork-io/terratest/modules/random"
@@ -15,25 +14,18 @@ func TestAzureDeploymentAndDestroy(t *testing.T) {
 
 	// A unique ID we can use to namespace all our resource names and ensure they don't clash across parallel tests
 	//uniqueId := random.UniqueId()
-	uniqueId := "test"
+	//uniqueId := "test"
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../azurerm-data",
+		TerraformDir: "test-options/",
+
 
 		// Variables to pass to our Terraform code using -var options
-		Vars: map[string]interface{}{
-			"data_factory_name":            fmt.Sprintf("amido-stacks-test-euw-adf%s", uniqueId),
-			"region":                       "westeurope",
-			"resource_group_name":          fmt.Sprintf("amido-stacks-test-euw-data%s", uniqueId),
-			"adls_storage_account_name":    fmt.Sprintf("amidostacksadls%s", uniqueId),
-			"default_storage_account_name": fmt.Sprintf("amidostackstesteuw%s", uniqueId),
-			"platform_scope":               "stg",
-		},
-	}
+		}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
-	//defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
