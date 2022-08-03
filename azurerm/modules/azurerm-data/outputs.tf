@@ -21,3 +21,7 @@ output "ADF_ACCOUNT_NAME" {
   description = "Azure Data Factory Name"
   value       = module.adf.ADF_ACCOUNT_NAME
 }
+
+output "ADF_FACTORY_ID" {
+  value = module.adf.ADF_FACTORY_ID
+}

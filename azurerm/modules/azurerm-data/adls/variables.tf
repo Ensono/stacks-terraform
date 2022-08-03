@@ -34,3 +34,4 @@ variable "adls_containers" {
   description = "ADLS containers to create"
   default     = ["curated", "staging", "raw"]
 }
+
