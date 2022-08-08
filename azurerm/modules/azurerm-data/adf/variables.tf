@@ -39,3 +39,9 @@ variable "adls_storage_account_id" {
 variable "default_storage_account_id" {
   type = string
 }
+
+variable "use_key_vault" {
+  type        = bool
+  description = "Use Key Vault"
+  default     = true
+}

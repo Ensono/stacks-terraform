@@ -25,14 +25,3 @@ module "adf" {
   adls_storage_account_primary_dfs_endpoint     = module.adls.adls_storage_account_primary_dfs_endpoint
   default_storage_account_primary_blob_endpoint = module.adls.default_storage_account_primary_blob_endpoint
 }
-
-resource "azurerm_key_vault" "default" {
-  name                = var.key_vault_name
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
-
-  sku_name                   = "standard"
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days = 7
-  enable_rbac_authorization  = true
-}
