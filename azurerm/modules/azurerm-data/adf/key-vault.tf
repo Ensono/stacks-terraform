@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "default" {
   count = var.use_key_vault ? 1 : 0
 
-  name                = "${var.data_factory_name}-vault"
+  name                = var.key_vault_name
   location            = var.region
   resource_group_name = var.resource_group_name
 

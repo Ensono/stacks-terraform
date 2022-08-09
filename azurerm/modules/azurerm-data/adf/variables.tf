@@ -46,6 +46,11 @@ variable "use_key_vault" {
   default     = true
 }
 
+variable "key_vault_name" {
+  type        = string
+  description = "Name of the Key Vault. Can be set to null if use_key_vault is false"
+}
+
 variable "github_configuration" {
   type = object({
     account_name    = string
