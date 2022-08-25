@@ -169,27 +169,34 @@
 		],
 		"parameters": {
 			"testConfig": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "config.json"
 			},
 			"windowStart": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2022-08-01"
 			},
 			"windowEnd": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2022-08-31"
 			}
 		},
 		"variables": {
 			"errorFlag": {
-				"type": "Boolean"
+				"type": "Boolean",
+				"defaultValue": false
 			},
 			"pipelineName": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "fcpipeline_auto"
 			},
 			"adfName": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "fcadf"
 			},
 			"env": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "fctest"
 			}
 		},
 		"annotations": []
