@@ -95,8 +95,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "SalesLT",
-			"table": "Product"
+			"schema": "dbo",
+			"table": "TestTable"
 		}
 	}
 }
