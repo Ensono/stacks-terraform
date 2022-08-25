@@ -28,7 +28,7 @@
 					"value": "@dataset().path",
 					"type": "Expression"
 				},
-				"container": "stg"
+				"container": "fctest"
 			},
 			"encodingName": "UTF-8"
 		},
