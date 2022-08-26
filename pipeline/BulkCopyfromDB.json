@@ -170,7 +170,7 @@
 		"parameters": {
 			"testConfig": {
 				"type": "string",
-				"defaultValue": "config.json"
+				"defaultValue": "test/config.json"
 			},
 			"windowStart": {
 				"type": "string",
