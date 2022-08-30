@@ -1,0 +1,37 @@
+{
+	"name": "SourceDataset_rxu",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "fcAzureMssql_linkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "firstName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "lastName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DateCreated",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TestTable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

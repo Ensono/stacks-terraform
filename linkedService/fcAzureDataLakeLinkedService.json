@@ -1,0 +1,11 @@
+{
+	"name": "fcAzureDataLakeLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://fcadls.dfs.core.windows.net/"
+		},
+		"annotations": []
+	}
+}
