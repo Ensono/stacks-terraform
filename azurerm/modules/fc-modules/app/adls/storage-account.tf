@@ -8,6 +8,6 @@ resource "azurerm_storage_account" "default" {
 }
 
 resource "azurerm_storage_container" "data_platform" {
-  name                 = var.platform_scope
+  name                 = "fc-adls-container"
   storage_account_name = azurerm_storage_account.default.name
 }

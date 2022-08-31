@@ -24,4 +24,15 @@ resource "azurerm_data_factory_pipeline" "fcpipeline" {
   ]
 }
 
+resource "azurerm_data_factory_trigger_schedule" "fcPipelineTrigger" {
+  name            = "fcPipelineTrigger"
+  data_factory_id = azurerm_data_factory.default.id
+  pipeline_name   = azurerm_data_factory_pipeline.fcpipeline.name
+
+  interval  = 5
+  frequency = "Minute"
+}
+
+
+
 
