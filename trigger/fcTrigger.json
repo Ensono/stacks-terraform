@@ -1,0 +1,29 @@
+{
+	"name": "fcTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "fcpipeline",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"testConfig": "false",
+					"windowEnd": "2022-08-01",
+					"windowStart": "2023-08-31"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/raw/blobs/",
+			"ignoreEmptyBlobs": false,
+			"scope": "/subscriptions/c5d2655e-c8c3-4594-ac69-a626ab50d281/resourceGroups/fcrg/providers/Microsoft.Storage/storageAccounts/fcadls",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
