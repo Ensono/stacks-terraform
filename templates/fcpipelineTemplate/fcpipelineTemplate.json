@@ -1,0 +1,177 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"fcAzureMssql_linkedService": {
+			"type": "string"
+		},
+		"fcAzureDataLakeLinkedService": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/fcpipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "FC_COPY_PL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:01:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "dbo.TestTable"
+							},
+							{
+								"name": "Destination",
+								"value": "raw//"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "fcSourceDataset",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "fcDestinationDataset",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"parameters": {
+					"testConfig": {
+						"type": "String",
+						"defaultValue": "false"
+					},
+					"windowEnd": {
+						"type": "String",
+						"defaultValue": "2022-08-31"
+					},
+					"windowStart": {
+						"type": "String",
+						"defaultValue": "2022-08-01"
+					}
+				},
+				"variables": {
+					"adfName": {
+						"type": "String",
+						"defaultValue": "fcadf"
+					},
+					"errorFlag": {
+						"type": "String"
+					},
+					"pipelineName": {
+						"type": "String",
+						"defaultValue": "fcpipeline"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-31T08:54:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/fcSourceDataset')]",
+				"[concat(variables('factoryId'), '/datasets/fcDestinationDataset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/fcSourceDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('fcAzureMssql_linkedService')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"typeProperties": {
+					"tableName": "dbo.TestTable"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/fcDestinationDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('fcAzureDataLakeLinkedService')]",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"directory": {
+						"type": "String",
+						"defaultValue": "/"
+					},
+					"filename": {
+						"type": "String",
+						"defaultValue": "fcFileName.txt"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directory",
+							"type": "Expression"
+						},
+						"container": "raw"
+					},
+					"columnDelimiter": ",",
+					"encodingName": "UTF-8",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}
