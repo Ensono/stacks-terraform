@@ -1,0 +1,10 @@
+{
+	"name": "AzureSqlDatabase959",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/719637e5-aedd-4fb1-b231-5101b45f8bb5/resourceGroups/amido-stacks-dev-euw-data/providers/Microsoft.Sql/servers/amido-stacks-dev-euw-sql-test",
+		"groupId": "sqlServer",
+		"fqdns": [
+			"amido-stacks-dev-euw-sql-test.database.windows.net"
+		]
+	}
+}

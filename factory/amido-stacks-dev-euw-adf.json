@@ -1,0 +1,9 @@
+{
+	"name": "amido-stacks-dev-euw-adf",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "385aa9bf-e8c1-4049-b0a5-6bfeb2bce668",
+		"tenantId": "f88c76e1-2e79-4cd5-8b37-842f3f870d58"
+	}
+}

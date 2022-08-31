@@ -1,10 +1,10 @@
 {
-	"name": "ls_keyvault",
+	"name": "ls_adls_datalake",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"type": "AzureKeyVault",
+		"type": "AzureBlobFS",
 		"typeProperties": {
-			"baseUrl": "https://stacks-data-euw.vault.azure.net/"
+			"url": "https://amidostacksdeveuwadls.dfs.core.windows.net/"
 		},
 		"annotations": []
 	}
