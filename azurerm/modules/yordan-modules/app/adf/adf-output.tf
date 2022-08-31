@@ -1,11 +1,11 @@
-resource "azurerm_data_factory_dataset_delimited_text" "fcDestinationDataset" {
-  name                = "fcDestinationDataset"
+resource "azurerm_data_factory_dataset_delimited_text" "yordanDestinationDataset" {
+  name                = "yordanDestinationDataset"
   data_factory_id     = azurerm_data_factory.default.id
-  linked_service_name = azurerm_data_factory_linked_service_data_lake_storage_gen2.fcAzureDataLakeLinkedService.name
+  linked_service_name = azurerm_data_factory_linked_service_data_lake_storage_gen2.yordanAzureDataLakeLinkedService.name
 
   parameters = {
     directory = "/",
-    filename  = "fcFileName.txt"
+    filename  = "yordanFileName.txt"
   }
 
   azure_blob_storage_location {

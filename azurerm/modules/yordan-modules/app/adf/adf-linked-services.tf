@@ -4,10 +4,10 @@ resource "azurerm_role_assignment" "adls_data_owner_adf" {
   principal_id         = azurerm_data_factory.default.identity[0].principal_id
 }
 
-resource "azurerm_data_factory_linked_service_data_lake_storage_gen2" "fcAzureDataLakeLinkedService" {
-  name                 = "fcAzureDataLakeLinkedService"
+resource "azurerm_data_factory_linked_service_data_lake_storage_gen2" "yordanAzureDataLakeLinkedService" {
+  name                 = "yordanAzureDataLakeLinkedService"
   data_factory_id      = azurerm_data_factory.default.id
-  url                  = "https://fcadls.dfs.core.windows.net/"
+  url                  = "https://yordanadls.dfs.core.windows.net/"
   use_managed_identity = true
   depends_on = [
     azurerm_role_assignment.adls_data_owner_adf

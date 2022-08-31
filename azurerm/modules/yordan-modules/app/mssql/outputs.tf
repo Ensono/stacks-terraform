@@ -6,10 +6,10 @@
 #   value = azurerm_virtual_network.vnet.name
 # }
 
-output "azurerm_mssql_server_fcsql_server_name" {
-  value = azurerm_mssql_server.fcsql-server.name
+output "azurerm_mssql_server_yordansql_server_name" {
+  value = azurerm_mssql_server.yordansql-server.name
 }
 
-output "azurerm_mssql_db_fcsql_db_name" {
-  value = azurerm_mssql_database.fcsql-db.name
+output "azurerm_mssql_db_yordansql_db_name" {
+  value = azurerm_mssql_database.yordansql-db.name
 }

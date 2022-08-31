@@ -1,5 +1,5 @@
-resource "azurerm_mssql_server" "fcsql-server" {
-  name                         = "fc-mssqlserver"
+resource "azurerm_mssql_server" "yordansql-server" {
+  name                         = "yordan-mssqlserver"
   resource_group_name          = var.resource_group_name
   location                     = var.region
   version                      = "12.0"
@@ -12,9 +12,9 @@ resource "azurerm_mssql_server" "fcsql-server" {
   }
 }
 
-resource "azurerm_mssql_database" "fcsql-db" {
-  name           = "fc-mssql_db"
-  server_id      = azurerm_mssql_server.fcsql-server.id
+resource "azurerm_mssql_database" "yordansql-db" {
+  name           = "yordan-mssql_db"
+  server_id      = azurerm_mssql_server.yordansql-server.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
   license_type   = "LicenseIncluded"
   read_scale     = false
@@ -26,14 +26,14 @@ resource "azurerm_mssql_database" "fcsql-db" {
   }
 
   depends_on = [
-    azurerm_mssql_server.fcsql-server
+    azurerm_mssql_server.yordansql-server
   ]
 }
 
 resource "azurerm_mssql_firewall_rule" "allow_azure" {
   count = var.mssql_server_enable ? 1 : 0
   name                = "AllowAccessFromAzureResources"
-  server_id         = azurerm_mssql_server.fcsql-server.id
+  server_id         = azurerm_mssql_server.yordansql-server.id
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
@@ -41,7 +41,7 @@ resource "azurerm_mssql_firewall_rule" "allow_azure" {
 resource "azurerm_mssql_firewall_rule" "allow_all" {
   count = var.mssql_server_enable ? 1 : 0
   name                = "AllowAll"
-  server_id         = azurerm_mssql_server.fcsql-server.id
+  server_id         = azurerm_mssql_server.yordansql-server.id
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "255.255.255.255"
 }
@@ -55,10 +55,10 @@ count = fileexists(local.sql_input_file) ? 1 : 0
   if (!(Get-Module -ListAvailable -Name SqlServer)) {
     Install-Module -Name SqlServer -Force
   }
-  Invoke-Sqlcmd -ServerInstance ${azurerm_mssql_server.fcsql-server.name}.database.windows.net `
-    -Database ${azurerm_mssql_database.fcsql-db.name} `
-    -Username ${azurerm_mssql_server.fcsql-server.administrator_login} `
-    -Password ${azurerm_mssql_server.fcsql-server.administrator_login_password}  `
+  Invoke-Sqlcmd -ServerInstance ${azurerm_mssql_server.yordansql-server.name}.database.windows.net `
+    -Database ${azurerm_mssql_database.yordansql-db.name} `
+    -Username ${azurerm_mssql_server.yordansql-server.administrator_login} `
+    -Password ${azurerm_mssql_server.yordansql-server.administrator_login_password}  `
     -InputFile ${local.sql_input_file}  `
     -Verbose
   EOF
@@ -70,8 +70,8 @@ count = fileexists(local.sql_input_file) ? 1 : 0
   }
 
   depends_on = [
-    azurerm_mssql_server.fcsql-server,
-    azurerm_mssql_database.fcsql-db,
+    azurerm_mssql_server.yordansql-server,
+    azurerm_mssql_database.yordansql-db,
     azurerm_mssql_firewall_rule.allow_azure,
     azurerm_mssql_firewall_rule.allow_all
   ]

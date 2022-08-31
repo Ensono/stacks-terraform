@@ -46,7 +46,7 @@ variable "use_key_vault" {
   default     = true
 }
 
-variable "azurerm_mssql_db_fcsql_db_name_for_adf" {
+variable "azurerm_mssql_db_yordansql_db_name_for_adf" {
   type = string
 }
 

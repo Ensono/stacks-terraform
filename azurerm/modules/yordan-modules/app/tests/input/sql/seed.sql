@@ -17,4 +17,5 @@ INSERT INTO dbo.TestTable (
 ) VALUES 
 ( 1, 'Francesco', 'Calvino', '2022-01-01 14:45:10' ),
 ( 2, 'Jack', 'Sheppard', '2021-01-01 14:45:10' ),
-( 3, 'Barak', 'Obama', '2020-01-01 14:45:10' );
+( 3, 'Barak', 'Obama', '2020-01-01 14:45:10' ),
+( 4, 'Yordan', 'Angelov', '2020-01-01 14:45:10' );

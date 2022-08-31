@@ -41,13 +41,13 @@
     },
     "inputs": [
       {
-        "referenceName": "fcSourceDataset",
+        "referenceName": "yordanSourceDataset",
         "type": "DatasetReference"
       }
     ],
     "outputs": [
       {
-        "referenceName": "fcDestinationDataset",
+        "referenceName": "yordanDestinationDataset",
         "type": "DatasetReference"
       }
     ]
