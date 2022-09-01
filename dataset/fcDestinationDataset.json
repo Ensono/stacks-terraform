@@ -31,7 +31,6 @@
 				"container": "raw"
 			},
 			"columnDelimiter": ",",
-			"rowDelimiter": "",
 			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
