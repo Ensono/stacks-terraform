@@ -5,7 +5,7 @@
 		"type": "SqlServer",
 		"typeProperties": {
 			"connectionString": "integrated security=False;data source=fc-mssqlserver.database.windows.net;initial catalog=fc-mssql_db;user id=missadministrator",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDhDM0E3OEQ5LTAzMTAtNDk1Ri1BN0EwLUZBMEY2MkU5NEQ2OF9iZGVmZjQwYy1iYTJmLTQ5ZGYtODRhNC1mNTlmNGI5MjVkNzgiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEMzNThFQTBFLUUwMkYtNDFFOC1BOEFGLUMwQ0NBQ0Q4ODJEQ185NjgxZjI4Yy0xZjc1LTRiYTgtYjg1Yy04MDNkNjE2MzdiMWYiDQp9"
 		},
 		"annotations": []
 	}

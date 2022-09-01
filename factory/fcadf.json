@@ -3,7 +3,7 @@
 	"location": "uksouth",
 	"identity": {
 		"type": "SystemAssigned",
-		"principalId": "9d54410c-33cb-4456-9b7e-5a4b163591e5",
+		"principalId": "b5191a2e-c82f-4ef7-9dc3-52f58e4be6dd",
 		"tenantId": "f88c76e1-2e79-4cd5-8b37-842f3f870d58"
 	}
 }
