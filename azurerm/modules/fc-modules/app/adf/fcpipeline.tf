@@ -5,7 +5,7 @@ resource "azurerm_data_factory_pipeline" "fcpipeline" {
 
   parameters = {
     windowStart  = "2022-08-01",
-    windowEnd    = "2022-08-31",
+    windowEnd    = "2023-08-31",
     "testConfig" = "false"
   }
 

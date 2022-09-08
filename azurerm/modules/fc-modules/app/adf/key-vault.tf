@@ -8,7 +8,7 @@ resource "azurerm_key_vault" "default" {
   sku_name                   = "standard"
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 7
-  enable_rbac_authorization  = true
+  enable_rbac_authorization  = false
 }
 
 resource "azurerm_role_assignment" "secrets_user_adf" {
@@ -29,4 +29,12 @@ resource "azurerm_data_factory_linked_service_key_vault" "default" {
   depends_on = [
     azurerm_role_assignment.secrets_user_adf
   ]
+}
+
+resource "azurerm_key_vault_secret" "fcsecret" {
+  count = var.use_key_vault ? 1 : 0
+
+  name         = "fcsecret"
+  value        = "thisIsKat11"
+  key_vault_id = azurerm_key_vault.default[0].id
 }
