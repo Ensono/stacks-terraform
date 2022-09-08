@@ -50,7 +50,11 @@
 				"outputs": [
 					{
 						"referenceName": "fcDestinationDataset",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"directory": "/",
+							"filename": "fcFileName.txt"
+						}
 					}
 				]
 			}
