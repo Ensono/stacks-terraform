@@ -25,7 +25,4 @@ module "adf" {
   adls_storage_account_primary_dfs_endpoint     = module.adls.adls_storage_account_primary_dfs_endpoint
   default_storage_account_primary_blob_endpoint = module.adls.default_storage_account_primary_blob_endpoint
   key_vault_name                                = var.key_vault_name
-
-  github_configuration       = var.github_configuration
-  azure_devops_configuration = var.azure_devops_configuration
 }

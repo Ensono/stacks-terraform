@@ -50,28 +50,3 @@ variable "key_vault_name" {
   type        = string
   description = "Name of the Key Vault. Can be set to null if use_key_vault is false"
 }
-
-variable "github_configuration" {
-  type = object({
-    account_name    = string
-    branch_name     = string
-    git_url         = string
-    repository_name = string
-    root_folder     = string
-  })
-  description = "GitHub configuration for ADF version control"
-  default     = null
-}
-
-variable "azure_devops_configuration" {
-  type = object({
-    account_name    = string
-    branch_name     = string
-    project_name    = string
-    repository_name = string
-    root_folder     = string
-    tenant_id       = string
-  })
-  description = "VSTS configuration for ADF version control"
-  default     = null
-}

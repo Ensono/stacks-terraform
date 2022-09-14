@@ -1,0 +1,235 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "amido-stacks-dev-euw-adf"
+        },
+        "AzureSqlDatabase1_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+        },
+        "ls_adls_datalake_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://amidostacksdeveuwadls.dfs.core.windows.net/"
+        },
+        "ls_blob_properties_typeProperties_serviceEndpoint": {
+            "type": "string",
+            "defaultValue": "https://amidostacksdeveuwdata.blob.core.windows.net/"
+        },
+        "ls_keyvault_properties_typeProperties_baseUrl": {
+            "type": "string",
+            "defaultValue": "https://stacks-data-euw.vault.azure.net/"
+        },
+        "AzureSqlDatabase959_properties_privateLinkResourceId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/719637e5-aedd-4fb1-b231-5101b45f8bb5/resourceGroups/amido-stacks-dev-euw-data/providers/Microsoft.Sql/servers/amido-stacks-dev-euw-sql-test"
+        },
+        "AzureSqlDatabase959_properties_groupId": {
+            "type": "string",
+            "defaultValue": "sqlServer"
+        },
+        "AzureSqlDatabase959_properties_fqdns": {
+            "type": "array",
+            "defaultValue": [
+                "amido-stacks-dev-euw-sql-test.database.windows.net"
+            ]
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "Managed",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "West Europe",
+                        "dataFlowProperties": {
+                            "computeType": "General",
+                            "coreCount": 8,
+                            "timeToLive": 10,
+                            "cleanup": false
+                        },
+                        "pipelineExternalComputeScaleProperties": {
+                            "timeToLive": 60
+                        }
+                    }
+                },
+                "managedVirtualNetwork": {
+                    "type": "ManagedVirtualNetworkReference",
+                    "referenceName": "default"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ls_adls_datalake')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('ls_adls_datalake_properties_typeProperties_url')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ls_blob')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "serviceEndpoint": "[parameters('ls_blob_properties_typeProperties_serviceEndpoint')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ls_keyvault')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[parameters('ls_keyvault_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+                },
+                "connectVia": {
+                    "referenceName": "integrationRuntime1",
+                    "type": "IntegrationRuntimeReference"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ds_input_blob_config')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "ls_blob",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "filename": {
+                        "type": "String",
+                        "defaultValue": "global.json"
+                    },
+                    "path": {
+                        "type": "String",
+                        "defaultValue": "config"
+                    }
+                },
+                "annotations": [],
+                "type": "Json",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": {
+                            "value": "@dataset().filename",
+                            "type": "Expression"
+                        },
+                        "folderPath": {
+                            "value": "@dataset().path",
+                            "type": "Expression"
+                        },
+                        "container": "stg"
+                    },
+                    "encodingName": "UTF-8"
+                },
+                "schema": {}
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/ls_blob')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ds_output_adls_datalake_raw')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "ls_adls_datalake",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "directory": {
+                        "type": "String"
+                    },
+                    "filename": {
+                        "type": "String"
+                    }
+                },
+                "annotations": [],
+                "type": "Parquet",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": {
+                            "value": "@dataset().filename",
+                            "type": "Expression"
+                        },
+                        "folderPath": {
+                            "value": "@dataset().directory",
+                            "type": "Expression"
+                        },
+                        "container": "raw"
+                    },
+                    "compressionCodec": "snappy"
+                },
+                "schema": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/ls_adls_datalake')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/default')]",
+            "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+            "apiVersion": "2018-06-01",
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/default/AzureSqlDatabase959')]",
+            "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "privateLinkResourceId": "[parameters('AzureSqlDatabase959_properties_privateLinkResourceId')]",
+                "groupId": "[parameters('AzureSqlDatabase959_properties_groupId')]",
+                "fqdns": "[parameters('AzureSqlDatabase959_properties_fqdns')]"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+            ]
+        }
+    ]
+}
