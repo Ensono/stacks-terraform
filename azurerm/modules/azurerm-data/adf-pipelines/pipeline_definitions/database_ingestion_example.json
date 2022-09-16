@@ -1,0 +1,197 @@
+{
+    "name": "BulkCopyfromDB",
+    "properties": {
+        "description": "Copy huge amount of data in bulk from database using external control table to store source table list with partitions for each table.\n\nWhen you want to migrate data from your Azure Synapse Analytics like Oracle server, Netezza server, Teradata server or SQL Server to Azure, you have to load huge amount of data from multiple tables in data sources. In most cases, data has to be further partitioned in each table so that you can load rows with multiple threads in parallel from single table.",
+        "activities": [
+            {
+                "name": "get_config_file",
+                "description": "Get the config file for ingestion.",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.00:02:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "JsonSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": false,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "JsonReadSettings"
+                        }
+                    },
+                    "dataset": {
+                        "referenceName": "ds_input_blob_config1",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "filename": {
+                                "value": "@if(equals(pipeline().parameters.testConfig, 'false'),\n    concat(variables('pipelineName'), '.json'),\n    pipeline().parameters.testConfig\n)",
+                                "type": "Expression"
+                            },
+                            "path": {
+                                "value": "@if(equals(pipeline().parameters.testConfig, 'false'),\n    'config',\n    concat('tests/config/', variables('pipelineName'), '/')\n)",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    "firstRowOnly": false
+                }
+            },
+            {
+                "name": "for_each_input",
+                "description": "Ingest all the input data sources.",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "get_config_file",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@if(\n    contains(activity('get_config_file').output, 'value'),\n    activity('get_config_file').output.value,\n    array(json('{}'))\n)",
+                        "type": "Expression"
+                    },
+                    "isSequential": false,
+                    "batchCount": 4,
+                    "activities": [
+                        {
+                            "name": "copy_datalake_raw",
+                            "description": "Copy the raw data from the source system to the Data Lake landing area.",
+                            "type": "Copy",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.00:10:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "source": {
+                                    "type": "AzureSqlSource",
+                                    "additionalColumns": [
+                                        {
+                                            "name": "meta_ingestion_datetime",
+                                            "value": {
+                                                "value": "@utcNow()",
+                                                "type": "Expression"
+                                            }
+                                        },
+                                        {
+                                            "name": "meta_ingestion_source",
+                                            "value": {
+                                                "value": "@if(\r\n    contains(item(), 'system'),\r\n    item().system,\r\n    'Unknown'\r\n)",
+                                                "type": "Expression"
+                                            }
+                                        },
+                                        {
+                                            "name": "meta_ingestion_run_id",
+                                            "value": {
+                                                "value": "@pipeline().RunId",
+                                                "type": "Expression"
+                                            }
+                                        }
+                                    ],
+                                    "sqlReaderQuery": {
+                                        "value": "@concat(\n  'SELECT * FROM ',\n if(contains(item(), 'schema'), if(empty(item().schema), '', concat(item().schema, '.')), ''),\n  item().name,\n  if(equals(item().type, 'incremental'), \n    concat(\n      ' WHERE ',\n      item().delta,\n      ' >= ',\n      if(\n        contains(item().entity_type, 'oracle'),\n        'timestamp ''',\n        ''''\n      ),\n      pipeline().parameters.windowStart,\n      ''' AND ',\n      item().delta,\n      ' < ',\n      if(\n        contains(item().entity_type, 'oracle'),\n        'timestamp ''',\n        ''''\n      ),\n      pipeline().parameters.windowEnd,\n      ''''\n    )\n    , '')\n)",
+                                        "type": "Expression"
+                                    },
+                                    "queryTimeout": "00:10:00",
+                                    "partitionOption": "None"
+                                },
+                                "sink": {
+                                    "type": "ParquetSink",
+                                    "storeSettings": {
+                                        "type": "AzureBlobFSWriteSettings"
+                                    },
+                                    "formatSettings": {
+                                        "type": "ParquetWriteSettings"
+                                    }
+                                },
+                                "enableStaging": false,
+                                "logSettings": {
+                                    "enableCopyActivityLog": true,
+                                    "copyActivityLogSettings": {
+                                        "logLevel": "Warning",
+                                        "enableReliableLogging": true
+                                    },
+                                    "logLocationSettings": {
+                                        "linkedServiceName": {
+                                            "referenceName": "ls_blob",
+                                            "type": "LinkedServiceReference"
+                                        },
+                                        "path": {
+                                            "value": "@concat(\n  'data-platform/logs/',\n  item().system\n)",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            },
+                            "inputs": [
+                                {
+                                    "referenceName": "AzureSqlTable1",
+                                    "type": "DatasetReference"
+                                }
+                            ],
+                            "outputs": [
+                                {
+                                    "referenceName": "ds_output_adls_datalake_raw1",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "directory": {
+                                            "value": "@concat(\n    item().system,\n    '/',\n    item().displayName,\n    '/',\n    'v', item().version,\n    '/',\n    formatDateTime(pipeline().parameters.windowEnd, \n        if(\n            equals(item().granularity, 'month'),\n            'yyyy/MM',\n            if(\n                equals(item().granularity, 'hour'),\n                'yyyy/MM/dd/HH',\n                if(\n                    equals(item().granularity, 'minute'),\n                    'yyyy/MM/dd/HH/mm',\n                    'yyyy/MM/dd'\n                )\n            )\n        )\n    )\n)",
+                                            "type": "Expression"
+                                        },
+                                        "filename": {
+                                            "value": "@concat(item().displayName, '.parquet')",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "parameters": {
+            "testConfig": {
+                "type": "string"
+            },
+            "windowStart": {
+                "type": "string"
+            },
+            "windowEnd": {
+                "type": "string"
+            }
+        },
+        "variables": {
+            "errorFlag": {
+                "type": "Boolean"
+            },
+            "pipelineName": {
+                "type": "String"
+            },
+            "adfName": {
+                "type": "String"
+            },
+            "env": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    }
+}

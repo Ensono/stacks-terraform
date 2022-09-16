@@ -26,3 +26,11 @@ module "adf" {
   default_storage_account_primary_blob_endpoint = module.adls.default_storage_account_primary_blob_endpoint
   key_vault_name                                = var.key_vault_name
 }
+
+module "adf-pipelines" {
+  source = "./adf-pipelines"
+
+  data_factory_id     = module.adf.ADF_FACTORY_ID
+  data_factory_name   = var.data_factory_name
+  resource_group_name = var.resource_group_name
+}
