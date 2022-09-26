@@ -7,14 +7,34 @@ import os
 import time
 
 
-def create_run(adf_client, resource_group_name, factory_name, pipeline_name, parameters):
+def create_run(adf_client: DataFactoryManagementClient, resource_group_name: str, factory_name: str, pipeline_name: str,
+               parameters: dict):
+    """
+    Create a pipeline run
+
+    :param adf_client: DataFactoryManagementClient
+    :param resource_group_name: str
+    :param factory_name: str
+    :param pipeline_name: str
+    :param parameters: dict
+    :return: str
+    """
     run_id = adf_client.pipelines.create_run(
         resource_group_name, factory_name, pipeline_name, parameters=parameters
     )
     return run_id
 
 
-def get_run_data(adf_client, resource_group_name, factory_name, run_id):
+def get_run_data(adf_client: DataFactoryManagementClient, resource_group_name: str, factory_name: str, run_id: str):
+    """
+    Get run data
+
+    :param adf_client: DataFactoryManagementClient
+    :param resource_group_name: str
+    :param factory_name: str
+    :param run_id: str
+    :return: PipelineRun
+    """
     status = ""
     while status not in ("Succeeded", "Failed"):
         time.sleep(10)
@@ -28,7 +48,17 @@ def get_run_data(adf_client, resource_group_name, factory_name, run_id):
     return df
 
 
-def check_for_active_run(adf_client, resource_group_name, factory_name, pipeline_names):
+def check_for_active_run(adf_client: DataFactoryManagementClient, resource_group_name: str, factory_name: str,
+                         pipeline_names: list):
+    """
+    Check for active run
+
+    :param adf_client: DataFactoryManagementClient
+    :param resource_group_name: str
+    :param factory_name: str
+    :param pipeline_names: list
+    :return: str, str
+    """
     status_filter = RunQueryFilter(operand="Status", operator="In", values=["InProgress", "Queued"])
     print(pipeline_names)
     pipeline_name_filter = RunQueryFilter(operand="PipelineName", operator="In", values=pipeline_names)
@@ -51,9 +81,21 @@ def check_for_active_run(adf_client, resource_group_name, factory_name, pipeline
 
 
 def run_adf_pipeline(
-        pipeline_parameters, pipeline_name, activity_data_bool=False, activity_name_filter="create_incident",
-        check_for_runs_bool=False, dependant_pipelines=None
+        pipeline_parameters: dict, pipeline_name: str, activity_data_bool: bool = False,
+        activity_name_filter: str = "create_incident", check_for_runs_bool: bool = False,
+        dependant_pipelines: list = None
 ):
+    """
+    Run an ADF pipeline
+
+    :param pipeline_parameters: dict
+    :param pipeline_name: str
+    :param activity_data_bool: bool
+    :param activity_name_filter: str
+    :param check_for_runs_bool: bool
+    :param dependant_pipelines: list
+    :return: PipelineRun, ActivityRunsQueryResponse
+    """
     subscription_id = os.environ["AZURE_SUBSCRIPTION_ID"]
     resource_group_name = os.environ["ADF_RESOURCE_GROUP_NAME"]
     factory_name = os.environ["ADF_ACCOUNT_NAME"]
