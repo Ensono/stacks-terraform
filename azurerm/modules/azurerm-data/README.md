@@ -19,6 +19,12 @@ Each pipeline requires a json file with the pipeline definition (located in `adf
 module declaration in the `adf-pipelines/pipelines.tf` file. It is recommended to develop your pipelines in the Azure in
 your browser and then copy the json definition into the `pipeline_definitions` folder.
 
+You can streamline the process of adding/updating pipelines by using the following bash command:
+
+```bash
+az datafactory pipeline show --factory-name [factory-name] -g [resource-group] --name [pipeline-name] > adf-pipelines/pipelines/[pipeline-name].json
+```
+
 To get started with ingesting data from a SQL database, you can use the database ingestion template provided in the
 `adf-pipelines/templates/database_ingestion_template` folder. For more information on how to use this template, see the
 [Database Ingestion Template](https://amidodevelopment.atlassian.net/wiki/spaces/TEC/pages/3822026765/Database+Ingestion+Template)
