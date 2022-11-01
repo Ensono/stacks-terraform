@@ -241,6 +241,17 @@ variable "node_count" {
   default = 0
 }
 
+variable "aks_node_pools" {
+  type = map(object({
+    vm_size      = string,
+    auto_scaling = bool,
+    min_nodes    = number,
+    max_nodes    = number
+  }))
+  description = "Additional node pools as required by the platform"
+  default     = {}
+}
+
 # DEFAULTS TO 30 if not overwritten
 variable "os_disk_size" {
   type    = number

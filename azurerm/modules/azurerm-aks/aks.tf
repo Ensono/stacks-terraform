@@ -92,6 +92,20 @@ resource "azurerm_kubernetes_cluster" "default" {
   ]
 }
 
+# Create additional node pools if they have been specified
+resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+  for_each = var.aks_node_pools
+
+  name                  = each.key
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.default[0].id
+  vm_size               = each.value.vm_size
+
+  enable_auto_scaling = each.value.auto_scaling
+  min_count           = each.value.min_nodes
+  max_count           = each.value.max_nodes
+  node_count          = each.value.min_nodes
+}
+
 # perform lookup on existing ACR for stages where we don't want to create an ACR
 data "azurerm_container_registry" "acr_registry" {
   count               = var.create_acr ? 0 : 1
