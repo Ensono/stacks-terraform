@@ -67,7 +67,7 @@ variable "resource_group_tags" {
 ###########################
 # IDENTITY SETTINGS
 ##########################
-variable "create_user_identiy" {
+variable "create_user_identity" {
   description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
   type        = bool
   default     = true
@@ -239,6 +239,17 @@ variable "min_nodes" {
 variable "node_count" {
   type    = number
   default = 0
+}
+
+variable "aks_node_pools" {
+  type = map(object({
+    vm_size      = string,
+    auto_scaling = bool,
+    min_nodes    = number,
+    max_nodes    = number
+  }))
+  description = "Additional node pools as required by the platform"
+  default     = {}
 }
 
 # DEFAULTS TO 30 if not overwritten

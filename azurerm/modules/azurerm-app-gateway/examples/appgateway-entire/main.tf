@@ -44,7 +44,7 @@ module "aks_bootstrap" {
   subnet_names            = ["k8s1"]
   aks_ingress_private_ip  = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
   private_cluster_enabled = false
-  create_user_identiy     = var.create_user_identiy
+  create_user_identity    = var.create_user_identity
   enable_auto_scaling     = true
   log_application_type    = var.log_application_type
   key_vault_name          = var.key_vault_name

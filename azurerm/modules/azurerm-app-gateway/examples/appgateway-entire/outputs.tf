@@ -37,15 +37,15 @@ output "aks_system_identity_principal_id" {
 
 ### Identity ###
 output "aks_default_user_identity_name" {
-  value = var.create_user_identiy ? module.aks_bootstrap.aks_default_user_identity_name : ""
+  value = var.create_user_identity ? module.aks_bootstrap.aks_default_user_identity_name : ""
 }
 
 output "aks_default_user_identity_id" {
-  value = var.create_user_identiy ? module.aks_bootstrap.aks_default_user_identity_id : ""
+  value = var.create_user_identity ? module.aks_bootstrap.aks_default_user_identity_id : ""
 }
 
 output "aks_default_user_identity_client_id" {
-  value = var.create_user_identiy ? module.aks_bootstrap.aks_default_user_identity_client_id : ""
+  value = var.create_user_identity ? module.aks_bootstrap.aks_default_user_identity_client_id : ""
 }
 
 output "aks_ingress_private_ip" {
