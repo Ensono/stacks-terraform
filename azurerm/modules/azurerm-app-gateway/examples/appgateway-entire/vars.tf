@@ -100,7 +100,7 @@ variable "create_aksvnet" {
   default = true
 }
 
-variable "create_user_identiy" {
+variable "create_user_identity" {
   type    = bool
   default = true
 }

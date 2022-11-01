@@ -67,7 +67,7 @@ variable "resource_group_tags" {
 ###########################
 # IDENTITY SETTINGS
 ##########################
-variable "create_user_identiy" {
+variable "create_user_identity" {
   description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
   type        = bool
   default     = true

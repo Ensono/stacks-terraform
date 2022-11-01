@@ -67,15 +67,15 @@ output "aks_system_identity_principal_id" {
 ### used for AAD Pod identity binding ###
 #########################################
 output "aks_default_user_identity_name" {
-  value = var.create_user_identiy ? azurerm_user_assigned_identity.default.0.name : ""
+  value = var.create_user_identity ? azurerm_user_assigned_identity.default.0.name : ""
 }
 
 output "aks_default_user_identity_id" {
-  value = var.create_user_identiy ? azurerm_user_assigned_identity.default.0.id : ""
+  value = var.create_user_identity ? azurerm_user_assigned_identity.default.0.id : ""
 }
 
 output "aks_default_user_identity_client_id" {
-  value = var.create_user_identiy ? azurerm_user_assigned_identity.default.0.client_id : ""
+  value = var.create_user_identity ? azurerm_user_assigned_identity.default.0.client_id : ""
 }
 
 output "aks_ingress_private_ip" {

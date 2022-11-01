@@ -48,7 +48,7 @@ resource "azurerm_key_vault" "default" {
 }
 
 resource "azurerm_user_assigned_identity" "default" {
-  count               = var.create_user_identiy ? 1 : 0
+  count               = var.create_user_identity ? 1 : 0
   location            = var.resource_group_location
   resource_group_name = azurerm_resource_group.default.name
   name                = var.resource_namer
