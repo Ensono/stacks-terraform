@@ -190,7 +190,7 @@ variable "create_aks" {
 variable "cluster_version" {
   description = "Specify AKS cluster version - please refer to MS for latest updates on the available versions. NB: opt for stable versions where possible"
   type        = string
-  default     = "1.19.11"
+  default     = "1.24.6"
 }
 
 variable "cluster_name" {

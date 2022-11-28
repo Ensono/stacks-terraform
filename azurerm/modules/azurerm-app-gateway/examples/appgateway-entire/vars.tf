@@ -107,7 +107,7 @@ variable "create_user_identity" {
 
 variable "cluster_version" {
   type    = string
-  default = "1.16.7"
+  default = "1.24.6"
 }
 
 variable "create_acr" {
