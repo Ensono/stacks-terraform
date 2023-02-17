@@ -28,3 +28,23 @@ variable "resource_group_location" {
 variable "resource_group_name" {
   type = string
 }
+
+variable "minimum_tls_version" {
+  type = string
+  default = "1.2"
+}
+
+variable "redis_capacity" {
+  type = string
+  default = "1"
+}
+
+variable "redis_family" {
+  type = string
+  default = "C"
+}
+
+variable "redis_sku_name" {
+  type = string
+  default = "Standard"
+}
