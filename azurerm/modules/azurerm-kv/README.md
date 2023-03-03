@@ -114,10 +114,28 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | The ID of the Key Vault. |
 | <a name="output_vault_uri"></a> [vault\_uri](#output\_vault\_uri) | The URI of the Key Vault, used for performing operations on keys and secrets. |
 
-EXAMPLES:
+## EXAMPLES:
 ---
 There is an examples folder with possible usage patterns.
 
 `example` 
+
+## Terratest:
+---
+There is an terratest folder with possible terratesting patterns 
+
+`terratest` 
+
+
+Go (requires version >=1.18) 
+
+
+Terratest uses the Go testing framework. To use Terratest, you need to install:
+
+``` bash
+ go mod init test
+ go mod tidy
+ go test -v terrafrom_azure_kv_test.go
+```
 
 <!-- END_TF_DOCS -->
