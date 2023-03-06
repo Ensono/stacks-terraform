@@ -7,6 +7,7 @@
 package test
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/azure"
@@ -24,11 +25,11 @@ func TestTerraformAzureKeyVaultExample(t *testing.T) {
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: "../../azurerm-kv/example/",
-		Vars: map[string]interface{}{
+		Vars:         map[string]interface{}{
 			//	"postfix": uniquePostfix,
 			//name_company: amido,
 		},
-		VarFiles: []string(filepath.Join("../../azurerm-kv/example/terraform.tfvars"))
+		VarFiles: []string{filepath.Join("../../azurerm-kv/example/terraform.tfvars")},
 	}
 
 	// website::tag::6:: At the end of the test, run `terraform destroy` to clean up any resources that were created
