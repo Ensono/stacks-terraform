@@ -27,11 +27,8 @@ func TestTerraformAzureKeyVaultExample(t *testing.T) {
 		Vars: map[string]interface{}{
 			//	"postfix": uniquePostfix,
 			//name_company: amido,
-			"name_company":     "bsi",
-			"name_project":     "data",
-			"name_component":   "kv",
-			"name_environment": "dev",
 		},
+		VarFiles: []string(filepath.Join("../../azurerm-kv/example/terraform.tfvars"))
 	}
 
 	// website::tag::6:: At the end of the test, run `terraform destroy` to clean up any resources that were created
