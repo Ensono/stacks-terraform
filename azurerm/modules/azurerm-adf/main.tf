@@ -37,4 +37,3 @@ resource "azurerm_data_factory" "example" {
     ]
   }
 }
-

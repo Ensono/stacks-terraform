@@ -11,4 +11,3 @@ output "adf_managed_identity" {
   description = "Azure Data Factory Name"
   value       = azurerm_data_factory.example.0.identity[0].principal_id
 }
-
