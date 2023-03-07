@@ -14,7 +14,7 @@ variable "resource_tags" {
 }
 
 variable "name_component" {
-  default     = "kv"
+  default     = "adf"
   description = "Component Name - should/will be used in conventional resource naming. Typically this will be a logical name for this part of the system i.e. `API` || `middleware` or more generic like `Billing`"
   type        = string
 }
@@ -41,7 +41,7 @@ variable "resource_group_name" {
 variable "create_adf" {
   type        = bool
   default     = true
-  description = " set value wether to create a KV or not"
+  description = " set value Whether to create a adf or not"
 }
 
 ###########################
@@ -101,7 +101,7 @@ variable "account_name" {
 
 variable "branch_name" {
   type        = string
-  default     = "feature/test"
+  default     = "main"
   description = "Specifies the branch of the repository to get code from"
 }
 
@@ -114,12 +114,12 @@ variable "git_url" {
 
 variable "repository_name" {
   type        = string
-  default     = "stacks"
+  default     = "amido/stacks-data-infrastructure"
   description = "Specifies the name of the git repository"
 }
 
 variable "root_folder" {
   type        = string
-  default     = "/"
+  default     = "/adf_managed"
   description = "Specifies the root folder within the repository. Set to / for the top level."
 }
