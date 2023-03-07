@@ -27,4 +27,7 @@ module "adls_de_default" {
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = replace("${module.default_label.namespace}", "-", "")
 
+  create_additional_storage   = true
+  create_additional_container = true
+  create_additional_blob      = true
 }

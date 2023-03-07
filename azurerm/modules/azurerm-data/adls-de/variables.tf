@@ -17,17 +17,49 @@ variable "resource_group_location" {
   type    = string
   default = "uksouth"
 }
+############################################
+# ADITIONAL STORAGE ACCOUNT SETTINGS
+############################################
+
+variable "create_additional_storage" {
+  type        = bool
+  description = "If set to yes, it will create a separate storage account, storage container and a blob"
+  default     = false
+}
+variable "create_additional_container" {
+  type        = bool
+  description = "If set to yes, it will create a container within the additional storage account"
+}
+
+variable "create_additional_blob" {
+  type        = bool
+  description = "If set to yes, it will create a blob storage inside additional container"
+}
+
+variable "additional_account_tier" {
+  type        = string
+  description = "Tier for the additional storage account"
+  default     = "Standard"
+
+}
+
+variable "additional_account_replication_type" {
+  type        = string
+  description = "Additional Storage Account replication type"
+  default     = "LRS"
+}
+
 
 ############################################
-# STORAGRE ACCOUNT SETTINGS
+# ADLS STORAGE ACCOUNT SETTINGS
 ############################################
-variable "account_kind" {
+variable "adls_account_kind" {
   type        = string
   description = "(OPTIONAL) Defines the Kind of account - available options are: BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2. Changing the account_kind value from Storage to StorageV2 will not trigger a force new on the storage account, it will only upgrade the existing storage account from Storage to StorageV2 keeping the existing storage account in place."
   default     = "StorageV2"
 }
 
-variable "account_tier" {
+variable "adls_account_tier" {
   type        = string
   description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
   default     = "Standard"
@@ -52,10 +84,10 @@ variable "adls_containers" {
 }
 
 ###########################
-# CONDITIONAL SETTINGS
+# CONDITIONAL SETTINGS FOR ADLS
 ##########################
 
-variable "hns_enabled" {
+variable "adls_hns_enabled" {
   type        = bool
   description = "Is Hierarchical Namespace enabled? This can be used with Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
   default     = true
