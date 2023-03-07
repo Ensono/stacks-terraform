@@ -17,7 +17,7 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "adls_lake_default" {
 
 resource "azurerm_storage_account" "additional_storage_account" {
   count                    = var.create_additional_storage ? 1 : 0
-  name                     = "${azurerm_storage_account.adls_default.name}additional"
+  name                     = "${var.storage_account_name}blob"
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
   account_tier             = var.additional_account_tier
