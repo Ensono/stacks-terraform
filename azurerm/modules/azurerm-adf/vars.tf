@@ -82,9 +82,23 @@ variable "managed_virtual_network_enabled" {
   description = "Is Managed Virtual Network enabled?"
 }
 
+###########################
+# ADF integration SETTINGS
+##########################
+
+variable "integration" {
+  type        = string
+  default     = "github"
+  description = "A repositry integration block for ADF integration, can be from null, github or vsts ?"
+  validation {
+    condition     = can(regex("^null$|^github$|^vsts$", var.integration))
+    error_message = "Err: integration value is not valid  it can be from null, github, vsts."
+  }
+}
+
 
 ###########################
-# ADF git hub SETTINGS
+# ADF GITHUB SETTINGS
 ##########################
 variable "github_enabled" {
   type        = bool
@@ -122,4 +136,45 @@ variable "root_folder" {
   type        = string
   default     = "/adf_managed"
   description = "Specifies the root folder within the repository. Set to / for the top level."
+}
+
+
+###########################
+# ADF VSTS SETTINGS
+##########################
+variable "vsts_account_name" {
+  type        = string
+  default     = "amido"
+  description = "Specifies the VSTS account name."
+}
+
+
+variable "vsts_branch_name" {
+  type        = string
+  default     = "main"
+  description = "Specifies the branch of the repository to get code from"
+}
+
+variable "vsts_repository_name" {
+  type        = string
+  default     = "amido/stacks-data-infrastructure"
+  description = "Specifies the name of the git repository"
+}
+
+variable "vsts_root_folder" {
+  type        = string
+  default     = "/adf_managed"
+  description = "Specifies the root folder within the repository. Set to / for the top level."
+}
+
+variable "vsts_project_name" {
+  type        = string
+  default     = "amido-stacks"
+  description = "Specifies the name of the VSTS project."
+}
+
+variable "vsts_tenant_id" {
+  type        = string
+  default     = "f18fa376-1490-42b3-a3e2-a94"
+  description = "Specifies the Tenant ID associated with the VSTS account."
 }

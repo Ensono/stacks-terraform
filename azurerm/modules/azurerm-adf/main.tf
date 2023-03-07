@@ -1,3 +1,8 @@
+data "azurerm_client_config" "current" {
+}
+
+
+
 resource "azurerm_data_factory" "example" {
   count                           = var.create_adf ? 1 : 0
   name                            = var.resource_namer
@@ -20,13 +25,27 @@ resource "azurerm_data_factory" "example" {
   #git configuration 
   dynamic "github_configuration" {
 
-    for_each = var.github_enabled ? toset([1]) : toset([])
+    for_each = var.integration == "github" ? toset([1]) : toset([])
     content {
       account_name    = var.account_name
       branch_name     = var.branch_name
       git_url         = var.git_url
       repository_name = var.repository_name
       root_folder     = var.root_folder
+    }
+  }
+
+  #vsts configuration 
+  dynamic "vsts_configuration" {
+
+    for_each = var.integration == "vsts" ? toset([1]) : toset([])
+    content {
+      account_name    = var.vsts_account_name
+      branch_name     = var.vsts_branch_name
+      project_name    = var.vsts_project_name
+      repository_name = var.vsts_repository_name
+      root_folder     = var.vsts_root_folder
+      tenant_id       = data.azurerm_client_config.current.tenant_id
     }
   }
 
