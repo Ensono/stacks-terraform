@@ -17,49 +17,17 @@ variable "resource_group_location" {
   type    = string
   default = "uksouth"
 }
-############################################
-# ADITIONAL STORAGE ACCOUNT SETTINGS
-############################################
-
-variable "create_additional_storage" {
-  type        = bool
-  description = "If set to yes, it will create a separate storage account, storage container and a blob"
-  default     = false
-}
-variable "create_additional_container" {
-  type        = bool
-  description = "If set to yes, it will create a container within the additional storage account"
-}
-
-variable "create_additional_blob" {
-  type        = bool
-  description = "If set to yes, it will create a blob storage inside additional container"
-}
-
-variable "additional_account_tier" {
-  type        = string
-  description = "Tier for the additional storage account"
-  default     = "Standard"
-
-}
-
-variable "additional_account_replication_type" {
-  type        = string
-  description = "Additional Storage Account replication type"
-  default     = "LRS"
-}
-
 
 ############################################
 # ADLS STORAGE ACCOUNT SETTINGS
 ############################################
-variable "adls_account_kind" {
+variable "account_kind" {
   type        = string
   description = "(OPTIONAL) Defines the Kind of account - available options are: BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2. Changing the account_kind value from Storage to StorageV2 will not trigger a force new on the storage account, it will only upgrade the existing storage account from Storage to StorageV2 keeping the existing storage account in place."
   default     = "StorageV2"
 }
 
-variable "adls_account_tier" {
+variable "account_tier" {
   type        = string
   description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
   default     = "Standard"
@@ -71,7 +39,7 @@ variable "blob_type" {
   default     = "Block"
 }
 
-variable "adls_account_replication_type" {
+variable "account_replication_type" {
   type        = string
   description = "The ADLS Storage Account replication type"
   default     = "LRS"
@@ -87,7 +55,7 @@ variable "adls_containers" {
 # CONDITIONAL SETTINGS FOR ADLS
 ##########################
 
-variable "adls_hns_enabled" {
+variable "hns_enabled" {
   type        = bool
   description = "Is Hierarchical Namespace enabled? This can be used with Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
   default     = true
@@ -100,7 +68,6 @@ variable "adls_hns_enabled" {
 variable "resource_namer" {
   description = "This should be a uniformly created string - ideally using something like cloudposse label module to ensure conventions on naming are followed throughout organization. this value is used in all the places within the module to name resources - additionally it changes the string to ensure it conforms to Azure standards where appropriate - i.e. blob/KV/ACR names are stripped of non alphanumeric characters and in some cases strings are sliced to conform to max char length"
   type        = string
-  default     = "genericname"
 }
 
 variable "storage_account_name" {
