@@ -1,4 +1,4 @@
-resource "azurerm_storage_account" "adls_default" {
+resource "azurerm_storage_account" "storage_account_default" {
   name                     = var.storage_account_name
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
@@ -9,17 +9,16 @@ resource "azurerm_storage_account" "adls_default" {
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "adls_lake_default" {
-  for_each = { for k, v in var.adls_containers : k => v if var.hns_enabled }
+  for_each = { for k, v in var.containers : k => v if var.hns_enabled }
 
   name               = each.key
-  storage_account_id = azurerm_storage_account.adls_default.id
+  storage_account_id = azurerm_storage_account.storage_account_default.id
 }
 
 resource "azurerm_storage_container" "additional_storage_container" {
 
-  count                = var.hns_enabled ? 0 : 1
-  name                 = var.resource_namer
-  storage_account_name = azurerm_storage_account.adls_default.name
+  for_each = { for k, v in var.containers : k => v if var.hns_enabled == false }
 
+  name                 = each.key
+  storage_account_name = azurerm_storage_account.storage_account_default.name
 }
-

@@ -27,7 +27,7 @@ module "adls_default_hns_enabled" {
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
   account_kind            = "Storage"
-  hns_enabled             = false
+  hns_enabled             = true
 
 }
 
@@ -38,5 +38,5 @@ module "adls_default_hns_disabled" {
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
 
-  hns_enabled = true
+  hns_enabled = false
 }

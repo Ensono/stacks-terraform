@@ -2,12 +2,6 @@
 # RESOURCE INFORMATION
 ############################################
 
-variable "region" {
-  type        = string
-  description = "Region"
-  default     = "northeurope"
-}
-
 variable "resource_group_name" {
   type        = string
   description = "Resource Group Name"
@@ -19,7 +13,7 @@ variable "resource_group_location" {
 }
 
 ############################################
-# ADLS STORAGE ACCOUNT SETTINGS
+# STORAGE ACCOUNT SETTINGS
 ############################################
 variable "account_kind" {
   type        = string
@@ -33,31 +27,21 @@ variable "account_tier" {
   default     = "Standard"
 }
 
-variable "blob_type" {
-  type        = string
-  description = "The type of the storage blob to be created. Possible values are Append, Block or Page"
-  default     = "Block"
-}
-
 variable "account_replication_type" {
   type        = string
-  description = "The ADLS Storage Account replication type"
+  description = "The Storage Account replication type"
   default     = "LRS"
 }
 
-variable "adls_containers" {
+variable "containers" {
   type        = set(string)
-  description = "ADLS containers to create, for example: curated, staging, raw"
+  description = "Containers to create For a Storage Account with HNS enabled, these will be created as ADLS Gen2 Filesystems."
   default     = ["curated", "staging", "raw"]
 }
 
-###########################
-# CONDITIONAL SETTINGS FOR ADLS
-##########################
-
 variable "hns_enabled" {
   type        = bool
-  description = "Is Hierarchical Namespace enabled? This can be used with Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
+  description = "Enable Hierarchical Namespace: Select this option when creating Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
   default     = true
 }
 
