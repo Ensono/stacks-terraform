@@ -41,7 +41,7 @@ variable "resource_group_name" {
 variable "create_adf" {
   type        = bool
   default     = true
-  description = " set value Whether to create a adf or not"
+  description = "Set value whether to create a Data Factory or not."
 }
 
 ###########################
