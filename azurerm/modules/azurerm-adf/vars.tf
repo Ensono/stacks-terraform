@@ -45,13 +45,19 @@ variable "create_adf" {
 }
 
 ###########################
-# ADF Identity SETTINGS
+# ADF IDENTITY SETTINGS
 ##########################
+
+variable "adf_idenity" {
+  type        = bool
+  default     = true
+  description = "Enable identity block in module."
+}
 
 variable "identity_type" {
   type        = string
   default     = "SystemAssigned"
-  description = " Specifies the type of Managed Service Identity that should be configured on this Data Factory. Possible values are SystemAssigned, UserAssigned, SystemAssigned,UserAssigned (to enable both)"
+  description = "Specifies the type of Managed Service Identity that should be configured on this Data Factory. Possible values are SystemAssigned, UserAssigned, SystemAssigned,UserAssigned (to enable both)."
 }
 
 variable "identity_ids" {
@@ -60,11 +66,6 @@ variable "identity_ids" {
   description = "Specifies a list of User Assigned Managed Identity IDs to be assigned to this Data Factory."
 }
 
-variable "adf_idenity" {
-  type        = bool
-  default     = true
-  description = "enable idenity block in module"
-}
 
 ###########################
 # ADF SETTINGS
