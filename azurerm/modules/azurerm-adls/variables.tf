@@ -12,19 +12,23 @@ variable "resource_group_location" {
   default = "uksouth"
 }
 
+
 ############################################
 # STORAGE ACCOUNT SETTINGS
 ############################################
+
 variable "account_kind" {
   type        = string
   description = "(OPTIONAL) Defines the Kind of account - available options are: BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2. Changing the account_kind value from Storage to StorageV2 will not trigger a force new on the storage account, it will only upgrade the existing storage account from Storage to StorageV2 keeping the existing storage account in place."
   default     = "StorageV2"
+
 }
 
 variable "account_tier" {
   type        = string
   description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
   default     = "Standard"
+
 }
 
 variable "account_replication_type" {
@@ -39,11 +43,11 @@ variable "containers" {
   default     = ["curated", "staging", "raw"]
 }
 
-variable "hns_enabled" {
-  type        = bool
-  description = "Enable Hierarchical Namespace: Select this option when creating Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
-  default     = true
-}
+# variable "hns_enabled" {
+#   type        = bool
+#   description = "Enable Hierarchical Namespace: Select this option when creating Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
+
+# }
 
 ############################################
 # NAMING
@@ -86,4 +90,14 @@ variable "location_name_map" {
     eastasia      = "ase"
     southeastasia = "asse"
   }
+}
+
+
+variable "storage_account_details" {
+  type = map(object({
+    account_tier = string
+    account_kind = string
+    name         = string
+    hns_enabled  = bool
+  }))
 }

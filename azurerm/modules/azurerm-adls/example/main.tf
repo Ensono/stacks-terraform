@@ -20,23 +20,14 @@ resource "azurerm_resource_group" "default" {
   tags     = var.tags
 }
 
-module "adls_default_hns_enabled" {
-  source                  = "../../adls"
+module "adls_default" {
+
+  source                  = "../../azurerm-adls"
   resource_namer          = module.default_label.id
   resource_group_name     = azurerm_resource_group.default.name
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
-  account_kind            = "Storage"
-  hns_enabled             = true
+  storage_account_details = var.storage_account_details
 
 }
 
-module "adls_default_hns_disabled" {
-  source                  = "../../adls"
-  resource_namer          = module.default_label.id
-  resource_group_name     = azurerm_resource_group.default.name
-  resource_group_location = azurerm_resource_group.default.location
-  storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
-
-  hns_enabled = false
-}

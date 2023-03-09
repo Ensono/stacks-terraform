@@ -60,3 +60,11 @@ variable "location_name_map" {
     southeastasia = "asse"
   }
 }
+variable "storage_account_details" {
+  type = map(object({
+    account_tier = string
+    account_kind = string
+    name         = string
+    hns_enabled  = bool
+  }))
+}
