@@ -73,7 +73,7 @@ variable "adf_idenity" {
 variable "public_network_enabled" {
   type        = bool
   default     = true
-  description = "Is the Data Factory visible to the public network? Defaults to"
+  description = "Is the Data Factory visible to the public network? Defaults to true"
 }
 
 variable "managed_virtual_network_enabled" {
