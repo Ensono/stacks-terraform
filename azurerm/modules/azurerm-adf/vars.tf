@@ -173,9 +173,3 @@ variable "vsts_project_name" {
   default     = "amido-stacks"
   description = "Specifies the name of the VSTS project."
 }
-
-variable "vsts_tenant_id" {
-  type        = string
-  default     = "f18fa376-1490-42b3-a3e2-a94"
-  description = "Specifies the Tenant ID associated with the VSTS account."
-}
