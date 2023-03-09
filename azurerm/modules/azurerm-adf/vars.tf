@@ -84,54 +84,30 @@ variable "managed_virtual_network_enabled" {
 }
 
 ###########################
-# ADF integration SETTINGS
+# ADF GIT INTEGRATION SETTINGS
 ##########################
-
 variable "git_integration" {
   type        = string
-  default     = "github"
-  description = "A repositry integration block for ADF integration, can be from null, github or vsts ?"
+  default     = "null"
+  description = "Integrate a git repository with ADF. Can be null, github or vsts (use vsts for Azure DevOps Repos)."
   validation {
     condition     = can(regex("^null$|^github$|^vsts$", var.git_integration))
-    error_message = "Err: integration value is not valid  it can be from null, github, vsts."
+    error_message = "Err: git integration value is not valid - it can be null, github, vsts."
   }
-}
-
-
-###########################
-# ADF GITHUB SETTINGS
-##########################
-variable "github_enabled" {
-  type        = bool
-  default     = false
-  description = "A github_configuration block for ADF integration ?"
-}
-
-variable "account_name" {
-  type        = string
-  default     = "amido"
-  description = "Specifies the GitHub account name."
-}
-
-
-variable "branch_name" {
-  type        = string
-  default     = "main"
-  description = "Specifies the branch of the repository to get code from"
-}
-
-variable "git_url" {
-  type        = string
-  default     = "https://github.com"
-  description = "specifies the GitHub Enterprise host name. For example: https://github.mydomain.com. Use https://github.com for open source repositories."
 }
 
 
 variable "repository_name" {
   type        = string
-  default     = "amido/stacks-data-infrastructure"
-  description = "Specifies the name of the git repository"
+  default     = "stacks-data-infrastructure"
+  description = "Specifies the name of the git repository."
 }
+variable "branch_name" {
+  type        = string
+  default     = "main"
+  description = "Specifies repository branch to use as the collaboration branch."
+}
+
 
 variable "root_folder" {
   type        = string
@@ -141,35 +117,34 @@ variable "root_folder" {
 
 
 ###########################
+# ADF GITHUB SETTINGS
+##########################
+variable "github_account_name" {
+  type        = string
+  default     = "amido"
+  description = "Specifies the GitHub account name."
+}
+
+
+variable "github_url" {
+  type        = string
+  default     = "https://github.com"
+  description = "Specifies the GitHub Enterprise host name. For example: https://github.mydomain.com. Use https://github.com for open source repositories."
+}
+
+
+###########################
 # ADF VSTS SETTINGS
 ##########################
 variable "vsts_account_name" {
   type        = string
   default     = "amido"
-  description = "Specifies the VSTS account name."
+  description = "Specifies the VSTS / Azure DevOps account name."
 }
 
-
-variable "vsts_branch_name" {
-  type        = string
-  default     = "main"
-  description = "Specifies the branch of the repository to get code from"
-}
-
-variable "vsts_repository_name" {
-  type        = string
-  default     = "amido/stacks-data-infrastructure"
-  description = "Specifies the name of the git repository"
-}
-
-variable "vsts_root_folder" {
-  type        = string
-  default     = "/adf_managed"
-  description = "Specifies the root folder within the repository. Set to / for the top level."
-}
 
 variable "vsts_project_name" {
   type        = string
   default     = "amido-stacks"
-  description = "Specifies the name of the VSTS project."
+  description = "Specifies the name of the VSTS / Azure DevOps project."
 }

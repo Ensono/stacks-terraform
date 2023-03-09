@@ -27,9 +27,9 @@ resource "azurerm_data_factory" "example" {
 
     for_each = var.git_integration == "github" ? toset([1]) : toset([])
     content {
-      account_name    = var.account_name
+      account_name    = var.github_account_name
       branch_name     = var.branch_name
-      git_url         = var.git_url
+      git_url         = var.github_url
       repository_name = var.repository_name
       root_folder     = var.root_folder
     }
@@ -41,10 +41,10 @@ resource "azurerm_data_factory" "example" {
     for_each = var.git_integration == "vsts" ? toset([1]) : toset([])
     content {
       account_name    = var.vsts_account_name
-      branch_name     = var.vsts_branch_name
+      branch_name     = var.branch_name
       project_name    = var.vsts_project_name
-      repository_name = var.vsts_repository_name
-      root_folder     = var.vsts_root_folder
+      repository_name = var.repository_name
+      root_folder     = var.root_folder
       tenant_id       = data.azurerm_client_config.current.tenant_id
     }
   }
