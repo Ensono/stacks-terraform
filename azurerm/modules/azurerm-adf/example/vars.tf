@@ -61,12 +61,12 @@ variable "location_name_map" {
   }
 }
 
-variable "integration" {
+variable "git_integration" {
   type        = string
   default     = "github"
   description = "A repositry integration block for ADF integration, can be from null, github or vsts ?"
   validation {
-    condition     = can(regex("^null$|^github$|^vsts$", var.integration))
+    condition     = can(regex("^null$|^github$|^vsts$", var.git_integration))
     error_message = "Err: integration value is not valid  it can be from null, github, vsts."
   }
 }

@@ -25,7 +25,7 @@ resource "azurerm_data_factory" "example" {
   #git configuration 
   dynamic "github_configuration" {
 
-    for_each = var.integration == "github" ? toset([1]) : toset([])
+    for_each = var.git_integration == "github" ? toset([1]) : toset([])
     content {
       account_name    = var.account_name
       branch_name     = var.branch_name
@@ -38,7 +38,7 @@ resource "azurerm_data_factory" "example" {
   #vsts configuration 
   dynamic "vsts_configuration" {
 
-    for_each = var.integration == "vsts" ? toset([1]) : toset([])
+    for_each = var.git_integration == "vsts" ? toset([1]) : toset([])
     content {
       account_name    = var.vsts_account_name
       branch_name     = var.vsts_branch_name
