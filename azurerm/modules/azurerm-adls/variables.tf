@@ -43,12 +43,6 @@ variable "containers" {
   default     = ["curated", "staging", "raw"]
 }
 
-# variable "hns_enabled" {
-#   type        = bool
-#   description = "Enable Hierarchical Namespace: Select this option when creating Azure Data Lake Storage Gen 2 (see here for more information). Changing this forces a new resource to be created."
-
-# }
-
 ############################################
 # NAMING
 ############################################
