@@ -67,4 +67,18 @@ variable "storage_account_details" {
     name         = string
     hns_enabled  = bool
   }))
+  default = {
+    "account1" = {
+      account_kind = "BlobStorage"
+      account_tier = "Standard"
+      hns_enabled = false
+      name = "rishi"
+    },
+     "account2" = {
+      account_kind = "BlobStorage"
+      account_tier = "Standard"
+      hns_enabled = true
+      name = "adls"
+    },
+  }
 }

@@ -1,12 +1,11 @@
- output "storage_account_ids" {
-   value =  { for i in azurerm_storage_account.storage_account_default : 
-   i.name => {
-    name = i.name
-    id = i.id
-   }}
- }
+output "storage_id_1" {
+  value = module.adls_default.storage_account_ids[0]
+}
 
+output "storage_account_names" {
+  value = module.adls_default.storage_account_ids[*]
+}
 
-output "storage_account_ids_test" {
-  value = values(azurerm_storage_account.storage_account_default)[*].id
+output "storage_ids" {
+  value = module.adls_default.storage_account_ids[*]
 }
