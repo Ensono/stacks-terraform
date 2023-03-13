@@ -30,4 +30,3 @@ module "adls_default" {
   storage_account_details = var.storage_account_details
 
 }
-
