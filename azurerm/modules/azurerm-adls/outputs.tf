@@ -28,3 +28,8 @@ output "primary_blob_connection_string" {
   value     = values(azurerm_storage_account.storage_account_default)[*].primary_connection_string
   sensitive = true
 }
+
+output "primary_blob_endpoints" {
+  value     = values(azurerm_storage_account.storage_account_default)[*].primary_blob_endpoint
+  sensitive = true
+}
