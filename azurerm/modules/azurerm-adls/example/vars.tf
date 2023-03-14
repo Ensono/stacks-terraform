@@ -76,7 +76,7 @@ variable "storage_account_details" {
     },
      "account2" = {
       account_kind = "BlobStorage"
-      account_tier = "Standard"
+      account_tier = "Premium"
       hns_enabled = true
       name = "adls"
     },

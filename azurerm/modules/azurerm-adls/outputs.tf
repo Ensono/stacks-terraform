@@ -33,3 +33,8 @@ output "primary_blob_endpoints" {
   value     = values(azurerm_storage_account.storage_account_default)[*].primary_blob_endpoint
   sensitive = true
 }
+
+output "primary_dfs_endpoints" {
+  value     = values(azurerm_storage_account.storage_account_default)[*].primary_dfs_endpoint
+  sensitive = true
+}
