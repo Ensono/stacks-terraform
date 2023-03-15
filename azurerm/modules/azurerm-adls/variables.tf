@@ -43,6 +43,19 @@ variable "containers" {
   default     = ["curated", "staging", "raw"]
 }
 
+variable "create_container" {
+  type        = bool
+  description = "value"
+  default     = false
+}
+
+variable "container_access_type" {
+  type        = string
+  description = "value"
+  default     = "private"
+}
+
+
 ############################################
 # NAMING
 ############################################
@@ -94,4 +107,12 @@ variable "storage_account_details" {
     name         = string
     hns_enabled  = bool
   }))
+}
+
+variable "container_blob" {
+  type = list(string)
+}
+
+variable "container_adls" {
+  type = list(string)
 }

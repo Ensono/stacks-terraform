@@ -28,5 +28,7 @@ module "adls_default" {
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
   storage_account_details = var.storage_account_details
-
+  container_access_type   = var.container_access_type
+  container_blob          = var.container_blob
+  container_adls          = var.container_adls
 }
