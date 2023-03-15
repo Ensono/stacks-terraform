@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# PROJECT_NAME
+ PROJECT_NAME
 
 DESCRIPTION:
 ---
@@ -63,13 +63,13 @@ terraform init -backend-config=./backend.local.tfvars
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 2.5 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 2.5 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
 
 ## Modules
 
@@ -112,30 +112,12 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | The ID of the Key Vault. |
-| <a name="output_vault_uri"></a> [vault\_uri](#output\_vault\_uri) | The URI of the Key Vault, used for performing operations on keys and secrets. |
+| <a name="output_key_vault_name"></a> [key\_vault\_name](#output\_key\_vault\_name) | n/a |
+| <a name="output_vault_uri"></a> [vault\_uri](#output\_vault\_uri) | vault\_uri |
 
 ## EXAMPLES:
 ---
 There is an examples folder with possible usage patterns.
 
 `example` 
-
-## Terratest:
----
-There is an terratest folder with possible terratesting patterns 
-
-`terratest` 
-
-
-Go (requires version >=1.18) 
-
-
-Terratest uses the Go testing framework. To use Terratest, you need to install:
-
-``` bash
- go mod init test
- go mod tidy
- go test -v terrafrom_azure_kv_test.go
-```
-
 <!-- END_TF_DOCS -->

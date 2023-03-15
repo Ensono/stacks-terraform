@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "default" {
 
 module "kv_default" {
   source                    = "../../azurerm-kv"
-  resource_namer            = module.default_label.id
+  resource_namer            = "${substr(replace(module.default_label.id, "-", ""), 0, 24)}"
   resource_group_name       = azurerm_resource_group.default.name
   resource_group_location   = azurerm_resource_group.default.location
   create_kv_networkacl      = false
