@@ -62,37 +62,31 @@ variable "location_name_map" {
 }
 variable "storage_account_details" {
   type = map(object({
-    account_tier = string
-    account_kind = string
-    name         = string
-    hns_enabled  = bool
+    account_tier      = string
+    account_kind      = string
+    name              = string
+    hns_enabled       = bool
+    create_containers = bool
+    containers_name   = list(string)
   }))
-  default = {
-    "account1" = {
-      account_kind = "BlobStorage"
-      account_tier = "Standard"
-      hns_enabled  = false
-      name         = "rishi"
-    },
-    "account2" = {
-      account_kind = "BlobStorage"
-      account_tier = "Premium"
-      hns_enabled  = true
-      name         = "adls"
-    },
-  }
+  # default = {
+  #   "account1" = {
+  #     account_kind = "BlobStorage"
+  #     account_tier = "Standard"
+  #     hns_enabled  = false
+  #     name         = "rishi"
+  #   },
+  #   "account2" = {
+  #     account_kind = "BlobStorage"
+  #     account_tier = "Premium"
+  #     hns_enabled  = true
+  #     name         = "adls"
+  #   },
+  # }
 }
 
 variable "container_access_type" {
   type        = string
   description = "value"
   default     = "private"
-}
-
-variable "container_blob" {
-  type = list(string)
-}
-
-variable "container_adls" {
-  type = list(string)
 }

@@ -43,7 +43,7 @@ variable "containers" {
   default     = ["curated", "staging", "raw"]
 }
 
-variable "create_container" {
+variable "create_containers" {
   type        = bool
   description = "value"
   default     = false
@@ -102,17 +102,11 @@ variable "location_name_map" {
 
 variable "storage_account_details" {
   type = map(object({
-    account_tier = string
-    account_kind = string
-    name         = string
-    hns_enabled  = bool
+    account_tier      = string
+    account_kind      = string
+    name              = string
+    hns_enabled       = bool
+    create_containers = bool
+    containers_name   = list(string)
   }))
-}
-
-variable "container_blob" {
-  type = list(string)
-}
-
-variable "container_adls" {
-  type = list(string)
 }

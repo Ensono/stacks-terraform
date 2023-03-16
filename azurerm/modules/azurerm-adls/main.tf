@@ -12,15 +12,20 @@ resource "azurerm_storage_account" "storage_account_default" {
 
 
 resource "azurerm_storage_container" "storage_container_blob" {
-  for_each              = toset(var.container_blob)
+
+  for_each = { for name in local.containers : name => name }
+
   name                  = each.value
-  storage_account_name  = azurerm_storage_account.storage_account_default["blob"].name
+  storage_account_name  = each.key
   container_access_type = var.container_access_type
 }
 
-resource "azurerm_storage_container" "storage_container_adls" {
-  for_each              = toset(var.container_adls)
-  name                  = each.value
-  storage_account_name  = azurerm_storage_account.storage_account_default["adls"].name
-  container_access_type = var.container_access_type
+
+locals {
+
+  containers = flatten([
+    for account_name, account_details in var.storage_account_details : [
+      for container_name in account_details.containers_name : container_name
+    ]
+  ])
 }
