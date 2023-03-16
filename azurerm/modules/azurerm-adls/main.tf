@@ -13,7 +13,16 @@ resource "azurerm_storage_account" "storage_account_default" {
 
 resource "azurerm_storage_container" "storage_container_blob" {
 
-  for_each = { for name in local.containers : name => name }
+  for_each = { for name in local.containers_blob : name => name }
+
+  name                  = each.value
+  storage_account_name  = each.key
+  container_access_type = var.container_access_type
+}
+
+resource "azurerm_storage_container" "storage_container_adls" {
+
+  for_each = { for name in local.containers_adls : name => name }
 
   name                  = each.value
   storage_account_name  = each.key
@@ -23,9 +32,14 @@ resource "azurerm_storage_container" "storage_container_blob" {
 
 locals {
 
-  containers = flatten([
+  containers_blob = flatten([
     for account_name, account_details in var.storage_account_details : [
       for container_name in account_details.containers_name : container_name
     ]
-  ])
+  if account_details.hns_enabled != true ])
+  containers_adls = flatten([
+    for account_name, account_details in var.storage_account_details : [
+      for container_name in account_details.containers_name : container_name 
+    ] 
+  if account_details.hns_enabled == true ])
 }
