@@ -62,12 +62,11 @@ variable "location_name_map" {
 }
 variable "storage_account_details" {
   type = map(object({
-    account_tier      = string
-    account_kind      = string
-    name              = string
-    hns_enabled       = bool
-    create_containers = bool
-    containers_name   = list(string)
+    account_tier    = string
+    account_kind    = string
+    name            = string
+    hns_enabled     = bool
+    containers_name = list(string)
   }))
   # default = {
   #   "account1" = {
