@@ -18,12 +18,14 @@ variable "name_component" {
 }
 
 variable "name_environment" {
-  type = string
+  description = "Name of the environment"
+  type        = string
 }
 
 variable "stage" {
-  type    = string
-  default = "dev"
+  description = "Stage of the deployment"
+  type        = string
+  default     = "dev"
 }
 
 variable "attributes" {
@@ -37,12 +39,10 @@ variable "tags" {
   default     = {}
 }
 
-
 variable "resource_group_location" {
   type    = string
   default = "uksouth"
 }
-
 
 # Each region must have corresponding a shortend name for resource naming purposes 
 variable "location_name_map" {
@@ -62,6 +62,8 @@ variable "location_name_map" {
 }
 
 variable "storage_account_details" {
+  description = "The default value for this variable includes two objects, data_config_storage and data_lake_storage. The data_config_storage object has BlobStorage type, standard tier, and a single config container. The data_lake_storage object has StorageV2 type, standard tier, Hierarchical Namespace enabled, and three containers named curated, staging, and raw. Depending on the value of `hns_enabled` it will create either a Blob storage, or Gen2 Data Lake filesystem, with the names specified in `containers_name`"
+
   type = map(object({
     account_tier    = string
     account_kind    = string
@@ -86,8 +88,9 @@ variable "storage_account_details" {
     },
   }
 }
+
 variable "container_access_type" {
   type        = string
-  description = "value"
+  description = "The Access Level configured for this Container. Possible values are blob, container or private. Defaults to private."
   default     = "private"
 }

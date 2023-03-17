@@ -21,13 +21,10 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "adls_default" {
-
   source                  = "../../azurerm-adls"
-  resource_namer          = module.default_label.id
   resource_group_name     = azurerm_resource_group.default.name
   resource_group_location = azurerm_resource_group.default.location
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
   storage_account_details = var.storage_account_details
   container_access_type   = var.container_access_type
-
 }
