@@ -13,10 +13,9 @@ resource "azurerm_storage_account" "storage_account_default" {
 
 resource "azurerm_storage_container" "storage_container_blob" {
 
-  for_each = { for name in local.containers_blob : name => name }
-
-  name                  = each.value
-  storage_account_name  = each.key
+  for_each              = { for i in toset(local.containers_blob) : i.name => i }
+  name                  = each.key
+  storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 }
 
@@ -33,27 +32,22 @@ resource "azurerm_storage_container" "storage_container_adls" {
 */
 locals {
 
-  containers_blob = flatten([
-    for account_name, account_details in var.storage_account_details : [
-      for container_name in account_details.containers_name : container_name
-    ]
-  if account_details.hns_enabled != true ])
-/*  containers_adls = flatten([
-    for account_name, account_details in var.storage_account_details : [
-      for container_name in account_details.containers_name : container_name 
-    ] 
-  if account_details.hns_enabled == true ])
-*/
+  containers_blob = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled != true])
 
+  # containers_blob = flatten([
+  #   for account_name, account_details in var.storage_account_details : [
+  #     for container_name in account_details.containers_name : container_name
+  #   ]
+  # if account_details.hns_enabled != true])
 
-containers_adls = flatten([ for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name } ]  if account_details.hns_enabled == true ])
+  containers_adls = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled == true])
 
 
 }
 
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
-  for_each = { for i in toset(local.containers_adls) : i.name => i }
+  for_each           = { for i in toset(local.containers_adls) : i.name => i }
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
