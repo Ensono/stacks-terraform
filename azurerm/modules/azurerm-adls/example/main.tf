@@ -29,6 +29,5 @@ module "adls_default" {
   storage_account_name    = substr(replace(module.default_label.id, "-", ""), 0, 24)
   storage_account_details = var.storage_account_details
   container_access_type   = var.container_access_type
-  create_containers       = true
 
 }
