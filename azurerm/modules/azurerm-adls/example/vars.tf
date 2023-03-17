@@ -60,6 +60,7 @@ variable "location_name_map" {
     southeastasia = "asse"
   }
 }
+
 variable "storage_account_details" {
   type = map(object({
     account_tier    = string
@@ -68,22 +69,23 @@ variable "storage_account_details" {
     hns_enabled     = bool
     containers_name = list(string)
   }))
-  # default = {
-  #   "account1" = {
-  #     account_kind = "BlobStorage"
-  #     account_tier = "Standard"
-  #     hns_enabled  = false
-  #     name         = "rishi"
-  #   },
-  #   "account2" = {
-  #     account_kind = "BlobStorage"
-  #     account_tier = "Premium"
-  #     hns_enabled  = true
-  #     name         = "adls"
-  #   },
-  # }
+  default = {
+    "data_config_storage" = {
+      account_kind    = "BlobStorage"
+      account_tier    = "Standard"
+      hns_enabled     = false
+      name            = "config"
+      containers_name = ["config"]
+    },
+    "data_lake_storage" = {
+      account_kind    = "StorageV2"
+      account_tier    = "Standard"
+      hns_enabled     = true
+      name            = "adls"
+      containers_name = ["curated", "staging", "raw"]
+    },
+  }
 }
-
 variable "container_access_type" {
   type        = string
   description = "value"
