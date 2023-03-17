@@ -79,6 +79,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_storage_account.storage_account_default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.storage_container_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_data_lake_gen2_filesystem.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_data_lake_gen2_filesystem) | resource |
 
 ## Inputs
 
@@ -88,12 +90,14 @@ No modules.
 | <a name="input_account_replication_type"></a> [account\_replication\_type](#input\_account\_replication\_type) | The Storage Account replication type | `string` | `"LRS"` | no |
 | <a name="input_account_tier"></a> [account\_tier](#input\_account\_tier) | Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created. | `string` | `"Standard"` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | Additional attributes for tagging | `list` | `[]` | no |
+| <a name="input_container_access_type"></a> [container\_access\_type](#input\_container\_access\_type) | value | `string` | `"private"` | no |
 | <a name="input_containers"></a> [containers](#input\_containers) | Containers to create For a Storage Account with HNS enabled, these will be created as ADLS Gen2 Filesystems. | `set(string)` | <pre>[<br>  "curated",<br>  "staging",<br>  "raw"<br>]</pre> | no |
+| <a name="input_create_containers"></a> [create\_containers](#input\_create\_containers) | value | `bool` | `false` | no |
 | <a name="input_location_name_map"></a> [location\_name\_map](#input\_location\_name\_map) | Each region must have corresponding a shortend name for resource naming purposes | `map(string)` | <pre>{<br>  "eastasia": "ase",<br>  "eastus": "use",<br>  "eastus2": "use2",<br>  "northeurope": "eun",<br>  "southeastasia": "asse",<br>  "uksouth": "uks",<br>  "ukwest": "ukw",<br>  "westeurope": "euw",<br>  "westus": "usw"<br>}</pre> | no |
 | <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | n/a | `string` | `"uksouth"` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Resource Group Name | `string` | n/a | yes |
 | <a name="input_resource_namer"></a> [resource\_namer](#input\_resource\_namer) | This should be a uniformly created string - ideally using something like cloudposse label module to ensure conventions on naming are followed throughout organization. this value is used in all the places within the module to name resources - additionally it changes the string to ensure it conforms to Azure standards where appropriate - i.e. blob/KV/ACR names are stripped of non alphanumeric characters and in some cases strings are sliced to conform to max char length | `string` | n/a | yes |
-| <a name="input_storage_account_details"></a> [storage\_account\_details](#input\_storage\_account\_details) | n/a | <pre>map(object({<br>    account_tier = string<br>    account_kind = string<br>    name         = string<br>    hns_enabled  = bool<br>  }))</pre> | n/a | yes |
+| <a name="input_storage_account_details"></a> [storage\_account\_details](#input\_storage\_account\_details) | n/a | <pre>map(object({<br>    account_tier      = string<br>    account_kind      = string<br>    name              = string<br>    hns_enabled       = bool<br>    create_containers = bool<br>    containers_name   = list(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically | `map(string)` | `{}` | no |
 
@@ -101,5 +105,10 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_primary_blob_endpoint"></a> [primary\_blob\_endpoint](#output\_primary\_blob\_endpoint) | n/a |
+| <a name="output_primary_blob_connection_string"></a> [primary\_blob\_connection\_string](#output\_primary\_blob\_connection\_string) | n/a |
+| <a name="output_primary_blob_endpoints"></a> [primary\_blob\_endpoints](#output\_primary\_blob\_endpoints) | n/a |
+| <a name="output_primary_dfs_endpoints"></a> [primary\_dfs\_endpoints](#output\_primary\_dfs\_endpoints) | n/a |
+| <a name="output_storage_account_id_1"></a> [storage\_account\_id\_1](#output\_storage\_account\_id\_1) | n/a |
 | <a name="output_storage_account_ids"></a> [storage\_account\_ids](#output\_storage\_account\_ids) | n/a |
+| <a name="output_storage_account_names"></a> [storage\_account\_names](#output\_storage\_account\_names) | n/a |
+| <a name="output_storage_account_primary_connection_string"></a> [storage\_account\_primary\_connection\_string](#output\_storage\_account\_primary\_connection\_string) | n/a |
