@@ -13,6 +13,11 @@ variable "resource_group_location" {
   default     = "uksouth"
 }
 
+variable "resource_namer" {
+  type        = string
+  description = "Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted"
+}
+
 ############################################
 # STORAGE ACCOUNT SETTINGS
 ############################################
@@ -36,12 +41,6 @@ variable "resource_tags" {
   description = "Map of tags to be applied to all resources created as part of this module"
   type        = map(string)
   default     = {}
-}
-
-variable "storage_account_name" {
-  description = "Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group."
-  type        = string
-
 }
 
 # Each region must have corresponding a shortend name for resource naming purposes 

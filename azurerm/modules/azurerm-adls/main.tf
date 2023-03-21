@@ -1,7 +1,7 @@
 resource "azurerm_storage_account" "storage_account_default" {
   for_each = var.storage_account_details
 
-  name                     = "${substr(replace(var.storage_account_name, "-", ""), 0, 12)}${each.value.name}"
+  name                     = substr(replace("${var.resource_namer}${each.value.name}", "-", ""), 0, 24)
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
   account_kind             = each.value.account_kind
