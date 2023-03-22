@@ -18,19 +18,6 @@ resource "azurerm_key_vault" "example" {
   sku_name                        = var.sku_name
 
 
-  dynamic "access_policy" {
-    for_each = var.enable_rbac_authorization == true ? toset([]) : toset([1])
-    content {
-
-      tenant_id           = data.azurerm_client_config.current.tenant_id
-      object_id           = data.azurerm_client_config.current.object_id
-      key_permissions     = var.key_permissions
-      secret_permissions  = var.secret_permissions
-      storage_permissions = var.storage_permissions
-    }
-  }
-
-
   dynamic "network_acls" {
     for_each = var.create_kv_networkacl == false ? toset([]) : toset([1])
     content {
@@ -50,4 +37,74 @@ resource "azurerm_key_vault" "example" {
       tags,
     ]
   }
+}
+
+
+resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
+  count = length(var.contributor_object_ids)
+
+  key_vault_id = azurerm_key_vault.example.0.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.contributor_object_ids[count.index]
+
+  key_permissions = [
+    "Get",
+    "List",
+    "Delete",
+    "Create",
+    "Update",
+    "Import",
+    "Backup",
+    "Recover",
+    "Restore"
+  ]
+
+  secret_permissions = [
+    "Get",
+    "List",
+    "Delete",
+    "Set",
+    "Backup",
+    "Recover",
+    "Restore"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List",
+    "Update",
+    "Create",
+    "Import",
+    "Delete",
+    "Backup",
+    "Recover",
+    "Restore"
+  ]
+
+  storage_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "reader_access_policy" {
+  count = length(var.reader_object_ids)
+
+  key_vault_id = azurerm_key_vault.example.0.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.reader_object_ids[count.index]
+
+  key_permissions = [
+    "Get",
+    "List"
+  ]
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "GetIssuers",
+    "List",
+    "ListIssuers"
+  ]
 }

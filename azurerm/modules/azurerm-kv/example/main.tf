@@ -27,5 +27,7 @@ module "kv_default" {
   resource_group_location   = azurerm_resource_group.default.location
   create_kv_networkacl      = false
   enable_rbac_authorization = false
+  contributor_object_ids    = var.contributor_object_ids
+  reader_object_ids         = var.reader_object_ids
 
 }

@@ -135,3 +135,15 @@ variable "network_acls_bypass" {
   default     = "AzureServices"
   description = "Specifies which traffic can bypass the network rules. Possible values are AzureServices and None"
 }
+
+variable "contributor_object_ids" {
+  description = "A list of Azure active directory user,group or application object ID's that will have contributor role to the key vault"
+  type        = list(string)
+  default     = []
+}
+
+variable "reader_object_ids" {
+  description = "A list of Azure active directory user,group or application object ID's that will have reader role to the key vault"
+  type        = list(string)
+  default     = []
+}
