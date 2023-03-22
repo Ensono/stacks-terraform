@@ -27,4 +27,5 @@ module "adls_default" {
   resource_namer          = module.default_label.id
   storage_account_details = var.storage_account_details
   container_access_type   = var.container_access_type
+  resource_tags           = var.tags
 }

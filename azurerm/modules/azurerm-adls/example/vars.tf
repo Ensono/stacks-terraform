@@ -73,7 +73,7 @@ variable "storage_account_details" {
   }))
   default = {
     "data_config_storage" = {
-      account_kind    = "BlobStorage"
+      account_kind    = "StorageV2"
       account_tier    = "Standard"
       hns_enabled     = false
       name            = "config"
