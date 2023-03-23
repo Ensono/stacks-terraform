@@ -17,7 +17,7 @@ stages:
      - job: Test
        steps:
        - task: Bash@3
-            displayName: "echo "
-            inputs:
+         displayName: "echo "
+         inputs:
               targetType: inline
               script: "echo $azure-client-id"
