@@ -8,7 +8,7 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-
+#Testing
 stages:
   - stage: Build
     variables:
