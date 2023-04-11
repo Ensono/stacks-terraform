@@ -49,6 +49,18 @@ resource "azurerm_data_factory" "example" {
     }
   }
 
+
+  #global parameter configuration 
+  dynamic "global_parameter" {
+
+    for_each = { for i in var.global_parameter : i.name => i }
+    content {
+      name  = global_parameter.key
+      type  = global_parameter.value.type
+      value = global_parameter.value.value
+    }
+  }
+
   tags = var.resource_tags
   lifecycle {
     ignore_changes = [

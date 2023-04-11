@@ -84,6 +84,25 @@ variable "managed_virtual_network_enabled" {
 }
 
 ###########################
+# Global parameter  for ADF SETTINGS
+##########################
+
+
+variable "global_parameter" {
+  type = list(object({
+    name  = string
+    type  = string
+    value = string
+  }))
+  description = "Specifies whether to add global parameters to ADF"
+  default = [{
+    name  = "environment"
+    type  = "String"
+    value = "nonprod"
+    }
+  ]
+}
+###########################
 # ADF GIT INTEGRATION SETTINGS
 ##########################
 variable "git_integration" {
