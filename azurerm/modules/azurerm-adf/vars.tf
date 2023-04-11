@@ -87,33 +87,21 @@ variable "managed_virtual_network_enabled" {
 # Global parameter  for ADF SETTINGS
 ##########################
 
-variable "add_global_parameter" {
-  type        = bool
-  default     = true
+
+variable "global_parameter" {
+  type = list(object({
+    name  = string
+    type  = string
+    value = string
+  }))
   description = "Specifies whether to add global parameters to ADF"
-
+  default = [{
+    name  = "environment"
+    type  = "String"
+    value = "nonprod"
+    }
+  ]
 }
-
-
-variable "global_parameter_name" {
-  type        = string
-  default     = ""
-  description = "Specifies the global parameter name."
-}
-
-variable "global_parameter_type" {
-  type        = string
-  default     = ""
-  description = "Specifies the global parameter type. Possible Values are Array, Bool, Float, Int, Object or String."
-}
-
-
-variable "global_parameter_value" {
-  type        = string
-  default     = ""
-  description = "Specifies the global parameter value."
-}
-
 ###########################
 # ADF GIT INTEGRATION SETTINGS
 ##########################

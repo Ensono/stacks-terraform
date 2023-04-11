@@ -69,7 +69,7 @@ terraform init -backend-config=./backend.local.tfvars
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.51.0 |
 
 ## Modules
 
@@ -86,16 +86,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_add_global_parameter"></a> [add\_global\_parameter](#input\_add\_global\_parameter) | Specifies whether to add global parameters to ADF | `bool` | `true` | no |
 | <a name="input_adf_idenity"></a> [adf\_idenity](#input\_adf\_idenity) | Enable identity block in module. | `bool` | `true` | no |
 | <a name="input_branch_name"></a> [branch\_name](#input\_branch\_name) | Specifies repository branch to use as the collaboration branch. | `string` | `"main"` | no |
 | <a name="input_create_adf"></a> [create\_adf](#input\_create\_adf) | Set value whether to create a Data Factory or not. | `bool` | `true` | no |
 | <a name="input_git_integration"></a> [git\_integration](#input\_git\_integration) | Integrate a git repository with ADF. Can be null, github or vsts (use vsts for Azure DevOps Repos). | `string` | `"null"` | no |
 | <a name="input_github_account_name"></a> [github\_account\_name](#input\_github\_account\_name) | Specifies the GitHub account name. | `string` | `"amido"` | no |
 | <a name="input_github_url"></a> [github\_url](#input\_github\_url) | Specifies the GitHub Enterprise host name. For example: https://github.mydomain.com. Use https://github.com for open source repositories. | `string` | `"https://github.com"` | no |
-| <a name="input_global_parameter_name"></a> [global\_parameter\_name](#input\_global\_parameter\_name) | Specifies the global parameter name. | `string` | `""` | no |
-| <a name="input_global_parameter_type"></a> [global\_parameter\_type](#input\_global\_parameter\_type) | Specifies the global parameter type. Possible Values are Array, Bool, Float, Int, Object or String. | `string` | `""` | no |
-| <a name="input_global_parameter_value"></a> [global\_parameter\_value](#input\_global\_parameter\_value) | Specifies the global parameter value. | `string` | `""` | no |
+| <a name="input_global_parameter"></a> [global\_parameter](#input\_global\_parameter) | Specifies whether to add global parameters to ADF | <pre>list(object({<br>    name  = string<br>    type  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "environment",<br>    "type": "String",<br>    "value": "nonprod"<br>  }<br>]</pre> | no |
 | <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned to this Data Factory. | `list(string)` | `[]` | no |
 | <a name="input_identity_type"></a> [identity\_type](#input\_identity\_type) | Specifies the type of Managed Service Identity that should be configured on this Data Factory. Possible values are SystemAssigned, UserAssigned, SystemAssigned,UserAssigned (to enable both). | `string` | `"SystemAssigned"` | no |
 | <a name="input_managed_virtual_network_enabled"></a> [managed\_virtual\_network\_enabled](#input\_managed\_virtual\_network\_enabled) | Is Managed Virtual Network enabled? | `bool` | `false` | no |

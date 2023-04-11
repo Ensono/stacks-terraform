@@ -53,11 +53,11 @@ resource "azurerm_data_factory" "example" {
   #global parameter configuration 
   dynamic "global_parameter" {
 
-    for_each = var.add_global_parameter ? toset([1]) : toset([])
+    for_each = { for i in var.global_parameter : i.name => i }
     content {
-      name  = var.global_parameter_name
-      type  = var.global_parameter_type
-      value = var.global_parameter_value
+      name  = global_parameter.key
+      type  = global_parameter.value.type
+      value = global_parameter.value.value
     }
   }
 
