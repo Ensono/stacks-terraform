@@ -91,7 +91,7 @@ variable "add_global_parameter" {
   type        = bool
   default     = true
   description = "Specifies whether to add global parameters to ADF"
-  
+
 }
 
 
