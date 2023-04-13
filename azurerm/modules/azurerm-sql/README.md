@@ -91,7 +91,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_administrator_login"></a> [administrator\_login](#input\_administrator\_login) | The administrator login name for the new server. Required unless azuread\_authentication\_only in the azuread\_administrator block is true. When omitted, Azure will generate a default username which cannot be subsequently changed. Changing this forces a new resource to be created. | `string` | n/a | yes |
-| <a name="input_azuread_administrator"></a> [azuread\_administrator](#input\_azuread\_administrator) | Specifies whether only AD Users and administrators (like azuread\_administrator.0.login\_username) can be used to login, or also local database users (like administrator\_login). When true, the administrator\_login and administrator\_login\_password properties can be omitted. | <pre>list(object({<br>    login_username = string<br>    object_id      = string<br>  }))</pre> | `[]` | no |
+| <a name="input_auto_pause_delay_in_minutes"></a> [auto\_pause\_delay\_in\_minutes](#input\_auto\_pause\_delay\_in\_minutes) | Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. This property is only settable for General Purpose Serverless databases. | `number` | `60` | no |
+| <a name="input_azuread_administrator"></a> [azuread\_administrator](#input\_azuread\_administrator) | Specifies whether only AD Users and administrators (like azuread\_administrator.0.login\_username) can be used to login, or also local database users (like administrator\_login). When true, the administrator\_login and administrator\_login\_password properties can be omitted. | <pre>list(object({<br>    login_username = string<br>    object_id      = string<br>  }))</pre> | <pre>[<br>  {<br>    "login_username": "rishisingh901@gmail.com",<br>    "object_id": "3d21d0d6-91be-447f-a3b5-082fe57c093c"<br>  }<br>]</pre> | no |
 | <a name="input_collation"></a> [collation](#input\_collation) | Specifies the collation of the database. Changing this forces a new resource to be created. | `string` | `"SQL_Latin1_General_CP1_CI_AS"` | no |
 | <a name="input_create_mode"></a> [create\_mode](#input\_create\_mode) | The create mode of the database. Possible values are Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreExternalBackup, RestoreExternalBackupSecondary, RestoreLongTermRetentionBackup and Secondary. Mutually exclusive with import. Changing this forces a new resource to be created. | `string` | `"Default"` | no |
 | <a name="input_license_type"></a> [license\_type](#input\_license\_type) | Specifies the license type applied to this database. Possible values are LicenseIncluded and BasePrice. | `string` | `"LicenseIncluded"` | no |
@@ -101,17 +102,12 @@ No modules.
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | name of resource group | `string` | n/a | yes |
 | <a name="input_resource_namer"></a> [resource\_namer](#input\_resource\_namer) | User defined naming convention applied to all resources created as part of this module | `string` | n/a | yes |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Map of tags to be applied to all resources created as part of this module | `map(string)` | `{}` | no |
+| <a name="input_sample_name"></a> [sample\_name](#input\_sample\_name) | Specifies the name of the sample schema to apply when creating this database. Possible value is AdventureWorksLT | `string` | `"AdventureWorksLT"` | no |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | Specifies the name of the SKU used by the database. For example, GP\_S\_Gen5\_2,HS\_Gen4\_1,BC\_Gen5\_2, ElasticPool, Basic,S0, P2 ,DW100c, DS100. Changing this from the HyperScale service tier to another service tier will create a new resource. | `string` | `"Basic"` | no |
 | <a name="input_sql_db_names"></a> [sql\_db\_names](#input\_sql\_db\_names) | The name of the MS SQL Database. Changing this forces a new resource to be created. | `list(string)` | <pre>[<br>  "sqldbtest"<br>]</pre> | no |
 | <a name="input_sql_fw_rules"></a> [sql\_fw\_rules](#input\_sql\_fw\_rules) | Allows you to manage an Azure SQL Firewall Rule. | <pre>list(object({<br>    name             = string<br>    start_ip_address = string<br>    end_ip_address   = string<br>  }))</pre> | <pre>[<br>  {<br>    "end_ip_address": "0.0.0.0",<br>    "name": "SQLFirewallRule1",<br>    "start_ip_address": "0.0.0.0"<br>  }<br>]</pre> | no |
 | <a name="input_sql_version"></a> [sql\_version](#input\_sql\_version) | The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server). Changing this forces a new resource to be created. | `string` | `"12.0"` | no |
 | <a name="input_zone_redundant"></a> [zone\_redundant](#input\_zone\_redundant) | Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones. This property is only settable for Premium and Business Critical databases. | `bool` | `false` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_sql_sq_password"></a> [sql\_sq\_password](#output\_sql\_sq\_password) | n/a |
 
 ## EXAMPLES:
 ---
@@ -119,4 +115,9 @@ There is an examples folder with possible usage patterns.
 
 `example` 
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_sql_sq_password"></a> [sql\_sq\_password](#output\_sql\_sq\_password) | n/a |
 <!-- END_TF_DOCS -->

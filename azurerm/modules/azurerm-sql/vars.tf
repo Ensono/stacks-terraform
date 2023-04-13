@@ -61,6 +61,12 @@ variable "sql_db_names" {
   description = "The name of the MS SQL Database. Changing this forces a new resource to be created."
 }
 
+variable "sample_name" {
+  type        = string
+  default     = "AdventureWorksLT"
+  description = "Specifies the name of the sample schema to apply when creating this database. Possible value is AdventureWorksLT"
+}
+
 variable "sql_version" {
   type        = string
   default     = "12.0"
@@ -79,7 +85,12 @@ variable "azuread_administrator" {
     object_id      = string
   }))
   description = "Specifies whether only AD Users and administrators (like azuread_administrator.0.login_username) can be used to login, or also local database users (like administrator_login). When true, the administrator_login and administrator_login_password properties can be omitted."
-  default     = []
+  default = [
+    {
+      login_username = "rishisingh901@gmail.com"
+      object_id      = "3d21d0d6-91be-447f-a3b5-082fe57c093c"
+    }
+  ]
 
 }
 
@@ -128,4 +139,10 @@ variable "zone_redundant" {
   type        = bool
   default     = false
   description = "Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones. This property is only settable for Premium and Business Critical databases."
+}
+
+variable "auto_pause_delay_in_minutes" {
+  type        = number
+  default     = 60
+  description = "Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. This property is only settable for General Purpose Serverless databases."
 }
