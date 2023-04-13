@@ -19,7 +19,7 @@ resource "azurerm_mssql_server" "example" {
     for_each = { for i in var.azuread_administrator : i.login_username => i }
     content {
       login_username = azuread_administrator.key
-      object_id      = azuread_administrator.value
+      object_id      = azuread_administrator.value.object_id
     }
   }
 
@@ -41,10 +41,12 @@ resource "azurerm_mssql_database" "example-db" {
   name           = each.key
   server_id      = azurerm_mssql_server.example.id
   create_mode    = var.create_mode
+  sample_name    = var.sample_name
   collation      = var.collation
   license_type   = var.license_type
   sku_name       = var.sku_name
   zone_redundant = var.zone_redundant
+  auto_pause_delay_in_minutes = var.auto_pause_delay_in_minutes
   tags           = var.resource_tags
 
 }
