@@ -38,3 +38,8 @@ variable "databricks_sku" {
     error_message = "Err: Valid options are 'standard', 'premium' or 'trial'."
   }
 }
+
+variable "data_platform_log_analytics_workspace_id" {
+  type        = string
+  description = "The Log Analytics Workspace used for the whole Data Platform."
+}
