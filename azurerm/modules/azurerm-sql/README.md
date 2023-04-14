@@ -1,64 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-PROJECT_NAME
-
-DESCRIPTION:
----
-Bootstraps the infrastructure for {{SELECT_APP_TYPE }}. 
-
-Will be used within the provisioned pipeline for your application depending on the options you chose.
-
-Pipeline implementation for infrastructure relies on workspaces, you can pass in whatever workspace you want from {{ SELECT_DEPLOYMENT_TYPE }} pipeline YAML.
-
-PREREQUISITES:
----
-Azure Subscripion
-  - SPN 
-    - Terraform will use this to perform the authentication for the API calls
-    - you will need the `client_id, subscription_id, client_secret, tenant_id`
-
-Terraform backend
-  - resource group (can be manually created for the terraform remote state)
-  - Blob storage container for the remote state management
-
-
-USAGE:
----
-
-To activate the terraform backend for running locally we need to initialise the SPN with env vars to ensure you are running the same way as the pipeline that will ultimately be running any incremental changes.
-
-```bash
-docker run -it --rm -v $(pwd):/opt/tf-lib amidostacks/ci-tf:latest /bin/bash
-```
-
-```bash 
-export ARM_CLIENT_ID=xxxx \
-ARM_CLIENT_SECRET=yyyyy \
-ARM_SUBSCRIPTION_ID=yyyyy \
-ARM_TENANT_ID=yyyyy
-```
-
-alternatively you can run `az login` 
-
-To get up and running locally you will want to create  a `terraform.tfvars` file 
-```bash
-TFVAR_CONTENTS='''
-vnet_id                 = "amido-stacks-vnet-uks-dev"
-rg_name                 = "amido-stacks-rg-uks-dev"
-resource_group_location = "uksouth"
-name_company            = "amido"
-name_project            = "stacks"
-name_component          = "spa"
-name_environment        = "dev" 
-'''
-$TFVAR_CONTENTS > terraform.tfvars
-```
-
-```
-terraform workspace select dev || terraform workspace new dev
-```
-
-terraform init -backend-config=./backend.local.tfvars
-
 ## Requirements
 
 | Name | Version |
@@ -109,15 +49,11 @@ No modules.
 | <a name="input_sql_version"></a> [sql\_version](#input\_sql\_version) | The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server). Changing this forces a new resource to be created. | `string` | `"12.0"` | no |
 | <a name="input_zone_redundant"></a> [zone\_redundant](#input\_zone\_redundant) | Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones. This property is only settable for Premium and Business Critical databases. | `bool` | `false` | no |
 
-## EXAMPLES:
----
-There is an examples folder with possible usage patterns.
-
-`example` 
-
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_sql_sq_password"></a> [sql\_sq\_password](#output\_sql\_sq\_password) | n/a |
+| <a name="output_sql_sa_login"></a> [sql\_sa\_login](#output\_sql\_sa\_login) | n/a |
+| <a name="output_sql_sa_password"></a> [sql\_sa\_password](#output\_sql\_sa\_password) | n/a |
+| <a name="output_sql_server_name"></a> [sql\_server\_name](#output\_sql\_server\_name) | n/a |
 <!-- END_TF_DOCS -->
