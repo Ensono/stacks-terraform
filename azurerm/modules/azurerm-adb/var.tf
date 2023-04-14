@@ -13,12 +13,6 @@ variable "resource_tags" {
   default     = {}
 }
 
-variable "name_component" {
-  default     = "adb"
-  description = "Component Name - should/will be used in conventional resource naming. Typically this will be a logical name for this part of the system i.e. `API` || `middleware` or more generic like `Billing`"
-  type        = string
-}
-
 ############################################
 # RESOURCE INFORMATION
 ############################################
