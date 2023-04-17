@@ -44,6 +44,12 @@ variable "databricks_sku" {
 # Resource Diagnostic Setting 
 ############################################
 
+variable "enable_databricksws_diagnostic" {
+  type        = bool
+  description = "Whether to enable diagnostic settings for the Azure Databricks workspace"
+  default     = false
+}
+
 variable "databricksws_diagnostic_setting_name" {
   type        = string
   default = "Databricks to Log Analytics"
@@ -58,5 +64,6 @@ variable "log_analytics_destination_type" {
 
 variable "data_platform_log_analytics_workspace_id" {
   type        = string
+  default = null
   description = "The Log Analytics Workspace used for the whole Data Platform."
 }
