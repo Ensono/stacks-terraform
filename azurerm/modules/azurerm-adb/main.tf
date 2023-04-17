@@ -17,7 +17,7 @@ resource "azurerm_databricks_workspace" "example" {
   }
 }
 
-/*
+
 # Enable diagnostic settings for ADB
 data "azurerm_monitor_diagnostic_categories" "adb_log_analytics_categories" {
   resource_id = azurerm_databricks_workspace.example.id
@@ -30,7 +30,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   log_analytics_destination_type = var.log_analytics_destination_type
 
   dynamic "log" {
-    for_each = data.azurerm_monitor_diagnostic_categories.databricks_log_analytics_categories.logs
+    for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories.logs
 
     content {
       category = log.value
@@ -44,7 +44,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   }
 
   dynamic "metric" {
-    for_each = data.azurerm_monitor_diagnostic_categories.databricks_log_analytics_categories.metrics
+    for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories.metrics
 
     content {
       category = metric.value
@@ -57,4 +57,3 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
     }
   }
 }
-*/
