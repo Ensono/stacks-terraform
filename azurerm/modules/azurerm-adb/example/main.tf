@@ -20,6 +20,15 @@ resource "azurerm_resource_group" "default" {
   tags     = var.tags
 }
 
+resource "azurerm_log_analytics_workspace" "la" {
+  name                = module.default_label.id
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  sku                 = var.la_sku
+  retention_in_days   = var.la_retention
+  tags                = module.default_label.tags
+}
+
 module "adb" {
   source                  = "../../azurerm-adb"
   resource_namer          = module.default_label.id
@@ -27,4 +36,7 @@ module "adb" {
   resource_group_location = azurerm_resource_group.default.location
   databricks_sku          = var.databricks_sku
   resource_tags           = module.default_label.tags
+  databricksws_diagnostic_setting_name = var.databricksws_diagnostic_setting_name
+  data_platform_log_analytics_workspace_id = azurerm_log_analytics_workspace.la.id
+  log_analytics_destination_type = var.log_analytics_destination_type
 }

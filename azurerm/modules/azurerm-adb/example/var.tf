@@ -70,3 +70,27 @@ variable "databricks_sku" {
     error_message = "Err: Valid options are 'standard', 'premium' or 'trial'."
   }
 }
+
+variable "log_analytics_destination_type" {
+  type        = string
+  default = "Dedicated"
+  description = "Possible values are AzureDiagnostics and Dedicated.When set to Dedicated, logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table"
+}
+
+variable "databricksws_diagnostic_setting_name" {
+  type        = string
+  default = "Databricks to Log Analytics"
+  description = "The Databricks workspace diagnostic setting name."
+}
+
+variable "la_sku" {
+  type        = string
+  default     = "PerGB2018"
+  description = "Specifies the SKU of the Log Analytics Workspace."
+}
+
+variable "la_retention" {
+  type        = number
+  default     = 30
+  description = "The workspace data retention in days. Possible values are either 7 (Free Tier only) or range between 30 and 730."
+}
