@@ -17,18 +17,17 @@ resource "azurerm_databricks_workspace" "example" {
   }
 }
 
+locals {
+  is_diagnostic_enabled = var.enable_databricksws_diagnostic ? true : false
+}
 
 # Enable diagnostic settings for ADB
 data "azurerm_monitor_diagnostic_categories" "adb_log_analytics_categories" {
   resource_id = azurerm_databricks_workspace.example.id
 }
 
-#locals {
-#  is_diagnostic_enabled = var.enable_databricksws_diagnostic == true ? true : false
-#}
-
 resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
-  count = var.enable_databricksws_diagnostic ? 1 : 0
+  count = var.local.is_diagnostic_enabled ? 1 : 0
   name                       = var.databricksws_diagnostic_setting_name
   target_resource_id         = azurerm_databricks_workspace.example.id
   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
