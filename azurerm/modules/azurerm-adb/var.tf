@@ -39,6 +39,7 @@ variable "databricks_sku" {
   }
 }
 
+/*
 ############################################
 # Resource Diagnostic Setting 
 ############################################
@@ -59,3 +60,4 @@ variable "data_platform_log_analytics_workspace_id" {
   type        = string
   description = "The Log Analytics Workspace used for the whole Data Platform."
 }
+*/
