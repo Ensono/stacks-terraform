@@ -36,7 +36,8 @@ module "adb" {
   resource_group_location = azurerm_resource_group.default.location
   databricks_sku          = var.databricks_sku
   resource_tags           = module.default_label.tags
-  databricksws_diagnostic_setting_name = var.databricksws_diagnostic_setting_name
+  enable_databricksws_diagnostic       = var.enable_databricksws_diagnostic
+  #databricksws_diagnostic_setting_name = var.databricksws_diagnostic_setting_name
   data_platform_log_analytics_workspace_id = azurerm_log_analytics_workspace.la.id
-  log_analytics_destination_type = var.log_analytics_destination_type
+  #log_analytics_destination_type = var.log_analytics_destination_type
 }
