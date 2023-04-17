@@ -27,7 +27,7 @@ data "azurerm_monitor_diagnostic_categories" "adb_log_analytics_categories" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
-  count = var.local.is_diagnostic_enabled ? 1 : 0
+  count = local.is_diagnostic_enabled ? 1 : 0
   name                       = var.databricksws_diagnostic_setting_name
   target_resource_id         = azurerm_databricks_workspace.example.id
   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
