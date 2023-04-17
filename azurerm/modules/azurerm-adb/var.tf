@@ -39,6 +39,22 @@ variable "databricks_sku" {
   }
 }
 
+############################################
+# Resource Diagnostic Setting 
+############################################
+
+variable "databricksws_diagnostic_setting_name" {
+  type        = string
+  default = "Databricks to Log Analytics"
+  description = "The Databricks workspace diagnostic setting name."
+}
+
+variable "log_analytics_destination_type" {
+  type        = string
+  default = "Dedicated"
+  description = "Possible values are AzureDiagnostics and Dedicated.When set to Dedicated, logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table"
+}
+
 variable "data_platform_log_analytics_workspace_id" {
   type        = string
   description = "The Log Analytics Workspace used for the whole Data Platform."
