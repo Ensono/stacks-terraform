@@ -4,5 +4,5 @@ output "adb_databricks_id" {
 
 output "databricks_hosturl" {
   description = "Azure Databricks HostUrl"
-  value       = "https://${azurerm_databricks_workspace.example.workspace_url}/"
+  value = "https://${azurerm_databricks_workspace.example.workspace_url}/"
 }
