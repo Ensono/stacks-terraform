@@ -76,11 +76,6 @@ variable "enable_databricksws_diagnostic" {
   description = "Whether to enable diagnostic settings for the Azure Databricks workspace"
   default     = true
 }
-variable "log_analytics_destination_type" {
-  type        = string
-  default = "Dedicated"
-  description = "Possible values are AzureDiagnostics and Dedicated.When set to Dedicated, logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table"
-}
 
 variable "databricksws_diagnostic_setting_name" {
   type        = string
