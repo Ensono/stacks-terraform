@@ -61,3 +61,45 @@ variable "data_platform_log_analytics_workspace_id" {
   default     = null
   description = "The Log Analytics Workspace used for the whole Data Platform."
 }
+
+############################################
+# Resource Databricks workspace setting 
+############################################
+
+variable "enable_enableDbfsFileBrowser" {
+  type        = bool
+  description = "Whether to enable Dbfs File browser for the Azure Databricks workspace"
+  default     = false
+}
+
+
+############################################
+# Resource Databricks user 
+############################################
+
+variable "add_rbac_users" {
+  description = "If set to true, the module will create databricks users and  group named 'project_users' with the specified users as members, and grant workspace and SQL access to this group. Default is false."
+  type        = bool
+  default     = true
+}
+
+variable "rbac_databricks_users" {
+  type = map(object({
+    display_name = string
+    user_name    = string
+    active       = bool
+  }))
+  description = "If 'add_rbac_users' set to true then specifies RBAC Databricks users"
+  default = {
+    MehdiKimakhe = {
+      display_name = "Mehdi Kimakhe"
+      user_name    = "mehdi.kimakhe@amido.com"
+      active       = true
+    }
+    RishikeshSingh = {
+      display_name = "Rishikesh Singh"
+      user_name    = "rishikesh.singh@amido.com"
+      active       = true
+    }
+  }
+}
