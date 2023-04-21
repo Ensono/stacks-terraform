@@ -107,6 +107,6 @@ variable "enable_workspace_access" {
 
 variable "enable_sql_access" {
   type        = bool
-  description = "hether to enable sql access for the databricks group"
+  description = "Whether to enable sql access for the databricks group"
   default     = true
 }
