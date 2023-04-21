@@ -103,3 +103,21 @@ variable "rbac_databricks_users" {
     }
   }
 }
+
+variable "databricks_group_display_name" {
+  type        = string
+  description = "If 'add_rbac_users' set to true then specifies databricks group display name"
+  default     = "project_users"
+}
+
+variable "enable_workspace_access" {
+  type        = bool
+  description = "If 'add_rbac_users' set to true then specifies this"
+  default     = true
+}
+
+variable "enable_sql_access" {
+  type        = bool
+  description = "If 'add_rbac_users' set to true then specifies this"
+  default     = true
+}
