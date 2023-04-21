@@ -90,18 +90,7 @@ variable "rbac_databricks_users" {
     active       = bool
   }))
   description = "If 'add_rbac_users' set to true then specifies RBAC Databricks users"
-  default = {
-    MehdiKimakhe = {
-      display_name = "Mehdi Kimakhe"
-      user_name    = "mehdi.kimakhe@amido.com"
-      active       = true
-    }
-    RishikeshSingh = {
-      display_name = "Rishikesh Singh"
-      user_name    = "rishikesh.singh@amido.com"
-      active       = true
-    }
-  }
+  default = null
 }
 
 variable "databricks_group_display_name" {
