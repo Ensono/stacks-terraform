@@ -101,12 +101,12 @@ variable "databricks_group_display_name" {
 
 variable "enable_workspace_access" {
   type        = bool
-  description = "If 'add_rbac_users' set to true then specifies this"
+  description = "Whether to enable workspace access for the databricks group"
   default     = true
 }
 
 variable "enable_sql_access" {
   type        = bool
-  description = "If 'add_rbac_users' set to true then specifies this"
+  description = "hether to enable sql access for the databricks group"
   default     = true
 }
