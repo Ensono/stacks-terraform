@@ -90,7 +90,7 @@ variable "rbac_databricks_users" {
     active       = bool
   }))
   description = "If 'add_rbac_users' set to true then specifies RBAC Databricks users"
-  default = null
+  default     = null
 }
 
 variable "databricks_group_display_name" {
