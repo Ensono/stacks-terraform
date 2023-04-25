@@ -30,13 +30,13 @@ resource "azurerm_log_analytics_workspace" "la" {
 }
 
 module "adb" {
-  source                  = "../../azurerm-adb"
-  resource_namer          = module.default_label.id
-  resource_group_name     = azurerm_resource_group.default.name
-  resource_group_location = azurerm_resource_group.default.location
-  databricks_sku          = var.databricks_sku
-  resource_tags           = module.default_label.tags
-  enable_databricksws_diagnostic       = var.enable_databricksws_diagnostic
+  source                         = "../../azurerm-adb"
+  resource_namer                 = module.default_label.id
+  resource_group_name            = azurerm_resource_group.default.name
+  resource_group_location        = azurerm_resource_group.default.location
+  databricks_sku                 = var.databricks_sku
+  resource_tags                  = module.default_label.tags
+  enable_databricksws_diagnostic = var.enable_databricksws_diagnostic
   #databricksws_diagnostic_setting_name = var.databricksws_diagnostic_setting_name
   data_platform_log_analytics_workspace_id = azurerm_log_analytics_workspace.la.id
 }
