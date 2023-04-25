@@ -66,7 +66,6 @@ resource "databricks_workspace_conf" "this" {
 
 
 resource "databricks_user" "rbac_users" {
-  # for_each = var.rbac_databricks_users
   for_each     = var.add_rbac_users ? var.rbac_databricks_users : {}
   display_name = each.value.display_name
   user_name    = each.value.user_name
@@ -81,8 +80,6 @@ resource "databricks_group" "project_users" {
 }
 
 resource "databricks_group_member" "project_users" {
-  #for_each = databricks_user.rbac_users
-  #group_id  = databricks_group.project_users.id
   for_each  = var.add_rbac_users ? databricks_user.rbac_users : {}
   group_id  = databricks_group.project_users[0].id
   member_id = each.value.id
