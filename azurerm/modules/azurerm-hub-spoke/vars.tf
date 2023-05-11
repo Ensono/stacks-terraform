@@ -1,6 +1,8 @@
+######################################### Azure resource group variables ######################################### 
+
 variable "resource_group_name" {
   type        = string
-  description = "Resource Group Name"
+  description = "he Name which should be used for this Resource Group. Changing this forces a new Resource Group to be created."
   default     = "network-test"
 }
 
@@ -17,6 +19,7 @@ variable "resource_group_location" {
   default     = "uksouth"
 }
 
+######################################### Azure Firewall variables ######################################### 
 
 variable "create_hub_fw" {
   description = "weather to create a Azure fierwall in hub network"
@@ -29,10 +32,23 @@ variable "create_fw_public_ip" {
   type        = bool
   default     = false
 }
+
 variable "fw_public_ip_name" {
-  description = "public IP name for Azure firewall"
+  description = "Specifies the name of the Public IP. Changing this forces a new Public IP to be created."
   type        = string
   default     = "testip"
+}
+
+variable "fw_public_allocation_method" {
+  description = "Defines the allocation method for this IP address. Possible values are Static or Dynamic"
+  type        = string
+  default     = "Dynamic"
+}
+
+variable "fw_public_ip_sku" {
+  description = "The SKU of the Public IP. Accepted values are Basic and Standard. Defaults to Basic. Changing this forces a new resource to be created."
+  type        = string
+  default     = "Basic"
 }
 
 variable "hub_fw_address_prefixes" {
@@ -40,6 +56,32 @@ variable "hub_fw_address_prefixes" {
   type        = list(string)
   default     = ["10.1.20.0/26"]
 }
+
+variable "name_az_fw" {
+  description = "Specifies the name of the Firewall. Changing this forces a new resource to be created."
+  type        = string
+  default     = "testfirewall"
+}
+
+variable "sku_az_fw" {
+  description = "SKU name of the Firewall. Possible values are AZFW_Hub and AZFW_VNet. Changing this forces a new resource to be created."
+  type        = string
+  default     = "AZFW_Hub"
+}
+
+variable "sku_tier_az_fw" {
+  description = "SKU tier of the Firewall. Possible values are Premium, Standard and Basic."
+  type        = string
+  default     = "Basic"
+}
+
+variable "ip_config_name_az_fw" {
+  description = "Specifies the name of the IP Configuration."
+  type        = string
+  default     = "ip_configuration"
+}
+
+#########################################  Azure Vnet and Subnet variables   #########################################
 
 variable "network_details" {
   type = map(object({
