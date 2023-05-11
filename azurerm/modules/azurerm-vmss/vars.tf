@@ -25,11 +25,6 @@ variable "vmss_name" {
   description = "Name of the VMSS"
 }
 
-variable "resource_group_name" {
-  type        = string
-  description = "Name of resource group"
-}
-
 variable "network_interface_name" {
   type        = string
   default     = "primary"
@@ -55,6 +50,7 @@ variable "vmss_resource_group_location" {
 variable "vmss_resource_group_name" {
   type        = string
   description = "name of resource group"
+  default     = ""
 }
 
 # Each region must have corresponding a shortend name for resource naming purposes 
@@ -130,7 +126,7 @@ variable "vmss_image_version" {
 
 variable "vmss_storage_account_type" {
   type        = string
-  default     = "Standard_LRS"
+  default     = "StandardSSD_LRS"
   description = "Storeage type used for VMSS Disk."
 }
 
@@ -140,5 +136,10 @@ variable "vmss_disk_caching" {
   description = "Disk Caching options."
 }
 
+variable "overprovision" {
+  type        = bool
+  default     = false
+  description = "Bool to set overprovisioning."
+}
 
 

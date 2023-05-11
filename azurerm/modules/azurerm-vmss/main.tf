@@ -13,6 +13,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   admin_username                  = var.vmss_admin_username
   admin_password                  = var.vmss_admin_password
   disable_password_authentication = var.vmss_disable_password_auth
+  overprovision                   = var.overprovision
 
   source_image_reference {
     publisher = var.vmss_image_publisher
