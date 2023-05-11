@@ -85,7 +85,7 @@ variable "azuread_administrator" {
     object_id      = string
   }))
   description = "Specifies whether only AD Users and administrators (like azuread_administrator.0.login_username) can be used to login, or also local database users (like administrator_login). When true, the administrator_login and administrator_login_password properties can be omitted."
-  default = []
+  default     = []
 
 
 }
