@@ -22,11 +22,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   }
 
   network_interface {
-    name    = "primary"
+    name    = var.network_interface_name
     primary = true
 
     ip_configuration {
-      name      = "internal"
+      name      = var.ip_configuration_name
       primary   = true
       subnet_id = data.azurerm_subnet.subnet.id
     }

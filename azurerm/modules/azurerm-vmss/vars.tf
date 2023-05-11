@@ -27,8 +27,21 @@ variable "vmss_name" {
 
 variable "resource_group_name" {
   type        = string
-  description = "name of resource group"
+  description = "Name of resource group"
 }
+
+variable "network_interface_name" {
+  type        = string
+  default     = "primary"
+  description = "Name of the VMs NIC."
+}
+
+variable "ip_configuration_name" {
+  type        = string
+  default     = "primary"
+  description = "Name of the IP Config on the VMs NIC."
+}
+
 ############################################
 # RESOURCE INFORMATION
 ############################################
