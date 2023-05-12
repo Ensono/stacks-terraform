@@ -4,6 +4,15 @@ data "azurerm_subnet" "subnet" {
   resource_group_name  = var.vnet_resource_group
 }
 
+# Generates Random Password for VMSS Admin
+resource "random_password" "password" {
+  count            = var.vmss_admin_password == "" ? 1 : 0
+  length           = 16
+  min_upper        = 2
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   name                            = var.vmss_name
   location                        = var.vmss_resource_group_location
@@ -11,7 +20,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   sku                             = var.vmss_sku
   instances                       = var.vmss_instances
   admin_username                  = var.vmss_admin_username
-  admin_password                  = var.vmss_admin_password
+  admin_password                  = var.vmss_admin_password == "" ? random_password.password.result : var.vmss_admin_password
   disable_password_authentication = var.vmss_disable_password_auth
   overprovision                   = var.overprovision
 

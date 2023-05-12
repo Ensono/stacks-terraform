@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "vmss" {
-  source = "../../azurerm-vmss"
+  source                       = "../../azurerm-vmss"
   vmss_name                    = "azdo-build-test"
   vmss_resource_group_name     = azurerm_resource_group.default.name
   vmss_resource_group_location = azurerm_resource_group.default.location
