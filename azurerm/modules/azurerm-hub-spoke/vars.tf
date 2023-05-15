@@ -25,6 +25,12 @@ variable "enable_private_networks" {
   default     = true
 }
 
+variable "tags" {
+  description = "Map of tags to be applied to all resources created as part of this module"
+  type        = map(string)
+  default     = {}
+}
+
 ######################################### Azure Firewall variables ######################################### 
 
 variable "create_hub_fw" {
@@ -96,8 +102,10 @@ variable "network_details" {
     dns_servers   = list(string),
     is_hub        = bool
     subnet_details = map(object({
-      sub_name           = string,
-      sub_address_prefix = list(string)
+      sub_name                                      = string,
+      sub_address_prefix                            = list(string)
+      private_endpoint_network_policies_enabled     = bool
+      private_link_service_network_policies_enabled = bool
       })
     )
 
@@ -111,8 +119,10 @@ variable "network_details" {
       is_hub        = true
       subnet_details = {
         "sub1" = {
-          sub_name           = "subnet3"
-          sub_address_prefix = ["10.1.1.0/24"]
+          sub_name                                      = "subnet3"
+          sub_address_prefix                            = ["10.1.1.0/24"]
+          private_endpoint_network_policies_enabled     = true
+          private_link_service_network_policies_enabled = true
         }
 
     } },
@@ -125,13 +135,17 @@ variable "network_details" {
       is_hub        = false
       subnet_details = {
         "sub1" = {
-          sub_name           = "subnet1"
-          sub_address_prefix = ["10.2.1.0/24"]
+          sub_name                                      = "subnet1"
+          sub_address_prefix                            = ["10.2.1.0/24"]
+          private_endpoint_network_policies_enabled     = true
+          private_link_service_network_policies_enabled = true
         },
 
         "sub2" = {
-          sub_name           = "subnet2"
-          sub_address_prefix = ["10.2.2.0/24"]
+          sub_name                                      = "subnet2"
+          sub_address_prefix                            = ["10.2.2.0/24"]
+          private_endpoint_network_policies_enabled     = true
+          private_link_service_network_policies_enabled = true
         }
 
     } },
@@ -142,13 +156,17 @@ variable "network_details" {
       is_hub        = false
       subnet_details = {
         "sub1" = {
-          sub_name           = "subnet5"
-          sub_address_prefix = ["10.3.1.0/24"]
+          sub_name                                      = "subnet5"
+          sub_address_prefix                            = ["10.3.1.0/24"]
+          private_endpoint_network_policies_enabled     = true
+          private_link_service_network_policies_enabled = true
         },
 
         "sub2" = {
-          sub_name           = "subnet6"
-          sub_address_prefix = ["10.3.2.0/24"]
+          sub_name                                      = "subnet6"
+          sub_address_prefix                            = ["10.3.2.0/24"]
+          private_endpoint_network_policies_enabled     = true
+          private_link_service_network_policies_enabled = true
         }
 
     } }

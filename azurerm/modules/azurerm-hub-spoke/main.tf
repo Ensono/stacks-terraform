@@ -20,17 +20,20 @@ resource "azurerm_virtual_network" "example" {
   resource_group_name = azurerm_resource_group.network[0].name
   address_space       = each.value.address_space
   dns_servers         = each.value.dns_servers
+  tags                = var.tags
 
 }
 
 
 resource "azurerm_subnet" "example" {
 
-  for_each             = { for i in toset(local.subnets) : i.sub_name => i if var.enable_private_networks == true }
-  name                 = each.key
-  resource_group_name  = azurerm_resource_group.network[0].name
-  virtual_network_name = each.value.vnet
-  address_prefixes     = each.value.sub_address_prefix
+  for_each                                      = { for i in toset(local.subnets) : i.sub_name => i if var.enable_private_networks == true }
+  name                                          = each.key
+  resource_group_name                           = azurerm_resource_group.network[0].name
+  virtual_network_name                          = each.value.vnet
+  address_prefixes                              = each.value.sub_address_prefix
+  private_endpoint_network_policies_enabled     = each.value.private_endpoint_network_policies_enabled
+  private_link_service_network_policies_enabled = each.value.private_link_service_network_policies_enabled
   depends_on = [
     azurerm_virtual_network.example
   ]

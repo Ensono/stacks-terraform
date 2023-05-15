@@ -6,6 +6,7 @@ resource "azurerm_subnet" "az_fw_subnet" {
   resource_group_name  = azurerm_resource_group.network[0].name
   virtual_network_name = local.hub_network_name[0]
   address_prefixes     = var.hub_fw_address_prefixes
+
 }
 
 resource "azurerm_public_ip" "example" {
@@ -15,6 +16,7 @@ resource "azurerm_public_ip" "example" {
   resource_group_name = azurerm_resource_group.network[0].name
   allocation_method   = var.fw_public_allocation_method
   sku                 = var.fw_public_ip_sku
+  tags                = var.tags
 }
 
 resource "azurerm_firewall" "example" {
@@ -24,6 +26,7 @@ resource "azurerm_firewall" "example" {
   resource_group_name = azurerm_resource_group.network[0].name
   sku_name            = var.sku_az_fw
   sku_tier            = var.sku_tier_az_fw
+  tags                = var.tags
 
   ip_configuration {
     name                 = var.ip_config_name_az_fw

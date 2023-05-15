@@ -1,9 +1,10 @@
 locals {
   subnets = flatten([for name, network in var.network_details : [for subnet in network.subnet_details : {
-    vnet               = name
-    sub_name           = subnet.sub_name
-    sub_address_prefix = subnet.sub_address_prefix
-
+    vnet                                          = name
+    sub_name                                      = subnet.sub_name
+    sub_address_prefix                            = subnet.sub_address_prefix
+    private_endpoint_network_policies_enabled     = subnet.private_endpoint_network_policies_enabled
+    private_link_service_network_policies_enabled = subnet.private_link_service_network_policies_enabled
   }]])
 
   hub_network_name    = flatten([for name, network in var.network_details : name if network.is_hub == true])
