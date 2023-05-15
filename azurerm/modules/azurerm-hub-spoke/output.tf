@@ -3,12 +3,12 @@ output "hub_net_name" {
   value = local.hub_network_name[0]
 }
 
-output "hub_net_id" {
-  value = azurerm_virtual_network.example["${local.hub_network_name[0]}"].id
-}
+ output "hub_net_id" {
+   value = var.enable_private_networks == true ? azurerm_virtual_network.example["${local.hub_network_name[0]}"].id : null
+ }
 
 output "subnet_ids" {
-  value = values(azurerm_subnet.example)[*].id
+  value = var.enable_private_networks == true ?  values(azurerm_subnet.example)[*].id : null
 }
 
 output "subnet_names" {
@@ -44,10 +44,10 @@ output "vnets" {
 
 output "hub_firewall_id" {
 
-  value = azurerm_subnet.az_fw_subnet[0].id
+  value = var.create_hub_fw && var.enable_private_networks == true ? azurerm_subnet.az_fw_subnet[0].id :  null
 }
 
 output "hub_pub_ip" {
 
-  value = azurerm_public_ip.example[0].id
+  value = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? azurerm_public_ip.example[0].id : null
 }
