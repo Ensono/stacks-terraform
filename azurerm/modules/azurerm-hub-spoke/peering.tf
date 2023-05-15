@@ -13,7 +13,7 @@ resource "azurerm_virtual_network_peering" "hub-spoke" {
 
 resource "azurerm_virtual_network_peering" "spoke-hub" {
   for_each                  = toset(local.spoke_network_names)
-  name                      = "spoke-to-${each.key}"
+  name                      = "${each.key}-to-hub"
   resource_group_name       = azurerm_resource_group.network[0].name
   virtual_network_name      = azurerm_virtual_network.example[each.key].name
   remote_virtual_network_id = data.azurerm_virtual_network.hub_network.id

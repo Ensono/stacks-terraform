@@ -19,6 +19,12 @@ variable "resource_group_location" {
   default     = "uksouth"
 }
 
+variable "enable_private_networks" {
+  description = "wether to creare private networks or not."
+  type        = bool
+  default     = true
+}
+
 ######################################### Azure Firewall variables ######################################### 
 
 variable "create_hub_fw" {
@@ -107,11 +113,6 @@ variable "network_details" {
         "sub1" = {
           sub_name           = "subnet3"
           sub_address_prefix = ["10.1.1.0/24"]
-        },
-
-        "sub2" = {
-          sub_name           = "subnet4"
-          sub_address_prefix = ["10.1.2.0/24"]
         }
 
     } },

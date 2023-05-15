@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "network" {
 
 resource "azurerm_virtual_network" "example" {
 
-  for_each            = { for i in var.network_details : i.name => i }
+  for_each            = { for i in var.network_details : i.name => i if var.enable_private_networks == true }
   name                = each.key
   location            = azurerm_resource_group.network[0].location
   resource_group_name = azurerm_resource_group.network[0].name
@@ -26,7 +26,7 @@ resource "azurerm_virtual_network" "example" {
 
 resource "azurerm_subnet" "example" {
 
-  for_each             = { for i in toset(local.subnets) : i.sub_name => i }
+  for_each             = { for i in toset(local.subnets) : i.sub_name => i if var.enable_private_networks == true }
   name                 = each.key
   resource_group_name  = azurerm_resource_group.network[0].name
   virtual_network_name = each.value.vnet
