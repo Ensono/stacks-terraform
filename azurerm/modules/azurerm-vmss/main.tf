@@ -20,7 +20,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   sku                             = var.vmss_sku
   instances                       = var.vmss_instances
   admin_username                  = var.vmss_admin_username
-  admin_password                  = var.vmss_admin_password == "" ? random_password.password.result : var.vmss_admin_password
+  admin_password                  = var.vmss_admin_password == "" ? random_password.password[0].result : var.vmss_admin_password
   disable_password_authentication = var.vmss_disable_password_auth
   overprovision                   = var.overprovision
 
@@ -46,4 +46,20 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     storage_account_type = var.vmss_storage_account_type
     caching              = var.vmss_disk_caching
   }
+  extension {
+    name                       = "CustomScript"
+    publisher                  = "Microsoft.Azure.Extensions"
+    type                       = "CustomScript"
+    type_handler_version       = "2.0"
+    auto_upgrade_minor_version = true
+
+    settings = jsonencode({
+      "script" = base64encode(data.local_file.sh.content)
+    })
+  }
 }
+
+data "local_file" "sh" {
+  filename = "${path.module}/ci_cd_tool_install.sh"
+}
+

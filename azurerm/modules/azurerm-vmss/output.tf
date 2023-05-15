@@ -4,5 +4,5 @@ output "vmss_id" {
 
 output "vmss_admin_password" {
   sensitive = true
-  value     = random_password.password.result
+  value     = random_password.password[0].result
 }

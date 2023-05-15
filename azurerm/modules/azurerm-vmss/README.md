@@ -3,6 +3,8 @@ This module was written to quickly provision a VMSS which will be used as a self
 
 Work is required to enhance this module to cover wider use cases of VMSS as well as using dynatmic blocks etc to support multiple NICs and IP Configurations.
 
+Future work should also be done to implement a packer image build. This will allow us to build the base image once and speed up the time taken to start new agents as all tools will be installed within the assigned image.
+
 ## Requirements
 
 | Name | Version |

@@ -14,5 +14,5 @@ module "vmss" {
   subnet_name                  = "build-agent"
   vmss_instances               = 1
   vmss_admin_username          = "adminuser"
-  vmss_disable_password_auth   = true
+  vmss_disable_password_auth   = false
 }

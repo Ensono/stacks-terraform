@@ -72,7 +72,7 @@ variable "location_name_map" {
 
 variable "vmss_sku" {
   type        = string
-  default     = "Standard_D2_v3"
+  default     = "Standard_D2s_v3"
   description = "VM Size"
 }
 
@@ -108,13 +108,13 @@ variable "vmss_image_publisher" {
 
 variable "vmss_image_offer" {
   type        = string
-  default     = "UbuntuServer"
+  default     = "0001-com-ubuntu-server-jammy"
   description = "Image offer. Eg UbuntuServer"
 }
 
 variable "vmss_image_sku" {
   type        = string
-  default     = "20.04-LTS"
+  default     = "22_04-lts-gen2"
   description = "Image SKU."
 }
 

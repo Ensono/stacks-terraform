@@ -55,7 +55,7 @@ variable "resource_tags" {
 
 variable "vmss_resource_group_location" {
   type        = string
-  default     = "uksouth"
+  default     = "westeurope"
   description = "Location of Resource group"
 }
 
@@ -114,7 +114,7 @@ variable "vmss_disable_password_auth" {
 
 variable "vmss_image_publisher" {
   type        = string
-  default     = "Canonical"
+  default     = "canonical"
   description = "Image Publisher."
 }
 
@@ -126,7 +126,7 @@ variable "vmss_image_offer" {
 
 variable "vmss_image_sku" {
   type        = string
-  default     = "20.04-LTS"
+  default     = "22_04-lts"
   description = "Image SKU."
 }
 
