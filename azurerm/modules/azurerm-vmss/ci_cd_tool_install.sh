@@ -15,11 +15,11 @@ rm packages-microsoft-prod.deb
 sudo apt-get update
 # Install PowerShell
 sudo apt-get install -y powershell
-# Start PowerShell
-pwsh
+# Install Modules
 pwsh -NoProfile -Command "Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force"
 pwsh -NoProfile -Command "Install-Module -Name Az.Accounts -Scope AllUsers -Force"
 pwsh -NoProfile -Command "Install-Module -Name Az.DataFactory -Scope AllUsers -Force"
+# Start PowerShell
 pwsh
 
 # Install Azure CLI
