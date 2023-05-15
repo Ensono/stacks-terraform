@@ -10,7 +10,7 @@ resource "azurerm_subnet" "az_fw_subnet" {
 }
 
 resource "azurerm_public_ip" "example" {
-  count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true? 1 : 0
+  count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? 1 : 0
   name                = var.fw_public_ip_name
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
@@ -20,7 +20,7 @@ resource "azurerm_public_ip" "example" {
 }
 
 resource "azurerm_firewall" "example" {
-  count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true? 1 : 0
+  count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? 1 : 0
   name                = var.name_az_fw
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name

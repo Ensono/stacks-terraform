@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "network" {
 
 module "networking" {
   source                  = "../../azurerm-hub-spoke"
-  enable_private_networks = true               ## NOTE setting this value to false will cause no resources to be created !!
+  enable_private_networks = true ## NOTE setting this value to false will cause no resources to be created !!
   network_details         = var.network_details
   resource_group_name     = azurerm_resource_group.network[0].name
   resource_group_location = azurerm_resource_group.network[0].location
