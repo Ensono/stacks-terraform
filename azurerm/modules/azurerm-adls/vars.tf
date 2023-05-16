@@ -34,6 +34,28 @@ variable "container_access_type" {
   default     = "The Access Level configured for this Container. Possible values are blob, container or private. Defaults to private."
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Allow public network access to storage account. Set as true or false."
+}
+
+variable "network_rules" {
+  type = list(object({
+    default_action             = string
+    ip_rules                   = optional(list(string))
+    virtual_network_subnet_ids = optional(list(string))
+    bypass                     = list(string)
+  }))
+  # default = {
+  #   default_action             = "allow"
+  #   virtual_network_subnet_ids = []
+  #   bypass                     = ["Metrics", "Logging", "AzureServices"]
+  # }
+  default     = []
+  description = "Network Rules to apply to the storage account."
+}
+
 ############################################
 # NAMING
 ############################################
