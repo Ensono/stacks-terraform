@@ -45,13 +45,8 @@ variable "network_rules" {
     default_action             = string
     ip_rules                   = optional(list(string))
     virtual_network_subnet_ids = optional(list(string))
-    bypass                     = list(string)
+    bypass                     = optional(list(string))
   }))
-  # default = {
-  #   default_action             = "allow"
-  #   virtual_network_subnet_ids = []
-  #   bypass                     = ["Metrics", "Logging", "AzureServices"]
-  # }
   default     = []
   description = "Network Rules to apply to the storage account."
 }
