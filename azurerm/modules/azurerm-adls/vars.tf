@@ -43,9 +43,9 @@ variable "public_network_access_enabled" {
 variable "network_rules" {
   type = list(object({
     default_action             = string
-    ip_rules                   = (list(string))
-    virtual_network_subnet_ids = (list(string))
-    bypass                     = (list(string))
+    ip_rules                   = list(string)
+    virtual_network_subnet_ids = list(string)
+    bypass                     = list(string)
   }))
   default     = []
   description = "Network Rules to apply to the storage account."
