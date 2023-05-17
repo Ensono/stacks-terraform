@@ -121,4 +121,11 @@ No modules.
 | <a name="output_subnet_names"></a> [subnet\_names](#output\_subnet\_names) | n/a |
 | <a name="output_subnets"></a> [subnets](#output\_subnets) | n/a |
 | <a name="output_vnets"></a> [vnets](#output\_vnets) | n/a |
+
+## EXAMPLES:
+---
+There is an examples folder with possible usage patterns.
+
+`example` 
+
 <!-- END_TF_DOCS -->
