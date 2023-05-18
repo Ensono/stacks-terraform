@@ -9,4 +9,5 @@ locals {
 
   hub_network_name    = flatten([for name, network in var.network_details : name if network.is_hub == true])
   spoke_network_names = flatten([for name, network in var.network_details : name if network.is_hub == false && var.enable_private_networks == true])
+  dns_link_networks   = flatten([for name, network in var.network_details : name if network.link_to_private_dns == true && var.enable_private_networks == true])
 }

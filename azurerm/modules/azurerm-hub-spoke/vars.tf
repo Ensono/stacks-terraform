@@ -31,6 +31,26 @@ variable "tags" {
   default     = {}
 }
 
+######################################### Azure Private DNS variables ######################################### 
+
+variable "dns_zone_name" {
+  default     = "mydomaintest.com"
+  description = "The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created."
+  type        = string
+}
+
+variable "create_private_dns_zone" {
+  type        = bool
+  default     = true
+  description = " set value wether to create a private_dns_zone or not"
+}
+
+variable "registration_enabled" {
+  type        = bool
+  default     = true
+  description = "Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
+}
+
 ######################################### Azure Firewall variables ######################################### 
 
 variable "create_hub_fw" {
@@ -97,12 +117,13 @@ variable "ip_config_name_az_fw" {
 
 variable "network_details" {
   type = map(object({
-    name          = string
-    address_space = list(string),
-    dns_servers   = list(string),
-    is_hub        = bool
+    name                = string
+    address_space       = list(string)
+    dns_servers         = list(string)
+    is_hub              = bool
+    link_to_private_dns = bool
     subnet_details = map(object({
-      sub_name                                      = string,
+      sub_name                                      = string
       sub_address_prefix                            = list(string)
       private_endpoint_network_policies_enabled     = bool
       private_link_service_network_policies_enabled = bool
@@ -113,10 +134,11 @@ variable "network_details" {
 
   default = {
     "network1" = {
-      name          = "network1"
-      address_space = ["10.1.0.0/16"]
-      dns_servers   = ["10.1.0.4", "10.1.0.5"]
-      is_hub        = true
+      name                = "network1"
+      address_space       = ["10.1.0.0/16"]
+      dns_servers         = ["10.1.0.4", "10.1.0.5"]
+      is_hub              = true
+      link_to_private_dns = true
       subnet_details = {
         "sub1" = {
           sub_name                                      = "subnet3"
@@ -129,10 +151,11 @@ variable "network_details" {
 
 
     "network2" = {
-      name          = "network2"
-      address_space = ["10.2.0.0/16"]
-      dns_servers   = ["10.2.0.4", "10.2.0.5"]
-      is_hub        = false
+      name                = "network2"
+      address_space       = ["10.2.0.0/16"]
+      dns_servers         = ["10.2.0.4", "10.2.0.5"]
+      is_hub              = false
+      link_to_private_dns = true
       subnet_details = {
         "sub1" = {
           sub_name                                      = "subnet1"
@@ -150,10 +173,11 @@ variable "network_details" {
 
     } },
     "network3" = {
-      name          = "network3"
-      address_space = ["10.3.0.0/16"]
-      dns_servers   = ["10.3.0.4", "10.3.0.5"]
-      is_hub        = false
+      name                = "network3"
+      address_space       = ["10.3.0.0/16"]
+      dns_servers         = ["10.3.0.4", "10.3.0.5"]
+      is_hub              = false
+      link_to_private_dns = true
       subnet_details = {
         "sub1" = {
           sub_name                                      = "subnet5"
