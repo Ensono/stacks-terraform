@@ -28,9 +28,25 @@ resource "azurerm_firewall" "example" {
   sku_tier            = var.sku_tier_az_fw
   tags                = var.tags
 
-  ip_configuration {
-    name                 = var.ip_config_name_az_fw
-    subnet_id            = azurerm_subnet.az_fw_subnet[0].id
-    public_ip_address_id = azurerm_public_ip.example[0].id
+  dynamic "ip_configuration" {
+
+    for_each = var.sku_az_fw == "AZFW_VNet" ? toset([1]) : toset([])
+    content {
+      name                 = var.ip_config_name_az_fw
+      subnet_id            = azurerm_subnet.az_fw_subnet[0].id
+      public_ip_address_id = azurerm_public_ip.example[0].id
+    }
+
   }
+
+  dynamic "virtual_hub" {
+
+    for_each = var.sku_az_fw == "AZFW_Hub" ? toset([1]) : toset([])
+    content {
+      virtual_hub_id = azurerm_virtual_network.example["${local.hub_network_name[0]}"].id
+    }
+
+  }
+
+
 }
