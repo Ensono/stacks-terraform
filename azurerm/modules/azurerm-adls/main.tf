@@ -20,6 +20,7 @@ resource "azurerm_storage_account" "storage_account_default" {
     content {
       default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : null
       virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : null
+      ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : null
       bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : null
     }
   }

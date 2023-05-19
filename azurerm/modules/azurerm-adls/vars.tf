@@ -44,6 +44,7 @@ variable "network_rules" {
   type = list(object({
     default_action             = string
     virtual_network_subnet_ids = list(string)
+    ip_rules                   = list(string)
     bypass                     = list(string)
   }))
   default     = []
