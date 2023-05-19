@@ -13,7 +13,7 @@ resource "azurerm_storage_account" "storage_account_default" {
   account_tier                  = each.value.account_tier
   account_replication_type      = var.account_replication_type
   is_hns_enabled                = each.value.hns_enabled
-  # public_network_access_enabled = var.public_network_access_enabled
+  public_network_access_enabled = var.public_network_access_enabled
 
   dynamic "network_rules" {
     for_each = var.network_rules
