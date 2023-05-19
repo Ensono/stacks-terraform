@@ -19,7 +19,6 @@ resource "azurerm_storage_account" "storage_account_default" {
     for_each = var.network_rules
     content {
       default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : null
-      ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : null
       virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : null
       bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : null
     }
