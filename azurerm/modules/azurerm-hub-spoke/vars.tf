@@ -127,6 +127,7 @@ variable "network_details" {
       sub_address_prefix                            = list(string)
       private_endpoint_network_policies_enabled     = bool
       private_link_service_network_policies_enabled = bool
+      service_endpoints                             = list(string)
       })
     )
 
@@ -145,6 +146,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.1.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } },
@@ -162,6 +164,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.2.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         },
 
         "sub2" = {
@@ -169,6 +172,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.2.2.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } },
@@ -184,6 +188,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.3.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         },
 
         "sub2" = {
@@ -191,6 +196,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.3.2.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } }
