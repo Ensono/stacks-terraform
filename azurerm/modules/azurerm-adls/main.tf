@@ -15,15 +15,15 @@ resource "azurerm_storage_account" "storage_account_default" {
   is_hns_enabled                = each.value.hns_enabled
   public_network_access_enabled = var.public_network_access_enabled
 
-  dynamic "network_rules" {
-    for_each = var.network_rules
-    content {
-      default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : null
-      virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : null
-      ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : null
-      bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : null
-    }
-  }
+  # dynamic "network_rules" {
+  #   for_each = var.network_rules
+  #   content {
+  #     default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : null
+  #     virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : null
+  #     ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : null
+  #     bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : null
+  #   }
+  # }
 
   tags = var.resource_tags
   lifecycle {
@@ -48,4 +48,16 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
   depends_on = [azurerm_storage_account.storage_account_default]
+}
+
+resource "azurerm_storage_account_network_rules" "example" {
+  for_each           = var.storage_account_details
+  storage_account_id = azurerm_storage_account.storage_account_default[*].id
+
+  default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : "Allow"
+  virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : []
+  ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : []
+  bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : []
+
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_storage_container.storage_container_blob, azurerm_storage_data_lake_gen2_filesystem.example]
 }
