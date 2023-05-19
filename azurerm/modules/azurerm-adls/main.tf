@@ -54,10 +54,10 @@ resource "azurerm_storage_account_network_rules" "example" {
   for_each           = var.storage_account_details
   storage_account_id = azurerm_storage_account.storage_account_default[*].id
 
-  default_action             = can(network_rules.value["default_action"]) ? network_rules.value["default_action"] : "Allow"
-  virtual_network_subnet_ids = can(network_rules.value["virtual_network_subnet_ids"]) ? network_rules.value["virtual_network_subnet_ids"] : []
-  ip_rules                   = can(network_rules.value["ip_rules"]) ? network_rules.value["ip_rules"] : []
-  bypass                     = can(network_rules.value["bypass"]) ? network_rules.value["bypass"] : []
+  default_action             = can(var.network_rules.value["default_action"]) ? var.network_rules.value["default_action"] : "Allow"
+  virtual_network_subnet_ids = can(var.network_rules.value["virtual_network_subnet_ids"]) ? var.network_rules.value["virtual_network_subnet_ids"] : []
+  ip_rules                   = can(var.network_rules.value["ip_rules"]) ? var.network_rules.value["ip_rules"] : []
+  bypass                     = can(var.network_rules.value["bypass"]) ? var.network_rules.value["bypass"] : []
 
   depends_on = [azurerm_storage_account.storage_account_default, azurerm_storage_container.storage_container_blob, azurerm_storage_data_lake_gen2_filesystem.example]
 }
