@@ -57,6 +57,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       "script" = base64encode(data.local_file.sh.content)
     })
   }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 data "local_file" "sh" {
