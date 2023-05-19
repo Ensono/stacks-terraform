@@ -38,10 +38,14 @@ resource "azurerm_storage_container" "storage_container_blob" {
   name                  = each.key
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
+
+  depends_on = [zurerm_storage_account.storage_account_default]
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   for_each           = { for i in toset(local.containers_adls) : i.name => i }
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
+
+  depends_on = [zurerm_storage_account.storage_account_default]
 }
