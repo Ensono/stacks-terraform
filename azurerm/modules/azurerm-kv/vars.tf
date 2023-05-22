@@ -153,14 +153,3 @@ variable "public_network_access_enabled" {
   default     = true
   description = "Allow public network access to Key Vault. Set as true or false."
 }
-
-variable "network_acls" {
-  type = list(object({
-    default_action             = string
-    virtual_network_subnet_ids = list(string)
-    ip_rules                   = list(string)
-    bypass                     = list(string)
-  }))
-  default     = []
-  description = "Network ACL Rules to apply to the Key Vault Instance."
-}
