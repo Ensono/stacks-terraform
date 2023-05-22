@@ -70,8 +70,9 @@ resource "azurerm_data_factory" "example" {
 }
 
 resource "azurerm_data_factory_managed_private_endpoint" "example" {
-  count              = length(var.adf_maged_private_enpoints)
-  name               = "private-${var.adf_maged_private_enpoints[count.index]}"
+  count = length(var.adf_maged_private_enpoints)
+  name  = element(split("/", var.adf_maged_private_enpoints[count.index]), 9)
+  #name               = "private-${var.adf_maged_private_enpoints[count.index]}"
   data_factory_id    = azurerm_data_factory.example[0].id
   target_resource_id = var.adf_maged_private_enpoints[count.index]
 
