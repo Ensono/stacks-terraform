@@ -84,7 +84,7 @@ variable "managed_virtual_network_enabled" {
 }
 
 variable "adf_maged_private_enpoints" {
-  type        = map(string)
+  type        = list(string)
   default     = []
   description = "List of Resource Ids for Private endpoint in manged ADF manged identity"
 } 
