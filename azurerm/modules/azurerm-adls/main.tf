@@ -39,7 +39,7 @@ resource "azurerm_storage_container" "storage_container_blob" {
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, azurerm_client_config.current]
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
@@ -47,7 +47,7 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, azurerm_client_config.current]
 }
 
 resource "azurerm_storage_account_network_rules" "example" {
@@ -59,7 +59,7 @@ resource "azurerm_storage_account_network_rules" "example" {
   ip_rules                   = can(var.network_rules.value["ip_rules"]) ? var.network_rules.value["ip_rules"] : []
   bypass                     = can(var.network_rules.value["bypass"]) ? var.network_rules.value["bypass"] : []
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_storage_container.storage_container_blob, azurerm_storage_data_lake_gen2_filesystem.example]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_storage_container.storage_container_blob, azurerm_storage_data_lake_gen2_filesystem.example, azurerm_client_config.current]
 }
 
 data "azurerm_client_config" "current" {}
