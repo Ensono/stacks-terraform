@@ -1,5 +1,33 @@
 <!-- BEGIN_TF_DOCS -->
-## Known Limitations
+# PROJECT_NAME
+
+DESCRIPTION:
+---
+Bootstraps the infrastructure for {{SELECT_APP_TYPE }}. 
+
+Will be used within the provisioned pipeline for your application depending on the options you chose.
+
+Pipeline implementation for infrastructure relies on workspaces, you can pass in whatever workspace you want from {{ SELECT_DEPLOYMENT_TYPE }} pipeline YAML.
+
+PREREQUISITES:
+---
+Azure Subscripion
+  - SPN 
+    - Terraform will use this to perform the authentication for the API calls
+    - you will need the `client_id, subscription_id, client_secret, tenant_id`
+
+Terraform backend
+  - resource group (can be manually created for the terraform remote state)
+  - Blob storage container for the remote state management
+
+
+USAGE:
+---
+
+To activate the terraform backend for running locally we need to initialise the SPN with env vars to ensure you are running the same way as the pipeline that will ultimately be running any incremental changes.
+
+```bash
+docker run -it --rm -v $(pwd):/opt/tf-lib amidostacks/ci-tf:latest /bin/bash
 This module was written to quickly provision a VMSS which will be used as a self hosted build agent within Azure DevOps.
 
 Work is required to enhance this module to cover wider use cases of VMSS as well as using dynatmic blocks etc to support multiple NICs and IP Configurations.
