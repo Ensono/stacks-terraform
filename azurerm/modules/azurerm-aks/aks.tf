@@ -49,15 +49,15 @@ resource "azurerm_kubernetes_cluster" "default" {
     vnet_subnet_id      = azurerm_subnet.default.0.id
   }
 
-  addon_profile {
-    http_application_routing {
-      enabled = false
-    }
-    oms_agent {
-      enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
-    }
+
+  http_application_routing {
+    enabled = false
   }
+  oms_agent {
+    enabled                    = true
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
+  }
+
 
   role_based_access_control {
     enabled = true
