@@ -51,8 +51,8 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
 }
 
 resource "azurerm_storage_account_network_rules" "example" {
-  count = !var.public_network_access_enabled ? length(azurerm_storage_account.storage_account_default[*].storage_account_id) : 0
-  storage_account_id = azurerm_storage_account.storage_account_default[count.index].storage_account_id
+  count = !var.public_network_access_enabled ? length(azurerm_storage_account.storage_account_default[*]) : 0
+  storage_account_id = azurerm_storage_account.storage_account_default[count.index].id
 
   default_action             = can(var.network_rules.value["default_action"]) ? var.network_rules.value["default_action"] : "Allow"
   virtual_network_subnet_ids = can(var.network_rules.value["virtual_network_subnet_ids"]) ? var.network_rules.value["virtual_network_subnet_ids"] : []
