@@ -83,6 +83,12 @@ variable "managed_virtual_network_enabled" {
   description = "Is Managed Virtual Network enabled?"
 }
 
+variable "adf_maged_private_enpoints" {
+  type        = list(string)
+  default     = []
+  description = "List of Resource Ids for Private endpoint in manged ADF manged identity"
+} 
+
 ###########################
 # Global parameter  for ADF SETTINGS
 ##########################
