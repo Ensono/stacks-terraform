@@ -61,13 +61,14 @@ resource "azurerm_role_assignment" "storage_role_context" {
 
 resource "null_resource" "sleep" {
   # Add sleep to allow network rules to propergate
-  triggers = {
-    value = azurerm_storage_account.storage_account_default
-  }
+  # triggers = {
+  #   value = azurerm_storage_account.storage_account_default
+  # }
 
   provisioner "local-exec" {
     command = <<EOT
       sleep 30
     EOT
   }
+  depends_on = [azurerm_storage_account.storage_account_default]
 }
