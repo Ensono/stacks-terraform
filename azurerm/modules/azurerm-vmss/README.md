@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Known Limitations
 This module was written to quickly provision a VMSS which will be used as a self hosted build agent within Azure DevOps.
 
@@ -60,3 +61,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_vmss_id"></a> [vmss\_id](#output\_vmss\_id) | n/a |
+<!-- END_TF_DOCS -->
