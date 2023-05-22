@@ -19,6 +19,7 @@ resource "azurerm_subnet" "example" {
   resource_group_name                           = var.resource_group_name
   virtual_network_name                          = each.value.vnet
   address_prefixes                              = each.value.sub_address_prefix
+  service_endpoints                             = each.value.service_endpoints
   private_endpoint_network_policies_enabled     = each.value.private_endpoint_network_policies_enabled
   private_link_service_network_policies_enabled = each.value.private_link_service_network_policies_enabled
   depends_on = [
