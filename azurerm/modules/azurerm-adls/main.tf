@@ -39,7 +39,7 @@ resource "azurerm_storage_container" "storage_container_blob" {
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 
-  depends_on = [azurerm_storage_account.storage_account_default]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context]
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
@@ -47,13 +47,11 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
-  depends_on = [azurerm_storage_account.storage_account_default]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context]
 }
 
 resource "azurerm_storage_account_network_rules" "example" {
   for_each = var.storage_account_details
-
-  # count = !var.public_network_access_enabled ? length(azurerm_storage_account.storage_account_default[*]) : 0
   storage_account_id = azurerm_storage_account.storage_account_default[each.key].id
 
   default_action             = can(var.network_rules.value["default_action"]) ? var.network_rules.value["default_action"] : "Allow"
@@ -62,4 +60,14 @@ resource "azurerm_storage_account_network_rules" "example" {
   bypass                     = can(var.network_rules.value["bypass"]) ? var.network_rules.value["bypass"] : []
 
   depends_on = [azurerm_storage_account.storage_account_default, azurerm_storage_container.storage_container_blob, azurerm_storage_data_lake_gen2_filesystem.example]
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "storage_role_context" {
+  for_each = var.storage_account_details
+  scope                =  azurerm_storage_account.storage_account_default[each.key].id
+  # role_definition_name = "Storage Blob Data Owner"
+  role_definition_name = "Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
