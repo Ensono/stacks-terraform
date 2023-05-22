@@ -30,6 +30,29 @@ To activate the terraform backend for running locally we need to initialise the 
 docker run -it --rm -v $(pwd):/opt/tf-lib amidostacks/ci-tf:latest /bin/bash
 This module was written to quickly provision a VMSS which will be used as a self hosted build agent within Azure DevOps.
 
+export ARM_CLIENT_ID=xxxx \
+ARM_CLIENT_SECRET=yyyyy \
+ARM_SUBSCRIPTION_ID=yyyyy \
+ARM_TENANT_ID=yyyyy
+
+alternatively you can run az login
+
+To get up and running locally you will want to create a terraform.tfvars file
+
+TFVAR_CONTENTS='''
+vnet_id                 = "amido-stacks-vnet-uks-dev"
+rg_name                 = "amido-stacks-rg-uks-dev"
+resource_group_location = "uksouth"
+name_company            = "amido"
+name_project            = "stacks"
+name_component          = "spa"
+name_environment        = "dev" 
+'''
+$TFVAR_CONTENTS > terraform.tfvars
+terraform workspace select dev || terraform workspace new dev
+terraform init -backend-config=./backend.local.tfvars
+
+## Known Limitiations
 Work is required to enhance this module to cover wider use cases of VMSS as well as using dynatmic blocks etc to support multiple NICs and IP Configurations.
 
 Future work should also be done to implement a packer image build. This will allow us to build the base image once and speed up the time taken to start new agents as all tools will be installed within the assigned image.
