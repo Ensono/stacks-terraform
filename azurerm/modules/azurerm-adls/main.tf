@@ -55,7 +55,6 @@ data "azurerm_client_config" "current" {}
 resource "azurerm_role_assignment" "storage_role_context" {
   for_each = var.storage_account_details
   scope                =  azurerm_storage_account.storage_account_default[each.key].id
-  # role_definition_name = "Storage Blob Data Owner"
   role_definition_name = "Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
 }
