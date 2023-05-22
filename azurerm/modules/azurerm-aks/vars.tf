@@ -329,3 +329,9 @@ variable "key_vault_name" {
   type        = string
   default     = ""
 }
+
+variable "create_key_vault" {
+  description = "Define how many key vaults to deploy"
+  type        = bool
+  default     = true
+}
