@@ -70,8 +70,8 @@ resource "azurerm_data_factory" "example" {
 }
 
 resource "azurerm_data_factory_managed_private_endpoint" "example" {
-  for_each = var.adf_maged_private_enpoints
-  name               = "private-${ each.key }"
+  for_each           = toset(var.adf_maged_private_enpoints)
+  name               = "private-${each.key}"
   data_factory_id    = azurerm_data_factory.example[0].id
   target_resource_id = each.key
 
