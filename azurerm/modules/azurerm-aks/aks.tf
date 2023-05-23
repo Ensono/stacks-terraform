@@ -49,7 +49,6 @@ resource "azurerm_kubernetes_cluster" "default" {
     vnet_subnet_id      = azurerm_subnet.default.0.id
   }
 
-
   http_application_routing {
     enabled = false
   }
@@ -57,7 +56,6 @@ resource "azurerm_kubernetes_cluster" "default" {
     enabled                    = true
     log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
   }
-
 
   role_based_access_control {
     enabled = true
