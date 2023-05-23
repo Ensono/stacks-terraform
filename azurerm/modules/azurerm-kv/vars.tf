@@ -147,3 +147,9 @@ variable "reader_object_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Allow public network access to Key Vault. Set as true or false."
+}

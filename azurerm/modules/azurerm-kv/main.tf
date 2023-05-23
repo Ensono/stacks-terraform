@@ -16,7 +16,7 @@ resource "azurerm_key_vault" "example" {
   enabled_for_template_deployment = var.enabled_for_template_deployment
   enable_rbac_authorization       = var.enable_rbac_authorization
   sku_name                        = var.sku_name
-
+  public_network_access_enabled   = var.public_network_access_enabled
 
   dynamic "network_acls" {
     for_each = var.create_kv_networkacl == false ? toset([]) : toset([1])
