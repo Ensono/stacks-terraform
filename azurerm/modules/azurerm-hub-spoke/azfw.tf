@@ -3,27 +3,28 @@
 resource "azurerm_subnet" "az_fw_subnet" {
   count                = var.create_hub_fw && var.enable_private_networks == true ? 1 : 0
   name                 = "AzureFirewallSubnet"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = local.hub_resource_group_name[0]
   virtual_network_name = local.hub_network_name[0]
   address_prefixes     = var.hub_fw_address_prefixes
-
+  depends_on           = [azurerm_resource_group.network, azurerm_virtual_network.example]
 }
 
 resource "azurerm_public_ip" "example" {
   count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? 1 : 0
   name                = var.fw_public_ip_name
   location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.hub_resource_group_name[0]
   allocation_method   = var.fw_public_allocation_method
   sku                 = var.fw_public_ip_sku
   tags                = var.tags
+  depends_on          = [azurerm_resource_group.network, azurerm_virtual_network.example]
 }
 
 resource "azurerm_firewall" "example" {
   count               = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? 1 : 0
   name                = var.name_az_fw
   location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.hub_resource_group_name[0]
   sku_name            = var.sku_az_fw
   sku_tier            = var.sku_tier_az_fw
   tags                = var.tags
@@ -47,6 +48,6 @@ resource "azurerm_firewall" "example" {
     }
 
   }
-
+  depends_on = [azurerm_resource_group.network, azurerm_virtual_network.example]
 
 }
