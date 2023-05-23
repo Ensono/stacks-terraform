@@ -83,6 +83,19 @@ variable "managed_virtual_network_enabled" {
   description = "Is Managed Virtual Network enabled?"
 }
 
+variable "adf_managed-vnet-runtime_name" {
+  type        = string
+  default     = "adf-managed-vnet-runtime"
+  description = "Specifies the name of the Managed Integration Runtime. Changing this forces a new resource to be created. Must be globally unique. See the Microsoft documentation for all restrictions."
+}
+
+variable "runtime_virtual_network_enabled" {
+  type        = bool
+  default     = true
+  description = "Is Integration Runtime compute provisioned within Managed Virtual Network? Changing this forces a new resource to be created."
+}
+
+
 ###########################
 # Global parameter  for ADF SETTINGS
 ##########################
