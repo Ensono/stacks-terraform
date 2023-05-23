@@ -99,6 +99,7 @@ No modules.
 | <a name="input_network_acl_default_action"></a> [network\_acl\_default\_action](#input\_network\_acl\_default\_action) | he Name of the SKU used for this Key Vault. Possible values are standard and premium | `string` | `"Deny"` | no |
 | <a name="input_network_acls_bypass"></a> [network\_acls\_bypass](#input\_network\_acls\_bypass) | Specifies which traffic can bypass the network rules. Possible values are AzureServices and None | `string` | `"AzureServices"` | no |
 | <a name="input_network_acls_ip_rules"></a> [network\_acls\_ip\_rules](#input\_network\_acls\_ip\_rules) | The Default Action to use when no rules match from ip\_rules / virtual\_network\_subnet\_ids. Possible values are Allow and Deny | `list(string)` | `[]` | no |
+| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Allow public network access to Key Vault. Set as true or false. | `bool` | `true` | no |
 | <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | Is Purge Protection enabled for this Key Vault | `bool` | `false` | no |
 | <a name="input_reader_object_ids"></a> [reader\_object\_ids](#input\_reader\_object\_ids) | A list of Azure active directory user,group or application object ID's that will have reader role to the key vault | `list(string)` | `[]` | no |
 | <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of Resource group | `string` | `"uksouth"` | no |
