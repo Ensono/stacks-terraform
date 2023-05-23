@@ -138,6 +138,13 @@ variable "cert_name" {
   default     = "sample.cert.pfx"
   description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
 }
+
+variable "create_cert" {
+  type        = bool
+  default     = true
+  description = "States if s certificate should be created or not. Usueful to turn off if existing DNS is not ready."
+}
+
 ###########################
 # MISC SETTINGS
 ##########################
