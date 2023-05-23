@@ -89,7 +89,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_adf_idenity"></a> [adf\_idenity](#input\_adf\_idenity) | Enable identity block in module. | `bool` | `true` | no |
-| <a name="input_adf_runtime_name"></a> [adf\_runtime\_name](#input\_adf\_runtime\_name) | Specifies the name of the Managed Integration Runtime. Changing this forces a new resource to be created. Must be globally unique. See the Microsoft documentation for all restrictions. | `string` | `"adf-managed-vnet-runtime"` | no |
+| <a name="input_adf_managed-vnet-runtime_name"></a> [adf\_managed-vnet-runtime\_name](#input\_adf\_managed-vnet-runtime\_name) | Specifies the name of the Managed Integration Runtime. Changing this forces a new resource to be created. Must be globally unique. See the Microsoft documentation for all restrictions. | `string` | `"adf-managed-vnet-runtime"` | no |
 | <a name="input_branch_name"></a> [branch\_name](#input\_branch\_name) | Specifies repository branch to use as the collaboration branch. | `string` | `"main"` | no |
 | <a name="input_create_adf"></a> [create\_adf](#input\_create\_adf) | Set value whether to create a Data Factory or not. | `bool` | `true` | no |
 | <a name="input_git_integration"></a> [git\_integration](#input\_git\_integration) | Integrate a git repository with ADF. Can be null, github or vsts (use vsts for Azure DevOps Repos). | `string` | `"null"` | no |
