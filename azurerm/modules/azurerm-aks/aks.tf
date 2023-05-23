@@ -49,18 +49,14 @@ resource "azurerm_kubernetes_cluster" "default" {
     vnet_subnet_id      = azurerm_subnet.default.0.id
   }
 
-  http_application_routing_enabled = false
+  http_application_routing_enabled  = false
+  role_based_access_control_enabled = true
+  enable_pod_security_policy        = false
 
   oms_agent {
     # enabled                    = true
     log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
   }
-
-  role_based_access_control {
-    enabled = true
-  }
-
-  enable_pod_security_policy = false
 
   network_profile {
     network_plugin    = var.advanced_networking_enabled ? "azure" : "kubenet"
