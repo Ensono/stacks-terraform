@@ -19,9 +19,10 @@ output "subnets" {
   value = {
     for sub in azurerm_subnet.example :
     sub.name => ({
-      vnet_names       = sub.virtual_network_name
-      id               = sub.id
-      address_prefixes = sub.address_prefixes
+      vnet_names                 = sub.virtual_network_name
+      id                         = sub.id
+      address_prefixes           = sub.address_prefixes
+      subnet_resource_group_name = sub.resource_group_name
 
     })
 
@@ -33,8 +34,9 @@ output "vnets" {
   value = {
     for vnet in azurerm_virtual_network.example :
     vnet.name => ({
-      vnet_id            = vnet.id
-      vnet_address_space = vnet.address_space
+      vnet_id                  = vnet.id
+      vnet_address_space       = vnet.address_space
+      vnet_resource_group_name = vnet.resource_group_name
 
     })
 
