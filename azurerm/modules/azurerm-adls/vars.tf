@@ -105,7 +105,7 @@ variable "storage_account_details" {
   }
 }
 
-variable "enable_private_netowrk" {
+variable "enable_private_network" {
   type        = bool
   default     = false
   description = "Determines if the Key Vault will be created as part of the Secure Data Platform."

@@ -153,7 +153,7 @@ variable "public_network_access_enabled" {
   description = "Allow public network access to Key Vault. Set as true or false."
 }
 
-variable "enable_private_netowrk" {
+variable "enable_private_network" {
   type        = bool
   default     = false
   description = "Determines if the Key Vault will be created as part of the Secure Data Platform."
@@ -175,4 +175,10 @@ variable "private_dns_zone_ids" {
   type        = list(string)
   default     = []
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
+}
+
+variable "pe_subnet_id" {
+  type = string
+  default = ""
+  description = "ID for the Private Endpoint Subnet"
 }
