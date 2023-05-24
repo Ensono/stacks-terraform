@@ -139,10 +139,10 @@ variable "cert_name" {
   description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
 }
 
-variable "create_cert" {
+variable "create_valid_cert" {
   type        = bool
   default     = true
-  description = "States if s certificate should be created or not. Usueful to turn off if existing DNS is not ready."
+  description = "States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false)"
 }
 
 ###########################
