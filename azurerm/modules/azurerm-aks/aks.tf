@@ -37,7 +37,6 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    availability_zones  = ["1", "2", "3"]
     type                = var.nodepool_type # "VirtualMachineScaleSets" # default
     enable_auto_scaling = var.enable_auto_scaling
     max_count           = var.max_nodes
