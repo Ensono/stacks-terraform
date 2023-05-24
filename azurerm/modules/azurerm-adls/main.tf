@@ -61,14 +61,34 @@ resource "azurerm_role_assignment" "storage_role_context" {
 
 resource "null_resource" "sleep" {
   # Add sleep to allow network rules to propergate
-  # triggers = {
-  #   value = azurerm_storage_account.storage_account_default
-  # }
-
   provisioner "local-exec" {
     command = <<EOT
       sleep 30
     EOT
   }
   depends_on = [azurerm_storage_account.storage_account_default]
+}
+
+resource "azurerm_private_endpoint" "pe" {
+  for_each = {
+    for account_name, account_details in var.storage_account_details : account_name => account_details
+    if var.enable_private_network
+  }
+  name                          = "${var.resource_namer}${each.value.name}-pe"
+  resource_group_name           = var.resource_group_name
+  location                      = var.resource_group_location
+  subnet_id           = azurerm_subnet.endpoint-subnet.id
+
+  private_service_connection {
+    name                          = "${var.resource_namer}${each.value.name}-pe"
+    private_connection_resource_id = azurerm_storage_account.storage_account_default["${each.key}"].id
+    is_manual_connection           = var.is_manual_connection
+    subresource_names              = each.value.hns_enabled == true ? ["file"]: ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = var.private_dns_zone_name
+    private_dns_zone_ids = var.private_dns_zone_ids
+  }
+
 }
