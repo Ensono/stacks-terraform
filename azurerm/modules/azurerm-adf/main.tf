@@ -80,7 +80,7 @@ resource "azurerm_data_factory_integration_runtime_azure" "example" {
 resource "azapi_resource_action" "test" {
   count                   = var.managed_virtual_network_enabled ? 1 : 0
   type = "Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01"
-  resource_id = azurerm_data_factory_integration_runtime_azure.example.id
+  resource_id = azurerm_data_factory_integration_runtime_azure.example[0].id
   action = "enableInteractiveQuery"
   body = jsonencode({
     autoTerminationMinutes = 10
