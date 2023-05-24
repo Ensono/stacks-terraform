@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-     azapi = {
+    azapi = {
       source = "Azure/azapi"
     }
   }

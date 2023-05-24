@@ -154,25 +154,25 @@ variable "public_network_access_enabled" {
 }
 
 variable "enable_private_netowrk" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Determines if the Key Vault will be created as part of the Secure Data Platform."
 }
 
 variable "is_manual_connection" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
 }
 
 variable "private_dns_zone_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Specifies the Name of the Private DNS Zone Group."
 }
 
 variable "private_dns_zone_ids" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
 }

@@ -53,8 +53,8 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_role_assignment" "storage_role_context" {
-  for_each = var.storage_account_details
-  scope                =  azurerm_storage_account.storage_account_default[each.key].id
+  for_each             = var.storage_account_details
+  scope                = azurerm_storage_account.storage_account_default[each.key].id
   role_definition_name = "Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
 }
@@ -74,16 +74,16 @@ resource "azurerm_private_endpoint" "pe" {
     for account_name, account_details in var.storage_account_details : account_name => account_details
     if var.enable_private_network
   }
-  name                          = "${var.resource_namer}${each.value.name}-pe"
-  resource_group_name           = var.resource_group_name
-  location                      = var.resource_group_location
+  name                = "${var.resource_namer}${each.value.name}-pe"
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
   subnet_id           = azurerm_subnet.endpoint-subnet.id
 
   private_service_connection {
-    name                          = "${var.resource_namer}${each.value.name}-pe"
+    name                           = "${var.resource_namer}${each.value.name}-pe"
     private_connection_resource_id = azurerm_storage_account.storage_account_default["${each.key}"].id
     is_manual_connection           = var.is_manual_connection
-    subresource_names              = each.value.hns_enabled == true ? ["file"]: ["blob"]
+    subresource_names              = each.value.hns_enabled == true ? ["file"] : ["blob"]
   }
 
   private_dns_zone_group {
