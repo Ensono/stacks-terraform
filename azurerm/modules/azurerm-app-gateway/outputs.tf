@@ -27,6 +27,6 @@ output "certificate_pem" {
 
 output "issuer_pem" {
   description = "PEM key of certificate, can be used internally together certificate to create a full cert"
-  value       = var.create_valid_cert ? acme_certificate.default.0.issuer_pem : tls_self_signed_cert.self_cert.0.issuer_pem
+  value       = var.create_valid_cert ? acme_certificate.default.0.issuer_pem : ""
   sensitive   = true
 }
