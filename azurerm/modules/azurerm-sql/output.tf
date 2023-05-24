@@ -12,3 +12,9 @@ output "sql_server_name" {
   sensitive = true
   value     = azurerm_mssql_server.example.name
 }
+
+
+output "sql_server_id" {
+  sensitive = true
+  value     = azurerm_mssql_server.example.id
+}
