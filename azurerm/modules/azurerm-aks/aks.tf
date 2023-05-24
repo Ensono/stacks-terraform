@@ -50,7 +50,6 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   http_application_routing_enabled  = false
   role_based_access_control_enabled = true
-  enable_pod_security_policy        = false
 
   oms_agent {
     # enabled                    = true

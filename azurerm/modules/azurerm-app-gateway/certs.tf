@@ -19,7 +19,6 @@ resource "tls_cert_request" "req" {
 resource "tls_self_signed_cert" "self_cert" {
   count = var.create_valid_cert ? 0 : 1
 
-  key_algorithm   = "RSA"
   private_key_pem = tls_private_key.cert_private_key.private_key_pem
   dns_names       = ["*.${var.dns_zone}", var.dns_zone]
 
