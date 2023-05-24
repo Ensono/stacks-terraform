@@ -128,3 +128,9 @@ variable "private_dns_zone_ids" {
   default     = []
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
 }
+
+variable "pe_subnet_id" {
+  type = string
+  default = ""
+  description = "ID for the Private Endpoint Subnet"
+}

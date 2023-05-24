@@ -77,7 +77,7 @@ resource "azurerm_private_endpoint" "pe" {
   name                = "${var.resource_namer}${each.value.name}-pe"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
-  subnet_id           = azurerm_subnet.endpoint-subnet.id
+  subnet_id           = var.pe_subnet_id
 
   private_service_connection {
     name                           = "${var.resource_namer}${each.value.name}-pe"
