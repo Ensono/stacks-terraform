@@ -130,20 +130,20 @@ variable "private_dns_zone_ids" {
 }
 
 variable "pe_subnet_id" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "ID for the Private Endpoint Subnet"
 }
 
 variable "pe_resource_group_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name of the resource group to provision private endpoint in."
 }
 
 variable "pe_resource_group_location" {
-    type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Location of the resource group to provision private endpoint in."
 }
 
