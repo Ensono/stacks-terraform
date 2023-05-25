@@ -75,8 +75,8 @@ resource "azurerm_private_endpoint" "pe" {
     if var.enable_private_network
   }
   name                = "${var.resource_namer}${each.value.name}-pe"
-  resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  resource_group_name = var.pe_resource_group_name
+  location            = var.pe_resource_group_location
   subnet_id           = var.pe_subnet_id
 
   private_service_connection {
