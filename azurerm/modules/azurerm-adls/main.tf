@@ -83,7 +83,7 @@ resource "azurerm_private_endpoint" "pe" {
     name                           = "${var.resource_namer}${each.value.name}-pe"
     private_connection_resource_id = azurerm_storage_account.storage_account_default["${each.key}"].id
     is_manual_connection           = var.is_manual_connection
-    subresource_names              = each.value.hns_enabled == true ? ["file"] : ["blob"]
+    subresource_names              = each.value.hns_enabled == true ? ["Dfs"] : ["blob"]
   }
 
   private_dns_zone_group {
