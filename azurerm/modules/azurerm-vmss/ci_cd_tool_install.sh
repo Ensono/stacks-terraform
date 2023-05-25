@@ -4,7 +4,7 @@
 # Update the list of packages
 sudo apt-get update
 # Install pre-requisite packages.
-sudo apt-get install -y wget apt-transport-https software-properties-common ca-certificates curl gnupg build-essential
+sudo apt-get install -y wget apt-transport-https software-properties-common ca-certificates curl gnupg build-essential unzip
 # Download the Microsoft repository GPG keys
 wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
 # Register the Microsoft repository GPG keys
@@ -28,3 +28,4 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # Install Python 
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
+sudo pip install databricks-cli
