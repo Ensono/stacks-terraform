@@ -104,3 +104,46 @@ variable "storage_account_details" {
     },
   }
 }
+
+variable "enable_private_network" {
+  type        = bool
+  default     = false
+  description = "Determines if the Key Vault will be created as part of the Secure Data Platform."
+}
+
+variable "is_manual_connection" {
+  type        = bool
+  default     = false
+  description = "Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
+}
+
+variable "private_dns_zone_name" {
+  type        = string
+  default     = ""
+  description = "Specifies the Name of the Private DNS Zone Group."
+}
+
+variable "private_dns_zone_ids" {
+  type        = list(string)
+  default     = []
+  description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
+}
+
+variable "pe_subnet_id" {
+  type        = string
+  default     = ""
+  description = "ID for the Private Endpoint Subnet"
+}
+
+variable "pe_resource_group_name" {
+  type        = string
+  default     = ""
+  description = "Name of the resource group to provision private endpoint in."
+}
+
+variable "pe_resource_group_location" {
+  type        = string
+  default     = ""
+  description = "Location of the resource group to provision private endpoint in."
+}
+
