@@ -39,7 +39,6 @@ resource "azurerm_storage_container" "storage_container_blob" {
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 
-  # depends_on = [azurerm_storage_account.storage_account_default, null_resource.sleep]
   depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, data.azurerm_client_config.current, null_resource.sleep]
 }
 
@@ -48,7 +47,6 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
-  # depends_on = [azurerm_storage_account.storage_account_default, null_resource.sleep]
   depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, data.azurerm_client_config.current, null_resource.sleep]
 }
 
@@ -76,13 +74,13 @@ resource "azurerm_private_endpoint" "pe" {
     for account_name, account_details in var.storage_account_details : account_name => account_details
     if var.enable_private_network
   }
-  name                = "${var.resource_namer}${each.value.name}-pe"
+  name                = "${var.resource_namer}-storage-${each.value.name}-pe"
   resource_group_name = var.pe_resource_group_name
   location            = var.pe_resource_group_location
   subnet_id           = var.pe_subnet_id
 
   private_service_connection {
-    name                           = "${var.resource_namer}${each.value.name}-pe"
+    name                           = "${var.resource_namer}-storage-${each.value.name}-pe"
     private_connection_resource_id = azurerm_storage_account.storage_account_default["${each.key}"].id
     is_manual_connection           = var.is_manual_connection
     subresource_names              = each.value.hns_enabled == true ? ["dfs"] : ["blob"]

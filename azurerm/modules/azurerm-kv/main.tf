@@ -111,13 +111,13 @@ resource "azurerm_key_vault_access_policy" "reader_access_policy" {
 
 resource "azurerm_private_endpoint" "pe" {
   count               = var.enable_private_network ? 1 : 0
-  name                = "${azurerm_key_vault.example[0].name}-pe"
+  name                = "${azurerm_key_vault.example[0].name}-kv-pe"
   resource_group_name = var.pe_resource_group_name
   location            = var.pe_resource_group_location
   subnet_id           = var.pe_subnet_id
 
   private_service_connection {
-    name                           = "${azurerm_key_vault.example[0].name}-pe"
+    name                           = "${azurerm_key_vault.example[0].name}-kv-pe"
     is_manual_connection           = var.is_manual_connection
     private_connection_resource_id = azurerm_key_vault.example[0].id
     subresource_names              = ["vault"]
