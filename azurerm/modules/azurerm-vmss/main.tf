@@ -57,6 +57,27 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       "script" = base64encode(data.local_file.sh.content)
     })
   }
+
+  extension {
+    auto_upgrade_minor_version = false
+    automatic_upgrade_enabled  = false
+    name                       = "Microsoft.Azure.DevOps.Pipelines.Agent"
+    provision_after_extensions = [
+      "CustomScript",
+    ]
+    publisher = "Microsoft.VisualStudio.Services"
+    settings = jsonencode(
+      {
+        agentDownloadUrl        = "https://vstsagentpackage.azureedge.net/agent/3.220.2/vsts-agent-linux-x64-3.220.2.tar.gz"
+        agentFolder             = "/agent"
+        enableScriptDownloadUrl = "https://vstsagenttools.blob.core.windows.net/tools/ElasticPools/Linux/15/enableagent.sh"
+        isPipelinesAgent        = true
+      }
+    )
+    type                 = "TeamServicesAgentLinux"
+    type_handler_version = "1.23"
+  }
+
   lifecycle {
     ignore_changes = [
       tags,
