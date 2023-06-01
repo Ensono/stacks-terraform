@@ -29,3 +29,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
 sudo pip install databricks-cli
+
+# Install JDK 
+sudo apt-get update
+sudo apt-get install -y openjdk-11-jdk
