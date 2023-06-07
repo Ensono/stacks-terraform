@@ -1,9 +1,26 @@
 
 resource "azurerm_databricks_workspace" "example" {
-  name                = var.resource_namer
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-  sku                 = var.databricks_sku
+  name                                  = var.resource_namer
+  location                              = var.resource_group_location
+  resource_group_name                   = var.resource_group_name
+  sku                                   = var.databricks_sku
+  public_network_access_enabled         = var.enable_private_network ? false : true
+  network_security_group_rules_required = var.network_security_group_rules_required
+
+  dynamic "custom_parameters" {
+    for_each = var.enable_private_network == false ? toset([]) : toset([1])
+    content {
+      no_public_ip                                         = true
+      public_subnet_name                                   = data.azurerm_subnet.public.name
+      private_subnet_name                                  = data.azurerm_subnet.private.name
+      virtual_network_id                                   = data.azurerm_virtual_network.example.id
+      vnet_address_prefix                                  = var.vnet_address_prefix ? var.vnet_address_prefix : null
+      public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public.id
+      private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.public.id
+      nat_gateway_name                                     = var.nat_gateway_name ? var.nat_gateway_name : null
+      public_ip_name                                       = var.public_ip_name ? var.public_ip_name : null
+    }
+  }
 
 
   tags = var.resource_tags

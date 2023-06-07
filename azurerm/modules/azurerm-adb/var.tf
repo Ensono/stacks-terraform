@@ -72,6 +72,23 @@ variable "enable_enableDbfsFileBrowser" {
   default     = false
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Enables or Disabled Public Access to Databricks Workspace."
+}
+
+variable "network_security_group_rules_required" {
+  type        = string
+  default     = "NoAzureDatabricksRules"
+  description = " Does the data plane (clusters) to control plane communication happen over private link endpoint only or publicly? Possible values AllRules, NoAzureDatabricksRules or NoAzureServiceRules."
+}
+
+variable "enable_private_network" {
+  type        = bool
+  default     = false
+  description = "Enable Secure Data Platform."
+}
 
 ############################################
 # Resource Databricks user 
