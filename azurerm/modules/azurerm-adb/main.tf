@@ -17,8 +17,8 @@ resource "azurerm_databricks_workspace" "example" {
       vnet_address_prefix                                  = var.vnet_address_prefix ? var.vnet_address_prefix : null
       public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public.id
       private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.public.id
-      nat_gateway_name                                     = var.nat_gateway_name ? var.nat_gateway_name : null
-      public_ip_name                                       = var.public_ip_name ? var.public_ip_name : null
+      nat_gateway_name                                     = azurerm_nat_gateway.nat.name
+      public_ip_name                                       = azurerm_public_ip.pip.name
     }
   }
 
