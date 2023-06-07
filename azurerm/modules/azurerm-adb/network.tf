@@ -41,8 +41,8 @@ resource "azurerm_private_endpoint" "databricks" {
 }
 
 resource "azurerm_private_dns_zone" "dns" {
-  count      = var.enable_private_network ? 1 : 0
-  depends_on = [azurerm_private_endpoint.databricks]
+  count               = var.enable_private_network ? 1 : 0
+  depends_on          = [azurerm_private_endpoint.databricks]
   name                = "privatelink.azuredatabricks.net"
   resource_group_name = var.resource_group_name
 }
@@ -54,4 +54,42 @@ resource "azurerm_private_dns_cname_record" "cname" {
   resource_group_name = var.resource_group_name
   ttl                 = 300
   record              = "eastus1-c2.azuredatabricks.net"
+}
+
+
+############################################
+# NAT GATEWAY
+############################################
+
+
+resource "azurerm_public_ip" "pip" {
+  count               = var.enable_private_network ? 1 : 0
+  name                = local.public_ip_name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = ["1", "2", "3"]
+}
+
+resource "azurerm_nat_gateway" "nat" {
+  count                   = var.enable_private_network ? 1 : 0
+  name                    = local.nat_gatewat_name
+  location                = var.resource_group_location
+  resource_group_name     = var.resource_group_name
+  sku_name                = "Standard"
+  idle_timeout_in_minutes = 10
+  zones                   = ["1", "2", "3"]
+}
+
+resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
+  count                = var.enable_private_network ? 1 : 0
+  nat_gateway_id       = azurerm_nat_gateway.nat.id
+  public_ip_address_id = azurerm_public_ip.pip.id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "subnet_nat" {
+  count          = var.enable_private_network ? 1 : 0
+  subnet_id      = data.azurerm_subnet.subnet.id
+  nat_gateway_id = azurerm_nat_gateway.nat.id
 }
