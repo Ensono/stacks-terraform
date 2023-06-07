@@ -6,14 +6,14 @@ data "azurerm_virtual_network" "vnet" {
 
 data "azurerm_subnet" "public_subnet" {
   count                = var.enable_private_network ? 1 : 0
-  name                 = var.subnet_name
+  name                 = var.public_subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.vnet_resource_group
 }
 
 data "azurerm_subnet" "private_subnet" {
   count                = var.enable_private_network ? 1 : 0
-  name                 = var.subnet_name
+  name                 = var.private_subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.vnet_resource_group
 }

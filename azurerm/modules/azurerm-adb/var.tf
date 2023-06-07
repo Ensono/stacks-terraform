@@ -133,3 +133,37 @@ variable "nat_idle_timeout" {
   default = 10
   description = "Idle timeout period in minutes."
 }
+
+############################################
+# Network Details
+############################################
+
+variable "vnet_name" {
+  type = string
+  default = ""
+  description = "Name of the VNET inwhich the Databricks Workspace will be provisioned."
+}
+
+variable "vnet_name_resource_group" {
+    type = string
+  default = ""
+  description = "The Resource Group which the VNET is provisioned."
+}
+
+variable "public_subnet_name" {
+    type = string
+  default = ""
+  description = "Name of the Public Databricks Subnet."
+}
+
+variable "private_subnet_name" {
+    type = string
+  default = ""
+  description = "Name of the Private Databricks Subnet."
+}
+
+variable "vnet_address_prefix" {
+  type = string
+  default = "10.139"
+  description = "Address Prefix of the VNET."
+}
