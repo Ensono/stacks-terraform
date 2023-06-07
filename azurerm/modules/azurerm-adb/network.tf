@@ -78,7 +78,7 @@ resource "azurerm_nat_gateway" "nat" {
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
-  idle_timeout_in_minutes = 10
+  idle_timeout_in_minutes = var.nat_idle_timeout
   zones                   = ["1", "2", "3"]
 }
 

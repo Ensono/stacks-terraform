@@ -127,3 +127,9 @@ variable "enable_sql_access" {
   description = "Whether to enable sql access for the databricks group"
   default     = true
 }
+
+variable "nat_idle_timeout" {
+  type = number
+  default = 10
+  description = "Idle timeout period in minutes."
+}
