@@ -117,7 +117,7 @@ resource "azurerm_public_ip" "pip" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
-  zones               = ["1", "2", "3"]
+  zones               = ["1"]
 }
 
 resource "azurerm_nat_gateway" "nat" {
