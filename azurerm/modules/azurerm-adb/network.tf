@@ -6,7 +6,7 @@ resource "azurerm_subnet" "public_subnt" {
   count = var.enable_private_network == true && var.create_subnets == true ? 1 : 0
 
   name                 = var.public_subnet_name
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = var.vnet_resource_group
   virtual_network_name = var.vnet_name
   address_prefixes     = var.public_subnet_prefix
 
@@ -28,7 +28,7 @@ resource "azurerm_subnet" "private_subnet" {
   count = var.enable_private_network == true && var.create_subnets == true ? 1 : 0
 
   name                 = var.private_subnet_name
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = var.vnet_resource_group
   virtual_network_name = var.vnet_name
   address_prefixes     = var.private_subnet_prefix
 

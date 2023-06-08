@@ -150,7 +150,7 @@ variable "vnet_name" {
   description = "Name of the VNET inwhich the Databricks Workspace will be provisioned."
 }
 
-variable "vnet_name_resource_group" {
+variable "vnet_resource_group" {
   type        = string
   default     = ""
   description = "The Resource Group which the VNET is provisioned."

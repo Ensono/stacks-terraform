@@ -1,7 +1,7 @@
 data "azurerm_virtual_network" "vnet" {
   count               = var.enable_private_network ? 1 : 0
   name                = var.vnet_name
-  resource_group_name = var.vnet_name_resource_group
+  resource_group_name = var.vnet_resource_group
 }
 
 data "azurerm_subnet" "public_subnet" {
