@@ -1,4 +1,52 @@
 ############################################
+# SUBNETS
+############################################
+
+resource "azurerm_subnet" "public_subnt" {
+  count = var.enable_private_network == true && var.create_subnets == true ? 1 : 0
+
+  name                 = var.public_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = var.vnet_name
+  address_prefixes     = var.public_subnet_prefix
+
+  delegation {
+    name = "${var.public_subnet_name}-databricks-del"
+
+    service_delegation {
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
+      name = "Microsoft.Databricks/workspaces"
+    }
+  }
+}
+
+resource "azurerm_subnet" "private_subnet" {
+  count = var.enable_private_network == true && var.create_subnets == true ? 1 : 0
+
+  name                 = var.private_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = var.vnet_name
+  address_prefixes     = var.private_subnet_prefix
+
+  delegation {
+    name = "${var.private_subnet_name}-databricks-del"
+
+    service_delegation {
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
+      name = "Microsoft.Databricks/workspaces"
+    }
+  }
+}
+
+############################################
 # NSG
 ############################################
 
@@ -11,13 +59,13 @@ resource "azurerm_network_security_group" "nsg" {
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = data.azurerm_subnet.private_subnet.id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet.id : data.azurerm_subnet.private_subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = data.azurerm_subnet.public_subnet.id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet.id : data.azurerm_subnet.public_subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -90,12 +138,12 @@ resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
 
 resource "azurerm_subnet_nat_gateway_association" "public_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
-  subnet_id      = data.azurerm_subnet.public_subnet.id
+  subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet.id : data.azurerm_subnet.public_subnet.id
   nat_gateway_id = azurerm_nat_gateway.nat.id
 }
 
 resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
-  subnet_id      = data.azurerm_subnet.private_subnet.id
+  subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet.id : data.azurerm_subnet.private_subnet.id
   nat_gateway_id = azurerm_nat_gateway.nat.id
 }

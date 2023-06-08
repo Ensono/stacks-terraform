@@ -138,6 +138,12 @@ variable "nat_idle_timeout" {
 # Network Details
 ############################################
 
+variable "create_subnets" {
+  type        = bool
+  default     = false
+  description = "Set to true if you need the module to create the subnets for you."
+}
+
 variable "vnet_name" {
   type        = string
   default     = ""
@@ -160,6 +166,19 @@ variable "private_subnet_name" {
   type        = string
   default     = ""
   description = "Name of the Private Databricks Subnet."
+}
+
+variable "public_subnet_prefix" {
+  type        = string
+  default     = ""
+  description = "IP Address Space fo the Public Databricks Subnet."
+}
+
+variable "private_subnet_prefix" {
+  type        = string
+  default     = ""
+  description = "IP Address Space fo the Private Databricks Subnet."
+
 }
 
 variable "pe_subnet_name" {
