@@ -127,7 +127,7 @@ resource "azurerm_nat_gateway" "nat" {
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
   idle_timeout_in_minutes = var.nat_idle_timeout
-  zones                   = ["1", "2", "3"]
+  zones                   = ["1"]
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
