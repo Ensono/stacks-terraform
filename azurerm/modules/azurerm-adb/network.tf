@@ -60,13 +60,13 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network ? 1 : 0
   subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
-  network_security_group_id = azurerm_network_security_group.nsg.id
+  network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
   count                     = var.enable_private_network ? 1 : 0
   subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
-  network_security_group_id = azurerm_network_security_group.nsg.id
+  network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
 ############################################
