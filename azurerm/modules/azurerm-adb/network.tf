@@ -98,7 +98,7 @@ resource "azurerm_private_dns_zone" "dns" {
 resource "azurerm_private_dns_cname_record" "cname" {
   count               = var.enable_private_network ? 1 : 0
   name                = azurerm_databricks_workspace.example.workspace_url
-  zone_name           = azurerm_private_dns_zone.dns.name
+  zone_name           = azurerm_private_dns_zone.dns[0].name
   resource_group_name = var.resource_group_name
   ttl                 = var.dns_record_ttl
   record              = "${var.resource_namer}.azuredatabricks.net"

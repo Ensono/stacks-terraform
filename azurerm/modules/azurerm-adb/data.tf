@@ -28,5 +28,5 @@ data "azurerm_subnet" "pe_subnet" {
 data "azurerm_databricks_workspace_private_endpoint_connection" "example" {
   count               = var.enable_private_network ? 1 : 0
   workspace_id        = azurerm_databricks_workspace.example.id
-  private_endpoint_id = azurerm_private_endpoint.databricks.id
+  private_endpoint_id = azurerm_private_endpoint[0].databricks.id
 }
