@@ -14,7 +14,7 @@ resource "azurerm_databricks_workspace" "example" {
       public_subnet_name                                   = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
       private_subnet_name                                  = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
       virtual_network_id                                   = data.azurerm_virtual_network.vnet[0].id
-      vnet_address_prefix                                  = var.vnet_address_prefix ? var.vnet_address_prefix : null
+      vnet_address_prefix                                  = var.vnet_address_prefix == "" ? null : var.vnet_address_prefix
       public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public[0].id
       private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.private[0].id
       nat_gateway_name                                     = azurerm_nat_gateway.nat[0].name

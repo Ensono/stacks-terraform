@@ -189,7 +189,7 @@ variable "pe_subnet_name" {
 
 variable "vnet_address_prefix" {
   type        = string
-  default     = "10.139"
+  default     = ""
   description = "Address Prefix of the VNET."
 }
 
