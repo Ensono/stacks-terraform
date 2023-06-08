@@ -132,18 +132,18 @@ resource "azurerm_nat_gateway" "nat" {
 
 resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
   count                = var.enable_private_network ? 1 : 0
-  nat_gateway_id       = azurerm_nat_gateway.nat.id
-  public_ip_address_id = azurerm_public_ip.pip.id
+  nat_gateway_id       = azurerm_nat_gateway.nat[0].id
+  public_ip_address_id = azurerm_public_ip.pip[0].id
 }
 
 resource "azurerm_subnet_nat_gateway_association" "public_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
   subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
-  nat_gateway_id = azurerm_nat_gateway.nat.id
+  nat_gateway_id = azurerm_nat_gateway.nat[0].id
 }
 
 resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
   subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
-  nat_gateway_id = azurerm_nat_gateway.nat.id
+  nat_gateway_id = azurerm_nat_gateway.nat[0].id
 }
