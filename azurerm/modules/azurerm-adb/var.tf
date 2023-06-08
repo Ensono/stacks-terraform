@@ -169,14 +169,14 @@ variable "private_subnet_name" {
 }
 
 variable "public_subnet_prefix" {
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
   description = "IP Address Space fo the Public Databricks Subnet."
 }
 
 variable "private_subnet_prefix" {
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
   description = "IP Address Space fo the Private Databricks Subnet."
 
 }
