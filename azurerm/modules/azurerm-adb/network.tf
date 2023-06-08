@@ -2,7 +2,7 @@
 # SUBNETS
 ############################################
 
-resource "azurerm_subnet" "public_subnt" {
+resource "azurerm_subnet" "public_subnet" {
   count = var.enable_private_network == true && var.create_subnets == true ? 1 : 0
 
   name                 = var.public_subnet_name
