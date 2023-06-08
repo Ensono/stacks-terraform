@@ -59,13 +59,13 @@ resource "azurerm_network_security_group" "nsg" {
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet.id : data.azurerm_subnet.private_subnet.id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet.id : data.azurerm_subnet.public_subnet.id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -138,12 +138,12 @@ resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
 
 resource "azurerm_subnet_nat_gateway_association" "public_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet.id : data.azurerm_subnet.public_subnet.id
+  subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
   nat_gateway_id = azurerm_nat_gateway.nat.id
 }
 
 resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet.id : data.azurerm_subnet.private_subnet.id
+  subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
   nat_gateway_id = azurerm_nat_gateway.nat.id
 }
