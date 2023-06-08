@@ -88,8 +88,14 @@ resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
   public_ip_address_id = azurerm_public_ip.pip.id
 }
 
-resource "azurerm_subnet_nat_gateway_association" "subnet_nat" {
+resource "azurerm_subnet_nat_gateway_association" "public_subnet_nat" {
   count          = var.enable_private_network ? 1 : 0
-  subnet_id      = data.azurerm_subnet.subnet.id
+  subnet_id      = data.azurerm_subnet.public_subnet.id
+  nat_gateway_id = azurerm_nat_gateway.nat.id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
+  count          = var.enable_private_network ? 1 : 0
+  subnet_id      = data.azurerm_subnet.private_subnet.id
   nat_gateway_id = azurerm_nat_gateway.nat.id
 }
