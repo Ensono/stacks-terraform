@@ -9,6 +9,7 @@ resource "azurerm_subnet" "public_subnet" {
   resource_group_name  = var.vnet_resource_group
   virtual_network_name = var.vnet_name
   address_prefixes     = var.public_subnet_prefix
+  service_endpoints    = var.service_endpoints
 
   delegation {
     name = "${var.public_subnet_name}-databricks-del"
@@ -31,6 +32,7 @@ resource "azurerm_subnet" "private_subnet" {
   resource_group_name  = var.vnet_resource_group
   virtual_network_name = var.vnet_name
   address_prefixes     = var.private_subnet_prefix
+  service_endpoints    = var.service_endpoints
 
   delegation {
     name = "${var.private_subnet_name}-databricks-del"

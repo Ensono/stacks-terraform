@@ -198,3 +198,9 @@ variable "dns_record_ttl" {
   default     = 300
   description = "TTL for DNS Record."
 }
+
+variable "service_endpoints" {
+  type        = list(string)
+  default     = ["Microsoft.AzureActiveDirectory", "Microsoft.KeyVault", "Microsoft.ServiceBus", "Microsoft.Sql", "Microsoft.Storage"]
+  description = "List of Service Endpoints Enabled on the Subnet."
+}
