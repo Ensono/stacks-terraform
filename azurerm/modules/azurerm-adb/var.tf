@@ -129,8 +129,8 @@ variable "enable_sql_access" {
 }
 
 variable "nat_idle_timeout" {
-  type = number
-  default = 10
+  type        = number
+  default     = 10
   description = "Idle timeout period in minutes."
 }
 
@@ -139,31 +139,43 @@ variable "nat_idle_timeout" {
 ############################################
 
 variable "vnet_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name of the VNET inwhich the Databricks Workspace will be provisioned."
 }
 
 variable "vnet_name_resource_group" {
-    type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "The Resource Group which the VNET is provisioned."
 }
 
 variable "public_subnet_name" {
-    type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name of the Public Databricks Subnet."
 }
 
 variable "private_subnet_name" {
-    type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name of the Private Databricks Subnet."
 }
 
+variable "pe_subnet_name" {
+  type        = string
+  default     = ""
+  description = "Name of the Subnet used to provision Private Endpoints into."
+}
+
 variable "vnet_address_prefix" {
-  type = string
-  default = "10.139"
+  type        = string
+  default     = "10.139"
   description = "Address Prefix of the VNET."
+}
+
+variable "dns_record_ttl" {
+  type        = number
+  default     = 300
+  description = "TTL for DNS Record."
 }

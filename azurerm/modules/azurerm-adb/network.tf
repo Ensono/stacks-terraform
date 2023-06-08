@@ -4,20 +4,20 @@
 
 resource "azurerm_network_security_group" "nsg" {
   count               = var.enable_private_network ? 1 : 0
-  name                = "${var.prefix}-nsg-databricks"
+  name                = "${var.resource_namer}-nsg-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = azurerm_subnet.private.id
+  subnet_id                 = data.azurerm_subnet.private_subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
   count                     = var.enable_private_network ? 1 : 0
-  subnet_id                 = azurerm_subnet.public.id
+  subnet_id                 = data.azurerm_subnet.public_subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -27,13 +27,13 @@ resource "azurerm_subnet_network_security_group_association" "public" {
 
 resource "azurerm_private_endpoint" "databricks" {
   count               = var.enable_private_network ? 1 : 0
-  name                = "${var.prefix}-pe-databricks"
+  name                = "${var.resource_namer}-pe-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subnet_id           = azurerm_subnet.endpoint.id
+  subnet_id           = data.azurerm_subnet.pe_subnet.id
 
   private_service_connection {
-    name                           = "${var.prefix}-psc"
+    name                           = "${var.resource_namer}-psc"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_databricks_workspace.example.id
     subresource_names              = ["databricks_ui_api"]
@@ -50,10 +50,10 @@ resource "azurerm_private_dns_zone" "dns" {
 resource "azurerm_private_dns_cname_record" "cname" {
   count               = var.enable_private_network ? 1 : 0
   name                = azurerm_databricks_workspace.example.workspace_url
-  zone_name           = azurerm_private_dns_zone.example.name
+  zone_name           = azurerm_private_dns_zone.dns.name
   resource_group_name = var.resource_group_name
-  ttl                 = 300
-  record              = "eastus1-c2.azuredatabricks.net"
+  ttl                 = var.dns_record_ttl
+  record              = "${var.resource_namer}.azuredatabricks.net"
 }
 
 
