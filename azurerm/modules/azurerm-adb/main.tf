@@ -30,7 +30,7 @@ resource "azurerm_databricks_workspace" "example" {
       tags,
     ]
   }
-  depends_on = [azurerm_subnet.public_subnet, azurerm_subnet.private_subnet, data.azurerm_subnet.public_subnet, data.azurerm_subnet.private_subnet]
+  depends_on = [azurerm_subnet.public_subnet, azurerm_subnet.private_subnet, data.azurerm_subnet.public_subnet, data.azurerm_subnet.private_subnet, azurerm_private_dns_zone.dns]
 }
 
 
