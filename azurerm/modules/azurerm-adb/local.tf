@@ -1,4 +1,5 @@
 locals {
   public_ip_name   = "${var.resource_namer}-pip"
-  nat_gatewat_name = "${var.resource_namer}-nat-gw"
+  nat_gateway_name = "${var.resource_namer}-nat-gw"
+  lb_name          = "${var.resource_namer}-lb"
 }

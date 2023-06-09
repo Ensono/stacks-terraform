@@ -4,7 +4,7 @@
 
 resource "azurerm_nat_gateway" "nat" {
   count                   = var.enable_private_network && var.create_nat ? 1 : 0
-  name                    = local.nat_gatewat_name
+  name                    = local.nat_gateway_name
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"

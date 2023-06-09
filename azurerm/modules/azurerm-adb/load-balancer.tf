@@ -1,9 +1,9 @@
 resource "azurerm_lb" "lb" {
   count = var.enable_private_network && var.create_lb ? 1 : 0
 
-  name                = var.resource_namer
-  location                = var.resource_group_location
-  resource_group_name     = var.resource_group_name
+  name                = local.lb_name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 
   sku = "Standard"
 
