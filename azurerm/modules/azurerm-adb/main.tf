@@ -113,17 +113,17 @@ resource "azurerm_databricks_virtual_network_peering" "peering" {
   allow_virtual_network_access  = true
 }
 
-resource "azurerm_role_assignment" "network" {
-  scope                = data.azurerm_resource_group.vnet_rg[0].id
-  role_definition_name = "Network Contributor"
-  principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
-}
+# resource "azurerm_role_assignment" "network" {
+#   scope                = data.azurerm_resource_group.vnet_rg[0].id
+#   role_definition_name = "Network Contributor"
+#   principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
+# }
 
-resource "azurerm_role_assignment" "dns" {
-  scope                = azurerm_private_dns_zone.dns[0].id
-  role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
-}
+# resource "azurerm_role_assignment" "dns" {
+#   scope                = azurerm_private_dns_zone.dns[0].id
+#   role_definition_name = "Private DNS Zone Contributor"
+#   principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
+# }
 
 # resource "azurerm_role_assignment" "network_db" {
 #   scope                = data.databricks_current_user.db[0].external_id
