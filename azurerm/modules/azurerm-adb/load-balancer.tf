@@ -17,7 +17,6 @@ resource "azurerm_lb_outbound_rule" "lb_rule" {
   count = var.enable_private_network && var.create_lb ? 1 : 0
 
   name                = "Databricks-LB-Outbound-Rules"
-  resource_group_name = var.resource_group_name
 
   loadbalancer_id          = azurerm_lb.lb[0].id
   protocol                 = "All"
