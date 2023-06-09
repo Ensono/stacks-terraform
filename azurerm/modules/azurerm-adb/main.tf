@@ -102,3 +102,15 @@ resource "databricks_group_member" "project_users" {
   group_id  = databricks_group.project_users[0].id
   member_id = each.value.id
 }
+
+resource "azurerm_role_assignment" "network" {
+  scope                = data.azurerm_resource_group.vnet_rg.id
+  role_definition_name = "Network Contributor"
+  principal_id         = data.azurerm_client_config.current.client_id
+}
+
+resource "azurerm_role_assignment" "dns" {
+  scope                = azurerm_private_dns_zone.dns.id
+  role_definition_name = "Private DNS Zone Contributor"
+  principal_id         = data.azurerm_client_config.current.client_id
+}
