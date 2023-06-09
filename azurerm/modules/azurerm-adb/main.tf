@@ -108,8 +108,8 @@ resource "azurerm_databricks_virtual_network_peering" "peering" {
   resource_group_name = var.resource_group_name
   workspace_id        = azurerm_databricks_workspace.example.id
 
-  remote_address_space_prefixes = data.azurerm_virtual_network.vnet.address_space
-  remote_virtual_network_id     = data.azurerm_virtual_network.vnet.id
+  remote_address_space_prefixes = data.azurerm_virtual_network.vnet[0].address_space
+  remote_virtual_network_id     = data.azurerm_virtual_network.vnet[0].id
   allow_virtual_network_access  = true
 }
 
