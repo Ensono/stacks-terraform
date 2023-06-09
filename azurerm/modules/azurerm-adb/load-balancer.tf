@@ -28,7 +28,7 @@ resource "azurerm_lb_outbound_rule" "lb_rule" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.lb_be_pool[0].id
 
   frontend_ip_configuration {
-    name = azurerm_lb.lb.frontend_ip_configuration.0.name
+    name = azurerm_lb.lb[0].frontend_ip_configuration[0].name
   }
 }
 
