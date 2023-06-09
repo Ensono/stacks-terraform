@@ -149,39 +149,3 @@ resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
   subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
   nat_gateway_id = azurerm_nat_gateway.nat[0].id
 }
-
-############################################
-# ROUTE TABLES
-############################################
-
-resource "azurerm_route_table" "adb-route-table" {
-  count               = var.enable_private_network ? 1 : 0
-  name                = var.resource_namer
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-
-  route {
-    name                   = "to-nat"
-    address_prefix         = "0.0.0.0/0"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_public_ip.pip[0].ip_address
-  }
-
-  route {
-    name           = "to-scc-relay"
-    address_prefix = "${azurerm_public_ip.pip[0].ip_address}/31"
-    next_hop_type  = "Internet"
-  }
-}
-
-resource "azurerm_subnet_route_table_association" "adb-pubic-rt-assocation" {
-  count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
-  route_table_id = azurerm_route_table.adb-route-table[0].id
-}
-
-resource "azurerm_subnet_route_table_association" "adb-private-rt-assocation" {
-  count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
-  route_table_id = azurerm_route_table.adb-route-table[0].id
-}
