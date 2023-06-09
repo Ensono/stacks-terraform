@@ -1,5 +1,10 @@
 data "azurerm_client_config" "current" {}
 
+data "databricks_current_user" "db" {
+  count      = var.enable_private_network ? 1 : 0
+  depends_on = [azurerm_databricks_workspace.example]
+}
+
 data "azurerm_resource_group" "vnet_rg" {
   count = var.enable_private_network ? 1 : 0
   name  = var.vnet_resource_group

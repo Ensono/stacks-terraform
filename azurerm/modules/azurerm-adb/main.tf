@@ -114,3 +114,15 @@ resource "azurerm_role_assignment" "dns" {
   role_definition_name = "Private DNS Zone Contributor"
   principal_id         = data.azurerm_client_config.current.client_id
 }
+
+resource "azurerm_role_assignment" "network" {
+  scope                = data.databricks_current_user.db[0].external_id
+  role_definition_name = "Network Contributor"
+  principal_id         = data.azurerm_client_config.current.client_id
+}
+
+resource "azurerm_role_assignment" "dns" {
+  scope                = data.databricks_current_user.db[0].external_id
+  role_definition_name = "Private DNS Zone Contributor"
+  principal_id         = data.azurerm_client_config.current.client_id
+}
