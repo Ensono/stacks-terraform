@@ -103,26 +103,36 @@ resource "databricks_group_member" "project_users" {
   member_id = each.value.id
 }
 
-resource "azurerm_role_assignment" "network" {
-  scope                = data.azurerm_resource_group.vnet_rg[0].id
-  role_definition_name = "Network Contributor"
-  principal_id         = data.azurerm_client_config.current.client_id
+resource "azurerm_databricks_virtual_network_peering" "peering" {
+  name                = "databricks-vnet-peer"
+  resource_group_name = var.resource_group_name
+  workspace_id        = azurerm_databricks_workspace.example.id
+
+  remote_address_space_prefixes = data.azurerm_virtual_network.vnet.address_space
+  remote_virtual_network_id     = data.azurerm_virtual_network.vnet.id
+  allow_virtual_network_access  = true
 }
 
-resource "azurerm_role_assignment" "dns" {
-  scope                = azurerm_private_dns_zone.dns[0].id
-  role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = data.azurerm_client_config.current.client_id
-}
+# resource "azurerm_role_assignment" "network" {
+#   scope                = data.azurerm_resource_group.vnet_rg[0].id
+#   role_definition_name = "Network Contributor"
+#   principal_id         = data.azurerm_client_config.current.client_id
+# }
 
-resource "azurerm_role_assignment" "network_db" {
-  scope                = data.databricks_current_user.db[0].external_id
-  role_definition_name = "Network Contributor"
-  principal_id         = data.azurerm_client_config.current.client_id
-}
+# resource "azurerm_role_assignment" "dns" {
+#   scope                = azurerm_private_dns_zone.dns[0].id
+#   role_definition_name = "Private DNS Zone Contributor"
+#   principal_id         = data.azurerm_client_config.current.client_id
+# }
 
-resource "azurerm_role_assignment" "dns_db" {
-  scope                = data.databricks_current_user.db[0].external_id
-  role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = data.azurerm_client_config.current.client_id
-}
+# resource "azurerm_role_assignment" "network_db" {
+#   scope                = data.databricks_current_user.db[0].external_id
+#   role_definition_name = "Network Contributor"
+#   principal_id         = data.azurerm_client_config.current.client_id
+# }
+
+# resource "azurerm_role_assignment" "dns_db" {
+#   scope                = data.databricks_current_user.db[0].external_id
+#   role_definition_name = "Private DNS Zone Contributor"
+#   principal_id         = data.azurerm_client_config.current.client_id
+# }
