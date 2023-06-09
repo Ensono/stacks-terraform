@@ -204,3 +204,15 @@ variable "service_endpoints" {
   default     = ["Microsoft.AzureActiveDirectory", "Microsoft.KeyVault", "Microsoft.ServiceBus", "Microsoft.Sql", "Microsoft.Storage"]
   description = "List of Service Endpoints Enabled on the Subnet."
 }
+
+variable "create_nat" {
+  type        = bool
+  default     = false
+  description = "Deploy Databricks with a NAT Gateway."
+}
+
+variable "create_lb" {
+  type        = bool
+  default     = false
+  description = "Deploy Databricks with a Load Balancer."
+}

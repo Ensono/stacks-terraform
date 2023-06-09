@@ -106,12 +106,6 @@ resource "azurerm_private_dns_cname_record" "cname" {
   record              = "${var.resource_namer}.azuredatabricks.net"
 }
 
-
-############################################
-# NAT GATEWAY
-############################################
-
-
 resource "azurerm_public_ip" "pip" {
   count               = var.enable_private_network ? 1 : 0
   name                = local.public_ip_name
@@ -120,32 +114,4 @@ resource "azurerm_public_ip" "pip" {
   allocation_method   = "Static"
   sku                 = "Standard"
   zones               = ["1"]
-}
-
-resource "azurerm_nat_gateway" "nat" {
-  count                   = var.enable_private_network ? 1 : 0
-  name                    = local.nat_gatewat_name
-  location                = var.resource_group_location
-  resource_group_name     = var.resource_group_name
-  sku_name                = "Standard"
-  idle_timeout_in_minutes = var.nat_idle_timeout
-  zones                   = ["1"]
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "nat_ip" {
-  count                = var.enable_private_network ? 1 : 0
-  nat_gateway_id       = azurerm_nat_gateway.nat[0].id
-  public_ip_address_id = azurerm_public_ip.pip[0].id
-}
-
-resource "azurerm_subnet_nat_gateway_association" "public_subnet_nat" {
-  count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
-  nat_gateway_id = azurerm_nat_gateway.nat[0].id
-}
-
-resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
-  count          = var.enable_private_network ? 1 : 0
-  subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
-  nat_gateway_id = azurerm_nat_gateway.nat[0].id
 }
