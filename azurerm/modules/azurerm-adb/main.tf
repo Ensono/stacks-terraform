@@ -104,13 +104,13 @@ resource "databricks_group_member" "project_users" {
 }
 
 resource "azurerm_role_assignment" "network" {
-  scope                = data.azurerm_resource_group.vnet_rg.id
+  scope                = data.azurerm_resource_group.vnet_rg[0].id
   role_definition_name = "Network Contributor"
   principal_id         = data.azurerm_client_config.current.client_id
 }
 
 resource "azurerm_role_assignment" "dns" {
-  scope                = azurerm_private_dns_zone.dns.id
+  scope                = azurerm_private_dns_zone.dns[0].id
   role_definition_name = "Private DNS Zone Contributor"
   principal_id         = data.azurerm_client_config.current.client_id
 }

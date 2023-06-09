@@ -1,7 +1,8 @@
 data "azurerm_client_config" "current" {}
 
 data "azurerm_resource_group" "vnet_rg" {
-  name = var.vnet_resource_group
+  count = var.enable_private_network ? 1 : 0
+  name  = var.vnet_resource_group
 }
 
 data "azurerm_virtual_network" "vnet" {
