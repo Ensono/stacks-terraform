@@ -29,7 +29,7 @@ resource "azurerm_databricks_workspace" "example" {
       tags,
     ]
   }
-  depends_on = [azurerm_subnet.public_subnet, azurerm_subnet.private_subnet, data.azurerm_subnet.public_subnet, data.azurerm_subnet.private_subnet, azurerm_role_assignment.dns, azurerm_role_assignment.network]
+  depends_on = [azurerm_subnet.public_subnet, azurerm_subnet.private_subnet, data.azurerm_subnet.public_subnet, data.azurerm_subnet.private_subnet]
 }
 
 
