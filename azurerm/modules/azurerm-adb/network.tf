@@ -164,12 +164,12 @@ resource "azurerm_route_table" "adb-route-table" {
     name                   = "to-nat"
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_public_ip.pip[0].id
+    next_hop_in_ip_address = azurerm_public_ip.pip[0].ip_address
   }
 
   route {
     name           = "to-scc-relay"
-    address_prefix = azurerm_public_ip.pip[0].id
+    address_prefix = azurerm_public_ip.pip[0].ip_address
     next_hop_type  = "Internet"
   }
 }
