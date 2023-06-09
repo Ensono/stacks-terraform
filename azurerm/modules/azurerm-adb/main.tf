@@ -4,7 +4,8 @@ resource "azurerm_databricks_workspace" "example" {
   location                              = var.resource_group_location
   resource_group_name                   = var.resource_group_name
   sku                                   = var.databricks_sku
-  public_network_access_enabled         = var.enable_private_network ? false : true
+  # public_network_access_enabled         = var.enable_private_network ? false : true
+  public_network_access_enabled         = var.public_network_access_enabled
   network_security_group_rules_required = var.network_security_group_rules_required
   managed_resource_group_name           = "databricks-rg-${var.resource_group_name}"
 
