@@ -169,7 +169,7 @@ resource "azurerm_route_table" "adb-route-table" {
 
   route {
     name           = "to-scc-relay"
-    address_prefix = azurerm_public_ip.pip[0].ip_address
+    address_prefix = "${azurerm_public_ip.pip[0].ip_address}/31"
     next_hop_type  = "Internet"
   }
 }
