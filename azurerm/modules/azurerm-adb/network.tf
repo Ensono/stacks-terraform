@@ -3,7 +3,7 @@
 ############################################
 
 resource "azurerm_subnet" "public_subnet" {
-#   count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
+  count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
 
   name                 = var.public_subnet_name
   resource_group_name  = var.vnet_resource_group
@@ -26,7 +26,7 @@ resource "azurerm_subnet" "public_subnet" {
 }
 
 resource "azurerm_subnet" "private_subnet" {
-#   count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
+  count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
 
   name                 = var.private_subnet_name
   resource_group_name  = var.vnet_resource_group
@@ -53,40 +53,37 @@ resource "azurerm_subnet" "private_subnet" {
 ############################################
 
 resource "azurerm_network_security_group" "nsg" {
-  #   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                = "${var.resource_namer}-nsg-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_network_security_rule" "worker" {
-  #   count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  name                       = "DatabricksWorkerToWorker"
-  priority                   = 100
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "*"
-  source_port_range          = "*"
-  destination_port_range     = "*"
-  source_address_prefix      = "VirtualNetwork"
-  destination_address_prefix = "*"
-  resource_group_name        = var.resource_group_name
-  #   network_security_group_name = azurerm_network_security_group.nsg[0].name
-  network_security_group_name = azurerm_network_security_group.nsg.name
+  count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  name                        = "DatabricksWorkerToWorker"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg[0].name
 }
 
 resource "azurerm_subnet_network_security_group_association" "private" {
-  #   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  subnet_id = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
-  #   network_security_group_id = azurerm_network_security_group.nsg[0].id
-  network_security_group_id = azurerm_network_security_group.nsg.id
+  count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
+  network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
-  #   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
-  network_security_group_id = azurerm_network_security_group.nsg.id
-  # network_security_group_id = azurerm_network_security_group.nsg[0].id
+  network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
 ############################################
