@@ -216,3 +216,9 @@ variable "create_lb" {
   default     = false
   description = "Deploy Databricks with a Load Balancer."
 }
+
+variable "managed_vnet" {
+  type        = bool
+  default     = false
+  description = "Used to determine if Databricks is created in a managed vnet configuration."
+}

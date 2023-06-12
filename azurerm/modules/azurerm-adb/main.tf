@@ -5,7 +5,7 @@ resource "azurerm_databricks_workspace" "example" {
   resource_group_name                   = var.resource_group_name
   sku                                   = var.databricks_sku
   public_network_access_enabled         = var.public_network_access_enabled
-  # network_security_group_rules_required = var.network_security_group_rules_required
+  network_security_group_rules_required = var.managed_vnet ? null : var.network_security_group_rules_required
   managed_resource_group_name           = "databricks-rg-${var.resource_group_name}"
   load_balancer_backend_address_pool_id = var.create_lb ? azurerm_lb_backend_address_pool.lb_be_pool[0].id : null
 
@@ -13,14 +13,14 @@ resource "azurerm_databricks_workspace" "example" {
     for_each = var.enable_private_network == false ? toset([]) : toset([1])
     content {
       no_public_ip                                         = true
-      # public_subnet_name                                   = var.create_subnets ? azurerm_subnet.public_subnet[0].name : data.azurerm_subnet.public_subnet[0].name
-      # private_subnet_name                                  = var.create_subnets ? azurerm_subnet.private_subnet[0].name : data.azurerm_subnet.private_subnet[0].name
-      # virtual_network_id                                   = data.azurerm_virtual_network.vnet[0].id
-      # vnet_address_prefix                                  = var.vnet_address_prefix == "" ? null : var.vnet_address_prefix
-      # public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public[0].id
-      # private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.private[0].id
-      # nat_gateway_name                                     = var.create_nat ? azurerm_nat_gateway.nat[0].name : null
-      # public_ip_name                                       = azurerm_public_ip.pip[0].name
+      public_subnet_name                                   = var.managed_vnet ? null : (var.create_subnets ? azurerm_subnet.public_subnet[0].name : data.azurerm_subnet.public_subnet[0].name)
+      private_subnet_name                                  = var.managed_vnet ? null : (var.create_subnets ? azurerm_subnet.private_subnet[0].name : data.azurerm_subnet.private_subnet[0].name)
+      virtual_network_id                                   = var.managed_vnet ? null : data.azurerm_virtual_network.vnet[0].id
+      vnet_address_prefix                                  = var.managed_vnet ? null : (var.vnet_address_prefix == "" ? null : var.vnet_address_prefix)
+      public_subnet_network_security_group_association_id  = var.managed_vnet ? null : azurerm_subnet_network_security_group_association.public[0].id
+      private_subnet_network_security_group_association_id = var.managed_vnet ? null : azurerm_subnet_network_security_group_association.private[0].id
+      nat_gateway_name                                     = var.managed_vnet ? null : (var.create_nat ? azurerm_nat_gateway.nat[0].name : null)
+      public_ip_name                                       = var.managed_vnet ? null : azurerm_public_ip.pip[0].name
     }
   }
 

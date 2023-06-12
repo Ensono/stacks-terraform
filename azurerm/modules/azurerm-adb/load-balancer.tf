@@ -1,5 +1,5 @@
 resource "azurerm_lb" "lb" {
-  count = var.enable_private_network && var.create_lb ? 1 : 0
+  count = var.enable_private_network && var.create_lb && var.managed_vnet == false ? 1 : 0
 
   name                = local.lb_name
   location            = var.resource_group_location
@@ -14,9 +14,9 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_outbound_rule" "lb_rule" {
-  count = var.enable_private_network && var.create_lb ? 1 : 0
+  count = var.enable_private_network && var.create_lb && var.managed_vnet == false ? 1 : 0
 
-  name                = "Databricks-LB-Outbound-Rules"
+  name = "Databricks-LB-Outbound-Rules"
 
   loadbalancer_id          = azurerm_lb.lb[0].id
   protocol                 = "All"
@@ -32,7 +32,7 @@ resource "azurerm_lb_outbound_rule" "lb_rule" {
 }
 
 resource "azurerm_lb_backend_address_pool" "lb_be_pool" {
-  count           = var.enable_private_network && var.create_lb ? 1 : 0
+  count           = var.enable_private_network && var.create_lb && var.managed_vnet == false ? 1 : 0
   loadbalancer_id = azurerm_lb.lb[0].id
   name            = "Databricks-BE"
 }
