@@ -62,7 +62,7 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_network_security_rule" "worker" {
   count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                        = "DatabricksWorkerToWorker"
-  priority                    = 200
+  priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Any"
