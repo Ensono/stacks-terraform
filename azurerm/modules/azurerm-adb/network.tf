@@ -71,7 +71,7 @@ resource "azurerm_network_security_rule" "worker" {
   source_address_prefix       = "VirtualNetwork"
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.nsg.name
+  network_security_group_name = azurerm_network_security_group.nsg[0].name
 }
 
 resource "azurerm_subnet_network_security_group_association" "private" {
