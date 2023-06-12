@@ -48,6 +48,17 @@ resource "azurerm_subnet" "private_subnet" {
   }
 }
 
+resource "azurerm_subnet" "pe_subnet" {
+  count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
+
+  name                 = "private-endpoints"
+  resource_group_name  = var.vnet_resource_group
+  virtual_network_name = var.vnet_name
+  address_prefixes     = var.private_subnet_prefix
+}
+
+
+
 ############################################
 # NSG
 ############################################
@@ -90,36 +101,37 @@ resource "azurerm_subnet_network_security_group_association" "public" {
 # PRIVATE ENDPOINT
 ############################################
 
-# resource "azurerm_private_endpoint" "databricks" {
-#   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-#   name                = "${var.resource_namer}-pe-databricks"
-#   location            = var.resource_group_location
-#   resource_group_name = var.resource_group_name
+resource "azurerm_private_endpoint" "databricks" {
+  count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  name                = "${var.resource_namer}-pe-databricks"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
 #   subnet_id           = data.azurerm_subnet.pe_subnet[0].id
+  subnet_id           = azurerm_subnet.pe_subnet[0].id
 
-#   private_service_connection {
-#     name                           = "${var.resource_namer}-psc"
-#     is_manual_connection           = false
-#     private_connection_resource_id = azurerm_databricks_workspace.example.id
-#     subresource_names              = ["databricks_ui_api"]
-#   }
-# }
+  private_service_connection {
+    name                           = "${var.resource_namer}-psc"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_databricks_workspace.example.id
+    subresource_names              = ["databricks_ui_api"]
+  }
+}
 
-# resource "azurerm_private_dns_zone" "dns" {
-#   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-#   depends_on          = [azurerm_private_endpoint.databricks]
-#   name                = "privatelink.azuredatabricks.net"
-#   resource_group_name = var.resource_group_name
-# }
+resource "azurerm_private_dns_zone" "dns" {
+  count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  depends_on          = [azurerm_private_endpoint.databricks]
+  name                = "privatelink.azuredatabricks.net"
+  resource_group_name = var.resource_group_name
+}
 
-# resource "azurerm_private_dns_cname_record" "cname" {
-#   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-#   name                = azurerm_databricks_workspace.example.workspace_url
-#   zone_name           = azurerm_private_dns_zone.dns[0].name
-#   resource_group_name = var.resource_group_name
-#   ttl                 = var.dns_record_ttl
-#   record              = "${var.resource_namer}.azuredatabricks.net"
-# }
+resource "azurerm_private_dns_cname_record" "cname" {
+  count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  name                = azurerm_databricks_workspace.example.workspace_url
+  zone_name           = azurerm_private_dns_zone.dns[0].name
+  resource_group_name = var.resource_group_name
+  ttl                 = var.dns_record_ttl
+  record              = "${var.resource_namer}.azuredatabricks.net"
+}
 
 resource "azurerm_public_ip" "pip" {
   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
