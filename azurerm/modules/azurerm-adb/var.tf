@@ -222,3 +222,9 @@ variable "managed_vnet" {
   default     = false
   description = "Used to determine if Databricks is created in a managed vnet configuration."
 }
+
+variable "create_pip" {
+  type = bool
+  default = false
+  description = "Create Databricks with a Public IP."
+}

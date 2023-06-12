@@ -25,7 +25,7 @@ resource "azurerm_databricks_workspace" "example" {
       # public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public.id
       # private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.private.id
       nat_gateway_name = var.managed_vnet ? null : (var.create_nat ? azurerm_nat_gateway.nat[0].name : null)
-      public_ip_name   = var.managed_vnet ? null : azurerm_public_ip.pip[0].name
+      public_ip_name   = var.managed_vnet ? null : (var.create_nat ? azurerm_public_ip.pip[0].name : null)
     }
   }
 
