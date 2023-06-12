@@ -59,20 +59,20 @@ resource "azurerm_network_security_group" "nsg" {
   resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_network_security_rule" "worker" {
-  count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  name                        = "DatabricksWorkerToWorker"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "VirtualNetwork"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.nsg[0].name
-}
+# resource "azurerm_network_security_rule" "worker" {
+#   count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+#   name                        = "DatabricksWorkerToWorker"
+#   priority                    = 100
+#   direction                   = "Inbound"
+#   access                      = "Allow"
+#   protocol                    = "*"
+#   source_port_range           = "*"
+#   destination_port_range      = "*"
+#   source_address_prefix       = "VirtualNetwork"
+#   destination_address_prefix  = "*"
+#   resource_group_name         = var.resource_group_name
+#   network_security_group_name = azurerm_network_security_group.nsg[0].name
+# }
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
