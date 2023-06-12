@@ -12,14 +12,14 @@ resource "azurerm_databricks_workspace" "example" {
   dynamic "custom_parameters" {
     for_each = var.enable_private_network == false ? toset([]) : toset([1])
     content {
-      no_public_ip                                         = true
+      no_public_ip = true
       # public_subnet_name                                   = var.managed_vnet ? null : (var.create_subnets ? azurerm_subnet.public_subnet[0].name : data.azurerm_subnet.public_subnet[0].name)
       # private_subnet_name                                  = var.managed_vnet ? null : (var.create_subnets ? azurerm_subnet.private_subnet[0].name : data.azurerm_subnet.private_subnet[0].name)
-      public_subnet_name                                   = "databricks-public-test"
-      private_subnet_name                                  = "databricks-private-test"
+      public_subnet_name  = "databricks-public-test"
+      private_subnet_name = "databricks-private-test"
       # virtual_network_id                                   = var.managed_vnet ? null : data.azurerm_virtual_network.vnet[0].id
-      virtual_network_id                                   = data.azurerm_virtual_network.vnet[0].id
-      vnet_address_prefix                                  = var.managed_vnet ? null : (var.vnet_address_prefix == "" ? null : var.vnet_address_prefix)
+      virtual_network_id  = data.azurerm_virtual_network.vnet[0].id
+      vnet_address_prefix = var.managed_vnet ? null : (var.vnet_address_prefix == "" ? null : var.vnet_address_prefix)
       # public_subnet_network_security_group_association_id  = var.managed_vnet ? null : azurerm_subnet_network_security_group_association.public[0].id
       # private_subnet_network_security_group_association_id = var.managed_vnet ? null : azurerm_subnet_network_security_group_association.private[0].id
       public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.public.id
