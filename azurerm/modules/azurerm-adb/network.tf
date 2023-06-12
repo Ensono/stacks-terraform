@@ -54,7 +54,7 @@ resource "azurerm_subnet" "pe_subnet" {
   name                 = "private-endpoints"
   resource_group_name  = var.vnet_resource_group
   virtual_network_name = var.vnet_name
-  address_prefixes     = var.private_subnet_prefix
+  address_prefixes     = "10.12.2.0/24"
 }
 
 
