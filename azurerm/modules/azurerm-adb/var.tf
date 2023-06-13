@@ -181,6 +181,13 @@ variable "private_subnet_prefix" {
 
 }
 
+variable "pe_subnet_prefix" {
+  type        = list(string)
+  default     = []
+  description = "IP Address Space fo the Private Endpoints Databricks Subnet."
+
+}
+
 variable "pe_subnet_name" {
   type        = string
   default     = ""
