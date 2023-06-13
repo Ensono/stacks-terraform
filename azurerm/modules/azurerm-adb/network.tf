@@ -57,6 +57,14 @@ resource "azurerm_subnet" "pe_subnet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
+data "azurerm_subnet" "pe_subnet" {
+  count = var.enable_private_network == true && var.create_subnets == false && var.managed_vnet == false ? 1 : 0
+
+  name                                           = "private-endpoints"
+  resource_group_name                            = var.vnet_resource_group
+  virtual_network_name                           = var.vnet_name
+}
+
 ############################################
 # NSG
 ############################################
@@ -105,7 +113,7 @@ resource "azurerm_private_endpoint" "databricks" {
   name                = "${var.resource_namer}-pe-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subnet_id           = azurerm_subnet.pe_subnet[0].id
+  subnet_id           = var.create_subnets ? azurerm_subnet.pe_subnet[0].id : data.azurerm_subnet.pe_subnet[0].id
 
   private_service_connection {
     name                           = "${var.resource_namer}-db-pe"
