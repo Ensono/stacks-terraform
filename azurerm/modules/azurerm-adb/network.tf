@@ -50,7 +50,7 @@ resource "azurerm_subnet" "private_subnet" {
 resource "azurerm_subnet" "pe_subnet" {
   count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
 
-  name                                           = "private-endpoints"
+  name                                           = var.pe_subnet_name
   resource_group_name                            = var.vnet_resource_group
   virtual_network_name                           = var.vnet_name
   address_prefixes                               = var.pe_subnet_prefix
@@ -60,7 +60,7 @@ resource "azurerm_subnet" "pe_subnet" {
 data "azurerm_subnet" "pe_subnet" {
   count = var.enable_private_network == true && var.create_subnets == false && var.managed_vnet == false ? 1 : 0
 
-  name                                           = "private-endpoints"
+  name                                           = var.pe_subnet_name
   resource_group_name                            = var.vnet_resource_group
   virtual_network_name                           = var.vnet_name
 }
@@ -75,21 +75,6 @@ resource "azurerm_network_security_group" "nsg" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
 }
-
-# resource "azurerm_network_security_rule" "worker" {
-#   count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-#   name                        = "DatabricksWorkerToWorker"
-#   priority                    = 100
-#   direction                   = "Inbound"
-#   access                      = "Allow"
-#   protocol                    = "*"
-#   source_port_range           = "*"
-#   destination_port_range      = "*"
-#   source_address_prefix       = "VirtualNetwork"
-#   destination_address_prefix  = "*"
-#   resource_group_name         = var.resource_group_name
-#   network_security_group_name = azurerm_network_security_group.nsg[0].name
-# }
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
