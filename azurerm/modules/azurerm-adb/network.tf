@@ -109,7 +109,7 @@ resource "azurerm_private_endpoint" "databricks" {
   subnet_id           = azurerm_subnet.pe_subnet[0].id
 
   private_service_connection {
-    name                           = "${var.resource_namer}-db-uiapi"
+    name                           = "${var.resource_namer}-db-pe"
     private_connection_resource_id = azurerm_databricks_workspace.example.id
     is_manual_connection           = false
     subresource_names              = ["databricks_ui_api"]
