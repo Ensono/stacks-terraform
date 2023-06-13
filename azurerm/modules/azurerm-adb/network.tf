@@ -84,6 +84,37 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   network_security_group_name = azurerm_network_security_group.nsg[0].name
 }
 
+resource "azurerm_network_security_rule" "aad" {
+      count = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  name                        = "AllowAAD"
+  priority                    = 200
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "AzureActiveDirectory"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg[0].name
+}
+
+resource "azurerm_network_security_rule" "azfrontdoor" {
+    count = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  name                        = "AllowAzureFrontDoor"
+  priority                    = 201
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "AzureFrontDoor.Frontend"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg[0].name
+}
+
+
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
