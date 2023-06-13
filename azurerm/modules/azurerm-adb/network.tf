@@ -108,7 +108,7 @@ resource "azurerm_private_endpoint" "databricks" {
   }
 
   private_dns_zone_group {
-    name                 = "private-dns-zone-uiapi"
+    name                 = "databricks_ui_api"
     private_dns_zone_ids = [azurerm_private_dns_zone.dns[0].id]
   }
 }
@@ -130,7 +130,7 @@ resource "azurerm_private_dns_cname_record" "cname" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "uiapidnszonevnetlink" {
   count = var.enable_private_network == true && var.create_pe_subnet == true && var.managed_vnet == false ? 1 : 0
-  name                  = "db-dns-vnet-link"
+  name                  = var.resource_namer
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.dns[0].name
   virtual_network_id    = data.azurerm_virtual_network.vnet[0].id
