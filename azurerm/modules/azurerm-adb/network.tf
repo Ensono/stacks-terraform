@@ -57,13 +57,6 @@ resource "azurerm_subnet" "pe_subnet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
-data "azurerm_subnet" "pe_subnet" {
-  count = var.enable_private_network == true && var.create_pe_subnet == false && var.managed_vnet == false ? 1 : 0
-
-  name                 = var.pe_subnet_name
-  resource_group_name  = var.vnet_resource_group
-  virtual_network_name = var.vnet_name
-}
 
 ############################################
 # NSG
@@ -129,7 +122,7 @@ resource "azurerm_private_dns_cname_record" "cname" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "db_dns_vnet_link" {
-  count = var.enable_private_network == true && var.managed_vnet == false ? 1 : 0
+  count                 = var.enable_private_network == true && var.managed_vnet == false ? 1 : 0
   name                  = var.resource_namer
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.dns[0].name
