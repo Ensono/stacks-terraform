@@ -224,7 +224,7 @@ variable "managed_vnet" {
 }
 
 variable "create_pip" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Create Databricks with a Public IP."
 }

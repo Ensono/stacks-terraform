@@ -17,7 +17,7 @@ resource "azurerm_databricks_workspace" "example" {
       private_subnet_name = var.managed_vnet ? null : (var.create_subnets ? azurerm_subnet.private_subnet[0].name : data.azurerm_subnet.private_subnet[0].name)
       # public_subnet_name  = var.create_subnets ? azurerm_subnet.public_subnet[0].name : null
       # private_subnet_name = var.create_subnets ? azurerm_subnet.private_subnet[0].name : null
-      virtual_network_id                                   = var.managed_vnet ? null : data.azurerm_virtual_network.vnet[0].id
+      virtual_network_id = var.managed_vnet ? null : data.azurerm_virtual_network.vnet[0].id
       # virtual_network_id                                   = data.azurerm_virtual_network.vnet[0].id
       vnet_address_prefix                                  = var.managed_vnet ? null : (var.vnet_address_prefix == "" ? null : var.vnet_address_prefix)
       public_subnet_network_security_group_association_id  = var.managed_vnet ? null : azurerm_subnet_network_security_group_association.public[0].id
@@ -109,27 +109,3 @@ resource "databricks_group_member" "project_users" {
   group_id  = databricks_group.project_users[0].id
   member_id = each.value.id
 }
-
-# resource "azurerm_role_assignment" "network" {
-#   scope                = data.azurerm_resource_group.vnet_rg[0].id
-#   role_definition_name = "Network Contributor"
-#   principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
-# }
-
-# resource "azurerm_role_assignment" "dns" {
-#   scope                = azurerm_private_dns_zone.dns[0].id
-#   role_definition_name = "Private DNS Zone Contributor"
-#   principal_id         = "9a74af6f-d153-4348-988a-e2672920bee9"
-# }
-
-# resource "azurerm_role_assignment" "network_db" {
-#   scope                = data.databricks_current_user.db[0].external_id
-#   role_definition_name = "Network Contributor"
-#   principal_id         = data.azurerm_client_config.current.client_id
-# }
-
-# resource "azurerm_role_assignment" "dns_db" {
-#   scope                = data.databricks_current_user.db[0].external_id
-#   role_definition_name = "Private DNS Zone Contributor"
-#   principal_id         = data.azurerm_client_config.current.client_id
-# }
