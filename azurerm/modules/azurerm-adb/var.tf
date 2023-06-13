@@ -144,6 +144,12 @@ variable "create_subnets" {
   description = "Set to true if you need the module to create the subnets for you."
 }
 
+variable "create_pe_subnet" {
+  type        = bool
+  default     = false
+  description = "Set to true if you need the module to create the private endpoint subnet."
+}
+
 variable "vnet_name" {
   type        = string
   default     = ""

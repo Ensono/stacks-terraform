@@ -48,7 +48,7 @@ resource "azurerm_subnet" "private_subnet" {
 }
 
 resource "azurerm_subnet" "pe_subnet" {
-  count = var.enable_private_network == true && var.create_subnets == true && var.managed_vnet == false ? 1 : 0
+  count = var.enable_private_network == true && var.create_pe_subnet == true && var.managed_vnet == false ? 1 : 0
 
   name                                           = var.pe_subnet_name
   resource_group_name                            = var.vnet_resource_group
@@ -58,11 +58,11 @@ resource "azurerm_subnet" "pe_subnet" {
 }
 
 data "azurerm_subnet" "pe_subnet" {
-  count = var.enable_private_network == true && var.create_subnets == false && var.managed_vnet == false ? 1 : 0
+  count = var.enable_private_network == true && var.create_pe_subnet == false && var.managed_vnet == false ? 1 : 0
 
-  name                                           = var.pe_subnet_name
-  resource_group_name                            = var.vnet_resource_group
-  virtual_network_name                           = var.vnet_name
+  name                 = var.pe_subnet_name
+  resource_group_name  = var.vnet_resource_group
+  virtual_network_name = var.vnet_name
 }
 
 ############################################
