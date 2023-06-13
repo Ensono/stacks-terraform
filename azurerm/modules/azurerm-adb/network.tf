@@ -98,7 +98,7 @@ resource "azurerm_private_endpoint" "databricks" {
   name                = "${var.resource_namer}-pe-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.create_subnets ? azurerm_subnet.pe_subnet[0].id : data.azurerm_subnet.pe_subnet[0].id
+  subnet_id           = var.create_pe_subnet ? azurerm_subnet.pe_subnet[0].id : data.azurerm_subnet.pe_subnet[0].id
 
   private_service_connection {
     name                           = "${var.resource_namer}-db-pe"
