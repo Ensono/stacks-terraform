@@ -128,7 +128,7 @@ resource "azurerm_private_dns_cname_record" "cname" {
   record              = "${var.resource_namer}.azuredatabricks.net"
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "uiapidnszonevnetlink" {
+resource "azurerm_private_dns_zone_virtual_network_link" "db_dns_vnet_link" {
   count = var.enable_private_network == true && var.managed_vnet == false ? 1 : 0
   name                  = var.resource_namer
   resource_group_name   = var.resource_group_name
