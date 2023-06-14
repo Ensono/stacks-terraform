@@ -70,7 +70,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_network_security_rule" "nsg_rule" {
-  count = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                        = "adf-db-inbound"
   priority                    = 200
   direction                   = "Inbound"
@@ -85,7 +85,7 @@ resource "azurerm_network_security_rule" "nsg_rule" {
 }
 
 resource "azurerm_network_security_rule" "aad" {
-      count = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                        = "AllowAAD"
   priority                    = 200
   direction                   = "Outbound"
@@ -100,7 +100,7 @@ resource "azurerm_network_security_rule" "aad" {
 }
 
 resource "azurerm_network_security_rule" "azfrontdoor" {
-    count = var.enable_private_network && var.managed_vnet == false ? 1 : 0
+  count                       = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                        = "AllowAzureFrontDoor"
   priority                    = 201
   direction                   = "Outbound"
@@ -151,7 +151,7 @@ resource "azurerm_private_endpoint" "databricks" {
     private_dns_zone_ids = [azurerm_private_dns_zone.dns[0].id]
   }
 
-  depends_on = [ azurerm_private_dns_zone.dns ]
+  depends_on = [azurerm_databricks_workspace.example, azurerm_private_dns_zone.dns]
 }
 
 resource "azurerm_private_dns_zone" "dns" {
