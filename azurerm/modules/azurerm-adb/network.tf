@@ -150,6 +150,8 @@ resource "azurerm_private_endpoint" "databricks" {
     name                 = "databricks_ui_api"
     private_dns_zone_ids = [azurerm_private_dns_zone.dns[0].id]
   }
+
+  depends_on = [ azurerm_private_dns_zone.dns ]
 }
 
 resource "azurerm_private_dns_zone" "dns" {
