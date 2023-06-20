@@ -15,7 +15,7 @@ rm packages-microsoft-prod.deb
 sudo apt-get update
 # Install Docker
 #sudo apt-get update
-curl -sL https://test.docker.com | sudo bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 # Install PowerShell
 sudo apt-get install -y powershell
 # Install Modules
