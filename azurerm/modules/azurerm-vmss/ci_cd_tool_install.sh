@@ -14,8 +14,7 @@ rm packages-microsoft-prod.deb
 # Update the list of packages after we added packages.microsoft.com
 sudo apt-get update
 # Install Docker
-#curl -sL https://test.docker.com   | sudo bash
-#sleep 60
+curl -sL https://test.docker.com | sudo bash
 # Install PowerShell
 sudo apt-get install -y powershell
 # Install Modules
