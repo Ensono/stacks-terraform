@@ -19,9 +19,9 @@ curl -sL https://test.docker.com | sudo bash
 # Install PowerShell
 sudo apt-get install -y powershell
 # Install Modules
-pwsh -NoProfile -Command "Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force"
-pwsh -NoProfile -Command "Install-Module -Name Az.Accounts -Scope AllUsers -Force"
-pwsh -NoProfile -Command "Install-Module -Name Az.DataFactory -Scope AllUsers -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az.Accounts -Scope AllUsers -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az.DataFactory -Scope AllUsers -Force"
 # Start PowerShell
 pwsh
 
