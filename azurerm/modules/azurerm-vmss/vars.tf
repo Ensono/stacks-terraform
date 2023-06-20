@@ -72,7 +72,7 @@ variable "location_name_map" {
 
 variable "vmss_sku" {
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_B4ms"
   description = "VM Size"
 }
 
@@ -141,5 +141,3 @@ variable "overprovision" {
   default     = false
   description = "Bool to set overprovisioning."
 }
-
-
