@@ -78,9 +78,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
 resource "databricks_workspace_conf" "this" {
   count = var.enable_enableDbfsFileBrowser ? 1 : 0
   custom_config = {
-
-    "enableDbfsFileBrowser" : "true"
-
+    "enableDbfsFileBrowser" : true
   }
   depends_on = [azurerm_databricks_workspace.example]
 }
