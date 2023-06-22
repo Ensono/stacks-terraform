@@ -12,13 +12,17 @@ sudo dpkg -i packages-microsoft-prod.deb
 # Delete the the Microsoft repository GPG keys file
 rm packages-microsoft-prod.deb
 # Update the list of packages after we added packages.microsoft.com
-sudo apt-get update
+sudo curl -fsSL https://test.docker.com -o test-docker.sh
+sudo sh test-docker.sh
+# Install Docker
+#sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 # Install PowerShell
 sudo apt-get install -y powershell
 # Install Modules
-pwsh -NoProfile -Command "Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force"
-pwsh -NoProfile -Command "Install-Module -Name Az.Accounts -Scope AllUsers -Force"
-pwsh -NoProfile -Command "Install-Module -Name Az.DataFactory -Scope AllUsers -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az.Accounts -Scope AllUsers -Force"
+sudo pwsh -NoProfile -Command "Install-Module -Name Az.DataFactory -Scope AllUsers -Force"
 # Start PowerShell
 pwsh
 

@@ -88,4 +88,3 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
 data "local_file" "sh" {
   filename = "${path.module}/ci_cd_tool_install.sh"
 }
-
