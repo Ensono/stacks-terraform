@@ -82,7 +82,7 @@ resource "databricks_workspace_conf" "this" {
     "enableDbfsFileBrowser" : true
 
   }
-  depends_on = [ azurerm_databricks_workspace.example ]
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 
