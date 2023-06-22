@@ -91,6 +91,8 @@ resource "databricks_user" "rbac_users" {
   display_name = each.value.display_name
   user_name    = each.value.user_name
   active       = each.value.active
+
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 resource "databricks_group" "project_users" {
@@ -98,10 +100,16 @@ resource "databricks_group" "project_users" {
   display_name          = var.databricks_group_display_name
   workspace_access      = var.enable_workspace_access
   databricks_sql_access = var.enable_sql_access
+
+  depends_on = [azurerm_databricks_workspace.example]
+
 }
 
 resource "databricks_group_member" "project_users" {
   for_each  = var.add_rbac_users ? databricks_user.rbac_users : {}
   group_id  = databricks_group.project_users[0].id
   member_id = each.value.id
+
+  depends_on = [azurerm_databricks_workspace.example]
+
 }
