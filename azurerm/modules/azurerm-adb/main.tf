@@ -100,7 +100,6 @@ resource "databricks_group" "project_users" {
   databricks_sql_access = var.enable_sql_access
 
   depends_on = [azurerm_databricks_workspace.example]
-
 }
 
 resource "databricks_group_member" "project_users" {
@@ -109,5 +108,4 @@ resource "databricks_group_member" "project_users" {
   member_id = each.value.id
 
   depends_on = [azurerm_databricks_workspace.example]
-
 }
