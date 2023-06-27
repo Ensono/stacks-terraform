@@ -178,7 +178,8 @@ resource "azurerm_private_endpoint" "auth" {
 
 resource "azurerm_private_dns_zone" "dns" {
   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  name                = "privatelink.azuredatabricks.net"
+  name                = "${var.resource_namer}.azuredatabricks.net"
+  # name                = "privatelink.azuredatabricks.net" TODO
   resource_group_name = var.resource_group_name
 }
 
