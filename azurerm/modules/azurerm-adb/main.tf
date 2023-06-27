@@ -80,7 +80,7 @@ resource "databricks_workspace_conf" "this" {
   custom_config = {
     "enableDbfsFileBrowser" : "true"
   }
-  depends_on = [azurerm_databricks_workspace.example, azurerm_role_assignment.tf_spn]
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 
@@ -90,7 +90,7 @@ resource "databricks_user" "rbac_users" {
   user_name    = each.value.user_name
   active       = each.value.active
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_role_assignment.tf_spn]
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 resource "databricks_group" "project_users" {
@@ -99,7 +99,7 @@ resource "databricks_group" "project_users" {
   workspace_access      = var.enable_workspace_access
   databricks_sql_access = var.enable_sql_access
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_role_assignment.tf_spn]
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 resource "databricks_group_member" "project_users" {
@@ -107,5 +107,5 @@ resource "databricks_group_member" "project_users" {
   group_id  = databricks_group.project_users[0].id
   member_id = each.value.id
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_role_assignment.tf_spn]
+  depends_on = [azurerm_databricks_workspace.example]
 }
