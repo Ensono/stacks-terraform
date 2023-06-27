@@ -78,7 +78,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
 resource "azurerm_role_assignment" "tf_spn" {
   scope                = azurerm_databricks_workspace.example.id
   role_definition_name = "Contributor"
-  principal_id         = data.azurerm_client_config.spn_client.object_id
+  principal_id         = data.azurerm_client_config.current.object_id
 
   depends_on = [azurerm_databricks_workspace.example]
 }
