@@ -177,14 +177,14 @@ resource "azurerm_private_endpoint" "auth" {
 }
 
 resource "azurerm_private_dns_zone" "dns" {
-  count = var.enable_private_network && var.managed_vnet == false && var.create_dns_zone ? 1 : 0
+  count = var.enable_private_network && var.managed_vnet == false && var.create_db_dns_zone ? 1 : 0
   # name  = "${var.resource_namer}.azuredatabricks.net"
   name                = "privatelink.azuredatabricks.net"
   resource_group_name = var.resource_group_name
 }
 
 data "azurerm_private_dns_zone" "dns" {
-  count = var.create_dns_zone == false ? 1 : 0
+  count               = var.create_db_dns_zone == false ? 1 : 0
   name                = "privatelink.azuredatabricks.net"
   resource_group_name = var.resource_group_name
 }
@@ -192,14 +192,14 @@ data "azurerm_private_dns_zone" "dns" {
 resource "azurerm_private_dns_cname_record" "cname" {
   count               = var.enable_private_network && var.managed_vnet == false ? 1 : 0
   name                = azurerm_databricks_workspace.example.workspace_url
-  zone_name           = var.create_dns_zone ? azurerm_private_dns_zone.dns[0].name : data.azurerm_private_dns_zone.dns[0].name
+  zone_name           = var.create_db_dns_zone ? azurerm_private_dns_zone.dns[0].name : data.azurerm_private_dns_zone.dns[0].name
   resource_group_name = var.resource_group_name
   ttl                 = var.dns_record_ttl
   record              = "${var.resource_namer}.azuredatabricks.net"
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "db_dns_vnet_link" {
-  count                 = var.enable_private_network == true && var.managed_vnet == false && var.create_dns_zone == true ? 1 : 0
+  count                 = var.enable_private_network == true && var.managed_vnet == false && var.create_db_dns_zone == true ? 1 : 0
   name                  = var.resource_namer
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.dns[0].name
