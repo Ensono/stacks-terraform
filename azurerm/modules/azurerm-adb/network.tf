@@ -186,7 +186,7 @@ resource "azurerm_private_dns_zone" "dns" {
 data "azurerm_private_dns_zone" "dns" {
   count               = var.create_db_dns_zone == false ? 1 : 0
   name                = "privatelink.azuredatabricks.net"
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.db_dns_zone_rg
 }
 
 resource "azurerm_private_dns_cname_record" "cname" {

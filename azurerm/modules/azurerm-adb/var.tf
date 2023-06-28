@@ -156,6 +156,12 @@ variable "create_db_dns_zone" {
   description = "Create DNS Zone for Azure Databricks."
 }
 
+variable "db_dns_zone_rg" {
+  type = string
+  default = "value"
+  description = "Resource Group where DNS is created."
+}
+
 variable "vnet_name" {
   type        = string
   default     = ""

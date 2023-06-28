@@ -83,7 +83,6 @@ resource "databricks_workspace_conf" "this" {
   depends_on = [azurerm_databricks_workspace.example, azurerm_private_endpoint.databricks, azurerm_private_endpoint.auth]
 }
 
-
 resource "databricks_user" "rbac_users" {
   for_each     = var.add_rbac_users ? var.rbac_databricks_users : {}
   display_name = each.value.display_name
