@@ -157,8 +157,8 @@ variable "create_db_dns_zone" {
 }
 
 variable "db_dns_zone_rg" {
-  type = string
-  default = "value"
+  type        = string
+  default     = "value"
   description = "Resource Group where DNS is created."
 }
 
