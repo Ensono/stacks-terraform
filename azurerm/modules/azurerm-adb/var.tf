@@ -150,6 +150,12 @@ variable "create_pe_subnet" {
   description = "Set to true if you need the module to create the private endpoint subnet."
 }
 
+variable "create_dns_zone" {
+  type        = bool
+  default     = false
+  description = "Create DNS Zone for Azure Databricks."
+}
+
 variable "vnet_name" {
   type        = string
   default     = ""
