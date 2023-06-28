@@ -148,10 +148,10 @@ resource "azurerm_private_endpoint" "databricks" {
 
   private_dns_zone_group {
     name                 = "databricks_ui_api"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dns[0].id]
+    private_dns_zone_ids = [var.create_db_dns_zone ? azurerm_private_dns_zone.dns[0].id : data.azurerm_private_dns_zone.dns[0].id]
   }
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_dns_zone.dns]
+  depends_on = [azurerm_databricks_workspace.example, azurerm_private_dns_zone.dns, data.azurerm_private_dns_zone.dns]
 }
 
 resource "azurerm_private_endpoint" "auth" {
