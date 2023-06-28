@@ -152,7 +152,7 @@ variable "create_pe_subnet" {
 
 variable "create_dns_zone" {
   type        = bool
-  default     = false
+  default     = true
   description = "Create DNS Zone for Azure Databricks."
 }
 
