@@ -25,7 +25,7 @@ module "eks" {
   }
 
   worker_groups = [for i, s in module.vpc.private_subnets : {
-    name                   = "${local.cluster_name}_worker-group-${i}"
+    name                   = "${var.cluster_name}_worker-group-${i}"
     subnets                = [s]
     instance_type          = "t2.medium"
     asg_desired_capacity   = ceil(var.eks_desired_nodes / length(module.vpc.private_subnets))
@@ -40,7 +40,7 @@ module "eks" {
         "value"               = "true"
       },
       {
-        "key"                 = "k8s.io/cluster-autoscaler/${local.cluster_name}"
+        "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
         "propagate_at_launch" = "false"
         "value"               = "owned"
       }
