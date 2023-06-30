@@ -2,7 +2,7 @@
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "17.24.0"
+  version = "19.15.3"
 
   vpc_id                          = module.vpc.vpc_id
   subnets                         = module.vpc.private_subnets
