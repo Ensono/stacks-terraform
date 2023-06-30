@@ -39,7 +39,7 @@ variable "tags" {
 
 variable "cluster_name" {
 
-  description = "Name of the cluster"
+  description = "Name of the cluster and resources"
   type        = string
 }
 
