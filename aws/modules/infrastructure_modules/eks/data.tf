@@ -5,14 +5,8 @@ resource "random_string" "suffix" {
 
 locals {
 
-  ## EKS
-  cluster_name = "${lower(var.cluster_name)}-${lower(var.tags["Environment"])}-${random_string.suffix.result}"
-
-  ## VPC
-  vpc_name = "${lower(var.cluster_name)}-${lower(var.tags["Environment"])}-vpc"
-
   ## KMS
-  eks_kms_key_name                    = "alias/cmk-${lower(var.cluster_name)}-${lower(var.tags["Environment"])}"
+  eks_kms_key_name                    = "alias/cmk-${lower(var.cluster_name)}"
   eks_kms_key_description             = "Secret Encryption Key for EKS"
   eks_kms_key_deletion_window_in_days = "7"
   eks_kms_key_tags = merge(

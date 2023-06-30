@@ -6,7 +6,7 @@ module "eks" {
 
   vpc_id                          = module.vpc.vpc_id
   subnets                         = module.vpc.private_subnets
-  cluster_name                    = local.cluster_name
+  cluster_name                    = var.cluster_name
   cluster_version                 = var.cluster_version
   enable_irsa                     = var.enable_irsa
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
