@@ -5,7 +5,7 @@ module "eks" {
   version = "19.15.3"
 
   vpc_id                          = module.vpc.vpc_id
-  subnets                         = module.vpc.private_subnets
+  subnet_ids                      = module.vpc.private_subnets
   cluster_name                    = var.cluster_name
   cluster_version                 = var.cluster_version
   enable_irsa                     = var.enable_irsa
@@ -14,17 +14,16 @@ module "eks" {
 
   cluster_enabled_log_types = ["scheduler", "controllerManager", "authenticator", "audit", "api"]
 
-  cluster_encryption_config = [
-    {
+  cluster_encryption_config = {
       resources        = ["secrets"]
       provider_key_arn = module.eks_kms_key.arn
     }
-  ]
-  workers_group_defaults = {
+  
+  self_managed_node_group_defaults = {
     root_volume_type = "gp2"
   }
 
-  worker_groups = [for i, s in module.vpc.private_subnets : {
+  self_managed_node_groups = [for i, s in module.vpc.private_subnets : {
     name                   = "${var.cluster_name}_worker-group-${i}"
     subnets                = [s]
     instance_type          = "t2.medium"
@@ -47,15 +46,15 @@ module "eks" {
     ]
   }]
 
-  workers_additional_policies = [
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",        # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
-    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",            # Provides read/write access to AWS Secrets Manager.
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser" # Grant permissions to read and write to respositores, as well as read lifecycle policies 
-  ]
+  iam_role_additional_policies = {
+    SM = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
+    CW = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"        # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
+    ScM = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"            # Provides read/write access to AWS Secrets Manager.
+    CR = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser" # Grant permissions to read and write to respositores, as well as read lifecycle policies 
+  }
 
-  map_roles = var.map_roles
-  map_users = var.map_users
+  # map_roles = var.map_roles
+  # map_users = var.map_users
 }
 
 # KMS 
