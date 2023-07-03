@@ -53,7 +53,7 @@ data "aws_ami" "eks_default_bottlerocket" {
 
   filter {
     name   = "name"
-    values = ["bottlerocket-aws-k8s-${local.cluster_version}-x86_64-*"]
+    values = ["bottlerocket-aws-k8s-${var.cluster_version}-x86_64-*"]
   }
 }
 
