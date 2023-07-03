@@ -2,7 +2,7 @@
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.3"
+  version = "~> 19.0"
 
   vpc_id                          = module.vpc.vpc_id
   subnet_ids                      = module.vpc.private_subnets
@@ -18,33 +18,22 @@ module "eks" {
       resources        = ["secrets"]
       provider_key_arn = module.eks_kms_key.arn
     }
-  
-  self_managed_node_group_defaults = {
-    root_volume_type = "gp2"
-  }
 
-  self_managed_node_groups = [for i, s in module.vpc.private_subnets : {
-    name                   = "${var.cluster_name}_worker-group-${i}"
-    subnets                = [s]
-    instance_type          = "t2.medium"
-    asg_desired_capacity   = ceil(var.eks_desired_nodes / length(module.vpc.private_subnets))
-    root_volume_type       = "gp3"
-    root_volume_throughput = 125
-    root_volume_size       = 80
-    root_encrypted         = true
-    tags = [
-      {
-        "key"                 = "k8s.io/cluster-autoscaler/enabled"
-        "propagate_at_launch" = "false"
-        "value"               = "true"
-      },
-      {
-        "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-        "propagate_at_launch" = "false"
-        "value"               = "owned"
-      }
-    ]
-  }]
+  # Self managed node groups will not automatically create the aws-auth configmap so we need to
+  create_aws_auth_configmap = true
+  manage_aws_auth_configmap = true
+
+  self_managed_node_group_defaults = {}
+
+  self_managed_node_groups = {
+    # Bottlerocket node group
+    bottlerocket = {
+      name = "bottlerocket-self-mng"
+
+      platform      = "bottlerocket"
+      ami_id        = data.aws_ami.eks_default_bottlerocket.id
+      instance_type = "t2.medium"
+    }
 
   iam_role_additional_policies = {
     SM = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
@@ -56,6 +45,17 @@ module "eks" {
   # map_roles = var.map_roles
   # map_users = var.map_users
 }
+
+data "aws_ami" "eks_default_bottlerocket" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["bottlerocket-aws-k8s-${local.cluster_version}-x86_64-*"]
+  }
+}
+
 
 # KMS 
 #####
