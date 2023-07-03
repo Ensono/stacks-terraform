@@ -45,6 +45,7 @@ module "eks" {
   # map_roles = var.map_roles
   # map_users = var.map_users
 }
+}
 
 data "aws_ami" "eks_default_bottlerocket" {
   most_recent = true
