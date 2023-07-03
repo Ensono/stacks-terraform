@@ -23,28 +23,44 @@ module "eks" {
   create_aws_auth_configmap = true
   manage_aws_auth_configmap = true
 
-  self_managed_node_group_defaults = {}
+  eks_managed_node_group_defaults = {
+    disk_size = 50
+  }
+    eks_managed_node_groups = {
+    general = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 10
 
-  self_managed_node_groups = {
-    # Bottlerocket node group
-    bottlerocket = {
-      name = "bottlerocket-self-mng"
+      labels = {
+        role = "general"
+      }
 
-      platform      = "bottlerocket"
-      ami_id        = data.aws_ami.eks_default_bottlerocket.id
-      instance_type = "t2.medium"
+      instance_types = ["t3.small"]
+      capacity_type  = "ON_DEMAND"
     }
 
-  iam_role_additional_policies = {
-    SM = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
-    CW = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"        # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
-    ScM = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"            # Provides read/write access to AWS Secrets Manager.
-    CR = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser" # Grant permissions to read and write to respositores, as well as read lifecycle policies 
+    spot = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 10
+
+      labels = {
+        role = "spot"
+      }
+
+      taints = [{
+        key    = "market"
+        value  = "spot"
+        effect = "NO_SCHEDULE"
+      }]
+
+      instance_types = ["t3.micro"]
+      capacity_type  = "SPOT"
+    }
   }
 
-  # map_roles = var.map_roles
-  # map_users = var.map_users
-}
+  tags = local.default_tags
 }
 
 data "aws_ami" "eks_default_bottlerocket" {
