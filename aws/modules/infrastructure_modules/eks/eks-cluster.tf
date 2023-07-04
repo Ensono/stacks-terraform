@@ -20,8 +20,8 @@ module "eks" {
     }
 
   # Self managed node groups will not automatically create the aws-auth configmap so we need to
-  create_aws_auth_configmap = true
-  manage_aws_auth_configmap = true
+  # create_aws_auth_configmap = true
+  # manage_aws_auth_configmap = true
 
   eks_managed_node_group_defaults = {
     disk_size = 50
