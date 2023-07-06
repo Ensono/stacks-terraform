@@ -96,6 +96,13 @@ variable "create_mode" {
   description = "The create mode of the database. Possible values are Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreExternalBackup, RestoreExternalBackupSecondary, RestoreLongTermRetentionBackup and Secondary. Mutually exclusive with import. Changing this forces a new resource to be created."
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether public network access is allowed for this server. Defaults to true."
+}
+
+
 variable "sql_fw_rules" {
   type = list(object({
     name             = string
