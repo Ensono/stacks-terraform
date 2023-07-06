@@ -20,11 +20,12 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "sql" {
-  source                  = "../../azurerm-sql"
-  resource_namer          = module.default_label.id
-  resource_group_name     = azurerm_resource_group.default.name
-  resource_group_location = azurerm_resource_group.default.location
-  sql_version             = var.sql_version
-  administrator_login     = var.administrator_login
-  sql_db_names            = var.sql_db_names
+  source                        = "../../azurerm-sql"
+  resource_namer                = module.default_label.id
+  resource_group_name           = azurerm_resource_group.default.name
+  resource_group_location       = azurerm_resource_group.default.location
+  sql_version                   = var.sql_version
+  administrator_login           = var.administrator_login
+  sql_db_names                  = var.sql_db_names
+  public_network_access_enabled = true
 }

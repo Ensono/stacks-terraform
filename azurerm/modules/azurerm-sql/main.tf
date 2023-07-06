@@ -8,12 +8,13 @@ resource "random_password" "password" {
 
 # SQL Server instance
 resource "azurerm_mssql_server" "example" {
-  name                         = substr(replace("${var.resource_namer}-sql", "-", ""), 0, 24)
-  resource_group_name          = var.resource_group_name
-  location                     = var.resource_group_location
-  version                      = var.sql_version
-  administrator_login          = var.administrator_login
-  administrator_login_password = random_password.password.result
+  name                          = substr(replace("${var.resource_namer}-sql", "-", ""), 0, 24)
+  resource_group_name           = var.resource_group_name
+  location                      = var.resource_group_location
+  version                       = var.sql_version
+  administrator_login           = var.administrator_login
+  administrator_login_password  = random_password.password.result
+  public_network_access_enabled = var.public_network_access_enabled
 
   dynamic "azuread_administrator" {
     for_each = { for i in var.azuread_administrator : i.login_username => i }
@@ -29,7 +30,7 @@ resource "azurerm_mssql_server" "example" {
 
 #Adding Sql Network Rules 
 resource "azurerm_mssql_firewall_rule" "example_fw_rule" {
-  for_each         = { for i in var.sql_fw_rules : i.name => i }
+  for_each         = { for i in var.sql_fw_rules : i.name => i  if var.public_network_access_enabled == false }
   name             = each.key
   server_id        = azurerm_mssql_server.example.id
   start_ip_address = each.value.start_ip_address
