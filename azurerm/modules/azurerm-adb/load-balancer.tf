@@ -1,3 +1,4 @@
+/*
 resource "azurerm_lb" "lb" {
   count = var.enable_private_network && var.create_lb && var.managed_vnet == false ? 1 : 0
 
@@ -36,3 +37,4 @@ resource "azurerm_lb_backend_address_pool" "lb_be_pool" {
   loadbalancer_id = azurerm_lb.lb[0].id
   name            = "Databricks-BE"
 }
+*/

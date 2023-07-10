@@ -1,7 +1,7 @@
 ############################################
 # NAT GATEWAY
 ############################################
-
+/*
 resource "azurerm_nat_gateway" "nat" {
   count                   = var.enable_private_network && var.create_nat && var.managed_vnet == false ? 1 : 0
   name                    = local.nat_gateway_name
@@ -29,3 +29,4 @@ resource "azurerm_subnet_nat_gateway_association" "private_subnet_nat" {
   subnet_id      = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
   nat_gateway_id = azurerm_nat_gateway.nat[0].id
 }
+*/
