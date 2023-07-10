@@ -168,14 +168,14 @@ variable "is_manual_connection" {
 
 variable "private_dns_zone_name" {
   type        = string
-  default     = ""
+  default     = "privatelink.database.windows.net"
   description = "Specifies the Name of the Private DNS Zone Group."
 }
 
-variable "private_dns_zone_ids" {
-  type        = list(string)
-  default     = []
-  description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
 }
 
 variable "pe_subnet_id" {
