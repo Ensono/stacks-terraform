@@ -39,6 +39,12 @@ variable "dns_zone_name" {
   type        = list(string)
 }
 
+variable "link_dns_network" {
+  description = "weather link DNS with vnets"
+  type        = bool
+  default     = false
+}
+
 variable "create_private_dns_zone" {
   type        = bool
   default     = true
