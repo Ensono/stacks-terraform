@@ -54,6 +54,6 @@ output "hub_pub_ip" {
   value = var.create_fw_public_ip && var.create_hub_fw && var.enable_private_networks == true ? azurerm_public_ip.example[0].id : null
 }
 
-output "private_dns_zone_id" {
-  value = azurerm_private_dns_zone.example[0].id
+output "private_dns_zone_ids" {
+  value = values(azurerm_private_dns_zone.example)[*].id
 }
