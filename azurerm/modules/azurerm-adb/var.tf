@@ -90,6 +90,12 @@ variable "nat_idle_timeout" {
   description = "Idle timeout period in minutes."
 }
 
+variable "browser_authentication_enabled" {
+  type        = bool
+  default     = false
+  description = "Specify wether to create to private endpoint for browser authentication, False in Dev and True in Production should be enable in on enviroment."
+}
+
 ############################################
 # Network Details
 ############################################
