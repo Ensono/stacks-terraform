@@ -30,7 +30,7 @@ resource "azurerm_mssql_server" "example" {
 
 #Adding Sql Network Rules 
 resource "azurerm_mssql_firewall_rule" "example_fw_rule" {
-  for_each         = { for i in var.sql_fw_rules : i.name => i  if var.public_network_access_enabled == false }
+  for_each         = { for i in var.sql_fw_rules : i.name => i if var.public_network_access_enabled == false }
   name             = each.key
   server_id        = azurerm_mssql_server.example.id
   start_ip_address = each.value.start_ip_address
@@ -67,7 +67,7 @@ resource "azurerm_private_endpoint" "pe" {
   }
 
   private_dns_zone_group {
-    name                 = var.private_dns_zone_name
-    private_dns_zone_ids = var.private_dns_zone_ids
+    name                 = azurerm_mssql_server.example.name
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.sql_pvt_dns[0].id]
   }
 }

@@ -21,11 +21,18 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "adls_default" {
-  source                  = "../../azurerm-adls"
-  resource_group_name     = azurerm_resource_group.default.name
-  resource_group_location = azurerm_resource_group.default.location
-  resource_namer          = module.default_label.id
-  storage_account_details = var.storage_account_details
-  container_access_type   = var.container_access_type
-  resource_tags           = var.tags
+  source                       = "../../azurerm-adls"
+  resource_namer               = module.default_label.id
+  resource_group_name          = azurerm_resource_group.default.name
+  resource_group_location      = azurerm_resource_group.default.location
+  storage_account_details      = var.storage_account_details
+  container_access_type        = var.container_access_type
+  resource_tags                = module.default_label.tags
+  enable_private_network       = true
+  pe_subnet_id                 = data.azurerm_subnet.pe_subnet.id
+  pe_resource_group_name       = data.azurerm_subnet.pe_subnet.resource_group_name
+  pe_resource_group_location   = "uksouth"
+  dfs_dns_resource_group_name  = "hub-rg"
+  blob_dns_resource_group_name = "hub-rg"
+
 }
