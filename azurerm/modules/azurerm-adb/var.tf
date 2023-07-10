@@ -66,12 +66,6 @@ variable "data_platform_log_analytics_workspace_id" {
 # Resource Databricks workspace setting 
 ############################################
 
-variable "enable_enableDbfsFileBrowser" {
-  type        = bool
-  description = "Whether to enable Dbfs File browser for the Azure Databricks workspace"
-  default     = false
-}
-
 variable "public_network_access_enabled" {
   type        = bool
   default     = true
@@ -88,44 +82,6 @@ variable "enable_private_network" {
   type        = bool
   default     = false
   description = "Enable Secure Data Platform."
-}
-
-############################################
-# Resource Databricks user 
-############################################
-
-variable "add_rbac_users" {
-  description = "If set to true, the module will create databricks users and  group named 'project_users' with the specified users as members, and grant workspace and SQL access to this group. Default is false."
-  type        = bool
-  default     = true
-}
-
-variable "rbac_databricks_users" {
-  type = map(object({
-    display_name = string
-    user_name    = string
-    active       = bool
-  }))
-  description = "If 'add_rbac_users' set to true then specifies RBAC Databricks users"
-  default     = null
-}
-
-variable "databricks_group_display_name" {
-  type        = string
-  description = "If 'add_rbac_users' set to true then specifies databricks group display name"
-  default     = "project_users"
-}
-
-variable "enable_workspace_access" {
-  type        = bool
-  description = "Whether to enable workspace access for the databricks group"
-  default     = true
-}
-
-variable "enable_sql_access" {
-  type        = bool
-  description = "Whether to enable sql access for the databricks group"
-  default     = true
 }
 
 variable "nat_idle_timeout" {
