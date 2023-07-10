@@ -253,3 +253,15 @@ variable "create_pip" {
   default     = false
   description = "Create Databricks with a Public IP."
 }
+
+variable "private_dns_zone_name" {
+  type        = string
+  default     = "privatelink.azuredatabricks.net"
+  description = "Specifies the Name of the Private DNS Zone Group."
+}
+
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
+}

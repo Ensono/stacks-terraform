@@ -147,11 +147,12 @@ resource "azurerm_private_endpoint" "databricks" {
   }
 
   private_dns_zone_group {
+    
     name                 = "databricks_ui_api"
-    private_dns_zone_ids = [var.create_db_dns_zone ? azurerm_private_dns_zone.dns[0].id : data.azurerm_private_dns_zone.dns[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
   }
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_dns_zone.dns, data.azurerm_private_dns_zone.dns]
+  depends_on = [azurerm_databricks_workspace.example, data.azurerm_private_dns_zone.adb_pvt_dns]
 }
 
 resource "azurerm_private_endpoint" "auth" {
@@ -169,13 +170,13 @@ resource "azurerm_private_endpoint" "auth" {
 
   private_dns_zone_group {
     name                 = "databricks_auth"
-    private_dns_zone_ids = [var.create_db_dns_zone ? azurerm_private_dns_zone.dns[0].id : data.azurerm_private_dns_zone.dns[0].id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
   }
 
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_dns_zone.dns]
+  depends_on = [azurerm_databricks_workspace.example]
 
 }
-
+/*
 resource "azurerm_private_dns_zone" "dns" {
   count               = var.enable_private_network && var.managed_vnet == false && var.create_db_dns_zone ? 1 : 0
   name                = "privatelink.azuredatabricks.net"
@@ -214,3 +215,4 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
   zones               = ["1"]
 }
+*/
