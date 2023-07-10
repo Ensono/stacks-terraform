@@ -125,6 +125,6 @@ resource "azurerm_private_endpoint" "pe" {
 
   private_dns_zone_group {
     name                 = azurerm_key_vault.example.0.name
-    private_dns_zone_ids = data.azurerm_private_dns_zone.kv_pvt_dns.id
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.kv_pvt_dns[0].id]
   }
 }
