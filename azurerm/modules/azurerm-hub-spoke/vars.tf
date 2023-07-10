@@ -59,6 +59,12 @@ variable "create_hub_fw" {
   default     = false
 }
 
+variable "link_dns_network" {
+  description = "weather link DNS with vnets"
+  type        = bool
+  default     = false
+}
+
 variable "create_fw_public_ip" {
   description = "weather to create a  public IP for Azure fierwall in hub network"
   type        = bool
