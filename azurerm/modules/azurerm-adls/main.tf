@@ -1,6 +1,9 @@
 locals {
-  containers_blob = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled != true])
-  containers_adls = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled == true])
+  containers_blob      = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled != true])
+  containers_adls      = flatten([for account_name, account_details in var.storage_account_details : [for container_name in account_details.containers_name : { name = container_name, account = account_name }] if account_details.hns_enabled == true])
+  adls_storage_account = flatten([for account_name, account_details in var.storage_account_details : account_name if account_details.hns_enabled == true])
+  blob_storage_account = flatten([for account_name, account_details in var.storage_account_details : account_name if account_details.hns_enabled != true])
+
 }
 
 resource "azurerm_storage_account" "storage_account_default" {
@@ -87,8 +90,8 @@ resource "azurerm_private_endpoint" "pe" {
   }
 
   private_dns_zone_group {
-    name                 = var.private_dns_zone_name
-    private_dns_zone_ids = var.private_dns_zone_ids
+    name                 = each.value.hns_enabled == true ? azurerm_storage_account.storage_account_default["${local.adls_storage_account[0]}"].name : azurerm_storage_account.storage_account_default["${local.blob_storage_account[0]}"].name
+    private_dns_zone_ids = each.value.hns_enabled == true ? [data.azurerm_private_dns_zone.dfs_pvt_dns[0].id] : [data.azurerm_private_dns_zone.blob_pvt_dns[0].id]
   }
 
 }
