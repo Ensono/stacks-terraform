@@ -205,7 +205,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "db_dns_vnet_link" {
   private_dns_zone_name = azurerm_private_dns_zone.dns[0].name
   virtual_network_id    = data.azurerm_virtual_network.vnet[0].id
 }
-
+*/
 resource "azurerm_public_ip" "pip" {
   count               = var.enable_private_network && var.create_pip && var.managed_vnet == false ? 1 : 0
   name                = local.public_ip_name
@@ -215,4 +215,3 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
   zones               = ["1"]
 }
-*/
