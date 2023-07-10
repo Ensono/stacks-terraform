@@ -34,9 +34,9 @@ variable "tags" {
 ######################################### Azure Private DNS variables ######################################### 
 
 variable "dns_zone_name" {
-  default     = "mydomaintest.com"
+  default     = ["privatelink.vaultcore.azure.net", "privatelink.azuredatabricks.net", "privatelink.database.windows.net", "privatelink.blob.core.windows.net", "privatelink.dfs.core.windows.net"]
   description = "The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created."
-  type        = string
+  type        = list(string)
 }
 
 variable "create_private_dns_zone" {
@@ -47,7 +47,7 @@ variable "create_private_dns_zone" {
 
 variable "registration_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
 }
 
