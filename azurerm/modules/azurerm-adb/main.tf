@@ -74,37 +74,3 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
     }
   }
 }
-
-resource "databricks_workspace_conf" "this" {
-  count = var.enable_enableDbfsFileBrowser ? 1 : 0
-  custom_config = {
-    "enableDbfsFileBrowser" : "true"
-  }
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_endpoint.databricks, azurerm_private_endpoint.auth]
-}
-
-resource "databricks_user" "rbac_users" {
-  for_each     = var.add_rbac_users ? var.rbac_databricks_users : {}
-  display_name = each.value.display_name
-  user_name    = each.value.user_name
-  active       = each.value.active
-
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_endpoint.databricks, azurerm_private_endpoint.auth]
-}
-
-resource "databricks_group" "project_users" {
-  count                 = var.add_rbac_users ? 1 : 0
-  display_name          = var.databricks_group_display_name
-  workspace_access      = var.enable_workspace_access
-  databricks_sql_access = var.enable_sql_access
-
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_endpoint.databricks, azurerm_private_endpoint.auth]
-}
-
-resource "databricks_group_member" "project_users" {
-  for_each  = var.add_rbac_users ? databricks_user.rbac_users : {}
-  group_id  = databricks_group.project_users[0].id
-  member_id = each.value.id
-
-  depends_on = [azurerm_databricks_workspace.example, azurerm_private_endpoint.databricks, azurerm_private_endpoint.auth]
-}
