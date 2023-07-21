@@ -1,6 +1,6 @@
 data "azurerm_monitor_diagnostic_categories" "adf_log_analytics_categories" {
   count       = var.la_workspace_id == "" ? 0 : 1
-  resource_id = module.adf.adf_factory_id
+  resource_id = azurerm_data_factory.default.id
 }
 
 resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
