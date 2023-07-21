@@ -20,7 +20,7 @@ resource "azurerm_monitor_diagnostic_setting" "adls_log_analytics" {
   log_analytics_destination_type = "Dedicated"
 
   dynamic "log" {
-    for_each = data.azurerm_monitor_diagnostic_categories.adls_log_analytics_categories.logs
+    for_each = data.azurerm_monitor_diagnostic_categories.adls_log_analytics_categories[each.key].logs
 
     content {
       category = log.value
@@ -34,7 +34,7 @@ resource "azurerm_monitor_diagnostic_setting" "adls_log_analytics" {
   }
 
   dynamic "metric" {
-    for_each = data.azurerm_monitor_diagnostic_categories.adls_log_analytics_categories.metrics
+    for_each = data.azurerm_monitor_diagnostic_categories.adls_log_analytics_categories[each.key].metrics
 
     content {
       category = metric.value
