@@ -194,3 +194,9 @@ variable "pe_resource_group_location" {
   default     = ""
   description = "Location of the resource group to provision private endpoint in."
 }
+
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
