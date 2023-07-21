@@ -95,6 +95,12 @@ variable "runtime_virtual_network_enabled" {
   description = "Is Integration Runtime compute provisioned within Managed Virtual Network? Changing this forces a new resource to be created."
 }
 
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
+
 
 ###########################
 # Global parameter  for ADF SETTINGS
