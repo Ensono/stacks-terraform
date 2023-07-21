@@ -1,17 +1,17 @@
-data "azurerm_monitor_diagnostic_categories" "adf_log_analytics_categories" {
+data "azurerm_monitor_diagnostic_categories" "kv_log_analytics_categories" {
   count       = var.la_workspace_id == "" ? 0 : 1
-  resource_id = azurerm_data_factory.example.id
+  resource_id = azurerm_key_vault.example.id
 }
 
-resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
+resource "azurerm_monitor_diagnostic_setting" "kv_log_analytics" {
   count                          = var.la_workspace_id == "" ? 0 : 1
-  name                           = "ADF to Log Analytics"
-  target_resource_id             = azurerm_data_factory.example.id
+  name                           = "KV to Log Analytics"
+  target_resource_id             = azurerm_key_vault.example.id
   log_analytics_workspace_id     = var.la_workspace_id
   log_analytics_destination_type = "Dedicated"
 
   dynamic "log" {
-    for_each = data.azurerm_monitor_diagnostic_categories.adf_log_analytics_categories.logs
+    for_each = data.azurerm_monitor_diagnostic_categories.kv_log_analytics_categories.logs
 
     content {
       category = log.value
@@ -25,7 +25,7 @@ resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
   }
 
   dynamic "metric" {
-    for_each = data.azurerm_monitor_diagnostic_categories.adf_log_analytics_categories.metrics
+    for_each = data.azurerm_monitor_diagnostic_categories.kv_log_analytics_categories.metrics
 
     content {
       category = metric.value
