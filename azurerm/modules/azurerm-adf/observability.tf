@@ -1,6 +1,8 @@
 data "azurerm_monitor_diagnostic_categories" "adf_log_analytics_categories" {
   count       = var.la_workspace_id == "" ? 0 : 1
   resource_id = azurerm_data_factory.example[0].id
+
+  depends_on = [ azurerm_data_factory.example ]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
@@ -37,4 +39,5 @@ resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
       }
     }
   }
+  depends_on = [ data.azurerm_monitor_diagnostic_categories.adf_log_analytics_categories ]
 }
