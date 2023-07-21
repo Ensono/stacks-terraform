@@ -147,7 +147,7 @@ resource "azurerm_private_endpoint" "databricks" {
   }
 
   private_dns_zone_group {
-    
+
     name                 = "databricks_ui_api"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
   }
@@ -156,7 +156,7 @@ resource "azurerm_private_endpoint" "databricks" {
 }
 
 resource "azurerm_private_endpoint" "auth" {
-  count = var.enable_private_network && var.managed_vnet == false  && var.browser_authentication_enabled == true ? 1 : 0
+  count               = var.enable_private_network && var.managed_vnet == false && var.browser_authentication_enabled == true ? 1 : 0
   name                = "${var.resource_namer}-pe-databricks-auth"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
