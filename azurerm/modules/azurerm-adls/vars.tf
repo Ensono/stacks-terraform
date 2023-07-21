@@ -170,3 +170,9 @@ variable "dfs_dns_resource_group_name" {
   default     = "amido-stacks-euw-de-hub-network"
   description = "Name of the resource group where pvt dns is present for blob."
 }
+
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
