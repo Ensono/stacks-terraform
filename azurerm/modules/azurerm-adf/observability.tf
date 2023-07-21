@@ -1,12 +1,12 @@
 data "azurerm_monitor_diagnostic_categories" "adf_log_analytics_categories" {
   count       = var.la_workspace_id == "" ? 0 : 1
-  resource_id = azurerm_data_factory.example.id
+  resource_id = azurerm_data_factory.example[0].id
 }
 
 resource "azurerm_monitor_diagnostic_setting" "adf_log_analytics" {
   count                          = var.la_workspace_id == "" ? 0 : 1
   name                           = "ADF to Log Analytics"
-  target_resource_id             = azurerm_data_factory.example.id
+  target_resource_id             = azurerm_data_factory.example[0].id
   log_analytics_workspace_id     = var.la_workspace_id
   log_analytics_destination_type = "Dedicated"
 
