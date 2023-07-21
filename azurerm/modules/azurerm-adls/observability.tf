@@ -1,10 +1,10 @@
 data "azurerm_monitor_diagnostic_categories" "adls_log_analytics_categories" {
-  for_each = var.storage_account_details && var.la_workspace_id != ""
+  for_each    = var.storage_account_details && var.la_workspace_id != ""
   resource_id = azurerm_storage_account.storage_account_default["${each.value.name}"].id
 }
 
 resource "azurerm_monitor_diagnostic_setting" "adls_log_analytics" {
-  for_each = var.storage_account_details && var.la_workspace_id != ""
+  for_each                       = var.storage_account_details && var.la_workspace_id != ""
   name                           = "Storage to Log Analytics"
   target_resource_id             = azurerm_storage_account.storage_account_default["${each.value.name}"].id
   log_analytics_workspace_id     = var.la_workspace_id
