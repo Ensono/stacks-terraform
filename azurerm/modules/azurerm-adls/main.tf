@@ -72,26 +72,48 @@ resource "null_resource" "sleep" {
   depends_on = [azurerm_storage_account.storage_account_default]
 }
 
-resource "azurerm_private_endpoint" "pe" {
+resource "azurerm_private_endpoint" "pe_dfs" {
   for_each = {
     for account_name, account_details in var.storage_account_details : account_name => account_details
-    if var.enable_private_network
+    if var.enable_private_network && account_details.hns_enabled
   }
-  name                = "${var.resource_namer}-storage-${each.value.name}-pe"
+  name                = "${var.resource_namer}-storage-${each.value.name}-pe-dfs"
   resource_group_name = var.pe_resource_group_name
   location            = var.pe_resource_group_location
   subnet_id           = var.pe_subnet_id
 
   private_service_connection {
-    name                           = "${var.resource_namer}-storage-${each.value.name}-pe"
-    private_connection_resource_id = azurerm_storage_account.storage_account_default["${each.key}"].id
+    name                           = "${var.resource_namer}-storage-${each.value.name}-pe-dfs"
+    private_connection_resource_id = azurerm_storage_account.storage_account_default[each.key].id
     is_manual_connection           = var.is_manual_connection
-    subresource_names              = each.value.hns_enabled == true ? ["dfs"] : ["blob"]
+    subresource_names              = ["dfs"]
   }
 
   private_dns_zone_group {
-    name                 = each.value.hns_enabled == true ? azurerm_storage_account.storage_account_default["${local.adls_storage_account[0]}"].name : azurerm_storage_account.storage_account_default["${local.blob_storage_account[0]}"].name
-    private_dns_zone_ids = each.value.hns_enabled == true ? [data.azurerm_private_dns_zone.dfs_pvt_dns[0].id] : [data.azurerm_private_dns_zone.blob_pvt_dns[0].id]
+    name                 = azurerm_storage_account.storage_account_default[each.key].name
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.dfs_pvt_dns[0].id]
+  }
+}
+
+resource "azurerm_private_endpoint" "pe_blob" {
+  for_each = {
+    for account_name, account_details in var.storage_account_details : account_name => account_details
+    if var.enable_private_network
+  }
+  name                = "${var.resource_namer}-storage-${each.value.name}-pe-blob"
+  resource_group_name = var.pe_resource_group_name
+  location            = var.pe_resource_group_location
+  subnet_id           = var.pe_subnet_id
+
+  private_service_connection {
+    name                           = "${var.resource_namer}-storage-${each.value.name}-pe-blob"
+    private_connection_resource_id = azurerm_storage_account.storage_account_default[each.key].id
+    is_manual_connection           = var.is_manual_connection
+    subresource_names              = ["blob"]
   }
 
+  private_dns_zone_group {
+    name                 = azurerm_storage_account.storage_account_default[each.key].name
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.blob_pvt_dns[0].id]
+  }
 }
