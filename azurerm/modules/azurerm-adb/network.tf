@@ -149,7 +149,7 @@ resource "azurerm_private_endpoint" "databricks" {
   private_dns_zone_group {
 
     name                 = "databricks_ui_api"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
+    private_dns_zone_ids = [var.private_dns_zone_id != "" ? var.private_dns_zone_id : data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
   }
 
   depends_on = [azurerm_databricks_workspace.example, data.azurerm_private_dns_zone.adb_pvt_dns]
@@ -171,7 +171,7 @@ resource "azurerm_private_endpoint" "auth" {
 
   private_dns_zone_group {
     name                 = "databricks_auth"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
+    private_dns_zone_ids = [var.private_dns_zone_id != "" ? var.private_dns_zone_id : data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
   }
 
   depends_on = [azurerm_databricks_workspace.example]

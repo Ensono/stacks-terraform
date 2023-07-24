@@ -227,3 +227,9 @@ variable "dns_resource_group_name" {
   default     = "amido-stacks-euw-de-hub-network"
   description = "Name of the resource group where pvt dns is present."
 }
+
+variable "private_dns_zone_id" {
+  type        = string
+  default     = ""
+  description = "Specifies the ID of the Private DNS Zone Group."
+}
