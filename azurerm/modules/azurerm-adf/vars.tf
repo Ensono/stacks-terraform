@@ -101,7 +101,7 @@ variable "la_workspace_id" {
   description = "Log Analytics Workspace ID"
 }
 
-variable "test_integration_runtime" {
+variable "ir_enable_interactive_authoring" {
   type        = bool
   default     = true
   description = "Test IR"
