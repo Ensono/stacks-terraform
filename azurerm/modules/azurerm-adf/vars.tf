@@ -101,6 +101,11 @@ variable "la_workspace_id" {
   description = "Log Analytics Workspace ID"
 }
 
+variable "test_integration_runtime" {
+  type = bool
+  default = true
+  description = "Test IR"
+}
 
 ###########################
 # Global parameter  for ADF SETTINGS
