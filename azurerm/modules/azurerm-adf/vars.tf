@@ -102,8 +102,8 @@ variable "la_workspace_id" {
 }
 
 variable "test_integration_runtime" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Test IR"
 }
 
