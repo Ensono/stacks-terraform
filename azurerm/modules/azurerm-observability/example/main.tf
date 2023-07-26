@@ -21,7 +21,7 @@ resource "azurerm_resource_group" "default" {
 
 
 module "observability" {
-  source                     = "../../azurerm-observability"
+  source                  = "../../azurerm-observability"
   resource_group_name     = azurerm_resource_group.default.name
   resource_group_location = azurerm_resource_group.default.location
   la_name                 = module.default_label.id
