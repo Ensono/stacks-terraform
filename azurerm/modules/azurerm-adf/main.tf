@@ -85,4 +85,5 @@ resource "azapi_resource_action" "test" {
   body = jsonencode({
     autoTerminationMinutes = 10
   })
+  depends_on = [azurerm_data_factory_integration_runtime_azure.example]
 }
