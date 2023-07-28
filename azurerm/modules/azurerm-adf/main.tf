@@ -1,8 +1,3 @@
-data "azurerm_client_config" "current" {
-}
-
-
-
 resource "azurerm_data_factory" "example" {
   count                           = var.create_adf ? 1 : 0
   name                            = var.resource_namer
@@ -45,7 +40,7 @@ resource "azurerm_data_factory" "example" {
       project_name    = var.vsts_project_name
       repository_name = var.repository_name
       root_folder     = var.root_folder
-      tenant_id       = data.azurerm_client_config.current.tenant_id
+      tenant_id       = var.tenant_id
     }
   }
 
