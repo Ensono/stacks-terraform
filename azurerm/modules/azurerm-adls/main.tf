@@ -42,7 +42,7 @@ resource "azurerm_storage_container" "storage_container_blob" {
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, data.azurerm_client_config.current, null_resource.sleep]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
@@ -50,10 +50,8 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, data.azurerm_client_config.current, null_resource.sleep]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
 }
-
-data "azurerm_client_config" "current" {}
 
 resource "azurerm_role_assignment" "storage_role_context" {
   for_each             = var.storage_account_details
