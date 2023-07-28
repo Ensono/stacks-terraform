@@ -200,3 +200,9 @@ variable "la_workspace_id" {
   default     = ""
   description = "Log Analytics Workspace ID"
 }
+
+variable "kv_private_dns_zone_id" {
+  type        = string
+  default     = ""
+  description = "Azure Resource ID of the Key Vault Private DNS Zone"
+}
