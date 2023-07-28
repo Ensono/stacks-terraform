@@ -233,3 +233,27 @@ variable "private_dns_zone_id" {
   default     = ""
   description = "Specifies the ID of the Private DNS Zone Group."
 }
+
+variable "virtual_network_id" {
+  type        = string
+  default     = ""
+  description = "Virtual Network Resource ID."
+}
+
+variable "public_subnet_id" {
+  type        = string
+  default     = ""
+  description = "Public Subnet Resource ID."
+}
+
+variable "private_subnet_id" {
+  type        = string
+  default     = ""
+  description = "Private Subnet Resource ID."
+}
+
+variable "pe_subnet_id" {
+  type        = string
+  default     = ""
+  description = "Private Endpoint Subnet Resource ID."
+}

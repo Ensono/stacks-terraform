@@ -117,13 +117,13 @@ resource "azurerm_network_security_rule" "azfrontdoor" {
 
 resource "azurerm_subnet_network_security_group_association" "private" {
   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : data.azurerm_subnet.private_subnet[0].id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.private_subnet[0].id : var.private_subnet_id
   network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
 resource "azurerm_subnet_network_security_group_association" "public" {
   count                     = var.enable_private_network && var.managed_vnet == false ? 1 : 0
-  subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet[0].id : data.azurerm_subnet.public_subnet[0].id
+  subnet_id                 = var.create_subnets ? azurerm_subnet.public_subnet[0].id : var.public_subnet_id
   network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
 
@@ -137,7 +137,7 @@ resource "azurerm_private_endpoint" "databricks" {
   name                = "${var.resource_namer}-pe-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.create_pe_subnet ? azurerm_subnet.pe_subnet[0].id : data.azurerm_subnet.pe_subnet[0].id
+  subnet_id           = var.create_pe_subnet ? azurerm_subnet.pe_subnet[0].id : var.pe_subnet_id
 
   private_service_connection {
     name                           = "${var.resource_namer}-db-pe"
@@ -149,10 +149,10 @@ resource "azurerm_private_endpoint" "databricks" {
   private_dns_zone_group {
 
     name                 = "databricks_ui_api"
-    private_dns_zone_ids = [var.private_dns_zone_id != "" ? var.private_dns_zone_id : data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
+    private_dns_zone_ids = ["${var.private_dns_zone_id}"]
   }
 
-  depends_on = [azurerm_databricks_workspace.example, data.azurerm_private_dns_zone.adb_pvt_dns]
+  depends_on = [azurerm_databricks_workspace.example]
 }
 
 resource "azurerm_private_endpoint" "auth" {
@@ -160,7 +160,7 @@ resource "azurerm_private_endpoint" "auth" {
   name                = "${var.resource_namer}-pe-databricks-auth"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.create_pe_subnet ? azurerm_subnet.pe_subnet[0].id : data.azurerm_subnet.pe_subnet[0].id
+  subnet_id           = var.create_pe_subnet ? azurerm_subnet.pe_subnet[0].id : var.pe_subnet_id
 
   private_service_connection {
     name                           = "${var.resource_namer}-db-pe-auth"
@@ -171,7 +171,7 @@ resource "azurerm_private_endpoint" "auth" {
 
   private_dns_zone_group {
     name                 = "databricks_auth"
-    private_dns_zone_ids = [var.private_dns_zone_id != "" ? var.private_dns_zone_id : data.azurerm_private_dns_zone.adb_pvt_dns[0].id]
+    private_dns_zone_ids = ["${var.private_dns_zone_id}"]
   }
 
   depends_on = [azurerm_databricks_workspace.example]
