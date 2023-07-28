@@ -159,6 +159,7 @@ resource "azurerm_private_endpoint" "databricks" {
   }
 
   depends_on = [azurerm_databricks_workspace.example]
+
   lifecycle {
     ignore_changes = [
       tags,
@@ -186,6 +187,12 @@ resource "azurerm_private_endpoint" "auth" {
   }
 
   depends_on = [azurerm_databricks_workspace.example]
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 
 }
 /*
