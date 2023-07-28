@@ -19,6 +19,12 @@ variable "name_component" {
   type        = string
 }
 
+variable "tenant_id" {
+  type        = string
+  default     = ""
+  description = "Azure Tenant ID."
+}
+
 ############################################
 # RESOURCE INFORMATION
 ############################################
