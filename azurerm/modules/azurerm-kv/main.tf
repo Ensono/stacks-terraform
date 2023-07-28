@@ -127,4 +127,10 @@ resource "azurerm_private_endpoint" "pe" {
     name                 = azurerm_key_vault.example.0.name
     private_dns_zone_ids = [var.kv_private_dns_zone_id]
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
