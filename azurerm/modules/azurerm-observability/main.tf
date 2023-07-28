@@ -8,7 +8,6 @@ resource "azurerm_log_analytics_workspace" "default" {
   location            = var.resource_group_location
   sku                 = "PerGB2018"
   retention_in_days   = var.retention_in_days
-  depends_on          = [data.azurerm_resource_group.default]
   lifecycle {
     ignore_changes = [
       tags,
@@ -22,7 +21,7 @@ resource "azurerm_log_analytics_solution" "default" {
   location              = var.resource_group_location
   workspace_resource_id = azurerm_log_analytics_workspace.default.id
   workspace_name        = azurerm_log_analytics_workspace.default.name
-  depends_on            = [data.azurerm_resource_group.default, azurerm_log_analytics_workspace.default]
+  depends_on            = [azurerm_log_analytics_workspace.default]
   plan {
     publisher = "Microsoft"
     product   = "OMSGallery/ContainerInsights"
@@ -35,7 +34,7 @@ resource "azurerm_application_insights" "default" {
   location            = var.resource_group_location
   application_type    = var.log_application_type
   workspace_id        = azurerm_log_analytics_workspace.default.id
-  depends_on          = [data.azurerm_resource_group.default, azurerm_log_analytics_workspace.default]
+  depends_on          = [azurerm_log_analytics_workspace.default]
   lifecycle {
     ignore_changes = [
       tags,
