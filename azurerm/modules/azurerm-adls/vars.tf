@@ -178,13 +178,13 @@ variable "la_workspace_id" {
 }
 
 variable "dfs_private_zone_id" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Resource ID of the DFS Private DNS Zone"
 }
 
 variable "blob_private_zone_id" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Resource ID of the Blob Private DNS Zone"
 }
