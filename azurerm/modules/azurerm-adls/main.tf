@@ -114,6 +114,6 @@ resource "azurerm_private_endpoint" "pe_blob" {
 
   private_dns_zone_group {
     name                 = azurerm_storage_account.storage_account_default[each.key].name
-    private_dns_zone_ids = [var.var.blob_private_zone_id]
+    private_dns_zone_ids = [var.blob_private_zone_id]
   }
 }
