@@ -67,6 +67,12 @@ resource "azurerm_network_security_group" "nsg" {
   name                = "${var.resource_namer}-nsg-databricks"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_network_security_rule" "nsg_rule" {
@@ -153,6 +159,12 @@ resource "azurerm_private_endpoint" "databricks" {
   }
 
   depends_on = [azurerm_databricks_workspace.example]
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_private_endpoint" "auth" {
@@ -175,6 +187,12 @@ resource "azurerm_private_endpoint" "auth" {
   }
 
   depends_on = [azurerm_databricks_workspace.example]
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 
 }
 /*
