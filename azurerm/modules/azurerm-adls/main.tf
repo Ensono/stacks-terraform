@@ -93,6 +93,12 @@ resource "azurerm_private_endpoint" "pe_dfs" {
     name                 = azurerm_storage_account.storage_account_default[each.key].name
     private_dns_zone_ids = [var.dfs_private_zone_id]
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_private_endpoint" "pe_blob" {
@@ -115,5 +121,11 @@ resource "azurerm_private_endpoint" "pe_blob" {
   private_dns_zone_group {
     name                 = azurerm_storage_account.storage_account_default[each.key].name
     private_dns_zone_ids = [var.blob_private_zone_id]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
