@@ -18,6 +18,11 @@ variable "resource_namer" {
   description = "Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted"
 }
 
+variable "azure_object_id" {
+  type        = string
+  description = "Object ID for SPN"
+}
+
 ############################################
 # STORAGE ACCOUNT SETTINGS
 ############################################
