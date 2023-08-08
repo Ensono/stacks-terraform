@@ -10,7 +10,7 @@ output "app_insights_name" {
 }
 
 output "app_insights_id" {
-  value = azurerm_log_analytics_workspace.default.id
+  value = azurerm_application_insights.default.id
 }
 
 output "app_insights_key" {
