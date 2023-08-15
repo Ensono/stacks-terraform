@@ -29,3 +29,8 @@ output "primary_dfs_endpoints" {
   value     = values(azurerm_storage_account.storage_account_default)[*].primary_dfs_endpoint
   sensitive = true
 }
+
+output "primary_access_key" {
+  value     = values(azurerm_storage_account.storage_account_default)[*].primary_access_key
+  sensitive = true
+}
