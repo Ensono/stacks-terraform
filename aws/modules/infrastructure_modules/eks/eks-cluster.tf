@@ -19,9 +19,17 @@ module "eks" {
       provider_key_arn = module.eks_kms_key.arn
     }
 
-  # Self managed node groups will not automatically create the aws-auth configmap so we need to
-  # create_aws_auth_configmap = true
-  # manage_aws_auth_configmap = true
+# Determines whether to manage the aws-auth configma
+# aws-auth configmap
+  manage_aws_auth_configmap = true
+
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::640853641954:user/kubeadmin"
+      username = "kubeadmin"
+      groups   = ["system:masters"]
+    }
+  ]
 
   eks_managed_node_group_defaults = {
     disk_size = 50
