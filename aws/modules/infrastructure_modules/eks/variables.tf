@@ -5,17 +5,24 @@ variable "region" {
   type        = string
 }
 
-# variable "map_users" {
+variable "manage_aws_auth_configmap" {
+  
+  description = "Determines whether to manage the aws-auth configmap"
+  type       =  string
 
-#   description = "Additional IAM users to add to the aws-auth configmap."
-#   type = list(object({
-#     userarn  = string
-#     username = string
-#     groups   = list(string)
-#   }))
+}
 
-#   default = []
-# }
+variable "map_users" {
+
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = []
+}
 
 # variable "map_roles" {
 

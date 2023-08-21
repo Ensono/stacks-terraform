@@ -21,15 +21,9 @@ module "eks" {
 
 # Determines whether to manage the aws-auth configma
 # aws-auth configmap
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = var.manage_aws_auth_configmap
 
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::640853641954:user/kubeadmin"
-      username = "kubeadmin"
-      groups   = ["system:masters"]
-    }
-  ]
+  aws_auth_users = var.map_users
 
   eks_managed_node_group_defaults = {
     disk_size = 50
