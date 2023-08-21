@@ -8,7 +8,7 @@ variable "region" {
 variable "manage_aws_auth_configmap" {
   
   description = "Determines whether to manage the aws-auth configmap"
-  type       =  string
+  type       =  bool
 
 }
 
