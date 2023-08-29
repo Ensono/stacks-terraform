@@ -52,7 +52,6 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
 
     content {
       category = log.value
-      enabled  = true
 
       retention_policy {
         enabled = false
