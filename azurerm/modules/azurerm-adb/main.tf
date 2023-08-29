@@ -41,46 +41,9 @@ data "azurerm_monitor_diagnostic_categories" "adb_log_analytics_categories" {
   depends_on  = [azurerm_databricks_workspace.example]
 }
 
-# resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
-#   count                      = var.enable_databricksws_diagnostic ? 1 : 0
-#   name                       = var.databricksws_diagnostic_setting_name
-#   target_resource_id         = azurerm_databricks_workspace.example.id
-#   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
-
-#   dynamic "log" {
-#     for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories[0].logs
-
-#     content {
-#       category = log.value
-#       enabled  = true
-
-#       retention_policy {
-#         enabled = false
-#         days    = 0
-#       }
-#     }
-#   }
-
-#   dynamic "metric" {
-#     for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories[0].metrics
-
-#     content {
-#       category = metric.value
-#       enabled  = true
-
-#       retention_policy {
-#         enabled = false
-#         days    = 0
-#       }
-#     }
-#   }
-
-#   depends_on = [data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories]
-# }
-
 resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   count                      = var.enable_databricksws_diagnostic ? 1 : 0
-  name                       = "ADB to Log Analytics"
+  name                       = var.databricksws_diagnostic_setting_name
   target_resource_id         = azurerm_databricks_workspace.example.id
   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
 
