@@ -37,8 +37,9 @@ resource "azurerm_databricks_workspace" "example" {
 
 # Enable diagnostic settings for ADB
 data "azurerm_monitor_diagnostic_categories" "adb_log_analytics_categories" {
+  count       = var.enable_databricksws_diagnostic ? 1 : 0
   resource_id = azurerm_databricks_workspace.example.id
-  depends_on = [ azurerm_databricks_workspace.example ]
+  depends_on  = [azurerm_databricks_workspace.example]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
@@ -75,6 +76,6 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
     }
   }
 
-  depends_on = [ data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories ]
+  depends_on = [data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories]
 }
 
