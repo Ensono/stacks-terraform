@@ -73,5 +73,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
       }
     }
   }
+
+  depends_on = [ data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories ]
 }
 
