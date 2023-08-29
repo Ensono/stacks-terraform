@@ -47,7 +47,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   target_resource_id         = azurerm_databricks_workspace.example.id
   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
 
-  dynamic "log" {
+  dynamic "enabled_log" {
     for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories.logs
 
     content {
