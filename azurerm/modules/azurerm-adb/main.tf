@@ -51,7 +51,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
     for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories.logs
 
     content {
-      category = log.value
+      category = enabled_log.value
 
       retention_policy {
         enabled = false
