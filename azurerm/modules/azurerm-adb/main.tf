@@ -1,4 +1,3 @@
-
 resource "azurerm_databricks_workspace" "example" {
   name                                  = var.resource_namer
   location                              = var.resource_group_location
