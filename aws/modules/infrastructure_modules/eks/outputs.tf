@@ -28,14 +28,29 @@ output "cluster_name" {
   value       = module.eks.cluster_name
 }
 
-output "cluster_oidc_issuer_url" {
-  description = "The URL on the EKS cluster for the OpenID Connect identity provider"
-  value       = module.eks.cluster_oidc_issuer_url
-}
-
 output "cluster_certificate_authority_data" {
   description = "base64 encoded certificate data required to communicate with your cluster"
   value       = module.eks.cluster_certificate_authority_data
+}
+
+
+#######
+# OIDC 
+######
+
+output "oidc_provider" {
+  description = "OpenID Connect identity provider without leading http"
+  value = module.eks.oidc_provider
+}
+
+output "oidc_provider_arn" {
+  description = "OpenID Connect identity provider ARN"
+  value = module.eks.oidc_provider_arn
+}
+
+output "cluster_oidc_issuer_url" {
+  description = "The URL on the EKS cluster for the OpenID Connect identity provider"
+  value       = module.eks.cluster_oidc_issuer_url
 }
 
 ################
@@ -56,16 +71,3 @@ output "route53_zone_name" {
   value       = length(module.route53_zones) > 0 ? module.route53_zones[*].route53_zone_name : null
 }
 
-#######
-# OIDC 
-######
-
-output "oidc_provider" {
-  description = "OpenID Connect identity provider without leading http"
-  value = module.eks.oidc_provider
-}
-
-output "oidc_provider_arn" {
-  description = "OpenID Connect identity provider ARN"
-  value = module.eks.oidc_provider_arn
-}
