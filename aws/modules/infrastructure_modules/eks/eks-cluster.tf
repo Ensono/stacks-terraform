@@ -19,6 +19,13 @@ module "eks" {
       provider_key_arn = module.eks_kms_key.arn
     }
 
+# OIDC Identity provider
+  cluster_identity_providers = {
+    sts = {
+      client_id = "sts.amazonaws.com"
+    }
+  }
+
 # Determines whether to manage the aws-auth configma
 # aws-auth configmap
   manage_aws_auth_configmap = var.manage_aws_auth_configmap
