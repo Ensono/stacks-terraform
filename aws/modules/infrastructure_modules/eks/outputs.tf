@@ -38,12 +38,12 @@ output "cluster_certificate_authority_data" {
 # OIDC 
 ######
 
-output "oidc_provider" {
+output "cluster_oidc_provider" {
   description = "OpenID Connect identity provider without leading http"
   value = module.eks.oidc_provider
 }
 
-output "oidc_provider_arn" {
+output "cluster_oidc_provider_arn" {
   description = "OpenID Connect identity provider ARN"
   value = module.eks.oidc_provider_arn
 }
