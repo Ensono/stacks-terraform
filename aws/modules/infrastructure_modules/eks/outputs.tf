@@ -55,3 +55,17 @@ output "route53_zone_name" {
   description = "Name of the Route53 zone"
   value       = length(module.route53_zones) > 0 ? module.route53_zones[*].route53_zone_name : null
 }
+
+#######
+# OIDC 
+######
+
+output "oidc_provider" {
+  description = "OpenID Connect identity provider without leading http"
+  value = module.eks.oidc_provider
+}
+
+output "oidc_provider_arn" {
+  description = "OpenID Connect identity provider ARN"
+  value = module.eks.oidc_provider_arn
+}

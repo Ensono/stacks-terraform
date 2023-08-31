@@ -9,9 +9,6 @@ module "eks" {
   cluster_name                    = var.cluster_name
   cluster_version                 = var.cluster_version
   enable_irsa                     = var.enable_irsa
-  # TEMPORARY
-  oidc_provider                   = "arn:aws:iam::640853641954:oidc-provider/oidc.eks.eu-west-2.amazonaws.com/id/345C5C005A14FA72A9BD011EC5461937"
-  oidc_provider_arn               = "oidc.eks.eu-west-2.amazonaws.com/id/345C5C005A14FA72A9BD011EC5461937"
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
