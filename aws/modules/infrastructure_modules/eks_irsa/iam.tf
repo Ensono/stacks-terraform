@@ -29,9 +29,3 @@ resource "aws_iam_policy" "policy" {
   path   = "/"
   policy = var.policy
 }
-
-resource "aws_iam_role_policy_attachment" "attach" {
-  count      = var.enable_irsa ? 1 : 0
-  policy_arn = aws_iam_policy.policy[0].arn
-  role       = aws_iam_role.role[0].name
-}
