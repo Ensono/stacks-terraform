@@ -9,25 +9,28 @@ module "eks" {
   cluster_name                    = var.cluster_name
   cluster_version                 = var.cluster_version
   enable_irsa                     = var.enable_irsa
+  # TEMPORARY
+  oidc_provider                   = "arn:aws:iam::640853641954:oidc-provider/oidc.eks.eu-west-2.amazonaws.com/id/345C5C005A14FA72A9BD011EC5461937"
+  oidc_provider_arn               = "oidc.eks.eu-west-2.amazonaws.com/id/345C5C005A14FA72A9BD011EC5461937"
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
   cluster_enabled_log_types = ["scheduler", "controllerManager", "authenticator", "audit", "api"]
 
   cluster_encryption_config = {
-      resources        = ["secrets"]
-      provider_key_arn = module.eks_kms_key.arn
-    }
+    resources        = ["secrets"]
+    provider_key_arn = module.eks_kms_key.arn
+  }
 
-# OIDC Identity provider
+  # OIDC Identity provider
   cluster_identity_providers = {
     sts = {
       client_id = "sts.amazonaws.com"
     }
   }
 
-# Determines whether to manage the aws-auth configma
-# aws-auth configmap
+  # Determines whether to manage the aws-auth configma
+  # aws-auth configmap
   manage_aws_auth_configmap = var.manage_aws_auth_configmap
 
   aws_auth_users = var.map_users
@@ -35,7 +38,7 @@ module "eks" {
   eks_managed_node_group_defaults = {
     disk_size = 50
   }
-    eks_managed_node_groups = {
+  eks_managed_node_groups = {
     general = {
       desired_size = 1
       min_size     = 1
