@@ -1,4 +1,3 @@
-
 resource "azurerm_databricks_workspace" "example" {
   name                                  = var.resource_namer
   location                              = var.resource_group_location
@@ -46,12 +45,11 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   target_resource_id         = azurerm_databricks_workspace.example.id
   log_analytics_workspace_id = var.data_platform_log_analytics_workspace_id
 
-  dynamic "log" {
+  dynamic "enabled_log" {
     for_each = data.azurerm_monitor_diagnostic_categories.adb_log_analytics_categories.logs
 
     content {
-      category = log.value
-      enabled  = true
+      category = enabled_log.value
 
       retention_policy {
         enabled = false
@@ -65,7 +63,6 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
 
     content {
       category = metric.value
-      enabled  = true
 
       retention_policy {
         enabled = false
@@ -73,5 +70,7 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
       }
     }
   }
+
 }
+
 
