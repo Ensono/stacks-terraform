@@ -38,7 +38,7 @@ module "eks" {
   eks_managed_node_groups = {
     general = {
       desired_size = var.eks_desired_nodes
-      min_size     = var.eks_desired_nodes
+      min_size     = 1
       max_size     = 10
 
       labels = {
