@@ -49,24 +49,6 @@ module "eks" {
       capacity_type  = "ON_DEMAND"
     }
 
-    spot = {
-      desired_size = 1
-      min_size     = 1
-      max_size     = 10
-
-      labels = {
-        role = "spot"
-      }
-
-      taints = [{
-        key    = "market"
-        value  = "spot"
-        effect = "NO_SCHEDULE"
-      }]
-
-      instance_types = ["t3.micro"]
-      capacity_type  = "SPOT"
-    }
   }
 
   tags = var.tags
@@ -84,14 +66,4 @@ module "eks_kms_key" {
   policy                  = data.aws_iam_policy_document.eks_secret_encryption_kms_key_policy.json
   enable_key_rotation     = true
 
-}
-
-# Route 53 
-##########
-module "route53_zones" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "~> 2.0"
-
-  count = var.enable_zone ? 1 : 0
-  zones = var.public_zones
 }

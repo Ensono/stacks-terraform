@@ -79,13 +79,3 @@ variable "eks_desired_nodes" {
   description = "Configure desired no of nodes for the cluster"
   type        = string
 }
-
-# Route 53 Zones
-variable "enable_zone" {
-  description = "Conditionally create route53 zones"
-  type        = bool
-}
-variable "public_zones" {
-  type        = map(any)
-  description = "Map of Route53 zone parameters"
-}

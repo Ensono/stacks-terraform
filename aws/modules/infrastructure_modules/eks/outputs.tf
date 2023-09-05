@@ -52,22 +52,3 @@ output "cluster_oidc_issuer_url" {
   description = "The URL on the EKS cluster for the OpenID Connect identity provider"
   value       = module.eks.cluster_oidc_issuer_url
 }
-
-################
-# Route 53 Zones
-################
-output "route53_zone_zone_id" {
-  description = "Zone ID of Route53 zone"
-  value       = length(module.route53_zones) > 0 ? module.route53_zones[*].route53_zone_zone_id : null
-}
-
-output "route53_zone_name_servers" {
-  description = "Name servers of Route53 zone"
-  value       = length(module.route53_zones) > 0 ? module.route53_zones[*].route53_zone_name_servers : null
-}
-
-output "route53_zone_name" {
-  description = "Name of the Route53 zone"
-  value       = length(module.route53_zones) > 0 ? module.route53_zones[*].route53_zone_name : null
-}
-
