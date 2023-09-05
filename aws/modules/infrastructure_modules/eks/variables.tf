@@ -78,4 +78,12 @@ variable "eks_desired_nodes" {
 
   description = "Configure desired no of nodes for the cluster"
   type        = string
+  default = "2"
+}
+
+variable "eks_node_size" {
+
+  description = "Configure desired no of nodes for the cluster"
+  type        = string
+  default = "t3.small"
 }
