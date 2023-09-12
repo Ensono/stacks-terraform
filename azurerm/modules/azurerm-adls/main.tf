@@ -60,16 +60,6 @@ resource "azurerm_role_assignment" "storage_role_context" {
   principal_id         = var.azure_object_id
 }
 
-resource "null_resource" "sleep" {
-  # Add sleep to allow network rules to propergate
-  provisioner "local-exec" {
-    command = <<EOT
-      sleep 30
-    EOT
-  }
-  depends_on = [azurerm_storage_account.storage_account_default]
-}
-
 resource "azurerm_private_endpoint" "pe_dfs" {
   for_each = {
     for account_name, account_details in var.storage_account_details : account_name => account_details
@@ -126,4 +116,14 @@ resource "azurerm_private_endpoint" "pe_blob" {
       tags,
     ]
   }
+}
+
+resource "null_resource" "sleep" {
+  # Add sleep to allow network rules to propergate
+  provisioner "local-exec" {
+    command = <<EOT
+      sleep 60
+    EOT
+  }
+  depends_on = [azurerm_storage_account.storage_account_default]
 }
