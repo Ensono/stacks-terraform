@@ -122,7 +122,7 @@ resource "null_resource" "sleep" {
   # Add sleep to allow network rules to propergate
   provisioner "local-exec" {
     command = <<EOT
-      sleep 200
+      sleep 30
     EOT
   }
   depends_on = [azurerm_storage_account.storage_account_default]
