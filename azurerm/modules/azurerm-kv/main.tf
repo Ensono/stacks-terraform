@@ -139,7 +139,7 @@ resource "null_resource" "sleep" {
   # Add sleep to allow network rules to propergate
   provisioner "local-exec" {
     command = <<EOT
-      sleep 100
+      sleep 60
     EOT
   }
   depends_on = [azurerm_private_endpoint.pe , azurerm_key_vault_access_policy.contributors_access_policy]

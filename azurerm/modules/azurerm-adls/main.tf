@@ -43,7 +43,7 @@ resource "null_resource" "sleep" {
       sleep 30
     EOT
   }
-  depends_on = [azurerm_storage_account.storage_account_default]
+  depends_on = [azurerm_storage_account.storage_account_default,azurerm_private_endpoint.pe_blob,azurerm_private_endpoint.pe_dfs]
 }
 
 resource "azurerm_storage_container" "storage_container_blob" {
@@ -52,7 +52,7 @@ resource "azurerm_storage_container" "storage_container_blob" {
   storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
   container_access_type = var.container_access_type
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep, azurerm_private_endpoint.pe_blob]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
@@ -60,7 +60,7 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
   name               = each.key
   storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
 
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep, azurerm_private_endpoint.pe_dfs]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
 }
 
 resource "azurerm_role_assignment" "storage_role_context" {
@@ -129,25 +129,37 @@ resource "azurerm_private_endpoint" "pe_blob" {
 }
 
 # resource "null_resource" "pe_dfs_depends" {
+#     # Add sleep to allow network rules to propergate
+#   provisioner "local-exec" {
+#     command = <<EOT
+#       sleep 30
+#     EOT
+#   }
+
 #   for_each = {
 #     for account_name, account_details in var.storage_account_details : account_name => account_details
 #     if var.enable_private_network && account_details.hns_enabled
 #   }
 
 #   depends_on = [
-#     azurerm_private_endpoint.pe_dfs[each.key],
-#     null_resource.sleep
+#     azurerm_private_endpoint.pe_dfs[each.key]
 #   ]
 # }
 
 # resource "null_resource" "pe_blob_depends" {
+#       # Add sleep to allow network rules to propergate
+#   provisioner "local-exec" {
+#     command = <<EOT
+#       sleep 30
+#     EOT
+#   }
+
 #   for_each = {
 #     for account_name, account_details in var.storage_account_details : account_name => account_details
 #     if var.enable_private_network
 #   }
 
 #   depends_on = [
-#     azurerm_private_endpoint.pe_blob[each.key],
-#     null_resource.sleep
+#     azurerm_private_endpoint.pe_blob[each.key]
 #   ]
 # }
