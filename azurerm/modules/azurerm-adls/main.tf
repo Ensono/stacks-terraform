@@ -127,39 +127,3 @@ resource "azurerm_private_endpoint" "pe_blob" {
     ]
   }
 }
-
-# resource "null_resource" "pe_dfs_depends" {
-#     # Add sleep to allow network rules to propergate
-#   provisioner "local-exec" {
-#     command = <<EOT
-#       sleep 30
-#     EOT
-#   }
-
-#   for_each = {
-#     for account_name, account_details in var.storage_account_details : account_name => account_details
-#     if var.enable_private_network && account_details.hns_enabled
-#   }
-
-#   depends_on = [
-#     azurerm_private_endpoint.pe_dfs[each.key]
-#   ]
-# }
-
-# resource "null_resource" "pe_blob_depends" {
-#       # Add sleep to allow network rules to propergate
-#   provisioner "local-exec" {
-#     command = <<EOT
-#       sleep 30
-#     EOT
-#   }
-
-#   for_each = {
-#     for account_name, account_details in var.storage_account_details : account_name => account_details
-#     if var.enable_private_network
-#   }
-
-#   depends_on = [
-#     azurerm_private_endpoint.pe_blob[each.key]
-#   ]
-# }
