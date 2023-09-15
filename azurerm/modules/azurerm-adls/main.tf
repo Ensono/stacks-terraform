@@ -36,40 +36,6 @@ resource "azurerm_storage_account" "storage_account_default" {
   }
 }
 
-resource "null_resource" "sleep" {
-  # Add sleep to allow network rules to propergate
-  provisioner "local-exec" {
-    command = <<EOT
-      sleep 60
-    EOT
-  }
-  depends_on = [azurerm_storage_account.storage_account_default,azurerm_private_endpoint.pe_blob,azurerm_private_endpoint.pe_dfs]
-}
-
-resource "azurerm_storage_container" "storage_container_blob" {
-  for_each              = { for i in toset(local.containers_blob) : i.name => i }
-  name                  = each.key
-  storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
-  container_access_type = var.container_access_type
-
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
-}
-
-resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
-  for_each           = { for i in toset(local.containers_adls) : i.name => i }
-  name               = each.key
-  storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
-
-  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
-}
-
-resource "azurerm_role_assignment" "storage_role_context" {
-  for_each             = var.storage_account_details
-  scope                = azurerm_storage_account.storage_account_default[each.key].id
-  role_definition_name = "Storage Blob Data Owner"
-  principal_id         = var.azure_object_id
-}
-
 resource "azurerm_private_endpoint" "pe_dfs" {
   for_each = {
     for account_name, account_details in var.storage_account_details : account_name => account_details
@@ -127,3 +93,38 @@ resource "azurerm_private_endpoint" "pe_blob" {
     ]
   }
 }
+
+resource "null_resource" "sleep" {
+  # Add sleep to allow network rules to propergate
+  provisioner "local-exec" {
+    command = <<EOT
+      sleep 60
+    EOT
+  }
+  depends_on = [azurerm_storage_account.storage_account_default,azurerm_private_endpoint.pe_blob,azurerm_private_endpoint.pe_dfs]
+}
+
+resource "azurerm_storage_container" "storage_container_blob" {
+  for_each              = { for i in toset(local.containers_blob) : i.name => i }
+  name                  = each.key
+  storage_account_name  = azurerm_storage_account.storage_account_default[each.value.account].name
+  container_access_type = var.container_access_type
+
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
+}
+
+resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
+  for_each           = { for i in toset(local.containers_adls) : i.name => i }
+  name               = each.key
+  storage_account_id = azurerm_storage_account.storage_account_default[each.value.account].id
+
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_role_assignment.storage_role_context, null_resource.sleep]
+}
+
+resource "azurerm_role_assignment" "storage_role_context" {
+  for_each             = var.storage_account_details
+  scope                = azurerm_storage_account.storage_account_default[each.key].id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = var.azure_object_id
+}
+
