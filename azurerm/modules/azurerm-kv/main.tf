@@ -39,6 +39,41 @@ resource "azurerm_key_vault" "example" {
   }
 }
 
+resource "azurerm_private_endpoint" "pe" {
+  count               = var.enable_private_network ? 1 : 0
+  name                = "${azurerm_key_vault.example[0].name}-kv-pe"
+  resource_group_name = var.pe_resource_group_name
+  location            = var.pe_resource_group_location
+  subnet_id           = var.pe_subnet_id
+
+  private_service_connection {
+    name                           = "${azurerm_key_vault.example[0].name}-kv-pe"
+    is_manual_connection           = var.is_manual_connection
+    private_connection_resource_id = azurerm_key_vault.example[0].id
+    subresource_names              = ["vault"]
+  }
+
+  private_dns_zone_group {
+    name                 = azurerm_key_vault.example.0.name
+    private_dns_zone_ids = [var.kv_private_dns_zone_id]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
+}
+
+resource "null_resource" "sleep" {
+  # Add sleep to allow network rules to propergate
+  provisioner "local-exec" {
+    command = <<EOT
+      sleep 100
+    EOT
+  }
+  depends_on = [azurerm_private_endpoint.pe , azurerm_key_vault_access_policy.contributors_access_policy]
+}
 
 resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
   count = length(var.contributor_object_ids)
@@ -107,41 +142,5 @@ resource "azurerm_key_vault_access_policy" "reader_access_policy" {
     "List",
     "ListIssuers"
   ]
-}
-
-resource "azurerm_private_endpoint" "pe" {
-  count               = var.enable_private_network ? 1 : 0
-  name                = "${azurerm_key_vault.example[0].name}-kv-pe"
-  resource_group_name = var.pe_resource_group_name
-  location            = var.pe_resource_group_location
-  subnet_id           = var.pe_subnet_id
-
-  private_service_connection {
-    name                           = "${azurerm_key_vault.example[0].name}-kv-pe"
-    is_manual_connection           = var.is_manual_connection
-    private_connection_resource_id = azurerm_key_vault.example[0].id
-    subresource_names              = ["vault"]
-  }
-
-  private_dns_zone_group {
-    name                 = azurerm_key_vault.example.0.name
-    private_dns_zone_ids = [var.kv_private_dns_zone_id]
-  }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
-}
-
-resource "null_resource" "sleep" {
-  # Add sleep to allow network rules to propergate
-  provisioner "local-exec" {
-    command = <<EOT
-      sleep 100
-    EOT
-  }
-  depends_on = [azurerm_private_endpoint.pe , azurerm_key_vault_access_policy.contributors_access_policy]
 }
 
