@@ -11,4 +11,3 @@ output "vault_uri" {
 output "key_vault_name" {
   value = var.create_kv ? azurerm_key_vault.example.0.name : ""
 }
-
