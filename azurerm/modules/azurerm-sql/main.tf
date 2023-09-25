@@ -8,7 +8,7 @@ resource "random_password" "password" {
 
 # SQL Server instance
 resource "azurerm_mssql_server" "example" {
-  name                          = substr(replace("${var.resource_namer}-sql", "-", ""), 0, 24)
+  name                          = substr(replace("${var.resource_namer}-sql", "-", ""), 0, 63)
   resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location
   version                       = var.sql_version
