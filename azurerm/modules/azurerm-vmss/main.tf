@@ -68,7 +68,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     publisher = "Microsoft.VisualStudio.Services"
     settings = jsonencode(
       {
-        agentDownloadUrl        = "https://vstsagentpackage.azureedge.net/agent/3.220.2/vsts-agent-linux-x64-3.220.2.tar.gz"
+        agentDownloadUrl        = "https://vstsagentpackage.azureedge.net/agent/3.225.0/vsts-agent-linux-x64-3.225.0.tar.gz"
         agentFolder             = "/agent"
         enableScriptDownloadUrl = "https://vstsagenttools.blob.core.windows.net/tools/ElasticPools/Linux/15/enableagent.sh"
         isPipelinesAgent        = true
