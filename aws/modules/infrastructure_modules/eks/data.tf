@@ -1,8 +1,3 @@
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}
-
 locals {
 
   ## KMS
@@ -22,16 +17,7 @@ data "aws_caller_identity" "this" {}
 
 data "aws_availability_zones" "available" {}
 
-
 ## EKS
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_name
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_name
-}
-
 data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
   statement {
     sid    = "Allow access for Key Administrators"

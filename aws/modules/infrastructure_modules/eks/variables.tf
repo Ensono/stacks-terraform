@@ -1,89 +1,58 @@
 # EKS Cluster
 variable "region" {
-
   description = "AWS region"
   type        = string
 }
 
-variable "manage_aws_auth_configmap" {
-
-  description = "Determines whether to manage the aws-auth configmap"
-  type        = bool
-
-}
-
-variable "map_users" {
-
-  description = "Additional IAM users to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  default = []
-}
-
-# variable "map_roles" {
-
-#   description = "Additional IAM roles to add to the aws-auth configmap."
-#   type = list(object({
-#     rolearn  = string
-#     username = string
-#     groups   = list(string)
-#   }))
-
-# }
-
-
 variable "tags" {
-
-  description = "Map of infrastructure tags."
   type        = map(string)
-
+  description = "Map of infrastructure tags."
 }
-
 
 variable "cluster_name" {
-
-  description = "Name of the cluster and resources"
   type        = string
+  description = "Name of the cluster and resources"
 }
 
 variable "cluster_version" {
-
-  description = "Cluster Kubernetes Version"
   type        = string
-}
-
-variable "enable_irsa" {
-
-  description = "Switch to ebale IRSA"
-  type        = bool
+  description = "Cluster Kubernetes Version"
 }
 
 variable "cluster_endpoint_private_access" {
-
-  description = "Switch to enable private access"
   type        = bool
+  description = "Switch to enable private access"
 }
 
 variable "cluster_endpoint_public_access" {
-
-  description = "Switch to enable public access"
   type        = bool
+  description = "Switch to enable public access"
+}
+
+variable "eks_minimum_nodes" {
+  type        = string
+  description = "The minimum number of nodes in the cluster"
+
+  default = 1
 }
 
 variable "eks_desired_nodes" {
-
-  description = "Configure desired no of nodes for the cluster"
   type        = string
-  default = "2"
+  description = "The initial starting number of nodes"
+
+  default = 2
+}
+
+variable "eks_maximum_nodes" {
+  type       = string
+  description = "The maximum number of nodes in the cluster"
+
+  default = 3
 }
 
 variable "eks_node_size" {
-
-  description = "Configure desired no of nodes for the cluster"
   type        = string
+  description = "Configure desired no of nodes for the cluster"
+
   default = "t3.small"
 }

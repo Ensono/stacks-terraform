@@ -1,3 +1,7 @@
+# Stacks EKS Infra
+
+## TODO: Mention the Cloudwatch bug, when destroying log groups
+
 ## Requirements
 
 No requirements.
