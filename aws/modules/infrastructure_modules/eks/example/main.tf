@@ -15,3 +15,7 @@ module "amido_stacks_infra" {
   # Pass Non-default Tag Values to Underlying Modules
   tags = {}
 }
+
+provider "aws" {
+  region = "eu-west-1"
+}
