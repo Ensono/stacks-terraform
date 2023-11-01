@@ -54,8 +54,8 @@ stages:
     - job: Publish
       steps:
         - template: templates/setup.yml
-            parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
+          parameters:
+            TaskctlVersion: ${{ variables.TaskctlVersion }}
 
         # Publish to GitHub and Build Dashboard
         - task: Bash@3
