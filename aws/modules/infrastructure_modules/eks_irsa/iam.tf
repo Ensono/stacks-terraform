@@ -2,6 +2,7 @@ locals {
   sanitised_issuer_url = replace(var.cluster_oidc_issuer_url, "https://", "")
   iam_name             = "${var.namespace}-${var.service_account_name}"
   iam_path             = (var.policy_path != null) ? var.policy_path : "/${var.cluster_name}/"
+  iam_full_name        = length(var.policy_prefix) > 0 ? "${var.policy_prefix}-${local.iam_name}" : local.iam_name
 }
 
 data "aws_iam_policy_document" "role" {
@@ -29,14 +30,14 @@ data "aws_iam_policy_document" "role" {
 }
 
 resource "aws_iam_role" "role" {
-  name               = local.iam_name
+  name               = local.iam_full_name
   path               = local.iam_path
   description        = "Role for ${var.resource_description}"
   assume_role_policy = data.aws_iam_policy_document.role.json
 }
 
 resource "aws_iam_policy" "policy" {
-  name        = local.iam_name
+  name        = local.iam_full_name
   path        = local.iam_path
   description = "Policy for ${var.resource_description}"
   policy      = var.policy

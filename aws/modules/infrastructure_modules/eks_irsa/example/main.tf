@@ -37,7 +37,7 @@ module "external_dns_irsa_iam_role" {
   cluster_oidc_issuer_url = "https://foo.com"
   aws_account_id          = var.aws_account_id
   namespace               = "foo-ns"
-  service_account_name     = "foo-sa"
+  service_account_name    = "foo-sa"
   resource_description    = "for external-dns to list zones and records and update the records"
   policy                  = data.aws_iam_policy_document.external_dns.json
 }

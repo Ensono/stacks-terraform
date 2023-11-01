@@ -15,6 +15,13 @@ variable "aws_account_id" {
   description = "AWS account id to configure irsa role"
 }
 
+variable "policy_prefix" {
+  type        = string
+  description = "A prefix to use for the policies, which will be spliced with a dash."
+
+  default = ""
+}
+
 variable "policy" {
   type        = string
   description = "Policy json to apply to the irsa role"
