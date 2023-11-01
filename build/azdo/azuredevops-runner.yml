@@ -57,19 +57,14 @@ stages:
           parameters:
             TaskctlVersion: ${{ variables.TaskctlVersion }}
 
-        # Publish to GitHub and Build Dashboard
+        # Publish to GitHub
         - task: Bash@3
           displayName: Publish Release
           inputs:
             targetType: inline
             script: |
               taskctl release
-
-        - task: Bash@3
-          displayName: Create Terraform variables file
-          inputs:
-            targetType: inline
-            script: |
-              taskctl release
           env:
-            TF_FILE_LOCATION: "deploy/aws/stacks-eks"
+            STAGE: "release"
+            PUBLISH_RELEASE: "true"
+            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
