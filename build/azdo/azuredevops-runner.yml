@@ -64,7 +64,3 @@ stages:
             targetType: inline
             script: |
               taskctl release
-            env:
-              STAGE: release
-              PUBLISH_RELEASE: "true"
-              VERSION_NUMBER: $(BUILD_BUILDNUMBER)
