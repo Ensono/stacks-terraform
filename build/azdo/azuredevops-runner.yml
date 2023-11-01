@@ -37,8 +37,8 @@ stages:
       steps:
 
         - template: templates/setup.yml
-            parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
+          parameters:
+            TaskctlVersion: ${{ variables.TaskctlVersion }}
 
         - task: Bash@3
           displayName: Check Terraform Formatting
