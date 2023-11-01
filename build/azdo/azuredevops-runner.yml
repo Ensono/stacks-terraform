@@ -68,3 +68,4 @@ stages:
             STAGE: "release"
             PUBLISH_RELEASE: "true"
             VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+            PRERELEASE: ${{ parameters.force_release }}
