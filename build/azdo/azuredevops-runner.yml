@@ -64,5 +64,12 @@ stages:
             targetType: inline
             script: |
               taskctl release
-            env:
-              test: "test"
+
+        - task: Bash@3
+          displayName: Create Terraform variables file
+          inputs:
+            targetType: inline
+            script: |
+              taskctl release
+          env:
+            TF_FILE_LOCATION: "deploy/aws/stacks-eks"
