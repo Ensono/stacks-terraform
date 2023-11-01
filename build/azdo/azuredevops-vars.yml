@@ -1,4 +1,4 @@
-# GitHub Release
+variables:
   - name: VERSION_NUMBER
     value: $(Build.BuildNumber)
   - name: COMMIT_ID
