@@ -101,7 +101,7 @@ resource "null_resource" "sleep" {
       sleep 60
     EOT
   }
-  depends_on = [azurerm_storage_account.storage_account_default,azurerm_private_endpoint.pe_blob,azurerm_private_endpoint.pe_dfs]
+  depends_on = [azurerm_storage_account.storage_account_default, azurerm_private_endpoint.pe_blob, azurerm_private_endpoint.pe_dfs]
 }
 
 resource "azurerm_storage_container" "storage_container_blob" {
