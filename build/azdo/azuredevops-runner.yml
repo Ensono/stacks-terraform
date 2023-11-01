@@ -64,3 +64,5 @@ stages:
             targetType: inline
             script: |
               taskctl release
+            env:
+              test: "test"
