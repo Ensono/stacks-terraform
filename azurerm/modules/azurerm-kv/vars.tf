@@ -93,7 +93,6 @@ variable "sku_name" {
   description = "he Name of the SKU used for this Key Vault. Possible values are standard and premium"
 }
 
-
 variable "key_permissions" {
   type        = list(string)
   default     = ["Get"]
@@ -146,4 +145,64 @@ variable "reader_object_ids" {
   description = "A list of Azure active directory user,group or application object ID's that will have reader role to the key vault"
   type        = list(string)
   default     = []
+}
+
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Allow public network access to Key Vault. Set as true or false."
+}
+
+variable "enable_private_network" {
+  type        = bool
+  default     = false
+  description = "Determines if the Key Vault will be created as part of the Secure Data Platform."
+}
+
+variable "is_manual_connection" {
+  type        = bool
+  default     = false
+  description = "Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
+}
+
+variable "private_dns_zone_name" {
+  type        = string
+  default     = "privatelink.vaultcore.azure.net"
+  description = "Specifies the Name of the Private DNS Zone Group."
+}
+
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
+}
+
+variable "pe_subnet_id" {
+  type        = string
+  default     = ""
+  description = "ID for the Private Endpoint Subnet"
+}
+
+variable "pe_resource_group_name" {
+  type        = string
+  default     = ""
+  description = "Name of the resource group to provision private endpoint in."
+}
+
+variable "pe_resource_group_location" {
+  type        = string
+  default     = ""
+  description = "Location of the resource group to provision private endpoint in."
+}
+
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
+
+variable "kv_private_dns_zone_id" {
+  type        = string
+  default     = ""
+  description = "Azure Resource ID of the Key Vault Private DNS Zone"
 }

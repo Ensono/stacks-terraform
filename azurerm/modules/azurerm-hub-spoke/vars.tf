@@ -34,9 +34,15 @@ variable "tags" {
 ######################################### Azure Private DNS variables ######################################### 
 
 variable "dns_zone_name" {
-  default     = "mydomaintest.com"
+  default     = ["privatelink.vaultcore.azure.net", "privatelink.azuredatabricks.net", "privatelink.database.windows.net", "privatelink.blob.core.windows.net", "privatelink.dfs.core.windows.net"]
   description = "The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created."
-  type        = string
+  type        = list(string)
+}
+
+variable "link_dns_network" {
+  description = "weather link DNS with vnets"
+  type        = bool
+  default     = false
 }
 
 variable "create_private_dns_zone" {
@@ -47,7 +53,7 @@ variable "create_private_dns_zone" {
 
 variable "registration_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
 }
 
@@ -120,6 +126,7 @@ variable "network_details" {
     name                = string
     address_space       = list(string)
     dns_servers         = list(string)
+    resource_group_name = string
     is_hub              = bool
     link_to_private_dns = bool
     subnet_details = map(object({
@@ -139,6 +146,7 @@ variable "network_details" {
       address_space       = ["10.1.0.0/16"]
       dns_servers         = ["10.1.0.4", "10.1.0.5"]
       is_hub              = true
+      resource_group_name = "hub-rg"
       link_to_private_dns = true
       subnet_details = {
         "sub1" = {
@@ -156,6 +164,7 @@ variable "network_details" {
       name                = "network2"
       address_space       = ["10.2.0.0/16"]
       dns_servers         = ["10.2.0.4", "10.2.0.5"]
+      resource_group_name = "spoke1-rg"
       is_hub              = false
       link_to_private_dns = true
       subnet_details = {
@@ -180,6 +189,7 @@ variable "network_details" {
       name                = "network3"
       address_space       = ["10.3.0.0/16"]
       dns_servers         = ["10.3.0.4", "10.3.0.5"]
+      resource_group_name = "spoke2-rg"
       is_hub              = false
       link_to_private_dns = true
       subnet_details = {

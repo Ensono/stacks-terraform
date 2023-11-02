@@ -116,18 +116,21 @@ variable "ip_config_name_az_fw" {
 
 #########################################  Azure Vnet and Subnet variables   #########################################
 
+
 variable "network_details" {
   type = map(object({
     name                = string
     address_space       = list(string)
     dns_servers         = list(string)
-    link_to_private_dns = bool
+    resource_group_name = string
     is_hub              = bool
+    link_to_private_dns = bool
     subnet_details = map(object({
       sub_name                                      = string
       sub_address_prefix                            = list(string)
       private_endpoint_network_policies_enabled     = bool
       private_link_service_network_policies_enabled = bool
+      service_endpoints                             = list(string)
       })
     )
 
@@ -139,6 +142,7 @@ variable "network_details" {
       address_space       = ["10.1.0.0/16"]
       dns_servers         = ["10.1.0.4", "10.1.0.5"]
       is_hub              = true
+      resource_group_name = "hub-rg"
       link_to_private_dns = true
       subnet_details = {
         "sub1" = {
@@ -146,6 +150,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.1.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } },
@@ -155,6 +160,7 @@ variable "network_details" {
       name                = "network2"
       address_space       = ["10.2.0.0/16"]
       dns_servers         = ["10.2.0.4", "10.2.0.5"]
+      resource_group_name = "spoke1-rg"
       is_hub              = false
       link_to_private_dns = true
       subnet_details = {
@@ -163,6 +169,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.2.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         },
 
         "sub2" = {
@@ -170,6 +177,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.2.2.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } },
@@ -177,6 +185,7 @@ variable "network_details" {
       name                = "network3"
       address_space       = ["10.3.0.0/16"]
       dns_servers         = ["10.3.0.4", "10.3.0.5"]
+      resource_group_name = "spoke2-rg"
       is_hub              = false
       link_to_private_dns = true
       subnet_details = {
@@ -185,6 +194,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.3.1.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         },
 
         "sub2" = {
@@ -192,6 +202,7 @@ variable "network_details" {
           sub_address_prefix                            = ["10.3.2.0/24"]
           private_endpoint_network_policies_enabled     = true
           private_link_service_network_policies_enabled = true
+          service_endpoints                             = []
         }
 
     } }

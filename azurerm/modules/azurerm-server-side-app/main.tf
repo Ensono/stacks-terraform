@@ -24,7 +24,7 @@ resource "azurerm_dns_a_record" "default" {
 }
 
 module "cosmosdb" {
-  # source                               = "git::https://github.com/amido/stacks-terraform//azurerm/modules/azurerm-cosmosdb?ref=v1.1.0"
+  # source                               = "git::https://github.com/ensono/stacks-terraform//azurerm/modules/azurerm-cosmosdb?ref=v1.1.0"
   source                               = "../azurerm-cosmosdb"
   create_cosmosdb                      = var.create_cosmosdb
   resource_namer                       = var.resource_namer

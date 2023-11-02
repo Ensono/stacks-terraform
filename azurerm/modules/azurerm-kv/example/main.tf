@@ -21,13 +21,19 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "kv_default" {
-  source                    = "../../azurerm-kv"
-  resource_namer            = module.default_label.id
-  resource_group_name       = azurerm_resource_group.default.name
-  resource_group_location   = azurerm_resource_group.default.location
-  create_kv_networkacl      = false
-  enable_rbac_authorization = false
-  contributor_object_ids    = var.contributor_object_ids
-  reader_object_ids         = var.reader_object_ids
-
+  source                     = "../../azurerm-kv"
+  resource_namer             = substr(replace(module.default_label.id, "-", ""), 0, 24)
+  resource_group_name        = azurerm_resource_group.default.name
+  resource_group_location    = azurerm_resource_group.default.location
+  create_kv_networkacl       = false
+  enable_rbac_authorization  = false
+  resource_tags              = module.default_label.tags
+  contributor_object_ids     = concat(var.contributor_object_ids, [data.azurerm_client_config.current.object_id])
+  enable_private_network     = true
+  pe_subnet_id               = data.azurerm_subnet.pe_subnet.id
+  pe_resource_group_name     = data.azurerm_subnet.pe_subnet.resource_group_name
+  pe_resource_group_location = "UK South"
+  # private_dns_zone_name      = data.azurerm_private_dns_zone.private_dns.name
+  # private_dns_zone_ids       = ["${data.azurerm_private_dns_zone.private_dns.id}"]
+  dns_resource_group_name = "hub-rg"
 }

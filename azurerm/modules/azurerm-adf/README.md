@@ -58,6 +58,7 @@ terraform workspace select dev || terraform workspace new dev
 ```
 
 terraform init -backend-config=./backend.local.tfvars
+
 ## Requirements
 
 | Name | Version |
@@ -69,7 +70,7 @@ terraform init -backend-config=./backend.local.tfvars
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.51.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
 
 ## Modules
 
@@ -80,6 +81,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_data_factory.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory) | resource |
+| [azurerm_data_factory_integration_runtime_azure.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_azure) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 
 ## Inputs
@@ -87,6 +89,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_adf_idenity"></a> [adf\_idenity](#input\_adf\_idenity) | Enable identity block in module. | `bool` | `true` | no |
+| <a name="input_adf_managed-vnet-runtime_name"></a> [adf\_managed-vnet-runtime\_name](#input\_adf\_managed-vnet-runtime\_name) | Specifies the name of the Managed Integration Runtime. Changing this forces a new resource to be created. Must be globally unique. See the Microsoft documentation for all restrictions. | `string` | `"adf-managed-vnet-runtime"` | no |
 | <a name="input_branch_name"></a> [branch\_name](#input\_branch\_name) | Specifies repository branch to use as the collaboration branch. | `string` | `"main"` | no |
 | <a name="input_create_adf"></a> [create\_adf](#input\_create\_adf) | Set value whether to create a Data Factory or not. | `bool` | `true` | no |
 | <a name="input_git_integration"></a> [git\_integration](#input\_git\_integration) | Integrate a git repository with ADF. Can be null, github or vsts (use vsts for Azure DevOps Repos). | `string` | `"null"` | no |
@@ -104,6 +107,7 @@ No modules.
 | <a name="input_resource_namer"></a> [resource\_namer](#input\_resource\_namer) | User defined naming convention applied to all resources created as part of this module | `string` | n/a | yes |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Map of tags to be applied to all resources created as part of this module | `map(string)` | `{}` | no |
 | <a name="input_root_folder"></a> [root\_folder](#input\_root\_folder) | Specifies the root folder within the repository. Set to / for the top level. | `string` | `"/adf_managed"` | no |
+| <a name="input_runtime_virtual_network_enabled"></a> [runtime\_virtual\_network\_enabled](#input\_runtime\_virtual\_network\_enabled) | Is Integration Runtime compute provisioned within Managed Virtual Network? Changing this forces a new resource to be created. | `bool` | `true` | no |
 | <a name="input_vsts_account_name"></a> [vsts\_account\_name](#input\_vsts\_account\_name) | Specifies the VSTS / Azure DevOps account name. | `string` | `"amido"` | no |
 | <a name="input_vsts_project_name"></a> [vsts\_project\_name](#input\_vsts\_project\_name) | Specifies the name of the VSTS / Azure DevOps project. | `string` | `"amido-stacks"` | no |
 

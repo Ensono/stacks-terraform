@@ -96,6 +96,13 @@ variable "create_mode" {
   description = "The create mode of the database. Possible values are Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreExternalBackup, RestoreExternalBackupSecondary, RestoreLongTermRetentionBackup and Secondary. Mutually exclusive with import. Changing this forces a new resource to be created."
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether public network access is allowed for this server. Defaults to true."
+}
+
+
 variable "sql_fw_rules" {
   type = list(object({
     name             = string
@@ -141,4 +148,50 @@ variable "auto_pause_delay_in_minutes" {
   type        = number
   default     = 60
   description = "Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. This property is only settable for General Purpose Serverless databases."
+}
+
+############################################
+# Private Endpoint INFORMATION
+############################################
+
+variable "enable_private_network" {
+  type        = bool
+  default     = false
+  description = "Determines if the Key Vault will be created as part of the Secure Data Platform."
+}
+
+variable "is_manual_connection" {
+  type        = bool
+  default     = false
+  description = "Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
+}
+
+variable "private_dns_zone_name" {
+  type        = string
+  default     = "privatelink.database.windows.net"
+  description = "Specifies the Name of the Private DNS Zone Group."
+}
+
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
+}
+
+variable "pe_subnet_id" {
+  type        = string
+  default     = ""
+  description = "ID for the Private Endpoint Subnet"
+}
+
+variable "pe_resource_group_name" {
+  type        = string
+  default     = ""
+  description = "Name of the resource group to provision private endpoint in."
+}
+
+variable "pe_resource_group_location" {
+  type        = string
+  default     = ""
+  description = "Location of the resource group to provision private endpoint in."
 }
