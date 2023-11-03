@@ -63,6 +63,9 @@ stages:
           inputs:
             targetType: inline
             script: |
+              if [ "$PRERELEASE" = false ] ; then
+                unset PRERELEASE
+              fi
               taskctl release
           env:
             STAGE: "release"
