@@ -48,7 +48,7 @@ stages:
               taskctl format
 
   - stage: Release
-    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.force_release }}))
+    # condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.force_release }}))
     jobs:
 
     - job: Publish
