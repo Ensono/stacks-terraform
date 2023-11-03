@@ -1,0 +1,19 @@
+tasks:
+
+  terraform:format:
+    context: powershell
+    description: Check Terraform Formatting
+    command:
+      - Invoke-Terraform -Format
+
+  setup:environment:
+    context: powershell
+    description: Ensure that the environment is configured correctly
+    command:
+      - Confirm-Environment -Path /app/build/config/stage_envvars.yml
+
+  publish:github:
+    context: powershell
+    description: Publish Release to GitHub
+    command:
+      - Publish-GitHubRelease -generateReleaseNotes $true

@@ -72,7 +72,7 @@ resource "null_resource" "sleep" {
       sleep 100
     EOT
   }
-  depends_on = [azurerm_private_endpoint.pe , azurerm_key_vault_access_policy.contributors_access_policy]
+  depends_on = [azurerm_private_endpoint.pe, azurerm_key_vault_access_policy.contributors_access_policy]
 }
 
 resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
