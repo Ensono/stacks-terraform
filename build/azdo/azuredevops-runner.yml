@@ -1,0 +1,71 @@
+
+# Set the build name which will define the Build Number
+name: 2.0$(Rev:.r)
+
+pr:
+  - main
+
+trigger:
+  branches:
+    include:
+      - 'main'
+
+# Set the agent pool that stages should be run in
+pool:
+  vmImage: $(pool_vm_image)
+
+# Configure parameters for running the build
+parameters:
+  - name: force_release
+    displayName: Force release regardless of branch
+    type: boolean
+    default: false
+
+variables:
+  - template: azuredevops-vars.yml
+  - template: agent-config-vars.yml
+
+# Configure the stages
+stages:
+
+  - stage: Build
+
+    jobs:
+
+    - job: Format
+
+      steps:
+
+        - template: templates/setup.yml
+          parameters:
+            TaskctlVersion: ${{ variables.TaskctlVersion }}
+
+        - task: Bash@3
+          displayName: Check Terraform Formatting
+          inputs:
+            targetType: inline
+            script: |
+              taskctl format
+
+  - stage: Release
+    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}, ${{ parameters.force_release }}))
+    jobs:
+
+    - job: Publish
+      steps:
+        - template: templates/setup.yml
+          parameters:
+            TaskctlVersion: ${{ variables.TaskctlVersion }}
+
+        # Publish to GitHub
+        - task: Bash@3
+          displayName: Publish Release
+          inputs:
+            targetType: inline
+            script: |
+              taskctl release
+          env:
+            STAGE: "release"
+            PUBLISH_RELEASE: "true"
+            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+            PRERELEASE: ${{ parameters.force_release }}

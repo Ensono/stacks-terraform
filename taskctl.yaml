@@ -1,0 +1,17 @@
+import:
+- ./build/taskctl/contexts.yaml
+- ./build/taskctl/tasks.yaml
+
+pipelines:
+
+  format:
+    - task: terraform:format
+
+  release:
+    - task: terraform:format
+    - task: setup:environment
+      depends_on:
+        - terraform:format
+    - task: publish:github
+      depends_on:
+        - setup:environment
