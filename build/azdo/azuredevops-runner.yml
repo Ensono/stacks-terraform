@@ -60,7 +60,7 @@ stages:
         # Publish to GitHub
         - task: Bash@3
           displayName: Publish Pre-Release
-          condition: and(succeeded(), eq(variables.pre_release, true))
+          condition: and(succeeded(), eq(parameters.pre_release, true))
           inputs:
             targetType: inline
             script: |
@@ -73,7 +73,7 @@ stages:
 
         - task: Bash@3
           displayName: Publish Release
-          condition: and(succeeded(), eq(variables.pre_release, false))
+          condition: and(succeeded(), eq(parameters.pre_release, false))
           inputs:
             targetType: inline
             script: |
