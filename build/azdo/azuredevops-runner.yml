@@ -16,8 +16,8 @@ pool:
 
 # Configure parameters for running the build
 parameters:
-  - name: force_release
-    displayName: Force release regardless of branch
+  - name: pre_release
+    displayName: Create a pre-release from feature branch
     type: boolean
     default: false
 
@@ -48,7 +48,7 @@ stages:
               taskctl format
 
   - stage: Release
-    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.force_release }}))
+    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.pre_release }}))
     jobs:
 
     - job: Publish
@@ -59,7 +59,8 @@ stages:
 
         # Publish to GitHub
         - task: Bash@3
-          displayName: Publish Release
+          displayName: Publish Pre-Release
+          condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
           inputs:
             targetType: inline
             script: |
@@ -68,4 +69,16 @@ stages:
             STAGE: "release"
             PUBLISH_RELEASE: "true"
             VERSION_NUMBER: $(BUILD_BUILDNUMBER)
-            PRERELEASE: ${{ parameters.force_release }}
+            PRERELEASE: "true"
+
+        - task: Bash@3
+          displayName: Publish Release
+          condition: and(succeeded(), eq(${{ parameters.pre_release }}, false))
+          inputs:
+            targetType: inline
+            script: |
+              taskctl release
+          env:
+            STAGE: "release"
+            PUBLISH_RELEASE: "true"
+            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
