@@ -3,12 +3,12 @@
 name: 2.0$(Rev:.r)
 
 pr:
-  - main
+  - master
 
 trigger:
   branches:
     include:
-      - 'main'
+      - 'master'
 
 # Set the agent pool that stages should be run in
 pool:
@@ -48,7 +48,7 @@ stages:
               taskctl format
 
   - stage: Release
-    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}, ${{ parameters.force_release }}))
+    condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.force_release }}))
     jobs:
 
     - job: Publish
