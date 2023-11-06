@@ -9,6 +9,10 @@ trigger:
   branches:
     include:
       - 'master'
+      - 'main'
+  paths:
+    include:
+      - '*'
 
 # Set the agent pool that stages should be run in
 pool:

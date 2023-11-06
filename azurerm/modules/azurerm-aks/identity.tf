@@ -3,7 +3,7 @@
 ##################################################
 # KEY VAULT
 resource "azurerm_key_vault" "default" {
-  count                       = 1
+  count                       = var.create_key_vault ? 1 : 0
   name                        = var.key_vault_name != "" ? var.key_vault_name : substr(var.resource_namer, 0, 24)
   location                    = var.resource_group_location
   resource_group_name         = azurerm_resource_group.default.name

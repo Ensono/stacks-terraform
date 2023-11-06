@@ -87,7 +87,7 @@ output "aks_ingress_public_ip" {
 }
 
 output "key_vault_name" {
-  value = azurerm_key_vault.default.0.name
+  value = var.create_key_vault ? azurerm_key_vault.default.0.name : ""
 }
 
 
