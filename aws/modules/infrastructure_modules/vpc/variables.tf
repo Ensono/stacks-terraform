@@ -9,96 +9,36 @@ variable "tags" {
   description = "Map of infrastructure tags."
 }
 
-variable "vpc_id" {
+variable "vpc_cidr" {
   type        = string
-  description = "The VPC ID to use for the Cluster and resources"
+  description = "The VPC CIDR to create"
 }
 
-variable "vpc_private_subnets" {
-  type        = list(string)
-  description = "The VPC Private Subnets to place EKS nodes into"
-}
-
-variable "cluster_name" {
+variable "vpc_name" {
   type        = string
-  description = "Name of the cluster and resources"
-}
-
-variable "cluster_version" {
-  type        = string
-  description = "Cluster Kubernetes Version"
-}
-
-variable "cluster_endpoint_private_access" {
-  type        = bool
-  description = "Switch to enable private access"
-}
-
-variable "cluster_endpoint_public_access" {
-  type        = bool
-  description = "Switch to enable public access"
-}
-
-variable "eks_minimum_nodes" {
-  type        = string
-  description = "The minimum number of nodes in the cluster, per AZ"
-
-  default = 1
-}
-
-variable "eks_desired_nodes" {
-  type        = string
-  description = "The initial starting number of nodes, per AZ"
-
-  default = 2
-}
-
-variable "eks_maximum_nodes" {
-  type        = string
-  description = "The maximum number of nodes in the cluster, per AZ"
-
-  default = 3
-}
-
-variable "eks_node_size" {
-  type        = string
-  description = "Configure desired no of nodes for the cluster"
-
-  default = "t3.small"
-}
-
-variable "eks_node_type" {
-  type        = string
-  description = "The type of nodes to use for EKS"
-
-  default = "ON_DEMAND"
-
-  validation {
-    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_node_type)
-    error_message = "Value must be one of ON_DEMAND, or SPOT."
-  }
+  description = "Name of the VPC and resources"
 }
 
 # VPC Flow Logs
-variable "noncurrent_version_expiry_days" {
+variable "flow_log_noncurrent_version_expiry_days" {
   type        = number
   default     = 90
   description = "Specifies when noncurrent object versions expire"
 }
 
-variable "noncurrent_version_transition_days" {
+variable "flow_log_noncurrent_version_transition_days" {
   type        = number
   default     = 30
   description = "Specifies when noncurrent object versions transitions"
 }
 
-variable "standard_transition_days" {
+variable "flow_log_standard_transition_days" {
   type        = number
   default     = 30
   description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
 }
 
-variable "glacier_transition_days" {
+variable "flow_log_glacier_transition_days" {
   type        = number
   default     = 60
   description = "Number of days after which to move the data to the glacier storage tier"
@@ -148,5 +88,5 @@ variable "firewall_allowed_domain_targets" {
   type        = list(string)
   description = "The list of allowed domains which can make it through the firewall"
 
-  default = ["."]
+  default = []
 }

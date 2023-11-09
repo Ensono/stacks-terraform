@@ -1,4 +1,18 @@
-module "amido_stacks_infra" {
+module "vpc" {
+  source = "../../vpc"
+
+  # Deployment Region
+  region = "eu-west-1"
+
+  vpc_cidr = "10.0.0.0/16"
+  vpc_name = "example-eks-vpc"
+
+  firewall_deletion_protection = false
+
+  tags = {}
+}
+
+module "eks" {
   source = "../"
 
   # Deployment Region
@@ -11,6 +25,9 @@ module "amido_stacks_infra" {
   eks_node_size                   = "t3.small"
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
+
+  vpc_private_subnets = module.vpc.private_subnet_ids
+  vpc_id              = module.vpc.id
 
   # Pass Non-default Tag Values to Underlying Modules
   tags = {}

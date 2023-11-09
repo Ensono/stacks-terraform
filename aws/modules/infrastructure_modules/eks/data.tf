@@ -1,17 +1,3 @@
-locals {
-
-  ## KMS
-  eks_kms_key_name                    = "alias/cmk-${lower(var.cluster_name)}"
-  eks_kms_key_description             = "Secret Encryption Key for EKS"
-  eks_kms_key_deletion_window_in_days = "7"
-  eks_kms_key_tags = merge(
-    var.tags,
-    tomap({
-      "Name" = local.eks_kms_key_name
-    })
-  )
-}
-
 # Current account ID
 data "aws_caller_identity" "this" {}
 

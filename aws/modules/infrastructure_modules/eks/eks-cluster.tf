@@ -17,15 +17,47 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.16"
 
-  vpc_id                          = module.vpc.vpc_id
-  subnet_ids                      = module.vpc.private_subnets
+  vpc_id                          = var.vpc_id
+  subnet_ids                      = var.vpc_private_subnets
   cluster_name                    = var.cluster_name
-  cluster_version = var.cluster_version
+  cluster_version                 = var.cluster_version
   enable_irsa                     = true
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
-  cluster_enabled_log_types = ["scheduler", "controllerManager", "authenticator", "audit", "api"]
+  cluster_security_group_additional_rules = {
+    egress_nodes_ephemeral_ports_tcp = {
+      description                = "Node all egress"
+      protocol                   = "-1"
+      from_port                  = 0
+      to_port                    = 0
+      type                       = "egress"
+      source_node_security_group = true
+    }
+  }
+
+  node_security_group_additional_rules = {
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    }
+  }
+
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   cluster_encryption_config = {
     resources        = ["secrets"]
@@ -47,21 +79,7 @@ module "eks" {
     disk_size = 50
   }
 
-  eks_managed_node_groups = {
-    general = {
-      min_size     = var.eks_minimum_nodes
-      desired_size = var.eks_desired_nodes
-      max_size     = var.eks_maximum_nodes
-
-      labels = {
-        role = "general"
-      }
-
-      instance_types = ["${var.eks_node_size}"]
-      capacity_type  = "ON_DEMAND"
-    }
-
-  }
+  eks_managed_node_groups = local.eks_managed_node_groups
 
   tags = var.tags
 }
