@@ -39,23 +39,28 @@ variable "cluster_endpoint_public_access" {
   description = "Switch to enable public access"
 }
 
+variable "cluster_single_az" {
+  type        = bool
+  description = "Spin up the cluster in a single AZ"
+}
+
 variable "eks_minimum_nodes" {
   type        = string
-  description = "The minimum number of nodes in the cluster, per AZ"
+  description = "The minimum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
 
   default = 1
 }
 
 variable "eks_desired_nodes" {
   type        = string
-  description = "The initial starting number of nodes, per AZ"
+  description = "The initial starting number of nodes, per AZ if 'cluster_single_az' is false"
 
   default = 2
 }
 
 variable "eks_maximum_nodes" {
   type        = string
-  description = "The maximum number of nodes in the cluster, per AZ"
+  description = "The maximum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
 
   default = 3
 }
