@@ -3,7 +3,7 @@ locals {
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
   eks_managed_node_groups = {
-    for k, v in cluster_azs : "general-${v}" => merge(
+    for k, v in local.cluster_azs : "general-${v}" => merge(
       local.eks_bottlerocket_base_node_config,
       {
         name         = "general-${v}"

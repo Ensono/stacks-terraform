@@ -26,8 +26,8 @@ module "eks" {
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
-  vpc_private_subnets = module.vpc.private_subnet_ids
   vpc_id              = module.vpc.id
+  vpc_private_subnets = module.vpc.private_subnet_ids
 
   # Pass Non-default Tag Values to Underlying Modules
   tags = {}
