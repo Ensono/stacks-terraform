@@ -18,12 +18,14 @@ module "vpc" {
   one_nat_gateway_per_az = false
   create_igw             = false
 
+  private_subnet_suffix  = "private"
+  database_subnet_suffix = "database"
+
   # VPC DNS
   enable_dns_hostnames    = true
   map_public_ip_on_launch = false
 
   private_subnet_tags = merge(var.tags, {
-    "Name"                                  = "${var.vpc_name}-private-${data.aws_availability_zones.available.zone_ids[count.index]}"
     "kubernetes.io/cluster/${var.vpc_name}" = "owned"
     "kubernetes.io/role/internal-elb"       = "1"
     "isPrivate"                             = "true"
@@ -35,7 +37,6 @@ module "vpc" {
   )
 
   private_route_table_tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-private-${data.aws_availability_zones.available.zone_ids[count.index]}"
     "isPrivate"  = "true"
     "isPublic"   = "false"
     "isLambda"   = "false"
@@ -44,7 +45,6 @@ module "vpc" {
   })
 
   database_subnet_tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-database-${data.aws_availability_zones.available.zone_ids[count.index]}"
     "isPrivate"  = "true"
     "isPublic"   = "false"
     "isLambda"   = "false"
@@ -53,7 +53,6 @@ module "vpc" {
   })
 
   database_route_table_tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-database-${data.aws_availability_zones.available.zone_ids[count.index]}"
     "isPrivate"  = "true"
     "isPublic"   = "false"
     "isLambda"   = "false"
