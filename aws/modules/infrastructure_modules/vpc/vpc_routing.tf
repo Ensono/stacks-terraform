@@ -33,7 +33,7 @@ resource "aws_route_table" "public" {
   vpc_id = module.vpc.vpc_id
 
   tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-public-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name"       = "${var.vpc_name}-public-${data.aws_availability_zones.available.names[count.index]}"
     "isPrivate"  = "false"
     "isPublic"   = "true"
     "isLambda"   = "false"
@@ -48,7 +48,7 @@ resource "aws_route_table" "network_firewall" {
   vpc_id = module.vpc.vpc_id
 
   tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-firewall-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name"       = "${var.vpc_name}-firewall-${data.aws_availability_zones.available.names[count.index]}"
     "isPrivate"  = "false"
     "isPublic"   = "true"
     "isLambda"   = "false"

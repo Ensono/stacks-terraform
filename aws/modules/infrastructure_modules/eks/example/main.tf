@@ -25,6 +25,7 @@ module "eks" {
   eks_node_size                   = "t3.small"
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
+  cluster_single_az               = false
 
   vpc_id              = module.vpc.id
   vpc_private_subnets = module.vpc.private_subnet_ids

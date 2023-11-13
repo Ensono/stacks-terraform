@@ -73,7 +73,7 @@ resource "aws_subnet" "public" {
   ipv6_cidr_block                 = null
 
   tags = merge(var.tags, {
-    "Name"                                  = "${var.vpc_name}-public-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name"                                  = "${var.vpc_name}-public-${data.aws_availability_zones.available.names[count.index]}"
     "kubernetes.io/role/elb"                = "1"
     "kubernetes.io/cluster/${var.vpc_name}" = "owned"
     "isPrivate"                             = "false"
@@ -86,7 +86,7 @@ resource "aws_subnet" "public" {
 
 # --- Lambda Subnets ---
 resource "aws_subnet" "lambda" {
-  count                           = length(data.aws_availability_zones.available.zone_ids)
+  count                           = length(data.aws_availability_zones.available.names)
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 4, 9 + count.index)
   availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]
@@ -94,7 +94,7 @@ resource "aws_subnet" "lambda" {
   ipv6_cidr_block                 = null
 
   tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}}-lambda-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name"       = "${var.vpc_name}-lambda-${data.aws_availability_zones.available.names[count.index]}"
     "isPrivate"  = "true"
     "isPublic"   = "false"
     "isLambda"   = "true"
@@ -105,7 +105,7 @@ resource "aws_subnet" "lambda" {
 
 # --- AWS Network Firewall Subnets ---
 resource "aws_subnet" "network_firewall" {
-  count                           = length(data.aws_availability_zones.available.zone_ids)
+  count                           = length(data.aws_availability_zones.available.names)
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 12, 4080 + count.index)
   availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]
@@ -113,7 +113,7 @@ resource "aws_subnet" "network_firewall" {
   ipv6_cidr_block                 = null
 
   tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-network-firewall-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name"       = "${var.vpc_name}-network-firewall-${data.aws_availability_zones.available.names[count.index]}"
     "isPrivate"  = "false"
     "isPublic"   = "true"
     "isLambda"   = "false"
@@ -145,13 +145,13 @@ resource "aws_internet_gateway" "igw" {
 
 # --- NAT Gateway ---
 resource "aws_nat_gateway" "public" {
-  count = length(data.aws_availability_zones.available.zone_ids)
+  count = length(data.aws_availability_zones.available.names)
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
   tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-public-nat-${data.aws_availability_zones.available.zone_ids[count.index]}"
+    "Name" = "${var.vpc_name}-public-nat-${data.aws_availability_zones.available.names[count.index]}"
   })
 
   # To ensure proper ordering, it is recommended to add an explicit dependency on the Internet Gateway for the VPC.
