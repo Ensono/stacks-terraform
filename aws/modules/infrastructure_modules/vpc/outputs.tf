@@ -7,3 +7,8 @@ output "private_subnet_ids" {
   description = "The IDs of the private subnets created by this module."
   value       = module.vpc.private_subnets
 }
+
+output "public_subnet_ids" {
+  description = "The IDs of the public subnets created by this module."
+  value       = aws_subnet.public.*.id
+}

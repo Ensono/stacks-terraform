@@ -113,12 +113,13 @@ resource "aws_subnet" "network_firewall" {
   ipv6_cidr_block                 = null
 
   tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-network-firewall-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "false"
-    "isPublic"   = "true"
-    "isLambda"   = "false"
-    "isFirewall" = "true"
-    "isDB"       = "false"
+    "Name"                   = "${var.vpc_name}-network-firewall-${data.aws_availability_zones.available.names[count.index]}"
+    "kubernetes.io/role/elb" = "0"
+    "isPrivate"              = "false"
+    "isPublic"               = "true"
+    "isLambda"               = "false"
+    "isFirewall"             = "true"
+    "isDB"                   = "false"
   })
 }
 
