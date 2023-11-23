@@ -122,14 +122,24 @@ variable "aks_resource_group" {
 ##########################
 
 variable "ssl_policy" {
-  type        = object({ policy_type = string, policy_name = string, min_protocol_version = string, disabled_protocols = list(string), cipher_suites = list(string) })
+  # NOTE: If you use `policy_type` as `Predefined`, the three variables,
+  # `min_protocol_version`, `disabled_protocols`, and `cipher_suites`
+  # will be ignored and TF will keep trying to apply them each run...
+  type = object(
+    {
+      policy_type          = string,
+      policy_name          = string,
+      min_protocol_version = optional(string, null),
+      disabled_protocols   = optional(list(string), null),
+      cipher_suites        = optional(list(string), null),
+    }
+  )
+
   description = "SSL policy definition, defaults to latest Predefined settings with min protocol of TLSv1.2"
+
   default = {
-    "policy_type"          = "Predefined",
-    "policy_name"          = "AppGwSslPolicy20170401S",
-    "min_protocol_version" = "TLSv1_2",
-    "disabled_protocols"   = null,
-    "cipher_suites"        = null
+    "policy_type" = "Predefined",
+    "policy_name" = "AppGwSslPolicy20220101",
   }
 }
 
@@ -138,6 +148,13 @@ variable "cert_name" {
   default     = "sample.cert.pfx"
   description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
 }
+
+variable "create_valid_cert" {
+  type        = bool
+  default     = true
+  description = "States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false)"
+}
+
 ###########################
 # MISC SETTINGS
 ##########################

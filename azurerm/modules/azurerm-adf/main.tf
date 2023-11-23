@@ -1,8 +1,3 @@
-data "azurerm_client_config" "current" {
-}
-
-
-
 resource "azurerm_data_factory" "example" {
   count                           = var.create_adf ? 1 : 0
   name                            = var.resource_namer
@@ -45,7 +40,7 @@ resource "azurerm_data_factory" "example" {
       project_name    = var.vsts_project_name
       repository_name = var.repository_name
       root_folder     = var.root_folder
-      tenant_id       = data.azurerm_client_config.current.tenant_id
+      tenant_id       = var.tenant_id
     }
   }
 
@@ -78,11 +73,12 @@ resource "azurerm_data_factory_integration_runtime_azure" "example" {
 }
 
 resource "azapi_resource_action" "test" {
-  count       = var.managed_virtual_network_enabled ? 1 : 0
+  count       = var.ir_enable_interactive_authoring && var.managed_virtual_network_enabled ? 1 : 0
   type        = "Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01"
   resource_id = azurerm_data_factory_integration_runtime_azure.example[0].id
   action      = "enableInteractiveQuery"
   body = jsonencode({
     autoTerminationMinutes = 10
   })
+  depends_on = [azurerm_data_factory_integration_runtime_azure.example]
 }

@@ -37,7 +37,6 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    availability_zones  = ["1", "2", "3"]
     type                = var.nodepool_type # "VirtualMachineScaleSets" # default
     enable_auto_scaling = var.enable_auto_scaling
     max_count           = var.max_nodes
@@ -49,21 +48,13 @@ resource "azurerm_kubernetes_cluster" "default" {
     vnet_subnet_id      = azurerm_subnet.default.0.id
   }
 
-  addon_profile {
-    http_application_routing {
-      enabled = false
-    }
-    oms_agent {
-      enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
-    }
-  }
+  http_application_routing_enabled  = false
+  role_based_access_control_enabled = true
 
-  role_based_access_control {
-    enabled = true
+  oms_agent {
+    # enabled                    = true
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
   }
-
-  enable_pod_security_policy = false
 
   network_profile {
     network_plugin    = var.advanced_networking_enabled ? "azure" : "kubenet"
@@ -104,6 +95,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   min_count           = each.value.min_nodes
   max_count           = each.value.max_nodes
   node_count          = each.value.min_nodes
+  vnet_subnet_id      = azurerm_subnet.default.0.id
 }
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR

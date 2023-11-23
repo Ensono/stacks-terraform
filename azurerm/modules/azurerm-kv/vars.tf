@@ -167,14 +167,14 @@ variable "is_manual_connection" {
 
 variable "private_dns_zone_name" {
   type        = string
-  default     = ""
+  default     = "privatelink.vaultcore.azure.net"
   description = "Specifies the Name of the Private DNS Zone Group."
 }
 
-variable "private_dns_zone_ids" {
-  type        = list(string)
-  default     = []
-  description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
 }
 
 variable "pe_subnet_id" {
@@ -195,3 +195,14 @@ variable "pe_resource_group_location" {
   description = "Location of the resource group to provision private endpoint in."
 }
 
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
+
+variable "kv_private_dns_zone_id" {
+  type        = string
+  default     = ""
+  description = "Azure Resource ID of the Key Vault Private DNS Zone"
+}

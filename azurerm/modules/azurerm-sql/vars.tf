@@ -96,6 +96,13 @@ variable "create_mode" {
   description = "The create mode of the database. Possible values are Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreExternalBackup, RestoreExternalBackupSecondary, RestoreLongTermRetentionBackup and Secondary. Mutually exclusive with import. Changing this forces a new resource to be created."
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether public network access is allowed for this server. Defaults to true."
+}
+
+
 variable "sql_fw_rules" {
   type = list(object({
     name             = string
@@ -161,14 +168,14 @@ variable "is_manual_connection" {
 
 variable "private_dns_zone_name" {
   type        = string
-  default     = ""
+  default     = "privatelink.database.windows.net"
   description = "Specifies the Name of the Private DNS Zone Group."
 }
 
-variable "private_dns_zone_ids" {
-  type        = list(string)
-  default     = []
-  description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group"
+variable "dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present."
 }
 
 variable "pe_subnet_id" {

@@ -19,6 +19,12 @@ variable "name_component" {
   type        = string
 }
 
+variable "tenant_id" {
+  type        = string
+  default     = ""
+  description = "Azure Tenant ID."
+}
+
 ############################################
 # RESOURCE INFORMATION
 ############################################
@@ -95,6 +101,17 @@ variable "runtime_virtual_network_enabled" {
   description = "Is Integration Runtime compute provisioned within Managed Virtual Network? Changing this forces a new resource to be created."
 }
 
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
+
+variable "ir_enable_interactive_authoring" {
+  type        = bool
+  default     = true
+  description = "Test IR"
+}
 
 ###########################
 # Global parameter  for ADF SETTINGS

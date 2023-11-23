@@ -1,0 +1,15 @@
+variables:
+  - name: VERSION_NUMBER
+    value: $(Build.BuildNumber)
+  - name: COMMIT_ID
+    value: $(Build.SourceVersion)
+  - name: OWNER
+    value: ensono
+  - name: REPOSITORY
+    value: stacks-terraform
+  - name: ARTIFACTS_DIR
+    value: artifacts/
+  - group: amido-stacks-github-credentials
+    # Group should contain: 
+      # API_KEY
+

@@ -84,7 +84,7 @@ resource "azurerm_application_gateway" "network" {
 
   ssl_certificate {
     name     = "frontend"
-    data     = acme_certificate.default.certificate_p12
+    data     = var.create_valid_cert ? acme_certificate.default.0.certificate_p12 : pkcs12_from_pem.self_cert_p12.0.result
     password = var.pfx_password
   }
 

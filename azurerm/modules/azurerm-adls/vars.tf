@@ -18,6 +18,11 @@ variable "resource_namer" {
   description = "Caller defined conventional namespace will be used in all resource naming. Where required by the platform special characters will be stripped out and length will be adjusted"
 }
 
+variable "azure_object_id" {
+  type        = string
+  description = "Object ID for SPN"
+}
+
 ############################################
 # STORAGE ACCOUNT SETTINGS
 ############################################
@@ -147,3 +152,44 @@ variable "pe_resource_group_location" {
   description = "Location of the resource group to provision private endpoint in."
 }
 
+variable "blob_private_dns_zone_name" {
+  type        = string
+  default     = "privatelink.blob.core.windows.net"
+  description = "Specifies the Name of the Private DNS Zone Group for blob."
+}
+
+variable "blob_dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present for blob."
+}
+
+variable "dfs_private_dns_zone_name" {
+  type        = string
+  default     = "privatelink.dfs.core.windows.net"
+  description = "Specifies the Name of the Private DNS Zone Group for blob."
+}
+
+variable "dfs_dns_resource_group_name" {
+  type        = string
+  default     = "amido-stacks-euw-de-hub-network"
+  description = "Name of the resource group where pvt dns is present for blob."
+}
+
+variable "la_workspace_id" {
+  type        = string
+  default     = ""
+  description = "Log Analytics Workspace ID"
+}
+
+variable "dfs_private_zone_id" {
+  type        = string
+  default     = ""
+  description = "Resource ID of the DFS Private DNS Zone"
+}
+
+variable "blob_private_zone_id" {
+  type        = string
+  default     = ""
+  description = "Resource ID of the Blob Private DNS Zone"
+}

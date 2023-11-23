@@ -20,11 +20,18 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "sql" {
-  source                  = "../../azurerm-sql"
-  resource_namer          = module.default_label.id
-  resource_group_name     = azurerm_resource_group.default.name
-  resource_group_location = azurerm_resource_group.default.location
-  sql_version             = var.sql_version
-  administrator_login     = var.administrator_login
-  sql_db_names            = var.sql_db_names
+  source                     = "../../azurerm-sql"
+  resource_namer             = module.default_label.id
+  resource_group_name        = azurerm_resource_group.default.name
+  resource_group_location    = azurerm_resource_group.default.location
+  sql_version                = var.sql_version
+  administrator_login        = var.administrator_login
+  sql_db_names               = var.sql_db_names
+  resource_tags              = module.default_label.tags
+  enable_private_network     = true
+  pe_subnet_id               = data.azurerm_subnet.pe_subnet.id
+  pe_resource_group_name     = data.azurerm_subnet.pe_subnet.resource_group_name
+  pe_resource_group_location = "UKSouth"
+  dns_resource_group_name    = "hub-rg"
+
 }

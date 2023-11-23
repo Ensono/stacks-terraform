@@ -329,3 +329,9 @@ variable "key_vault_name" {
   type        = string
   default     = ""
 }
+
+variable "create_key_vault" {
+  description = "Specify if a key vault should be created"
+  type        = bool
+  default     = true
+}
