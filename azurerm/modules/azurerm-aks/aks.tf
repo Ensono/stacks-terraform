@@ -95,6 +95,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   min_count           = each.value.min_nodes
   max_count           = each.value.max_nodes
   node_count          = each.value.min_nodes
+  vnet_subnet_id      = azurerm_subnet.default.0.id
 }
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR
