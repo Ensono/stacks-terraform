@@ -8,7 +8,7 @@ locals {
       {
         name         = "general-${v}"
         min_size     = var.eks_minimum_nodes
-        max_size     = var.eks_minimum_nodes
+        max_size     = var.eks_maximum_nodes
         desired_size = var.eks_desired_nodes
 
         subnet_ids = [var.vpc_private_subnets[k]]
