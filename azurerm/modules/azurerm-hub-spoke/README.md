@@ -95,9 +95,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_create_fw_public_ip"></a> [create\_fw\_public\_ip](#input\_create\_fw\_public\_ip) | weather to create a  public IP for Azure fierwall in hub network | `bool` | `false` | no |
-| <a name="input_create_hub_fw"></a> [create\_hub\_fw](#input\_create\_hub\_fw) | weather to create a Azure fierwall in hub network | `bool` | `false` | no |
-| <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created. | `list(string)` | <pre>[<br>  "privatelink.vaultcore.azure.net",<br>  "privatelink.azuredatabricks.net",<br>  "privatelink.database.windows.net",<br>  "privatelink.blob.core.windows.net",<br>  "privatelink.dfs.core.windows.net"<br>]</pre> | no |
+| <a name="input_create_fw_public_ip"></a> [create\_fw\_public\_ip](#input\_create\_fw\_public\_ip) | Whether to create a public IP for Azure firewall in hub network | `bool` | `false` | no |
+| <a name="input_create_hub_fw"></a> [create\_hub\_fw](#input\_create\_hub\_fw) | Wether to create a Azure fierwall in hub network | `bool` | `false` | no |
+| <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | A list of private DNS zones that need to be created. Each one must be a valid domain name. <br /> The default list of zones is set in the `locals.tf` file. | `list(string)` | <pre>[<br>  "privatelink.vaultcore.azure.net",<br>  "privatelink.azuredatabricks.net",<br>  "privatelink.database.windows.net",<br>  "privatelink.blob.core.windows.net",<br>  "privatelink.dfs.core.windows.net"<br>]</pre> | no |
+| <a name="input_merge_dns_zones></a> [merge\_dns\_zones](#input\_merge\_dns\_zones) | State if the list specified here should be merged with the default list | `bool` | `false` | no |
 | <a name="input_enable_private_networks"></a> [enable\_private\_networks](#input\_enable\_private\_networks) | wether to creare private networks or not. | `bool` | `true` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Resource Group Name | `string` | `null` | no |
 | <a name="input_fw_public_allocation_method"></a> [fw\_public\_allocation\_method](#input\_fw\_public\_allocation\_method) | Defines the allocation method for this IP address. Possible values are Static or Dynamic | `string` | `"Dynamic"` | no |
