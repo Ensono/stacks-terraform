@@ -41,11 +41,6 @@ variable "dns_zone_name" {
   type        = string
 }
 
-variable "create_private_dns_zone" {
-  default     = true
-  description = " set value wether to create a private_dns_zone or not"
-}
-
 variable "registration_enabled" {
   type        = bool
   default     = true

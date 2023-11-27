@@ -45,12 +45,6 @@ variable "link_dns_network" {
   default     = false
 }
 
-variable "create_private_dns_zone" {
-  type        = bool
-  default     = true
-  description = " set value wether to create a private_dns_zone or not"
-}
-
 variable "registration_enabled" {
   type        = bool
   default     = false

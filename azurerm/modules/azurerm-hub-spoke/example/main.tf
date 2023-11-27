@@ -23,5 +23,4 @@ module "networking" {
   name_az_fw              = "testfirewall"
   sku_az_fw               = "AZFW_Hub"
   sku_tier_az_fw          = "Basic"
-  create_private_dns_zone = true
 }
