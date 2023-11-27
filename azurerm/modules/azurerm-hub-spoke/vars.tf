@@ -33,14 +33,23 @@ variable "tags" {
 
 ######################################### Azure Private DNS variables ######################################### 
 
+# Set a list of DNS zones that need to be set
+# A default list can be found in the locals.tf file
 variable "dns_zone_name" {
-  default     = ["privatelink.vaultcore.azure.net", "privatelink.azuredatabricks.net", "privatelink.database.windows.net", "privatelink.blob.core.windows.net", "privatelink.dfs.core.windows.net"]
-  description = "The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created."
+  default     = []
+  description = "List of private DNS zones to be created. Must be a valid domain names. Changing this forces a new resource to be created."
   type        = list(string)
 }
 
+# This option allows a supplied list to be merged with the default list if so desired
+variable "merge_dns_zones" {
+  default     = false
+  description = "State if specified DNS zones should be merged with the default list"
+  type        = bool
+}
+
 variable "link_dns_network" {
-  description = "weather link DNS with vnets"
+  description = "Whether to link DNS with virtual networks"
   type        = bool
   default     = false
 }
