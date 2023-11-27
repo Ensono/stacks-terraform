@@ -1,5 +1,5 @@
 resource "azurerm_private_dns_zone" "example" {
-  for_each            = toset(var.dns_zone_name)
+  for_each            = length(local.hub_resource_group_name) > 0 ? toset(var.dns_zone_name) : toset([])
   name                = each.key
   resource_group_name = local.hub_resource_group_name[0]
   tags                = var.tags
