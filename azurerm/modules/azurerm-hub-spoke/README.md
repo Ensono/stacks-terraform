@@ -97,7 +97,6 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_create_fw_public_ip"></a> [create\_fw\_public\_ip](#input\_create\_fw\_public\_ip) | weather to create a  public IP for Azure fierwall in hub network | `bool` | `false` | no |
 | <a name="input_create_hub_fw"></a> [create\_hub\_fw](#input\_create\_hub\_fw) | weather to create a Azure fierwall in hub network | `bool` | `false` | no |
-| <a name="input_create_private_dns_zone"></a> [create\_private\_dns\_zone](#input\_create\_private\_dns\_zone) | set value wether to create a private\_dns\_zone or not | `bool` | `true` | no |
 | <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created. | `list(string)` | <pre>[<br>  "privatelink.vaultcore.azure.net",<br>  "privatelink.azuredatabricks.net",<br>  "privatelink.database.windows.net",<br>  "privatelink.blob.core.windows.net",<br>  "privatelink.dfs.core.windows.net"<br>]</pre> | no |
 | <a name="input_enable_private_networks"></a> [enable\_private\_networks](#input\_enable\_private\_networks) | wether to creare private networks or not. | `bool` | `true` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Resource Group Name | `string` | `null` | no |
