@@ -1,10 +1,10 @@
 
 output "hub_net_name" {
-  value = local.hub_network_name[0]
+  value = local.hub_network_name
 }
 
 output "hub_net_id" {
-  value = var.enable_private_networks == true ? azurerm_virtual_network.example["${local.hub_network_name[0]}"].id : null
+  value = var.enable_private_networks == true ? azurerm_virtual_network.example["${local.hub_network_name}"].id : null
 }
 
 output "subnet_ids" {
@@ -42,10 +42,6 @@ output "vnets" {
   }
 }
 
-# Iterate around the variables and find the hub network
-output "vnet_hub_name" {
-  value = [for vnet in var.network_details : vnet.name if vnet.is_hub && var.enable_private_networks == true]
-}
 
 output "hub_firewall_id" {
 
