@@ -1,10 +1,10 @@
 
 output "hub_net_name" {
-  value = local.hub_network_name
+  value = var.enable_private_networks == true ? local.hub_network_name[0] : null
 }
 
 output "hub_net_id" {
-  value = var.enable_private_networks == true ? azurerm_virtual_network.example["${local.hub_network_name}"].id : null
+  value = var.enable_private_networks == true ? azurerm_virtual_network.example["${local.hub_network_name[0]}"].id : null
 }
 
 output "subnet_ids" {

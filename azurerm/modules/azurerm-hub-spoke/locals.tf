@@ -9,12 +9,12 @@ locals {
     service_endpoints                             = subnet.service_endpoints
   }]])
 
-  hub_network_name                        = flatten([for name, network in var.network_details : name if network.is_hub == true])
-  spoke_network_names                     = flatten([for name, network in var.network_details : name if network.is_hub == false && var.enable_private_networks == true])
-  spoke_network_names_resource_group_name = flatten([for name, network in var.network_details : { name = name, resource_group_name = network.resource_group_name } if network.is_hub == false && var.enable_private_networks == true])
-  dns_link_networks                       = flatten([for name, network in var.network_details : name if network.link_to_private_dns == true && var.enable_private_networks == true])
-  all_resource_group_name                 = flatten([for name, network in var.network_details : network.resource_group_name if network.link_to_private_dns == true && var.enable_private_networks == true])
-  hub_resource_group_name                 = flatten([for name, network in var.network_details : network.resource_group_name if network.link_to_private_dns == true && var.enable_private_networks == true && network.is_hub == true])
+  hub_network_name                        = flatten([for id, network in var.network_details : network.name if network.is_hub == true && var.enable_private_networks == true])
+  spoke_network_names                     = flatten([for id, network in var.network_details : network.name if network.is_hub == false && var.enable_private_networks == true])
+  spoke_network_names_resource_group_name = flatten([for id, network in var.network_details : { name = network.name, resource_group_name = network.resource_group_name } if network.is_hub == false && var.enable_private_networks == true])
+  dns_link_networks                       = flatten([for id, network in var.network_details : network.name if network.link_to_private_dns == true && var.enable_private_networks == true])
+  all_resource_group_name                 = flatten([for id, network in var.network_details : network.resource_group_name if network.link_to_private_dns == true && var.enable_private_networks == true])
+  hub_resource_group_name                 = flatten([for id, network in var.network_details : network.resource_group_name if network.link_to_private_dns == true && var.enable_private_networks == true && network.is_hub == true])
 
   # Set the default list of private DNS zones
   default_private_dns_zone_names = [
