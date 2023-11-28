@@ -39,9 +39,12 @@ output "vnets" {
       vnet_resource_group_name = vnet.resource_group_name
 
     })
-
-
   }
+}
+
+# Iterate around the variables and find the hub network
+output "vnet_hub_name" {
+  value = [for vnet in var.network_details : vnet.name if vnet.is_hub && var.enable_private_networks == true]
 }
 
 output "hub_firewall_id" {
