@@ -1,31 +1,3 @@
-# --- Route Table Association ---
-# Private, Database, Lambda and PAM subnets share a route table per AZ
-resource "aws_route_table_association" "lambda" {
-  count          = length(aws_subnet.lambda)
-  subnet_id      = aws_subnet.lambda[count.index].id
-  route_table_id = module.vpc.private_route_table_ids[count.index]
-}
-
-resource "aws_route_table_association" "public" {
-  count          = length(aws_subnet.public)
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public[count.index].id
-}
-
-resource "aws_route_table_association" "network_firewall" {
-  count          = length(aws_subnet.network_firewall)
-  subnet_id      = aws_subnet.network_firewall[count.index].id
-  route_table_id = aws_route_table.network_firewall[count.index].id
-}
-
-resource "aws_route_table_association" "ingress_route_table_gw_association" {
-  gateway_id     = aws_internet_gateway.igw.id
-  route_table_id = aws_route_table.ingress_route_table.id
-
-  depends_on = [aws_internet_gateway.igw]
-}
-
-
 # --- Route Tables ---
 # --- Public route table ---
 resource "aws_route_table" "public" {
@@ -71,13 +43,42 @@ resource "aws_route_table" "ingress_route_table" {
   })
 }
 
+# --- Route Table Association ---
+# Private, Database, and Lambda subnets share a route table per AZ
+# Private and Database subnets are set-up by the AWS VPC module, Lambda is
+# created by this module so we add them to the Route Tables from the module
+resource "aws_route_table_association" "lambda" {
+  count          = length(aws_subnet.lambda)
+  subnet_id      = aws_subnet.lambda[count.index].id
+  route_table_id = module.vpc.private_route_table_ids[count.index]
+}
+
+resource "aws_route_table_association" "public" {
+  count          = length(aws_subnet.public)
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public[count.index].id
+}
+
+resource "aws_route_table_association" "network_firewall" {
+  count          = length(aws_subnet.network_firewall)
+  subnet_id      = aws_subnet.network_firewall[count.index].id
+  route_table_id = aws_route_table.network_firewall[count.index].id
+}
+
+resource "aws_route_table_association" "ingress_route_table_gw_association" {
+  gateway_id     = aws_internet_gateway.igw.id
+  route_table_id = aws_route_table.ingress_route_table.id
+
+  depends_on = [aws_internet_gateway.igw]
+}
+
 # --- Routes ---
 # Default route towards nat gateway for private subnets
 resource "aws_route" "nat" {
-  count = length(aws_subnet.public)
+  count = length(module.vpc.private_route_table_ids)
 
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.public[count.index].id
+  nat_gateway_id         = var.vpc_nat_gateway_per_az ? aws_nat_gateway.public[count.index].id : aws_nat_gateway.public[0].id
   route_table_id         = module.vpc.private_route_table_ids[count.index]
 }
 

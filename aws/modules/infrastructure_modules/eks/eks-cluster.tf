@@ -1,3 +1,4 @@
+#####
 # KMS
 #####
 module "eks_kms_key" {
@@ -11,11 +12,12 @@ module "eks_kms_key" {
   enable_key_rotation     = true
 }
 
+#############
 # EKS Cluster
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.16"
+  version = "~> 19.20"
 
   vpc_id                          = var.vpc_id
   subnet_ids                      = var.vpc_private_subnets

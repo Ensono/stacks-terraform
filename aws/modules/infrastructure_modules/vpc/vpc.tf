@@ -17,6 +17,7 @@ module "vpc" {
   single_nat_gateway     = false
   one_nat_gateway_per_az = false
   create_igw             = false
+  instance_tenancy       = var.vpc_instance_tenancy
 
   private_subnet_suffix  = "private"
   database_subnet_suffix = "database"
@@ -146,7 +147,7 @@ resource "aws_internet_gateway" "igw" {
 
 # --- NAT Gateway ---
 resource "aws_nat_gateway" "public" {
-  count = length(data.aws_availability_zones.available.names)
+  count = var.vpc_nat_gateway_per_az ? length(data.aws_availability_zones.available.names) : 1
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id

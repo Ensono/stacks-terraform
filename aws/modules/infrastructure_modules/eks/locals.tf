@@ -1,24 +1,8 @@
 locals {
 
+  ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
-  eks_managed_node_groups = {
-    for k, v in local.cluster_azs : "general-${v}" => merge(
-      local.eks_bottlerocket_base_node_config,
-      {
-        name         = "general-${v}"
-        min_size     = var.eks_minimum_nodes
-        max_size     = var.eks_maximum_nodes
-        desired_size = var.eks_desired_nodes
-
-        subnet_ids = [var.vpc_private_subnets[k]]
-
-        instance_types = [var.eks_node_size]
-      }
-    )
-  }
-
-  ## Cluster
   eks_spot_bootstrap_extra_args = <<-EOT
   [settings.kernel]
   lockdown = "integrity"
@@ -47,6 +31,22 @@ locals {
     bootstrap_extra_args     = var.eks_node_type == "SPOT" ? local.eks_spot_bootstrap_extra_args : local.eks_on_demand_bootstrap_extra_args
 
     tags = var.tags
+  }
+
+  eks_managed_node_groups = {
+    for k, v in local.cluster_azs : "general-${v}" => merge(
+      local.eks_bottlerocket_base_node_config,
+      {
+        name         = "general-${v}"
+        min_size     = var.eks_minimum_nodes
+        max_size     = var.eks_maximum_nodes
+        desired_size = var.eks_desired_nodes
+
+        subnet_ids = [var.vpc_private_subnets[k]]
+
+        instance_types = [var.eks_node_size]
+      }
+    )
   }
 
   ## KMS

@@ -34,7 +34,7 @@ output "cluster_certificate_authority_data" {
 }
 
 output "aws_general_eks_roles" {
-  description = "The EKS General Roles"
+  description = "The EKS General Role ARNs"
   value       = values(module.eks.eks_managed_node_groups)[*].iam_role_arn
 }
 
