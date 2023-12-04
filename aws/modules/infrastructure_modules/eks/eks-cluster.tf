@@ -1,64 +1,5 @@
-# EKS Cluster 
-#############
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "17.24.0"
-
-  vpc_id                          = module.vpc.vpc_id
-  subnets                         = module.vpc.private_subnets
-  cluster_name                    = local.cluster_name
-  cluster_version                 = var.cluster_version
-  enable_irsa                     = var.enable_irsa
-  cluster_endpoint_private_access = var.cluster_endpoint_private_access
-  cluster_endpoint_public_access  = var.cluster_endpoint_public_access
-
-  cluster_enabled_log_types = ["scheduler", "controllerManager", "authenticator", "audit", "api"]
-
-  cluster_encryption_config = [
-    {
-      resources        = ["secrets"]
-      provider_key_arn = module.eks_kms_key.arn
-    }
-  ]
-  workers_group_defaults = {
-    root_volume_type = "gp2"
-  }
-
-  worker_groups = [for i, s in module.vpc.private_subnets : {
-    name                   = "${local.cluster_name}_worker-group-${i}"
-    subnets                = [s]
-    instance_type          = "t2.medium"
-    asg_desired_capacity   = ceil(var.eks_desired_nodes / length(module.vpc.private_subnets))
-    root_volume_type       = "gp3"
-    root_volume_throughput = 125
-    root_volume_size       = 80
-    root_encrypted         = true
-    tags = [
-      {
-        "key"                 = "k8s.io/cluster-autoscaler/enabled"
-        "propagate_at_launch" = "false"
-        "value"               = "true"
-      },
-      {
-        "key"                 = "k8s.io/cluster-autoscaler/${local.cluster_name}"
-        "propagate_at_launch" = "false"
-        "value"               = "owned"
-      }
-    ]
-  }]
-
-  workers_additional_policies = [
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",       # The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",        # Grant permissions that the CloudWatch agent needs to write metrics to CloudWatch.
-    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",            # Provides read/write access to AWS Secrets Manager.
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser" # Grant permissions to read and write to respositores, as well as read lifecycle policies 
-  ]
-
-  map_roles = var.map_roles
-  map_users = var.map_users
-}
-
-# KMS 
+#####
+# KMS
 #####
 module "eks_kms_key" {
   source = "../../resource_modules/identity/kms_key"
@@ -69,15 +10,78 @@ module "eks_kms_key" {
   tags                    = local.eks_kms_key_tags
   policy                  = data.aws_iam_policy_document.eks_secret_encryption_kms_key_policy.json
   enable_key_rotation     = true
-
 }
 
-# Route 53 
-##########
-module "route53_zones" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "~> 2.0"
+#############
+# EKS Cluster
+#############
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 19.20"
 
-  count = var.enable_zone ? 1 : 0
-  zones = var.public_zones
+  vpc_id                          = var.vpc_id
+  subnet_ids                      = var.vpc_private_subnets
+  cluster_name                    = var.cluster_name
+  cluster_version                 = var.cluster_version
+  enable_irsa                     = true
+  cluster_endpoint_private_access = var.cluster_endpoint_private_access
+  cluster_endpoint_public_access  = var.cluster_endpoint_public_access
+
+  cluster_security_group_additional_rules = {
+    egress_nodes_ephemeral_ports_tcp = {
+      description                = "Node all egress"
+      protocol                   = "-1"
+      from_port                  = 0
+      to_port                    = 0
+      type                       = "egress"
+      source_node_security_group = true
+    }
+  }
+
+  node_security_group_additional_rules = {
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    }
+  }
+
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+  cluster_encryption_config = {
+    resources        = ["secrets"]
+    provider_key_arn = module.eks_kms_key.arn
+  }
+
+  # OIDC Identity provider
+  cluster_identity_providers = {
+    sts = {
+      client_id = "sts.amazonaws.com"
+    }
+  }
+
+  # Don't manage this through the module, it's incredibly hard to get working right.
+  create_aws_auth_configmap = false
+  manage_aws_auth_configmap = false
+
+  eks_managed_node_group_defaults = {
+    disk_size = 50
+  }
+
+  eks_managed_node_groups = local.eks_managed_node_groups
+
+  tags = var.tags
 }

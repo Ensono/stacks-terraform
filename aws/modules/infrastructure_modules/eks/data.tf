@@ -1,43 +1,9 @@
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}
-
-locals {
-
-  ## EKS
-  cluster_name = "${lower(var.cluster_name)}-${lower(var.tags["Environment"])}-${random_string.suffix.result}"
-
-  ## VPC
-  vpc_name = "${lower(var.cluster_name)}-${lower(var.tags["Environment"])}-vpc"
-
-  ## KMS
-  eks_kms_key_name                    = "alias/cmk-${lower(var.cluster_name)}-${lower(var.tags["Environment"])}"
-  eks_kms_key_description             = "Secret Encryption Key for EKS"
-  eks_kms_key_deletion_window_in_days = "7"
-  eks_kms_key_tags = merge(
-    var.tags,
-    tomap({
-      "Name" = local.eks_kms_key_name
-    })
-  )
-}
-
 # Current account ID
 data "aws_caller_identity" "this" {}
 
 data "aws_availability_zones" "available" {}
 
-
 ## EKS
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
-
 data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
   statement {
     sid    = "Allow access for Key Administrators"

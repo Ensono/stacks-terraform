@@ -1,84 +1,85 @@
 # EKS Cluster
 variable "region" {
-
   description = "AWS region"
   type        = string
 }
 
-variable "map_users" {
-
-  description = "Additional IAM users to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  default = []
-}
-
-variable "map_roles" {
-
-  description = "Additional IAM roles to add to the aws-auth configmap."
-  type = list(object({
-    rolearn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-}
-
-
 variable "tags" {
-
-  description = "Map of infrastructure tags."
   type        = map(string)
-
+  description = "Map of infrastructure tags."
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "The VPC ID to use for the Cluster and resources"
+}
+
+variable "vpc_private_subnets" {
+  type        = list(string)
+  description = "The VPC Private Subnets to place EKS nodes into"
+}
 
 variable "cluster_name" {
-
-  description = "Name of the cluster"
   type        = string
+  description = "Name of the cluster and resources"
 }
 
 variable "cluster_version" {
-
-  description = "Cluster Kubernetes Version"
   type        = string
-}
-
-variable "enable_irsa" {
-
-  description = "Switch to ebale IRSA"
-  type        = bool
+  description = "Cluster Kubernetes Version"
 }
 
 variable "cluster_endpoint_private_access" {
-
-  description = "Switch to enable private access"
   type        = bool
+  description = "Switch to enable private access"
 }
 
 variable "cluster_endpoint_public_access" {
-
-  description = "Switch to enable public access"
   type        = bool
+  description = "Switch to enable public access"
+}
+
+variable "cluster_single_az" {
+  type        = bool
+  description = "Spin up the cluster in a single AZ"
+}
+
+variable "eks_minimum_nodes" {
+  type        = string
+  description = "The minimum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
+
+  default = 1
 }
 
 variable "eks_desired_nodes" {
-
-  description = "Configure desired no of nodes for the cluster"
   type        = string
+  description = "The initial starting number of nodes, per AZ if 'cluster_single_az' is false"
+
+  default = 2
 }
 
-# Route 53 Zones
-variable "enable_zone" {
-  description = "Conditionally create route53 zones"
-  type        = bool
+variable "eks_maximum_nodes" {
+  type        = string
+  description = "The maximum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
+
+  default = 3
 }
-variable "public_zones" {
-  type        = map(any)
-  description = "Map of Route53 zone parameters"
+
+variable "eks_node_size" {
+  type        = string
+  description = "Configure desired no of nodes for the cluster"
+
+  default = "t3.small"
+}
+
+variable "eks_node_type" {
+  type        = string
+  description = "The type of nodes to use for EKS"
+
+  default = "ON_DEMAND"
+
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_node_type)
+    error_message = "Value must be one of ON_DEMAND, or SPOT."
+  }
 }
