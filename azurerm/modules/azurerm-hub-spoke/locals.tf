@@ -29,7 +29,7 @@ locals {
   # if the option to merge the zones has been specified then the supplied list and the defaault list above are merged
   # if the merge option has not been set then just return the list of the dns_zone_name
   private_dns_zone_names = var.merge_dns_zones ? (
-    merge(local.default_private_dns_zone_names, var.dns_zone_name)
+    concat(local.default_private_dns_zone_names, var.dns_zone_name)
     ) : (
     var.dns_zone_name
   )
