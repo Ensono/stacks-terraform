@@ -154,7 +154,7 @@ resource "azurerm_private_endpoint" "databricks" {
 
   private_dns_zone_group {
 
-    name                 = "dataFactory"
+    name                 = "databricks_ui_api"
     private_dns_zone_ids = ["${var.private_dns_zone_id}"]
   }
 
