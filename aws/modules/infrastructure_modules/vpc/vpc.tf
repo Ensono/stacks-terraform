@@ -106,7 +106,7 @@ resource "aws_subnet" "lambda" {
 
 # --- AWS Network Firewall Subnets ---
 resource "aws_subnet" "network_firewall" {
-  count                           = length(data.aws_availability_zones.available.names)
+  count                           = var.firewall_enabled ? length(data.aws_availability_zones.available.names) : 0
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 12, 4080 + count.index)
   availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]

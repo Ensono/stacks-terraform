@@ -83,6 +83,13 @@ variable "vpc_instance_tenancy" {
 # }
 
 # Firewall
+variable "firewall_enabled" {
+  type        = bool
+  description = "Whether to enable the Firewall"
+
+  default = true
+}
+
 variable "firewall_deletion_protection" {
   type        = bool
   description = "Whether to protect the firewall from deletion"

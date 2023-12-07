@@ -82,7 +82,7 @@ resource "aws_route" "nat" {
   route_table_id         = module.vpc.private_route_table_ids[count.index]
 }
 
-# Default route towards internet gateway for firewall
+# Default route towards Internet Gateway for Firewall if enabled
 resource "aws_route" "firewall_to_internet_gw" {
   count = length(aws_subnet.network_firewall)
 
@@ -91,24 +91,33 @@ resource "aws_route" "firewall_to_internet_gw" {
   route_table_id         = aws_route_table.network_firewall[count.index].id
 }
 
+# Default route towards Internet Gateway for Public if Firewall is disabled
+resource "aws_route" "public_to_internet_gw" {
+  count = var.firewall_enabled == false ? length(aws_subnet.public) : 0
+
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.igw.id
+  route_table_id         = aws_route_table.public[count.index].id
+}
+
 # Default route towards firewall for public subnets
 resource "aws_route" "public_to_firewall_endpoints" {
-  count = length(aws_subnet.public)
+  count = var.firewall_enabled ? length(aws_subnet.public) : 0
 
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.public[count.index].id
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }
 
 # Ingress route towards firewall for public subnets on the internet gateway routing table
 resource "aws_route" "ingress_routes" {
-  count = length(aws_subnet.public)
+  count = var.firewall_enabled ? length(aws_subnet.public) : 0
 
   route_table_id         = aws_route_table.ingress_route_table.id
   destination_cidr_block = aws_subnet.public[count.index].cidr_block
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }

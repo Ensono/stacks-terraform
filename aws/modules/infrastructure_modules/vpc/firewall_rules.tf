@@ -1,5 +1,7 @@
 # --- Firewall Rule Groups ---
 resource "aws_networkfirewall_rule_group" "icmp_alert_fw_rule_group" {
+  count = var.firewall_enabled ? 1 : 0
+
   name        = "${var.vpc_name}-icmp-alert-fw-rule-group"
   description = "ICMP Alert Rule Group"
   capacity    = 100
@@ -34,7 +36,7 @@ resource "aws_networkfirewall_rule_group" "icmp_alert_fw_rule_group" {
 }
 
 resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
-  count = length(var.firewall_allowed_domain_targets) > 0 ? 1 : 0
+  count = var.firewall_enabled && length(var.firewall_allowed_domain_targets) > 0 ? 1 : 0
 
   name        = "${var.vpc_name}-domain-allow-fw-rule-group"
   description = "Domain Allow FW Rule Group"
