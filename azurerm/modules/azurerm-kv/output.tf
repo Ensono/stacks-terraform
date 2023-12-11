@@ -14,5 +14,5 @@ output "key_vault_name" {
 
 output "pe_fqdn" {
   description = "FQDN for Key Vault Private Endpoint."
-  value       = var.enable_private_network ? azurerm_private_endpoint.pe.custom_dns_configs[0].fqdn : ""
+  value       = var.enable_private_network ? azurerm_private_endpoint.pe[0].custom_dns_configs[0].fqdn : ""
 }
