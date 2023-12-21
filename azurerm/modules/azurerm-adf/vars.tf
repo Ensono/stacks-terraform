@@ -77,7 +77,7 @@ variable "identity_ids" {
 # ADF SETTINGS
 ##########################
 
-variable "public_network_enabled" {
+variable "public_network_access_enabled" {
   type        = bool
   default     = true
   description = "Is the Data Factory visible to the public network? Defaults to true"

@@ -3,7 +3,7 @@ resource "azurerm_data_factory" "example" {
   name                            = var.resource_namer
   location                        = var.resource_group_location
   resource_group_name             = var.resource_group_name
-  public_network_enabled          = var.public_network_enabled
+  public_network_access_enabled   = var.public_network_access_enabled
   managed_virtual_network_enabled = var.managed_virtual_network_enabled
 
   # optional block Adf identity 
