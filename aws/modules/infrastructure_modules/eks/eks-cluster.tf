@@ -79,6 +79,9 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     disk_size = 50
+    placement = {
+      tenancy = var.eks_node_tenancy
+    }
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
