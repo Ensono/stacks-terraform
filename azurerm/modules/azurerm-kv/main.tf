@@ -91,7 +91,8 @@ resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
     "Import",
     "Backup",
     "Recover",
-    "Restore"
+    "Restore",
+    "Purge"
   ]
 
   secret_permissions = [
@@ -101,7 +102,8 @@ resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
     "Set",
     "Backup",
     "Recover",
-    "Restore"
+    "Restore",
+    "Purge"
   ]
 
   certificate_permissions = [
@@ -113,7 +115,8 @@ resource "azurerm_key_vault_access_policy" "contributors_access_policy" {
     "Delete",
     "Backup",
     "Recover",
-    "Restore"
+    "Restore",
+    "Purge"
   ]
 
   storage_permissions = []
