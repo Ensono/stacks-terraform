@@ -54,7 +54,7 @@ resource "azurerm_subnet" "pe_subnet" {
   resource_group_name                            = var.vnet_resource_group
   virtual_network_name                           = var.vnet_name
   address_prefixes                               = var.pe_subnet_prefix
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled      = true
 }
 
 
