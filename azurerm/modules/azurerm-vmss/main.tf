@@ -58,6 +58,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     })
   }
 
+/*
   extension {
     auto_upgrade_minor_version = false
     automatic_upgrade_enabled  = false
@@ -77,6 +78,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     type                 = "TeamServicesAgentLinux"
     type_handler_version = "1.23"
   }
+*/
 
   lifecycle {
     ignore_changes = [
