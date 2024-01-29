@@ -64,3 +64,9 @@ variable "pull_through_cache_accounts" {
   description = "A default list of accounts for the Pull Through Cache if not configured in the `pull_through_cache_setup`. Defaults to the calling account root"
   default     = []
 }
+
+variable "repository_lifecycle_policy" {
+  type        = any
+  description = "ECR repository lifestyle policy rules"
+  default     = "default-policy"
+}
