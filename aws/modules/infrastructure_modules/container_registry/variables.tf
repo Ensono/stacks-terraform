@@ -23,6 +23,8 @@ variable "max_untagged_image_count" {
 variable "max_tagged_image_count" {
   type        = number
   description = "The maximum number of tagged images to keep for each repository"
+
+  default = 100
 }
 
 variable "pull_accounts" {
