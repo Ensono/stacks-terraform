@@ -12,7 +12,7 @@ locals {
 
   eks_on_demand_bootstrap_extra_args = <<-EOT
   [settings.bootstrap-containers.cis-boostrap]
-  source = "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BOOTSTRAP_ECR_REPO:latest"
+  source = "${data.aws_caller_identity.this.account_id}.dkr.ecr.${var.region}.amazonaws.com/bottlerocket-cis-spike:latest"
   mode = "always"
   [settings.kernel]
   lockdown = "integrity"
