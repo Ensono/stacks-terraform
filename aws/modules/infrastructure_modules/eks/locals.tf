@@ -28,9 +28,9 @@ locals {
     "net.ipv4.conf.all.log_martians = 1"
     "net.ipv4.conf.default.log_martians = 1"
   EOF 
-  [settings.kernel.udf]
+  [settings.kernel.modules.udf]
   allowed = "false"
-  [settings.kernel.sctp]
+  [settings.kernel.modules.sctp]
   allowed = "false"
   EOT
 
