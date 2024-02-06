@@ -16,18 +16,17 @@ locals {
   mode = "always"
   [settings.kernel]
   lockdown = "integrity"
-  sysctl = <<-EOF
-    "net.ipv4.conf.all.send_redirects = 0"
-    "net.ipv4.conf.default.send_redirects = 0"
-    "net.ipv4.conf.all.accept_redirects = 0"
-    "net.ipv4.conf.default.accept_redirects = 0"
-    "net.ipv6.conf.all.accept_redirects = 0"
-    "net.ipv6.conf.default.accept_redirects = 0"
-    "net.ipv4.conf.all.secure_redirects = 0"
-    "net.ipv4.conf.default.secure_redirects = 0"
-    "net.ipv4.conf.all.log_martians = 1"
-    "net.ipv4.conf.default.log_martians = 1"
-  EOF 
+  [settings.kernel.sysctl]
+  "net.ipv4.conf.all.send_redirects" = "0"
+  "net.ipv4.conf.default.send_redirects" = "0"
+  "net.ipv4.conf.all.accept_redirects" = "0"
+  "net.ipv4.conf.default.accept_redirect" = "0"
+  "net.ipv6.conf.all.accept_redirects" = "0"
+  "net.ipv6.conf.default.accept_redirects" = "0"
+  "net.ipv4.conf.all.secure_redirects" = "0"
+  "net.ipv4.conf.default.secure_redirects" = "0"
+  "net.ipv4.conf.all.log_martians" = "1"
+  "net.ipv4.conf.default.log_martians" = "1"
   [settings.kernel.modules.udf]
   allowed = "false"
   [settings.kernel.modules.sctp]
