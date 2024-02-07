@@ -11,15 +11,30 @@ locals {
   EOT
 
   eks_on_demand_bootstrap_extra_args = <<-EOT
-  [settings.bootstrap-containers.cis-boostrap]
+  [settings.bootstrap-containers.cis-bootstrap]
   source = "${data.aws_caller_identity.this.account_id}.dkr.ecr.${var.region}.amazonaws.com/bottlerocket-cis-spike:latest"
   mode = "always"
+
   [settings.kernel]
   lockdown = "integrity"
+
   [settings.kernel.modules.udf]
-  allowed = "false"
+  allowed = false
+
   [settings.kernel.modules.sctp]
-  allowed = "false"
+  allowed = false
+
+  [settings.kernel.sysctl]
+  "net.ipv4.conf.all.send_redirects" = "0"
+  "net.ipv4.conf.default.send_redirects" = "0"
+  "net.ipv4.conf.all.accept_redirects" = "0"
+  "net.ipv4.conf.default.accept_redirects" = "0"
+  "net.ipv6.conf.all.accept_redirects" = "0"
+  "net.ipv6.conf.default.accept_redirects" = "0"
+  "net.ipv4.conf.all.secure_redirects" = "0"
+  "net.ipv4.conf.default.secure_redirects" = "0"
+  "net.ipv4.conf.all.log_martians" = "1"
+  "net.ipv4.conf.default.log_martians" = "1"
   EOT
 
   eks_bottlerocket_base_node_config = {
