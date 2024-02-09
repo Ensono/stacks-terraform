@@ -45,6 +45,8 @@ locals {
         subnet_ids = [var.vpc_private_subnets[k]]
 
         instance_types = [var.eks_node_size]
+
+        iam_role_additional_policies = var.managed_node_groups_iam_role_additional_policies
       }
     )
   }
