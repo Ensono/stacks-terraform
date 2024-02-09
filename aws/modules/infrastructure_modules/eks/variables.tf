@@ -83,3 +83,15 @@ variable "eks_node_type" {
     error_message = "Value must be one of ON_DEMAND, or SPOT."
   }
 }
+
+variable "eks_node_tenancy" {
+  type        = string
+  description = "The tenancy of the node instance to use for EKS"
+
+  default = "default"
+
+  validation {
+    condition     = contains(["default", "dedicated", "host"], var.eks_node_tenancy)
+    error_message = "Value must be one of 'default', 'dedicated', or 'host'."
+  }
+}
