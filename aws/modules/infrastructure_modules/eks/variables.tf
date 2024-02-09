@@ -95,3 +95,9 @@ variable "eks_node_tenancy" {
     error_message = "Value must be one of 'default', 'dedicated', or 'host'."
   }
 }
+
+variable "managed_node_groups_iam_role_additional_policies" {
+  description = "Additional policies to be added to the Managed Node Group IAM role"
+  type        = map(string)
+  default     = {}
+}
