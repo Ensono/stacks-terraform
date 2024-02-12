@@ -79,11 +79,12 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     disk_size = 50
-    placement = {
+    //Only put in temporary so it doesn't force our nodes to be recreated
+    placement = var.eks_node_tenancy == "default" ? {} : {
       tenancy = var.eks_node_tenancy
     }
   }
-
+  
   eks_managed_node_groups = local.eks_managed_node_groups
 
   tags = var.tags
