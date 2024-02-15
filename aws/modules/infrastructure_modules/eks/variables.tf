@@ -84,6 +84,7 @@ variable "eks_node_type" {
   }
 }
 
+<<<<<<< HEAD
 variable "eks_node_tenancy" {
   type        = string
   description = "The tenancy of the node instance to use for EKS"
@@ -95,3 +96,10 @@ variable "eks_node_tenancy" {
     error_message = "Value must be one of 'default', 'dedicated', or 'host'."
   }
 }
+=======
+variable "variable "enable_cis_bootstrap" {
+  description = "Set to true to enable the CIS Boostrap, false to disable."
+  type        = bool
+  default     = false
+}
+>>>>>>> a7c156e (Add variable to enable and disbale)

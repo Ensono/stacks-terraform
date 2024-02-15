@@ -10,7 +10,7 @@ locals {
   "node.kubernetes.io/lifecycle" = "spot"
   EOT
 
-  eks_on_demand_bootstrap_extra_args = <<-EOT
+  eks_on_demand_bootstrap_extra_args = var.enable_cis_bootstrap ? <<-EOT
   [settings.bootstrap-containers.cis-bootstrap]
   source = "${data.aws_caller_identity.this.account_id}.dkr.ecr.${var.region}.amazonaws.com/bottlerocket-cis-spike:latest"
   mode = "always"
