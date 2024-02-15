@@ -12,7 +12,7 @@ locals {
   %{ endif }
   %{ if var.enable_cis_bootstrap == true }
   [settings.bootstrap-containers.cis-bootstrap]
-  source = "${var.cis_boostrap_image}"
+  source = "${var.cis_bootstrap_image}"
   mode = "always"
 
   [settings.kernel.modules.udf]
