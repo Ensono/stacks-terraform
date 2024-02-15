@@ -95,8 +95,15 @@ variable "eks_node_tenancy" {
     error_message = "Value must be one of 'default', 'dedicated', or 'host'."
   }
 }
-variable "variable "enable_cis_bootstrap" {
+variable "enable_cis_bootstrap" {
   description = "Set to true to enable the CIS Boostrap, false to disable."
   type        = bool
   default     = false
+}
+
+
+variable "cis_bootstrap_image" {
+  description = "CIS Bootstrap image, required if enable_cis_bootstrap is set to true"
+  type = string
+  default = null
 }

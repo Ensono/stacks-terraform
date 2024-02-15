@@ -3,20 +3,17 @@ locals {
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
-  eks_spot_bootstrap_extra_args = <<-EOT
+  eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]
   lockdown = "integrity"
+  %{ if var.eks_node_type == "SPOT" }
   [settings.kubernetes.node-labels]
   "node.kubernetes.io/lifecycle" = "spot"
-  EOT
-
-  eks_on_demand_bootstrap_extra_args = var.enable_cis_bootstrap ? <<-EOT
+  %{ endif }
+  %{ if var.enable_cis_bootstrap == true }
   [settings.bootstrap-containers.cis-bootstrap]
-  source = "${data.aws_caller_identity.this.account_id}.dkr.ecr.${var.region}.amazonaws.com/bottlerocket-cis-spike:latest"
+  source = "${var.cis_boostrap_image}"
   mode = "always"
-
-  [settings.kernel]
-  lockdown = "integrity"
 
   [settings.kernel.modules.udf]
   allowed = false
@@ -35,8 +32,9 @@ locals {
   "net.ipv4.conf.default.secure_redirects" = "0"
   "net.ipv4.conf.all.log_martians" = "1"
   "net.ipv4.conf.default.log_martians" = "1"
+  %{ endif }
   EOT
-
+}
   eks_bottlerocket_base_node_config = {
     ami_type        = "BOTTLEROCKET_x86_64"
     platform        = "bottlerocket"
@@ -50,7 +48,7 @@ locals {
     }
 
     iam_role_name_use_prefix = false
-    bootstrap_extra_args     = var.eks_node_type == "SPOT" ? local.eks_spot_bootstrap_extra_args : local.eks_on_demand_bootstrap_extra_args
+    bootstrap_extra_args     = local.eks_bootstrap_extra_args
 
     tags = var.tags
   }
@@ -92,3 +90,5 @@ locals {
     })
   )
 }
+
+variable
