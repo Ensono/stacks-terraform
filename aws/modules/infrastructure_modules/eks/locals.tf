@@ -34,7 +34,7 @@ locals {
   "net.ipv4.conf.default.log_martians" = "1"
   %{ endif }
   EOT
-}
+
   eks_bottlerocket_base_node_config = {
     ami_type        = "BOTTLEROCKET_x86_64"
     platform        = "bottlerocket"
@@ -89,3 +89,4 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
+}
