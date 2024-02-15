@@ -89,6 +89,3 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
-}
-
-variable
