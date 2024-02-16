@@ -104,8 +104,8 @@ variable "enable_cis_bootstrap" {
 
 variable "cis_bootstrap_image" {
   description = "CIS Bootstrap image, required if enable_cis_bootstrap is set to true"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 resource "null_resource" "cis_bootstrap_validation" {

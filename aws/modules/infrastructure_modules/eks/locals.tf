@@ -6,11 +6,11 @@ locals {
   eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]
   lockdown = "integrity"
-  %{ if var.eks_node_type == "SPOT" }
+  %{if var.eks_node_type == "SPOT"}
   [settings.kubernetes.node-labels]
   "node.kubernetes.io/lifecycle" = "spot"
-  %{ endif }
-  %{ if var.enable_cis_bootstrap == true }
+  %{endif}
+  %{if var.enable_cis_bootstrap == true}
   [settings.bootstrap-containers.cis-bootstrap]
   source = "${var.cis_bootstrap_image}"
   mode = "always"
@@ -32,7 +32,7 @@ locals {
   "net.ipv4.conf.default.secure_redirects" = "0"
   "net.ipv4.conf.all.log_martians" = "1"
   "net.ipv4.conf.default.log_martians" = "1"
-  %{ endif }
+  %{endif}
   EOT
 
   eks_bottlerocket_base_node_config = {
