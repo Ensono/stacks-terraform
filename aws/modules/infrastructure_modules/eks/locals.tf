@@ -3,16 +3,36 @@ locals {
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
-  eks_spot_bootstrap_extra_args = <<-EOT
+  eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]
   lockdown = "integrity"
+  %{if var.eks_node_type == "SPOT"}
   [settings.kubernetes.node-labels]
   "node.kubernetes.io/lifecycle" = "spot"
-  EOT
+  %{endif}
+  %{if var.enable_cis_bootstrap == true}
+  [settings.bootstrap-containers.cis-bootstrap]
+  source = "${var.cis_bootstrap_image}"
+  mode = "always"
 
-  eks_on_demand_bootstrap_extra_args = <<-EOT
-  [settings.kernel]
-  lockdown = "integrity"
+  [settings.kernel.modules.udf]
+  allowed = false
+
+  [settings.kernel.modules.sctp]
+  allowed = false
+
+  [settings.kernel.sysctl]
+  "net.ipv4.conf.all.send_redirects" = "0"
+  "net.ipv4.conf.default.send_redirects" = "0"
+  "net.ipv4.conf.all.accept_redirects" = "0"
+  "net.ipv4.conf.default.accept_redirects" = "0"
+  "net.ipv6.conf.all.accept_redirects" = "0"
+  "net.ipv6.conf.default.accept_redirects" = "0"
+  "net.ipv4.conf.all.secure_redirects" = "0"
+  "net.ipv4.conf.default.secure_redirects" = "0"
+  "net.ipv4.conf.all.log_martians" = "1"
+  "net.ipv4.conf.default.log_martians" = "1"
+  %{endif}
   EOT
 
   eks_bottlerocket_base_node_config = {
@@ -28,7 +48,7 @@ locals {
     }
 
     iam_role_name_use_prefix = false
-    bootstrap_extra_args     = var.eks_node_type == "SPOT" ? local.eks_spot_bootstrap_extra_args : local.eks_on_demand_bootstrap_extra_args
+    bootstrap_extra_args     = local.eks_bootstrap_extra_args
 
     tags = var.tags
   }

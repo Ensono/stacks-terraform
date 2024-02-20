@@ -96,6 +96,19 @@ variable "eks_node_tenancy" {
   }
 }
 
+variable "enable_cis_bootstrap" {
+  description = "Set to true to enable the CIS Boostrap, false to disable."
+  type        = bool
+  default     = false
+}
+
+
+variable "cis_bootstrap_image" {
+  description = "CIS Bootstrap image, required if enable_cis_bootstrap is set to true"
+  type        = string
+  default     = ""
+}
+
 variable "managed_node_groups_iam_role_additional_policies" {
   description = "Additional policies to be added to the Managed Node Group IAM role"
   type        = map(string)
