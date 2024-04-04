@@ -83,6 +83,10 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
       resource_arn = aws_networkfirewall_rule_group.icmp_alert_fw_rule_group.0.arn
     }
 
+    stateful_rule_group_reference {
+      resource_arn = aws_networkfirewall_rule_group.drop_non_http_between_vpcs.0.arn
+    }
+
     dynamic "stateful_rule_group_reference" {
       for_each = length(var.firewall_allowed_domain_targets) > 0 ? [0] : []
 
