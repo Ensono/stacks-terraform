@@ -12,3 +12,8 @@ output "public_subnet_ids" {
   description = "The IDs of the public subnets created by this module."
   value       = aws_subnet.public.*.id
 }
+
+output "private_route_table_ids" {
+  description = "The IDs of the private routing tables"
+  value       = module.vpc.private_route_table_ids
+}
