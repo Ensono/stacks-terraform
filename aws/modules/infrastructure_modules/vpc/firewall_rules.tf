@@ -59,7 +59,7 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
 }
 
 # This rule blocks the use of the SSH Outbound Over non-standard ports.
-resource "aws_networkfirewall_rule_group" "drop_non_http_between_vpcs" {
+resource "aws_networkfirewall_rule_group" "blocks_ssh_over_non_standard_ports" {
   count = var.firewall_enabled ? 1 : 0
   capacity = 100
   name     = "drop-ssh-outbound-over-non-standard-ports"
@@ -72,11 +72,16 @@ resource "aws_networkfirewall_rule_group" "drop_non_http_between_vpcs" {
           definition = [var.vpc_cidr]
         }
       }
+      ip_sets {
+        key = "EXTERNAL_NET"
+        ip_set {
+          definition = ["0.0.0.0/0"]
+        }
+      }
     }
     rules_source {
       rules_string = <<EOF
-      drop ssh $HOME_NET any -> !$HOME_NET !22 (msg:"Drop use of SSH on non-standard port";
-      reference:url,https://attack.mitre.org/techniques/T1571/; sid:2171910;)
+      reject ssh $HOME_NET any -> $EXTERNAL_NET !22 (msg:"Block use of SSH protocol on non-standard port"; flow: to_server; sid:2171010;)
       EOF
     }
   }
