@@ -27,16 +27,7 @@ module "eks" {
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
-  cluster_security_group_additional_rules = {
-    egress_nodes_ephemeral_ports_tcp = {
-      description                = "Node all egress"
-      protocol                   = "-1"
-      from_port                  = 0
-      to_port                    = 0
-      type                       = "egress"
-      source_node_security_group = true
-    }
-  }
+  cluster_security_group_additional_rules = var.cluster_security_group_additional_rules
 
   node_security_group_additional_rules = {
     ingress_self_all = {

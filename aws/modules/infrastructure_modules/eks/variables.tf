@@ -102,11 +102,25 @@ variable "enable_cis_bootstrap" {
   default     = false
 }
 
-
 variable "cis_bootstrap_image" {
   description = "CIS Bootstrap image, required if enable_cis_bootstrap is set to true"
   type        = string
   default     = ""
+}
+
+variable "cluster_security_group_additional_rules" {
+  description = "List of additional security group rules to add to the cluster security group created. Set `source_node_security_group = true` inside rules to set the `node_security_group` as source"
+  type        = any
+  default = {
+    egress_nodes_ephemeral_ports_tcp = {
+      description                = "Node all egress"
+      protocol                   = "-1"
+      from_port                  = 0
+      to_port                    = 0
+      type                       = "egress"
+      source_node_security_group = true
+    }
+  }
 }
 
 variable "managed_node_groups_iam_role_additional_policies" {
