@@ -84,7 +84,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     }
 
     stateful_rule_group_reference {
-      resource_arn = aws_networkfirewall_rule_group.drop_non_http_between_vpcs.0.arn
+      resource_arn = aws_networkfirewall_rule_group.blocks_ssh_over_non_standard_ports.0.arn
     }
 
     dynamic "stateful_rule_group_reference" {
