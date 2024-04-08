@@ -84,6 +84,10 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     }
 
     stateful_rule_group_reference {
+      resource_arn = aws_networkfirewall_rule_group.tls_alert_fw_rule_group.0.arn
+    }
+
+    stateful_rule_group_reference {
       resource_arn = aws_networkfirewall_rule_group.blocks_ssh_over_non_standard_ports.0.arn
     }
 
