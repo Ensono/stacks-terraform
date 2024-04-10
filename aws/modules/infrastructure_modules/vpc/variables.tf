@@ -120,5 +120,5 @@ variable "firewall_allowed_domain_targets" {
 
 variable "create_block_ingress" {
   type = bool
-  default = false
+  default = true
 }
