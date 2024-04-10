@@ -88,7 +88,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     }
 
     stateful_rule_group_reference {
-      resource_arn = aws_networkfirewall_rule_group.block_ingress_non_https_port_rule_group.0.arn
+      resource_arn = var.create_block_ingress ? aws_networkfirewall_rule_group.block_ingress_non_https_port_rule_group.0.arn : null
     }
 
     dynamic "stateful_rule_group_reference" {
