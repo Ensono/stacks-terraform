@@ -41,7 +41,7 @@ resource "aws_networkfirewall_rule_group" "icmp_alert_fw_rule_group" {
 # https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-network-firewall-to-capture-the-dns-domain-names-from-the-server-name-indication-sni-for-outbound-traffic.html
 
 resource "aws_networkfirewall_rule_group" "tls_alert_fw_rule_group" {
-  count = var.firewall_enabled ? 1 : 0
+  count = var.firewall_enabled && var.create_custom_rule ? 1 : 0
 
   name        = "${var.vpc_name}-tls-alert-fw-rule-group"
   description = "TLS Alert Rule Group"
@@ -102,7 +102,7 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
 
 # Suricata rule to drop any inbound traffic other than traffic on port 443 (HTTPS). 
 resource "aws_networkfirewall_rule_group" "block_ingress_non_https_port_rule_group" {
-  count    = var.firewall_enabled ? 1 : 0
+  count    = var.firewall_enabled && var.create_custom_rule ? 1 : 0
   capacity = 500
   name     = "${var.vpc_name}-drop-ingress-non-https-traffic"
   type     = "STATEFUL"
