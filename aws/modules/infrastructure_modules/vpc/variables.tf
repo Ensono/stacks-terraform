@@ -118,7 +118,7 @@ variable "firewall_allowed_domain_targets" {
   default = []
 }
 
-variable "create_block_ingress" {
-  type = bool
+variable "create_custom_rule" {
+  type    = bool
   default = true
 }
