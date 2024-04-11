@@ -80,17 +80,14 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     stateless_fragment_default_actions = ["aws:forward_to_sfe"]
 
     stateful_rule_group_reference {
-      priority     = 0
       resource_arn = aws_networkfirewall_rule_group.icmp_alert_fw_rule_group.0.arn
     }
 
     stateful_rule_group_reference {
-      priority     = 0
       resource_arn = aws_networkfirewall_rule_group.tls_alert_fw_rule_group.0.arn
     }
 
     stateful_rule_group_reference {
-      priority     = 0
       resource_arn = aws_networkfirewall_rule_group.block_ingress_non_https_port_rule_group.0.arn
     }
 
@@ -98,7 +95,6 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
       for_each = length(var.firewall_allowed_domain_targets) > 0 ? [0] : []
 
       content {
-        priority     = 0
         resource_arn = aws_networkfirewall_rule_group.domain_allow_fw_rule_group.0.arn
       }
     }
