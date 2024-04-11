@@ -119,8 +119,36 @@ variable "firewall_allowed_domain_targets" {
 }
 
 variable "create_custom_rule" {
-  type    = bool
+  type        = bool
   description = "This variable toggles creation of custom firewall rules"
-  
+
   default = false
+}
+
+variable "icmp_alert_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for ICMP alert rule group"
+}
+
+variable "tls_alert_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for TLS alert rule group"
+}
+
+variable "domain_allow_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for Domain allow rule group"
+}
+
+variable "block_non_https_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for Block non-https traffic rule group"
 }

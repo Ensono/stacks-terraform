@@ -6,7 +6,7 @@ resource "aws_networkfirewall_rule_group" "icmp_alert_fw_rule_group" {
 
   name        = "${var.vpc_name}-icmp-alert-fw-rule-group"
   description = "ICMP Alert Rule Group"
-  capacity    = 100
+  capacity    = var.icmp_alert_capacity
   type        = "STATEFUL"
 
   rule_group {
@@ -45,7 +45,7 @@ resource "aws_networkfirewall_rule_group" "tls_alert_fw_rule_group" {
 
   name        = "${var.vpc_name}-tls-alert-fw-rule-group"
   description = "TLS Alert Rule Group"
-  capacity    = 500
+  capacity    = var.tls_alert_capacity
   type        = "STATEFUL"
 
   rule_group {
@@ -82,7 +82,7 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
 
   name        = "${var.vpc_name}-domain-allow-fw-rule-group"
   description = "Domain Allow FW Rule Group"
-  capacity    = 1000
+  capacity    = var.domain_allow_capacity
   type        = "STATEFUL"
 
   rule_group {
@@ -103,7 +103,7 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
 # Suricata rule to drop any inbound traffic other than traffic on port 443 (HTTPS). 
 resource "aws_networkfirewall_rule_group" "block_ingress_non_https_port_rule_group" {
   count    = var.firewall_enabled && var.create_custom_rule ? 1 : 0
-  capacity = 500
+  capacity = var.block_non_https_capacity
   name     = "${var.vpc_name}-drop-ingress-non-https-traffic"
   type     = "STATEFUL"
   rule_group {
