@@ -120,5 +120,7 @@ variable "firewall_allowed_domain_targets" {
 
 variable "create_custom_rule" {
   type    = bool
-  default = true
+  description = "This variable toggles creation of custom firewall rules"
+  
+  default = false
 }
