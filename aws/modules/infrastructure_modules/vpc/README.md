@@ -96,6 +96,7 @@ downstream module: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-
 | <a name="input_vpc_instance_tenancy"></a> [vpc\_instance\_tenancy](#input\_vpc\_instance\_tenancy) | The default tenancy of instances, either 'default' or 'dedicated' | `string` | `"default"` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of the VPC and resources | `string` | n/a | yes |
 | <a name="input_vpc_nat_gateway_per_az"></a> [vpc\_nat\_gateway\_per\_az](#input\_vpc\_nat\_gateway\_per\_az) | Whether to spin up a NAT Gateway per-AZ or just use one. Note: There are running costs associated with NAT Gateways. For Production-like environments this should  be true | `bool` | `true` | no |
+| <a name="create_custom_rule"></a> [create\_custom_rule](#create\_custom\_rule) | This variable toggles creation of custom firewall rules | `bool` | `false` | no |
 
 ## Outputs
 
