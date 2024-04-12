@@ -118,9 +118,9 @@ variable "firewall_allowed_domain_targets" {
   default = []
 }
 
-variable "create_custom_rule" {
+variable "create_tls_alert_rule" {
   type        = bool
-  description = "This variable toggles creation of custom firewall rules"
+  description = "This variable toggles creation of tls alert rule"
 
   default = false
 }
@@ -146,7 +146,7 @@ variable "domain_allow_capacity" {
   description = "Capacity for Domain allow rule group"
 }
 
-variable "block_non_https_capacity" {
+variable "alert_ingress_traffic" {
   type    = number
   default = 100
 

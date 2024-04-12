@@ -99,36 +99,3 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
     "Name" = "${var.vpc_name}-network-firewall-rule-group-allow-domainlist"
   })
 }
-
-# Suricata rule to drop any inbound traffic other than traffic on port 443 (HTTPS). 
-resource "aws_networkfirewall_rule_group" "block_ingress_non_https_port_rule_group" {
-  count    = var.firewall_enabled && var.create_custom_rule ? 1 : 0
-  capacity = var.block_non_https_capacity
-  name     = "${var.vpc_name}-drop-ingress-non-https-traffic"
-  type     = "STATEFUL"
-  rule_group {
-    rule_variables {
-      ip_sets {
-        key = "HOME_NET"
-        ip_set {
-          definition = [var.vpc_cidr]
-        }
-      }
-      ip_sets {
-        key = "EXTERNAL_NET"
-        ip_set {
-          definition = ["0.0.0.0/0"]
-        }
-      }
-    }
-    rules_source {
-      rules_string = <<EOF
-      alert ip any any -> $HOME_NET ![443] (msg:"Inbound traffic on port other than 443"; sid:1000001; rev:1;)
-      drop ip any any -> $HOME_NET ![443] (msg:"Drop all non-HTTPS traffic"; sid:1000002; rev:1;)
-      EOF
-    }
-  }
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-rule-group-drop-non-https-traffic"
-  })
-}
