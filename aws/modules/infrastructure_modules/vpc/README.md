@@ -100,7 +100,7 @@ downstream module: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-
 | <a name="icmp_alert_capacity"></a> [icmp\_alert\_capacity](#icmp\_alert\_capacity) | Capacity for ICMP alert rule group | `number` | `100` | no |
 | <a name="tls_alert_capacity"></a> [tls\_alert\_capacity](#tls\_alert\_capacity) | Capacity for TLS alert rule group | `number` | `100` | no |
 | <a name="domain_allow_capacity"></a> [domain\_allow\_capacity](#domain\_allow\_capacity) | Capacity for Domain allow rule group | `number` | `100` | no |
-| <a name="block_non_https_capacity"></a> [block\_non\_https\_capacity](#domain\_allow\_capacity) | Capacity for Block non-https traffic rule group | `number` | `100` | no |
+
 
 ## Outputs
 

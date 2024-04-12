@@ -85,6 +85,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
 
     dynamic "stateful_rule_group_reference" {
       for_each = var.create_tls_alert_rule ? [0] : []
+
       content {
         resource_arn = aws_networkfirewall_rule_group.tls_alert_fw_rule_group.0.arn
       }

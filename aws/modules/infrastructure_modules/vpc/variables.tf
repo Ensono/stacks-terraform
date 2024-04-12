@@ -145,10 +145,3 @@ variable "domain_allow_capacity" {
 
   description = "Capacity for Domain allow rule group"
 }
-
-variable "alert_ingress_traffic" {
-  type    = number
-  default = 100
-
-  description = "Capacity for Block non-https traffic rule group"
-}
