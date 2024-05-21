@@ -126,7 +126,7 @@ resource "aws_subnet" "network_firewall" {
 
 # --- EIP ---
 resource "aws_eip" "nat" {
-  count = length(data.aws_availability_zones.available.zone_ids)
+  count = var.vpc_nat_gateway_per_az ? length(data.aws_availability_zones.available.names) : 1
 
   domain = "vpc"
 
