@@ -117,3 +117,31 @@ variable "firewall_allowed_domain_targets" {
 
   default = []
 }
+
+variable "create_tls_alert_rule" {
+  type        = bool
+  description = "This variable toggles creation of tls alert rule"
+
+  default = false
+}
+
+variable "icmp_alert_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for ICMP alert rule group"
+}
+
+variable "tls_alert_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for TLS alert rule group"
+}
+
+variable "domain_allow_capacity" {
+  type    = number
+  default = 100
+
+  description = "Capacity for Domain allow rule group"
+}
