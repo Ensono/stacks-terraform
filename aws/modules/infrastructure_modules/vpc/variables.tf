@@ -145,3 +145,204 @@ variable "domain_allow_capacity" {
 
   description = "Capacity for Domain allow rule group"
 }
+
+# Subnet ACLs
+variable "create_public_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for public subnets"
+  type        = bool
+  default     = false
+}
+
+variable "public_inbound_acl_rules" {
+  description = "Public subnets inbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "public_outbound_acl_rules" {
+  description = "Public subnets outbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "create_private_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for private subnets"
+  type        = bool
+  default     = false
+}
+
+variable "private_inbound_acl_rules" {
+  description = "Private subnets inbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "private_outbound_acl_rules" {
+  description = "Private subnets outbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "create_database_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for database subnets"
+  type        = bool
+  default     = false
+}
+
+variable "database_inbound_acl_rules" {
+  description = "Database subnets inbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "database_outbound_acl_rules" {
+  description = "Database subnets outbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "create_network_firewall_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for network firewall subnets"
+  type        = bool
+  default     = false
+}
+
+variable "network_firewall_inbound_acl_rules" {
+  description = "Network firewall subnets inbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "network_firewall_outbound_acl_rules" {
+  description = "Network firewall subnets outbound network ACLs"
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
