@@ -34,6 +34,7 @@ module "vpc" {
     "isLambda"                              = "false"
     "isFirewall"                            = "false"
     "isDB"                                  = "false"
+    "Name"                                  = "${var.vpc_name}-private-subnet"
     }, # { "karpenter.sh/discovery" : var.vpc_name }
   )
 
@@ -51,6 +52,7 @@ module "vpc" {
     "isLambda"   = "false"
     "isFirewall" = "false"
     "isDB"       = "true"
+    "Name"       = "${var.vpc_name}-database-subnet"
   })
 
   database_route_table_tags = merge(var.tags, {
