@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
       type = "AWS"
 
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
+        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root","${var.trusted_role_arn}"
       ]
     }
 
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
       type = "AWS"
 
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
+        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root","${var.trusted_role_arn}"
       ]
     }
 
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
       type = "AWS"
 
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
+        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root","${var.trusted_role_arn}"
       ]
     }
 
