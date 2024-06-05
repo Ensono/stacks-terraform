@@ -130,7 +130,13 @@ variable "managed_node_groups_iam_role_additional_policies" {
 }
 
 variable "trusted_role_arn" {
-  description = "Additional IAM role passed to KMS Policy"
+  description = "IAM role passed to KMS Policy"
+  type        = string
+  default     = ""
+}
+
+variable "trusted_key_identities" {
+  description = "IAM Identities that need to be trusted by the KMS Service"
   type        = string
   default     = ""
 }
