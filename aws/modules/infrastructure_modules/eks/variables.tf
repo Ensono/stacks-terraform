@@ -134,9 +134,3 @@ variable "trusted_role_arn" {
   type        = string
   default     = ""
 }
-
-variable "trusted_key_identities" {
-  description = "IAM Identities that need to be trusted by the KMS Service"
-  type        = string
-  default     = ""
-}
