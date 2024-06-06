@@ -147,3 +147,9 @@ variable "node_security_group_additional_rules" {
     }
   }
 }
+
+variable "image_gc_high_threshold_percent" {
+  description = "The percent of disk usage that initiates image garbage collection by kubelet"
+  type = number
+  default = 85
+}
