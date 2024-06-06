@@ -128,3 +128,8 @@ variable "managed_node_groups_iam_role_additional_policies" {
   type        = map(string)
   default     = {}
 }
+variable "trusted_role_arn" {
+  description = "IAM role passed to KMS Policy"
+  type        = string
+  default     = ""
+}
