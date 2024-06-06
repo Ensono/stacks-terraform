@@ -3,6 +3,11 @@ data "aws_caller_identity" "this" {}
 
 data "aws_availability_zones" "available" {}
 
+locals {
+
+  trusted_key_identities = var.trusted_role_arn == "" ? ["arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"] : ["arn:aws:iam::${data.aws_caller_identity.this.account_id}:root", "${var.trusted_role_arn}"]
+}
+
 ## EKS
 data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
   statement {
@@ -10,11 +15,8 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
     effect = "Allow"
 
     principals {
-      type = "AWS"
-
-      identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
-      ]
+      type        = "AWS"
+      identifiers = local.trusted_key_identities
     }
 
     actions = [
@@ -42,11 +44,8 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
     effect = "Allow"
 
     principals {
-      type = "AWS"
-
-      identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
-      ]
+      type        = "AWS"
+      identifiers = local.trusted_key_identities
     }
 
     actions = [
@@ -65,11 +64,8 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
     effect = "Allow"
 
     principals {
-      type = "AWS"
-
-      identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root",
-      ]
+      type        = "AWS"
+      identifiers = local.trusted_key_identities
     }
 
     actions = [
