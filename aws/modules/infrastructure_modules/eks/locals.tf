@@ -35,6 +35,7 @@ locals {
 
   [settings.kubernetes]
   image-gc-high-threshold-percent = "${var.image_gc_high_threshold_percent}"
+  image-gc-low-threshold-percent = "${var.image_gc_low_threshold_percent}"
   %{endif}
   EOT
 
