@@ -122,6 +122,7 @@ variable "cluster_security_group_additional_rules" {
     }
   }
 }
+
 variable "trusted_role_arn" {
   description = "IAM role passed to KMS Policy"
   type        = string
