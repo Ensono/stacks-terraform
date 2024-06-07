@@ -32,6 +32,10 @@ locals {
   "net.ipv4.conf.default.secure_redirects" = "0"
   "net.ipv4.conf.all.log_martians" = "1"
   "net.ipv4.conf.default.log_martians" = "1"
+
+  [settings.kubernetes]
+  image-gc-high-threshold-percent = "${var.image_gc_high_threshold_percent}"
+  image-gc-low-threshold-percent = "${var.image_gc_low_threshold_percent}"
   %{endif}
   EOT
 

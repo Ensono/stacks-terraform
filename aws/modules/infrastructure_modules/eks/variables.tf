@@ -121,8 +121,21 @@ variable "cluster_security_group_additional_rules" {
     }
   }
 }
+
 variable "trusted_role_arn" {
   description = "IAM role passed to KMS Policy"
   type        = string
   default     = ""
+}
+
+variable "image_gc_high_threshold_percent" {
+  description = "The percent of disk usage that initiates image garbage collection by kubelet. This value must be greater than the low threshold value"
+  type        = number
+  default     = 85
+}
+
+variable "image_gc_low_threshold_percent" {
+  description = "The kubelet deletes images until disk usage reaches this value. This value must be less than the high threshold value"
+  type        = number
+  default     = 80
 }
