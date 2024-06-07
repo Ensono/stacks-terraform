@@ -135,7 +135,7 @@ variable "image_gc_high_threshold_percent" {
 }
 
 variable "image_gc_low_threshold_percent" {
-  description = "The kubelet deletes images until disk usage reaches this valuee. This value must be less than the high threshold value"
+  description = "The kubelet deletes images until disk usage reaches this value. This value must be less than the high threshold value"
   type        = number
   default     = 80
 }
