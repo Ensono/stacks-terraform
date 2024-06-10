@@ -129,6 +129,18 @@ variable "trusted_role_arn" {
   default     = ""
 }
 
+variable "image_gc_high_threshold_percent" {
+  description = "The percent of disk usage that initiates image garbage collection by kubelet. This value mus be greater than the low threshold"
+  type        = number
+  default     = 85
+}
+
+variable "image_gc_low_threshold_percent" {
+  description = "The kubelet deletes images until disk usage reaches this valuee. This value mus be less than the high threshold"
+  type        = number
+  default     = 80
+}
+
 variable "node_security_group_additional_rules" {
   description = "List of additional security group rules to add to the node security group created. Set source_cluster_security_group = true inside rules to set the cluster_security_group as source"
   type        = any
@@ -152,16 +164,4 @@ variable "node_security_group_additional_rules" {
       ipv6_cidr_blocks = ["::/0"]
     }
   }
-}
-
-variable "image_gc_high_threshold_percent" {
-  description = "The percent of disk usage that initiates image garbage collection by kubelet. This value mus be greater than the low threshold"
-  type = number
-  default = 85
-}
-
-variable "image_gc_low_threshold_percent" {
-  description = "The kubelet deletes images until disk usage reaches this valuee. This value mus be less than the high threshold"
-  type = number
-  default = 80
 }
