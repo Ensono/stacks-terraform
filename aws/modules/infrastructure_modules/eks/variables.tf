@@ -139,3 +139,8 @@ variable "image_gc_low_threshold_percent" {
   type        = number
   default     = 80
 }
+
+variable "create_kms_key" {
+  description = "Controls if a KMS key for cluster encryption should be created which is true by default, making it false will enable to pass custom kms key and policy"
+  type        = bool
+}

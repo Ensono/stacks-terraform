@@ -51,7 +51,9 @@ module "eks" {
   }
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-
+  
+  create_kms_key = var.create_kms_key
+  
   cluster_encryption_config = {
     resources        = ["secrets"]
     provider_key_arn = module.eks_kms_key.arn
