@@ -27,8 +27,9 @@ module "eks" {
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
-  cluster_security_group_additional_rules = var.cluster_security_group_additional_rules
-  node_security_group_additional_rules = var.node_security_group_additional_rules
+  cluster_security_group_additional_rules      = var.cluster_security_group_additional_rules
+  node_security_group_additional_rules         = var.node_security_group_additional_rules
+  node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
