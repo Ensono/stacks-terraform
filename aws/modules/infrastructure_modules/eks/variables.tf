@@ -130,13 +130,13 @@ variable "trusted_role_arn" {
 }
 
 variable "image_gc_high_threshold_percent" {
-  description = "The percent of disk usage that initiates image garbage collection by kubelet. This value mus be greater than the low threshold"
+  description = "The percent of disk usage that initiates image garbage collection by kubelet. This value must be greater than the low threshold value"
   type        = number
   default     = 85
 }
 
 variable "image_gc_low_threshold_percent" {
-  description = "The kubelet deletes images until disk usage reaches this valuee. This value mus be less than the high threshold"
+  description = "The kubelet deletes images until disk usage reaches this value. This value must be less than the high threshold value"
   type        = number
   default     = 80
 }
@@ -167,6 +167,12 @@ variable "node_security_group_additional_rules" {
 
 variable "node_security_group_enable_recommended_rules" {
   description = "Determines whether to enable recommended security group rules for the node security group created. This includes node-to-node TCP ingress on ephemeral ports and allows all egress traffic"
+  type        = bool
+  default     = true
+}
+
+variable "create_kms_key" {
+  description = "Controls if a KMS key for cluster encryption should be created which is true by default, making it false will enable to pass custom kms key and policy"
   type        = bool
   default     = true
 }

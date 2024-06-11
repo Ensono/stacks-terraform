@@ -27,7 +27,8 @@ module "eks" {
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
 
-  cluster_security_group_additional_rules      = var.cluster_security_group_additional_rules
+  cluster_security_group_additional_rules = var.cluster_security_group_additional_rules
+
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
@@ -48,6 +49,8 @@ module "eks" {
   # Don't manage this through the module, it's incredibly hard to get working right.
   create_aws_auth_configmap = false
   manage_aws_auth_configmap = false
+
+  create_kms_key = var.create_kms_key
 
   eks_managed_node_group_defaults = {
     disk_size = 50
