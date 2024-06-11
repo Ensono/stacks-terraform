@@ -149,4 +149,5 @@ variable "create_kms_key" {
 variable "kms_key_administrators" {
   type        = list(string)
   description = "List of IAM identities for the keys which is used to encrypt data within the Cluster"
+  default     = []
 }
