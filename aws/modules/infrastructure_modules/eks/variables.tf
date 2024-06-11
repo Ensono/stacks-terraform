@@ -176,3 +176,9 @@ variable "create_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "kms_key_administrators" {
+  type        = list(string)
+  description = "KMS Key administrators for the keys which is used to encrypt data within the EKS Cluster"
+}
+

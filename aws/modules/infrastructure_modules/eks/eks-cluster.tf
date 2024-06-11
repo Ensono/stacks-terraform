@@ -62,5 +62,7 @@ module "eks" {
 
   eks_managed_node_groups = local.eks_managed_node_groups
 
+  kms_key_administrators = var.kms_key_administrators
+
   tags = var.tags
 }
