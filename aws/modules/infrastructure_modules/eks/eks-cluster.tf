@@ -50,8 +50,6 @@ module "eks" {
   create_aws_auth_configmap = false
   manage_aws_auth_configmap = false
 
-  create_kms_key = var.create_kms_key
-
   eks_managed_node_group_defaults = {
     disk_size = 50
 
@@ -61,8 +59,6 @@ module "eks" {
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
-
-  kms_key_administrators = var.kms_key_administrators
 
   tags = var.tags
 }

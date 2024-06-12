@@ -170,15 +170,3 @@ variable "node_security_group_enable_recommended_rules" {
   type        = bool
   default     = true
 }
-
-variable "create_kms_key" {
-  description = "Controls if a KMS key for cluster encryption should be created which is true by default, making it false will enable to pass custom kms key and policy"
-  type        = bool
-  default     = true
-}
-
-variable "kms_key_administrators" {
-  type        = list(string)
-  description = "KMS Key administrators for the keys which is used to encrypt data within the EKS Cluster"
-}
-
