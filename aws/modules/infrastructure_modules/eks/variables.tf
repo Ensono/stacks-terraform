@@ -147,12 +147,6 @@ variable "create_kms_key" {
   default     = true
 }
 
-variable "kms_key_administrators" {
-  type        = list(string)
-  description = "List of IAM identities for the keys which is used to encrypt data within the Cluster"
-  default     = []
-}
-
 variable "node_security_group_additional_rules" {
   description = "List of additional security group rules to add to the node security group created. Set source_cluster_security_group = true inside rules to set the cluster_security_group as source"
   type        = any
