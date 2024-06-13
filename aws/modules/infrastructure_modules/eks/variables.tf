@@ -95,6 +95,7 @@ variable "eks_node_tenancy" {
     error_message = "Value must be one of 'default', 'dedicated', or 'host'."
   }
 }
+
 variable "enable_cis_bootstrap" {
   description = "Set to true to enable the CIS Boostrap, false to disable."
   type        = bool
@@ -138,4 +139,34 @@ variable "image_gc_low_threshold_percent" {
   description = "The kubelet deletes images until disk usage reaches this value. This value must be less than the high threshold value"
   type        = number
   default     = 80
+}
+
+variable "node_security_group_additional_rules" {
+  description = "List of additional security group rules to add to the node security group created. Set source_cluster_security_group = true inside rules to set the cluster_security_group as source"
+  type        = any
+  default = {
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    }
+  }
+}
+
+variable "node_security_group_enable_recommended_rules" {
+  description = "Determines whether to enable recommended security group rules for the node security group created. This includes node-to-node TCP ingress on ephemeral ports and allows all egress traffic"
+  type        = bool
+  default     = true
 }

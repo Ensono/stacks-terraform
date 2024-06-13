@@ -29,26 +29,8 @@ module "eks" {
 
   cluster_security_group_additional_rules = var.cluster_security_group_additional_rules
 
-  node_security_group_additional_rules = {
-    ingress_self_all = {
-      description = "Node to node all ports/protocols"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "ingress"
-      self        = true
-    }
-
-    egress_all = {
-      description      = "Node all egress"
-      protocol         = "-1"
-      from_port        = 0
-      to_port          = 0
-      type             = "egress"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-    }
-  }
+  node_security_group_additional_rules         = var.node_security_group_additional_rules
+  node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
@@ -70,6 +52,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     disk_size = 50
+
     placement = {
       tenancy = var.eks_node_tenancy
     }
