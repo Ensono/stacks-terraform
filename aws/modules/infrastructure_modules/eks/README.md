@@ -75,6 +75,26 @@ and: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of infrastructure tags. | `map(string)` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID to use for the Cluster and resources | `string` | n/a | yes |
 | <a name="input_vpc_private_subnets"></a> [vpc\_private\_subnets](#input\_vpc\_private\_subnets) | The VPC Private Subnets to place EKS nodes into | `list(string)` | n/a | yes |
+| <a name="input_node_security_group_additional_rules"></a> [node\_security\_group\_additional\_rules](#input\_node\_security\_group\_additional\_rules) | List of additional security group rules to add to the node security group created. Set `source_cluster_security_group = true` inside rules to set the cluster_security_group as source  | `any` | <pre>{
+    ingress_self_all : {
+      description : "Node to node all ports/protocols"
+      protocol    : "-1"
+      from_port   : 0
+      to_port     : 0
+      type        : "ingress"
+      self        : true
+    }
+    egress_all : {
+      description      : "Node all egress"
+      protocol         : "-1"
+      from_port        : 0
+      to_port          : 0
+      type             : "egress"
+      cidr_blocks      : ["0.0.0.0/0"]
+      ipv6_cidr_blocks : ["::/0"]
+    } <br>}</pre> | no |
+| <a name="input_node_security_group_enable_recommended_rules"></a> [node\_security\_group\_enable\_recommended\_rules](#input\_node\_security\_group\_enable\_recommended\_rules) | Determines whether to enable recommended security group rules for the node security group created. This includes node-to-node TCP ingress on ephemeral ports and allows all egress traffic. If we want to use our own set of rules instead of recommened rules, then make this variable false and pass your own rules via `node_security_group_additional_rules` | `bool` | `true` | no |
+
 
 ## Outputs
 
