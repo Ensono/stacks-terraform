@@ -17,3 +17,13 @@ output "private_route_table_ids" {
   description = "The IDs of the private routing tables"
   value       = module.vpc.private_route_table_ids
 }
+
+output "private_subnet_cidrs" {
+  description = "The IDs of the public subnets created by this module."
+  value       = module.vpc.private_subnets_cidr_blocks
+}
+
+output "public_subnet_cidrs" {
+  description = "The IDs of the public subnets created by this module."
+  value       = [for k, v in data.aws_availability_zones.available.names : aws_subnet.public[k].cidr_block]
+}
