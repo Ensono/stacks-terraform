@@ -141,6 +141,12 @@ variable "image_gc_low_threshold_percent" {
   default     = 80
 }
 
+variable "create_kms_key" {
+  description = "[ Warn: breaking-change ] Making this value false will allow passing a custom KMS key via the provider_key_arn configuration"
+  type        = bool
+  default     = true
+}
+
 variable "node_security_group_additional_rules" {
   description = "List of additional security group rules to add to the node security group created. Set source_cluster_security_group = true inside rules to set the cluster_security_group as source"
   type        = any
