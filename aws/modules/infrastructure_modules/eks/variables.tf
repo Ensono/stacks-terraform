@@ -44,6 +44,13 @@ variable "cluster_single_az" {
   description = "Spin up the cluster in a single AZ"
 }
 
+variable "cluster_creator_admin_permissions" {
+  type        = bool
+  description = "Adds the Terraform User that creates the cluster as an administrator"
+
+  default = true
+}
+
 variable "eks_minimum_nodes" {
   type        = string
   description = "The minimum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
