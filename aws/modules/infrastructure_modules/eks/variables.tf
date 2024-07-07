@@ -51,6 +51,13 @@ variable "cluster_creator_admin_permissions" {
   default = true
 }
 
+variable "cluster_enabled_log_types" {
+  type        = list(string)
+  description = "A list of the log types to log, see: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html"
+
+  default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+}
+
 variable "eks_minimum_nodes" {
   type        = string
   description = "The minimum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
