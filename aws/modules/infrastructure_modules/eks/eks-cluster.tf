@@ -42,6 +42,13 @@ module "eks" {
     provider_key_arn = module.eks_kms_key.arn
   }
 
+  # OIDC Identity provider
+  cluster_identity_providers = {
+    sts = {
+      client_id = "sts.amazonaws.com"
+    }
+  }
+
   authentication_mode                      = "API_AND_CONFIG_MAP"
   enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
 
