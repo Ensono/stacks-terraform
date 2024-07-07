@@ -43,12 +43,7 @@ module "eks" {
     provider_key_arn = module.eks_kms_key.arn
   }
 
-  # OIDC Identity provider
-  cluster_identity_providers = {
-    sts = {
-      client_id = "sts.amazonaws.com"
-    }
-  }
+  authentication_mode = "CONFIG_MAP"
 
   # Don't manage this through the module, it's incredibly hard to get working right.
   create_aws_auth_configmap = false
