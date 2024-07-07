@@ -43,7 +43,8 @@ module "eks" {
     provider_key_arn = module.eks_kms_key.arn
   }
 
-  authentication_mode = "CONFIG_MAP"
+  authentication_mode                      = "CONFIG_MAP"
+  enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_group_defaults = {
     disk_size = 50
