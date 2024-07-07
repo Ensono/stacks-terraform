@@ -45,10 +45,6 @@ module "eks" {
 
   authentication_mode = "CONFIG_MAP"
 
-  # Don't manage this through the module, it's incredibly hard to get working right.
-  create_aws_auth_configmap = false
-  manage_aws_auth_configmap = false
-
   eks_managed_node_group_defaults = {
     disk_size = 50
 
