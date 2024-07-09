@@ -17,7 +17,7 @@ module "eks_kms_key" {
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.20"
+  version = "~> 20.17"
 
   vpc_id                          = var.vpc_id
   subnet_ids                      = var.vpc_private_subnets
@@ -32,8 +32,7 @@ module "eks" {
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-
+  cluster_enabled_log_types = var.cluster_enabled_log_types
 
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]
@@ -43,16 +42,8 @@ module "eks" {
     provider_key_arn = module.eks_kms_key.arn
   }
 
-  # OIDC Identity provider
-  cluster_identity_providers = {
-    sts = {
-      client_id = "sts.amazonaws.com"
-    }
-  }
-
-  # Don't manage this through the module, it's incredibly hard to get working right.
-  create_aws_auth_configmap = false
-  manage_aws_auth_configmap = false
+  authentication_mode                      = "API_AND_CONFIG_MAP"
+  enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
 
   eks_managed_node_group_defaults = {
     disk_size = 50
