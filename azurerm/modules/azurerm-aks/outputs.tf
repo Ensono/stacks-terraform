@@ -49,10 +49,6 @@ output "acr_registry_name" {
   depends_on  = [azurerm_resource_group.default]
 }
 
-# output "aks_vmss" {
-#   value = azurerm_kubernetes_cluster.default.
-# }
-
 output "aks_node_resource_group" {
   value = azurerm_kubernetes_cluster.default.0.node_resource_group
 }
@@ -122,10 +118,15 @@ output "dns_internal_resource_group_name" {
   value = var.dns_resource_group
 }
 
+# TODO: This is not even the Base DNS, it's the Environment DNS, terminology needs tidying up..?
 output "dns_base_domain" {
   value = var.dns_zone
 }
 
 output "dns_base_domain_internal" {
   value = var.internal_dns_zone
+}
+
+output "dns_base_domain_name_servers" {
+  value = var.create_dns_zone ? azurerm_dns_zone.default.0.name_servers : []
 }

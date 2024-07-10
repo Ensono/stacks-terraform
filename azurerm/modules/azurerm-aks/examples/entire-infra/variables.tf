@@ -8,12 +8,12 @@
 
 variable "name_company" {
   type    = string
-  default = "amido"
+  default = "ensono"
 }
 
 variable "name_project" {
   type    = string
-  default = "stacks-node"
+  default = "example"
 }
 
 variable "name_component" {
@@ -53,16 +53,6 @@ variable "location_name_map" {
 }
 
 ############################################
-# AZURE INFORMATION
-############################################
-
-# RELYING PURELY ON ENVIRONMENT VARIABLES as the user can control these from their own environment
-
-variable "client_secret" {
-  type = string
-}
-
-############################################
 # RESOURCE INFORMATION
 ############################################
 
@@ -99,4 +89,3 @@ variable "client_secret" {
 #   type = string
 #   default = "https://portal.azure.com"
 # }
-
