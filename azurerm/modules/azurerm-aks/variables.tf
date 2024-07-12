@@ -198,7 +198,7 @@ variable "cluster_sku_tier" {
   type        = string
 
   validation {
-    condition     = contains(["Free", "Standard", "Premium"], var.cluster_sky_tier)
+    condition     = contains(["Free", "Standard", "Premium"], var.cluster_sku_tier)
     error_message = "Must be one of Free, Standard, or Premium."
   }
 
