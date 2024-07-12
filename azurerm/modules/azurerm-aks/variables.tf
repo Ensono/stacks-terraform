@@ -193,6 +193,18 @@ variable "cluster_version" {
   default     = "1.24.6"
 }
 
+variable "cluster_sku_tier" {
+  description = "The Control Plane SKU Tier"
+  type        = string
+
+  validation {
+    condition     = contains(["Free", "Standard", "Premium"], var.cluster_sky_tier])
+    error_message = "Must be one of Free, Standard, or Premium."
+  }
+
+  default = "Free"
+}
+
 variable "cluster_name" {
   description = "Name for the cluster"
   default     = "akscluster"
