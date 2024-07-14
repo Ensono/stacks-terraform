@@ -177,7 +177,7 @@ variable "dns_parent_zone" {
   type        = string
   description = "Dns zone name for the parnet - e.g. domain.com. NOTE: you need control over this domain to add the records here"
 
-  default = ""
+  default = null
 }
 
 variable "dns_parent_ns_ttl" {
@@ -241,6 +241,18 @@ variable "cluster_version" {
   type        = string
 
   default = "1.24.6"
+}
+
+variable "cluster_sku_tier" {
+  description = "The Control Plane SKU Tier"
+  type        = string
+
+  validation {
+    condition     = contains(["Free", "Standard", "Premium"], var.cluster_sku_tier)
+    error_message = "Must be one of Free, Standard, or Premium."
+  }
+
+  default = "Free"
 }
 
 variable "cluster_name" {
