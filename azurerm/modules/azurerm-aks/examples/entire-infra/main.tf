@@ -20,11 +20,11 @@ variable "vnet_cidr" {
 }
 
 module "example_aks" {
-  source                            = "../../"
-  resource_namer                    = module.default_label.id
-  resource_group_location           = "uksouth"
-  spn_object_id                     = data.azurerm_client_config.current.object_id
-  tenant_id                         = data.azurerm_client_config.current.tenant_id
+  source                  = "../../"
+  resource_namer          = module.default_label.id
+  resource_group_location = "uksouth"
+  spn_object_id           = data.azurerm_client_config.current.object_id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
   # client_id                         = var.create_aksspn ? module.aks-spn.spn_applicationid : var.cluster_spn_clientid
   # client_secret                     = var.create_aksspn ? random_string.spn_password.0.result : var.cluster_spn_clientsecret
   cluster_version                   = "1.29.0"
