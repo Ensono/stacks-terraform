@@ -26,19 +26,22 @@ variable "name_environment" {
 }
 
 variable "stage" {
-  type    = string
+  type = string
+
   default = "dev"
 }
 
 variable "attributes" {
   description = "Additional attributes for tagging"
-  default     = []
+
+  default = []
 }
 
 variable "tags" {
   description = "Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically"
   type        = map(string)
-  default     = {}
+
+  default = {}
 }
 
 ############################################
@@ -54,45 +57,51 @@ variable "tags" {
 variable "resource_group_location" {
   description = "Location of the RG"
   type        = string
-  default     = "uksouth"
+
+  default = "uksouth"
 }
 
 variable "resource_group_tags" {
   description = "Tags at a RG level"
   type        = map(string)
-  default     = {}
+
+  default = {}
 }
 
 
 ###########################
 # IDENTITY SETTINGS
-##########################
+###########################
 variable "create_user_identity" {
   description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 ###########################
 # NETWORK SETTINGS
-##########################
+###########################
 
 variable "create_aksvnet" {
   description = "Whether to create an AKS VNET specifically or use an existing one - if false you must supply an existing VNET name and a vnet_cidr for subnets"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 variable "vnet_name" {
   description = "VNET name if create_aks_vnet is false"
   type        = string
-  default     = ""
+
+  default = ""
 }
 
 variable "vnet_name_resource_group" {
   description = "VNET resource group name if user supplying an existing network"
   type        = string
-  default     = ""
+
+  default = ""
 }
 
 variable "vnet_cidr" {
@@ -103,7 +112,8 @@ variable "vnet_cidr" {
 variable "subnet_prefixes" {
   description = "Prefix for subnet - should be in the form of x.x.x.x/x"
   type        = list(string)
-  default     = [""]
+
+  default = [""]
 }
 
 variable "subnet_front_end_prefix" {
@@ -114,83 +124,123 @@ variable "subnet_front_end_prefix" {
 variable "subnet_names" {
   description = "Names for subnets"
   type        = list(string)
-  default     = [""]
+
+  default = [""]
 }
 
 ###########################
 # DNS SETTINGS
-##########################
-variable "dns_zone" {
-  description = "Dns zone name - e.g. nonprod.domain.com, you should avoid using an APEX zone"
-  type        = string
-  default     = ""
-}
-
+###########################
 variable "create_dns_zone" {
   description = "whether to create a DNS zone"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 variable "dns_resource_group" {
   type        = string
   description = "RG that contains the existing DNS zones, if the zones are not being created here"
-  default     = null
+
+  default = null
+}
+
+variable "dns_zone" {
+  description = "Dns zone name - e.g. nonprod.domain.com, you should avoid using an APEX zone"
+  type        = string
+
+  default = ""
 }
 
 variable "internal_dns_zone" {
   description = "Internal DNS zone name - e.g. nonprod.domain.internal"
   type        = string
-  default     = ""
+
+  default = ""
+}
+
+variable "dns_create_parent_zone_ns_records" {
+  description = "Whether to create an NS record in the parent zone linking the created DNS zone up"
+  type        = bool
+
+  default = true
+}
+
+variable "dns_parent_resource_group" {
+  type        = string
+  description = "RG that contains the existing parent DNS zone"
+
+  default = null
+}
+
+variable "dns_parent_zone" {
+  type        = string
+  description = "Dns zone name for the parnet - e.g. domain.com. NOTE: you need control over this domain to add the records here"
+
+  default = null
+}
+
+variable "dns_parent_ns_ttl" {
+  type        = string
+  description = "The TTL for the NS Record in the Parent Zone"
+
+  default = 300
 }
 
 ###########################
 # ACR SETTINGS
-##########################
+###########################
 variable "create_acr" {
   description = "whether to create a ACR"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 variable "acr_resource_group" {
   description = "Supply your own resource group name for ACR"
   type        = string
-  default     = ""
+
+  default = ""
 }
 
 variable "acr_registry_name" {
   description = "ACR name"
   type        = string
-  default     = "myacrregistry"
+
+  default = "myacrregistry"
 }
 
 variable "registry_admin_enabled" {
   description = "Whether ACR admin is enabled"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 variable "registry_sku" {
   description = "ACR SKU"
   type        = string
-  default     = "Standard"
+
+  default = "Standard"
 }
 
 ###########################
 # AKS SETTINGS
-##########################
+###########################
 
 variable "create_aks" {
   description = "Whether KAS gets created"
   type        = bool
-  default     = true
+
+  default = true
 }
 
 variable "cluster_version" {
   description = "Specify AKS cluster version - please refer to MS for latest updates on the available versions. NB: opt for stable versions where possible"
   type        = string
-  default     = "1.24.6"
+
+  default = "1.24.6"
 }
 
 variable "cluster_sku_tier" {
@@ -207,7 +257,9 @@ variable "cluster_sku_tier" {
 
 variable "cluster_name" {
   description = "Name for the cluster"
-  default     = "akscluster"
+  type        = string
+
+  default = "akscluster"
 }
 
 variable "tenant_id" {
@@ -218,38 +270,39 @@ variable "spn_object_id" {
   type = string
 }
 
-# variable "cluster_location" {
-#   type    = string
-#   default = "uksouth"
-# }
-
 variable "nodepool_type" {
-  type    = string
+  type = string
+
   default = "VirtualMachineScaleSets"
 }
 
 variable "enable_auto_scaling" {
-  type    = bool
+  type = bool
+
   default = false
 }
 
 variable "max_pods" {
-  type    = number
+  type = number
+
   default = 100
 }
 
 variable "max_nodes" {
-  type    = number
+  type = number
+
   default = 10
 }
 
 variable "min_nodes" {
-  type    = number
+  type = number
+
   default = 1
 }
 
 variable "node_count" {
-  type    = number
+  type = number
+
   default = 0
 }
 
@@ -261,17 +314,20 @@ variable "aks_node_pools" {
     max_nodes    = number
   }))
   description = "Additional node pools as required by the platform"
-  default     = {}
+
+  default = {}
 }
 
 # DEFAULTS TO 30 if not overwritten
 variable "os_disk_size" {
-  type    = number
+  type = number
+
   default = 30
 }
 
 variable "oms_ws_list_of_one" {
-  type    = list(map(string))
+  type = list(map(string))
+
   default = [{}]
 }
 
@@ -280,70 +336,82 @@ variable "aks_ingress_private_ip" {
 }
 
 variable "admin_username" {
-  type    = string
+  type = string
+
   default = "ubuntu"
 }
 
 variable "create_ssh_key" {
-  type    = bool
+  type = bool
+
   default = true
 }
 
 variable "advanced_networking_enabled" {
-  type    = bool
+  type = bool
+
   default = true
 }
 
 variable "dns_prefix" {
-  type    = string
+  type = string
+
   default = "aks"
 }
 
 variable "vm_size" {
-  type    = string
+  type = string
+
   default = "Standard_DS2_v2"
 }
 
 variable "is_cluster_private" {
   type        = bool
   description = "Whether or not expose the Ingress over internet"
-  default     = false
+
+  default = false
 }
 
 variable "private_cluster_enabled" {
   type        = bool
   description = "Set cluster access private"
-  default     = false
+
+  default = false
 }
 
 ###########################
 # MISC SETTINGS
-##########################
+###########################
 variable "resource_namer" {
   description = "This should be a uniformly created string - ideally using something like cloudposse label module to ensure conventions on naming are followed throughout organization. this value is used in all the places within the module to name resources - additionally it changes the string to ensure it conforms to Azure standards where appropriate - i.e. blob/KV/ACR names are stripped of non alphanumeric characters and in some cases strings are sliced to conform to max char length"
   type        = string
-  default     = "genericname"
+
+  default = "genericname"
 }
 
 variable "retention_in_days" {
-  type    = number
+  type = number
+
   default = 30
 }
 
 variable "log_application_type" {
   description = "Log application type"
   type        = string
-  default     = "other"
+
+  default = "other"
 }
 
 variable "key_vault_name" {
   description = "Key Vault name - if not specificied will default to computed naming convention"
   type        = string
-  default     = ""
+
+  default = ""
 }
 
 variable "create_key_vault" {
   description = "Specify if a key vault should be created"
   type        = bool
-  default     = true
+
+  default = true
 }

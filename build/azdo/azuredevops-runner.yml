@@ -1,6 +1,6 @@
 
 # Set the build name which will define the Build Number
-name: 4.0$(Rev:.r)
+name: 5.0$(Rev:.r)
 
 pr:
   - master
@@ -33,11 +33,8 @@ variables:
 stages:
 
   - stage: Build
-
     jobs:
-
     - job: Format
-
       steps:
 
         - template: templates/setup.yml
@@ -54,7 +51,6 @@ stages:
   - stage: Release
     condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.pre_release }}))
     jobs:
-
     - job: Publish
       steps:
         - template: templates/setup.yml

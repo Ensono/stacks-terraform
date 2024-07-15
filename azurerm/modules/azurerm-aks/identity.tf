@@ -20,15 +20,15 @@ resource "azurerm_key_vault" "default" {
     object_id = var.spn_object_id
 
     key_permissions = [
-      "get",
+      "Get",
     ]
 
     secret_permissions = [
-      "get",
+      "Get",
     ]
 
     storage_permissions = [
-      "get",
+      "Get",
     ]
   }
 
