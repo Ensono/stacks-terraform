@@ -7,7 +7,19 @@ https://aws-observability.github.io/observability-best-practices/guides/containe
 
 ## Requirements
 
-No requirements.
+To enable the observability feature in Amazon EKS, proper IAM role configuration is essential. This can be achieved through two main approaches:
+
+Worker Node IAM Role:
+You can set up a less-privileged IAM role on the worker nodes.
+For a quicker setup, you can configure a privileged IAM role on the worker nodes using the following command. 
+This can be run interactively or integrated into your main EKS infrastructure deployment:
+
+```
+aws iam attach-role-policy --role-name my-worker-node-role --policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+```
+
+IAM Roles for Service Accounts (IRSA):
+This approach provides more fine-grained control over permissions at the pod level.
 
 ## Providers
 
