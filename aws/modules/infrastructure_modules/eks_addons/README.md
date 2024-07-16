@@ -1,6 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
 
-Terraform configuration files to enable amazon cloudwatch container Insights via EKS addon feature.
+Terraform configuration files to enable Amazon Cloudwatch Container-Insights via EKS addon feature.
 
 https://aws-observability.github.io/observability-best-practices/guides/containers/aws-native/eks/amazon-cloudwatch-container-insights/
 
