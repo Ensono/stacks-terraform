@@ -23,13 +23,14 @@ module "eks" {
   region = "eu-west-1"
 
   # EKS Cluster Configuration
-  cluster_name                         = "example-cluster"
-  cluster_version                      = "1.27"
-  eks_desired_nodes                    = 1
-  eks_node_size                        = "t3.small"
-  cluster_endpoint_public_access       = true
-  cluster_endpoint_private_access      = true
-  cluster_single_az                    = false
+  cluster_name                    = "example-cluster"
+  cluster_version                 = "1.27"
+  eks_desired_nodes               = 1
+  eks_node_size                   = "t3.small"
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
+  cluster_single_az               = false
+
   cluster_iam_role_additional_policies = {
     cloudwatch_agent_server_policy = data.aws_iam_policy.cloudwatch_agent_server_policy.arn
   }
