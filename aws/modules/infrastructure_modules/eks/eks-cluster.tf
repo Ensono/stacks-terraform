@@ -17,7 +17,7 @@ module "eks_kms_key" {
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.17"
+  version = "~> 20.19"
 
   vpc_id                          = var.vpc_id
   subnet_ids                      = var.vpc_private_subnets
@@ -31,6 +31,8 @@ module "eks" {
 
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
+
+  iam_role_additional_policies = var.cluster_iam_role_additional_policies
 
   cluster_enabled_log_types = var.cluster_enabled_log_types
 

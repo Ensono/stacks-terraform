@@ -58,6 +58,13 @@ variable "cluster_enabled_log_types" {
   default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
+variable "cluster_iam_role_additional_policies" {
+  type        = map(string)
+  description = "Additional policies to be added to the IAM role for the EKS Cluster"
+
+  default = {}
+}
+
 variable "eks_minimum_nodes" {
   type        = string
   description = "The minimum number of nodes in the cluster, per AZ if 'cluster_single_az' is false"
