@@ -84,6 +84,8 @@ locals {
     })
   )
 
+  trusted_key_identities = var.trusted_role_arn == "" ? ["arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"] : ["arn:aws:iam::${data.aws_caller_identity.this.account_id}:root", "${var.trusted_role_arn}"]
+
   logging_bucket_kms_key_name                    = "alias/cmk-${lower(var.cluster_name)}-logging-bucket"
   logging_bucket_kms_key_description             = "Secret Encryption Key for the Flow Log Bucket"
   logging_bucket_kms_key_deletion_window_in_days = "7"
