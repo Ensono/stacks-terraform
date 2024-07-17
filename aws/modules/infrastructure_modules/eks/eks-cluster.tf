@@ -36,6 +36,8 @@ module "eks" {
 
   cluster_enabled_log_types = var.cluster_enabled_log_types
 
+  cluster_addons = local.cluster_addons
+
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]
 

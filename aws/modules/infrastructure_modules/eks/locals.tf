@@ -1,7 +1,17 @@
 locals {
 
+  cloudwatch_iam_policy = var.cluster_addon_enable_container_insights ? { cloudwatch_agent_server_policy = data.aws_iam_policy.cloudwatch_agent_server_policy.0.arn } : {}
+
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
+
+  cluster_iam_role_additional_policies = merge(var.cluster_iam_role_additional_policies, local.cloudwatch_iam_policy)
+
+  cluster_container_insights_addon = var.cluster_addon_enable_container_insights ? {
+    amazon-cloudwatch-observability = var.cluster_addon_container_insights_config
+  } : {}
+
+  cluster_addons = merge(local.cluster_container_insights_addon)
 
   eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]

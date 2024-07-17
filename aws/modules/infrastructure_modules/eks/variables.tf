@@ -24,9 +24,12 @@ variable "cluster_name" {
   description = "Name of the cluster and resources"
 }
 
+# NOTE: If you change this, please change the version in 'cluster_addon_container_insights_config'
 variable "cluster_version" {
   type        = string
   description = "Cluster Kubernetes Version"
+
+  default = 1.30
 }
 
 variable "cluster_endpoint_private_access" {
@@ -63,6 +66,22 @@ variable "cluster_iam_role_additional_policies" {
   description = "Additional policies to be added to the IAM role for the EKS Cluster"
 
   default = {}
+}
+
+variable "cluster_addon_enable_container_insights" {
+  type        = bool
+  description = "Whether to install the the Amazon CloudWatch Observability addon to the EKS cluster for Metrics and Application Log Collection"
+
+  default = true
+}
+
+variable "cluster_addon_container_insights_config" {
+  type       = map(any)
+  description = "The configuration for the Container Insights Addon 'amazon-cloudwatch-observability'. Addon version is is tied to the Kubernetes Version. See: `aws eks describe-addon-versions --kubernetes-version <version> --addon-name 'amazon-cloudwatch-observability'` for available versions"
+
+  default = {
+    addon_version = "v1.8.0-eksbuild.1"
+  }
 }
 
 variable "eks_minimum_nodes" {
