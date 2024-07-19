@@ -32,7 +32,7 @@ module "eks" {
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
-  iam_role_additional_policies = var.cluster_iam_role_additional_policies
+  iam_role_additional_policies = local.cluster_iam_role_additional_policies
 
   cluster_enabled_log_types = var.cluster_enabled_log_types
 

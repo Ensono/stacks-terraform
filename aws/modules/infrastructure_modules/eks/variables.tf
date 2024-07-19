@@ -76,7 +76,7 @@ variable "cluster_addon_enable_container_insights" {
 }
 
 variable "cluster_addon_container_insights_config" {
-  type       = map(any)
+  type        = map(any)
   description = "The configuration for the Container Insights Addon 'amazon-cloudwatch-observability'. Addon version is is tied to the Kubernetes Version. See: `aws eks describe-addon-versions --kubernetes-version <version> --addon-name 'amazon-cloudwatch-observability'` for available versions"
 
   default = {
