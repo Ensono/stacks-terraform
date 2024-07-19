@@ -32,9 +32,9 @@ module "eks" {
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
-  iam_role_additional_policies = var.cluster_iam_role_additional_policies
-
   cluster_enabled_log_types = var.cluster_enabled_log_types
+
+  cluster_addons = local.cluster_addons
 
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]

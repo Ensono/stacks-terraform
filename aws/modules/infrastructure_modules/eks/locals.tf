@@ -1,7 +1,17 @@
 locals {
-
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
+
+  cluster_container_insights_addon = var.cluster_addon_enable_container_insights ? {
+    amazon-cloudwatch-observability = merge(
+      {
+        service_account_role_arn = module.container_insights_irsa_iam_role.0.irsa_role_arn
+      },
+      var.cluster_addon_container_insights_config
+    )
+  } : {}
+
+  cluster_addons = merge(local.cluster_container_insights_addon)
 
   eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]
@@ -95,4 +105,6 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
+
+  account_id = data.aws_caller_identity.this.account_id
 }
