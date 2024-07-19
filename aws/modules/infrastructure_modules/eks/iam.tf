@@ -7,6 +7,8 @@ module "container_insights_irsa_iam_role" {
   cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
   aws_account_id          = local.account_id
 
+  policy_prefix = "/${var.cluster_name}/"
+
   # See: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-prerequisites.html
   namespace                        = "amazon-cloudwatch"
   service_account_name             = "cloudwatch-agent"
