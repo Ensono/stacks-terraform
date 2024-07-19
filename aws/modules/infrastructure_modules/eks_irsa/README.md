@@ -39,22 +39,26 @@ No modules.
 |------|------|
 | [aws_iam_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.additional_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_policy.additional_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy) | data source |
 | [aws_iam_policy_document.role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_additional_policies"></a> [additional\_policies](#input\_additional\_policies) | A set of pre-exisiting AWS Policies to apply to the IRSA role, e.g. CloudWatchAgentServerPolicy | `set(string)` | n/a | yes |
+| <a name="input_additional_service_account_names"></a> [additional\_service\_account\_names](#input\_additional\_service\_account\_names) | Addiotional Service Accounts allowed to assume this role | `set(string)` | n/a | yes |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS account id to configure irsa role | `string` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of Kubernetes cluster | `string` | n/a | yes |
 | <a name="input_cluster_oidc_issuer_url"></a> [cluster\_oidc\_issuer\_url](#input\_cluster\_oidc\_issuer\_url) | EKS cluster OIDC url | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Name of Kubernetes namespace | `string` | n/a | yes |
-| <a name="input_policy"></a> [policy](#input\_policy) | Policy json to apply to the irsa role | `string` | n/a | yes |
+| <a name="input_policy"></a> [policy](#input\_policy) | Policy json to apply to the irsa role | `string` | `""` | no |
 | <a name="input_policy_path"></a> [policy\_path](#input\_policy\_path) | The path to put the policy under, if not null the cluster\_name will be used as the path | `string` | `null` | no |
 | <a name="input_policy_prefix"></a> [policy\_prefix](#input\_policy\_prefix) | A prefix to use for the policies, which will be spliced with a dash. | `string` | `""` | no |
-| <a name="input_resource_description"></a> [resource\_description](#input\_resource\_description) | The description to assign to the policy and role | `string` | n/a | yes |
-| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | Name of Kubernetes service account | `string` | n/a | yes |
+| <a name="input_resource_description"></a> [resource\_description](#input\_resource\_description) | The description to assign to the policy and role | `string` | `""` | no |
+| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | Name of Kubernetes Service Account | `string` | n/a | yes |
 
 ## Outputs
 

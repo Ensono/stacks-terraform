@@ -41,6 +41,7 @@ and: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_container_insights_irsa_iam_role"></a> [container\_insights\_irsa\_iam\_role](#module\_container\_insights\_irsa\_iam\_role) | ../eks_irsa | n/a |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 20.19 |
 | <a name="module_eks_kms_key"></a> [eks\_kms\_key](#module\_eks\_kms\_key) | ../../resource_modules/identity/kms_key | n/a |
 
@@ -51,7 +52,6 @@ and: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
 | [null_resource.cis_bootstrap_validation](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy.cloudwatch_agent_server_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy) | data source |
 | [aws_iam_policy_document.eks_secret_encryption_kms_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -65,7 +65,6 @@ and: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
 | <a name="input_cluster_enabled_log_types"></a> [cluster\_enabled\_log\_types](#input\_cluster\_enabled\_log\_types) | A list of the log types to log, see: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html | `list(string)` | <pre>[<br>  "api",<br>  "audit",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_cluster_endpoint_private_access"></a> [cluster\_endpoint\_private\_access](#input\_cluster\_endpoint\_private\_access) | Switch to enable private access | `bool` | n/a | yes |
 | <a name="input_cluster_endpoint_public_access"></a> [cluster\_endpoint\_public\_access](#input\_cluster\_endpoint\_public\_access) | Switch to enable public access | `bool` | n/a | yes |
-| <a name="input_cluster_iam_role_additional_policies"></a> [cluster\_iam\_role\_additional\_policies](#input\_cluster\_iam\_role\_additional\_policies) | Additional policies to be added to the IAM role for the EKS Cluster | `map(string)` | `{}` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster and resources | `string` | n/a | yes |
 | <a name="input_cluster_security_group_additional_rules"></a> [cluster\_security\_group\_additional\_rules](#input\_cluster\_security\_group\_additional\_rules) | List of additional security group rules to add to the cluster security group created. Set `source_node_security_group = true` inside rules to set the `node_security_group` as source | `any` | <pre>{<br>  "egress_nodes_ephemeral_ports_tcp": {<br>    "description": "Node all egress",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "source_node_security_group": true,<br>    "to_port": 0,<br>    "type": "egress"<br>  }<br>}</pre> | no |
 | <a name="input_cluster_single_az"></a> [cluster\_single\_az](#input\_cluster\_single\_az) | Spin up the cluster in a single AZ | `bool` | n/a | yes |
