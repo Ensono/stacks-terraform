@@ -59,6 +59,6 @@ variable "service_account_name" {
 }
 
 variable "additional_service_account_names" {
-  type        = set(strng)
+  type        = set(string)
   description = "Addiotional Service Accounts allowed to assume this role"
 }

@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "role" {
       condition {
         test     = "StringEquals"
         variable = "${local.sanitised_issuer_url}:sub"
-        values   = ["system:serviceaccount:${var.namespace}:${each.value}"]
+        values   = ["system:serviceaccount:${var.namespace}:${statement.value}"]
       }
 
       condition {
