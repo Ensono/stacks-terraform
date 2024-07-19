@@ -27,6 +27,32 @@ data "aws_iam_policy_document" "role" {
       values   = ["sts.amazonaws.com"]
     }
   }
+
+  dynamic "statement" {
+    for_each = var.additional_service_account_names
+
+    content {
+      actions = ["sts:AssumeRoleWithWebIdentity"]
+      effect  = "Allow"
+
+      principals {
+        identifiers = ["arn:aws:iam::${var.aws_account_id}:oidc-provider/${local.sanitised_issuer_url}"]
+        type        = "Federated"
+      }
+
+      condition {
+        test     = "StringEquals"
+        variable = "${local.sanitised_issuer_url}:sub"
+        values   = ["system:serviceaccount:${var.namespace}:${each.value}"]
+      }
+
+      condition {
+        test     = "StringEquals"
+        variable = "${local.sanitised_issuer_url}:aud"
+        values   = ["sts.amazonaws.com"]
+      }
+    }
+  }
 }
 
 resource "aws_iam_role" "role" {

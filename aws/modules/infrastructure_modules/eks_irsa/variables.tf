@@ -55,5 +55,10 @@ variable "namespace" {
 
 variable "service_account_name" {
   type        = string
-  description = "Name of Kubernetes service account"
+  description = "Name of Kubernetes Service Account"
+}
+
+variable "additional_service_account_names" {
+  type        = set(strng)
+  description = "Addiotional Service Accounts allowed to assume this role"
 }

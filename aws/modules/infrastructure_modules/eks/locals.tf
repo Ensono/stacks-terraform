@@ -7,7 +7,8 @@ locals {
       {
         service_account_role_arn = module.container_insights_irsa_iam_role.0.irsa_role_arn
       },
-      var.cluster_addon_container_insights_config)
+      var.cluster_addon_container_insights_config
+    )
   } : {}
 
   cluster_addons = merge(local.cluster_container_insights_addon)
