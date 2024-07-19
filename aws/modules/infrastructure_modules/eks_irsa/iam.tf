@@ -2,7 +2,7 @@ locals {
   sanitised_issuer_url = replace(var.cluster_oidc_issuer_url, "https://", "")
   iam_name             = "${var.namespace}-${var.service_account_name}"
   iam_path             = (var.policy_path != null) ? var.policy_path : "/${var.cluster_name}/"
-  iam_full_name        = length(var.policy_prefix) > 0 ? "${var.policy_prefix}-${local.iam_name}" : local.iam_name
+  iam_full_name        = length(var.policy_prefix) > 0 ? "${replace(var.policy_prefix, "/", "-")}-${local.iam_name}" : local.iam_name
 }
 
 data "aws_iam_policy_document" "role" {
