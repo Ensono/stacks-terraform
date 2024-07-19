@@ -129,13 +129,6 @@ variable "eks_node_tenancy" {
   }
 }
 
-variable "eks_iam_role_additional_policies" {
-  type        = map(string)
-  description = "Additional policies to be added to the IAM role for the EKS Nodes"
-
-  default = {}
-}
-
 variable "enable_cis_bootstrap" {
   description = "Set to true to enable the CIS Boostrap, false to disable."
   type        = bool

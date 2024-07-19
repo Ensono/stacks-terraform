@@ -77,9 +77,3 @@ data "aws_iam_policy_document" "eks_secret_encryption_kms_key_policy" {
     }
   }
 }
-
-data "aws_iam_policy" "cloudwatch_agent_server_policy" {
-  count = var.cluster_addon_enable_container_insights ? 1 : 0
-
-  name = "CloudWatchAgentServerPolicy"
-}

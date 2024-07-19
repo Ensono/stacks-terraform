@@ -37,6 +37,8 @@ resource "aws_iam_role" "role" {
 }
 
 resource "aws_iam_policy" "policy" {
+  count = length(var.policy) > 0 ? 1 : 0
+
   name        = local.iam_full_name
   path        = local.iam_path
   description = "Policy for ${var.resource_description}"
@@ -44,6 +46,15 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach" {
-  policy_arn = aws_iam_policy.policy.arn
+  count = length(var.policy) > 0 ? 1 : 0
+
+  policy_arn = aws_iam_policy.policy.0.arn
+  role       = aws_iam_role.role.name
+}
+
+resource "aws_iam_role_policy_attachment" "additional_attach" {
+  for_each = var.additional_policies
+
+  policy_arn = data.aws_iam_policy.additional_policies[each.key].arn
   role       = aws_iam_role.role.name
 }

@@ -31,10 +31,6 @@ module "eks" {
   cluster_endpoint_private_access = true
   cluster_single_az               = false
 
-  cluster_iam_role_additional_policies = {
-    cloudwatch_agent_server_policy = data.aws_iam_policy.cloudwatch_agent_server_policy.arn
-  }
-
   vpc_id              = module.vpc.id
   vpc_private_subnets = module.vpc.private_subnet_ids
 

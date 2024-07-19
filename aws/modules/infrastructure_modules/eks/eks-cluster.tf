@@ -48,8 +48,6 @@ module "eks" {
   enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
 
   eks_managed_node_group_defaults = {
-    iam_role_additional_policies = local.eks_iam_role_additional_policies
-
     disk_size = 50
 
     placement = {

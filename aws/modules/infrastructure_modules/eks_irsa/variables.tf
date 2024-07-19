@@ -25,6 +25,8 @@ variable "policy_prefix" {
 variable "policy" {
   type        = string
   description = "Policy json to apply to the irsa role"
+
+  default = ""
 }
 
 variable "policy_path" {
@@ -34,9 +36,16 @@ variable "policy_path" {
   default = null
 }
 
+variable "additional_policies" {
+  type        = set(string)
+  description = "A set of pre-exisiting AWS Policies to apply to the IRSA role, e.g. CloudWatchAgentServerPolicy"
+}
+
 variable "resource_description" {
   type        = string
   description = "The description to assign to the policy and role"
+
+  default = ""
 }
 
 variable "namespace" {

@@ -1,14 +1,13 @@
 locals {
-
-  cloudwatch_iam_policy = var.cluster_addon_enable_container_insights ? { cloudwatch_agent_server_policy = data.aws_iam_policy.cloudwatch_agent_server_policy.0.arn } : {}
-
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
-  eks_iam_role_additional_policies = merge(var.eks_iam_role_additional_policies, local.cloudwatch_iam_policy)
-
   cluster_container_insights_addon = var.cluster_addon_enable_container_insights ? {
-    amazon-cloudwatch-observability = var.cluster_addon_container_insights_config
+    amazon-cloudwatch-observability = merge(
+      {
+        service_account_role_arn = module.container_insights_irsa_iam_role.0.irsa_role_arn
+      },
+      var.cluster_addon_container_insights_config)
   } : {}
 
   cluster_addons = merge(local.cluster_container_insights_addon)
@@ -105,4 +104,6 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
+
+  account_id = data.aws_caller_identity.this.account_id
 }
