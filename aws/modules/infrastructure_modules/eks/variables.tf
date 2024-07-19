@@ -61,13 +61,6 @@ variable "cluster_enabled_log_types" {
   default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
-variable "cluster_iam_role_additional_policies" {
-  type        = map(string)
-  description = "Additional policies to be added to the IAM role for the EKS Cluster"
-
-  default = {}
-}
-
 variable "cluster_addon_enable_container_insights" {
   type        = bool
   description = "Whether to install the the Amazon CloudWatch Observability addon to the EKS cluster for Metrics and Application Log Collection"
@@ -134,6 +127,13 @@ variable "eks_node_tenancy" {
     condition     = contains(["default", "dedicated", "host"], var.eks_node_tenancy)
     error_message = "Value must be one of 'default', 'dedicated', or 'host'."
   }
+}
+
+variable "eks_iam_role_additional_policies" {
+  type        = map(string)
+  description = "Additional policies to be added to the IAM role for the EKS Nodes"
+
+  default = {}
 }
 
 variable "enable_cis_bootstrap" {

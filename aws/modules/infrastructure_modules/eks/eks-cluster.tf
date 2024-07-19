@@ -32,8 +32,6 @@ module "eks" {
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
-  iam_role_additional_policies = local.cluster_iam_role_additional_policies
-
   cluster_enabled_log_types = var.cluster_enabled_log_types
 
   cluster_addons = local.cluster_addons
@@ -50,6 +48,8 @@ module "eks" {
   enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
 
   eks_managed_node_group_defaults = {
+    iam_role_additional_policies = local.eks_iam_role_additional_policies
+
     disk_size = 50
 
     placement = {

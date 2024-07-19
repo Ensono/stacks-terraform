@@ -5,7 +5,7 @@ locals {
   ## Cluster
   cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
 
-  cluster_iam_role_additional_policies = merge(var.cluster_iam_role_additional_policies, local.cloudwatch_iam_policy)
+  eks_iam_role_additional_policies = merge(var.eks_iam_role_additional_policies, local.cloudwatch_iam_policy)
 
   cluster_container_insights_addon = var.cluster_addon_enable_container_insights ? {
     amazon-cloudwatch-observability = var.cluster_addon_container_insights_config
