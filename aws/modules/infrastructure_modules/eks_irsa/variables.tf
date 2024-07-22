@@ -39,6 +39,8 @@ variable "policy_path" {
 variable "additional_policies" {
   type        = set(string)
   description = "A set of pre-exisiting AWS Policies to apply to the IRSA role, e.g. CloudWatchAgentServerPolicy"
+
+  default = []
 }
 
 variable "resource_description" {
@@ -60,5 +62,7 @@ variable "service_account_name" {
 
 variable "additional_service_account_names" {
   type        = set(string)
-  description = "Addiotional Service Accounts allowed to assume this role"
+  description = "Additional Service Accounts allowed to assume this role"
+
+  default = []
 }
