@@ -16,5 +16,5 @@ output "cosmosdb_endpoint" {
 output "cosmosdb_primary_master_key" {
   description = "Primary Key for accessing the DB CRUD, should only be used in applications running outside of AzureCloud"
   sensitive   = true
-  value       = var.create_cosmosdb ? azurerm_cosmosdb_account.default.0.primary_master_key : ""
+  value       = var.create_cosmosdb ? azurerm_cosmosdb_account.default.0.primary_key : ""
 }
