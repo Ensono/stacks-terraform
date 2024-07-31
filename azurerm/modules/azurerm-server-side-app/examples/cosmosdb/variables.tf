@@ -1,8 +1,4 @@
 ############################################
-# AUTHENTICATION
-############################################
-# RELYING PURELY ON ENVIRONMENT VARIABLES as the user can control these from their own environment
-############################################
 # NAMING
 ############################################
 
@@ -73,11 +69,6 @@ variable "resource_group_location" {
 
   default = "westeurope"
 }
-
-# variable "app_gateway_frontend_ip_name" {
-#   type        = string
-#   default     = "ed-stacks-nonprod-euw-core"
-# }
 
 ###########################
 # CONDITIONAL SETTINGS
