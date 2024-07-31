@@ -1,7 +1,4 @@
 ############################################
-# AUTHENTICATION
-############################################
-############################################
 # NAMING
 ############################################
 
@@ -11,9 +8,10 @@ variable "resource_namer" {
 }
 
 variable "resource_tags" {
-  description = "Map of tags to be applied to all resources created as part of this module"
   type        = map(string)
-  default     = {}
+  description = "Map of tags to be applied to all resources created as part of this module"
+
+  default = {}
 }
 
 ############################################
@@ -21,26 +19,29 @@ variable "resource_tags" {
 ############################################
 
 variable "cosmosdb_sql_container" {
+  type = string
+
   description = "Sql container name"
-  type        = string
 }
 
 variable "cosmosdb_sql_container_partition_key" {
-  description = "Partition key path, if multiple partition"
   type        = string
+  description = "Partition key path, if multiple partition"
 }
 
 
 variable "cosmosdb_offer_type" {
-  description = ""
   type        = string
-  default     = "Standard"
+  description = ""
+
+  default = "Standard"
 }
 
 variable "cosmosdb_kind" {
-  description = ""
   type        = string
-  default     = "GlobalDocumentDB"
+  description = ""
+
+  default = "GlobalDocumentDB"
 }
 
 ############################################
@@ -48,8 +49,9 @@ variable "cosmosdb_kind" {
 ############################################
 
 variable "resource_group_location" {
-  type    = string
-  default = "uksouth"
+  type = string
+
+  default = "westeurope"
 }
 
 variable "resource_group_name" {
@@ -61,7 +63,7 @@ variable "resource_group_name" {
 ##########################
 
 variable "create_cosmosdb" {
-  type    = bool
+  type = bool
+
   default = false
 }
-
