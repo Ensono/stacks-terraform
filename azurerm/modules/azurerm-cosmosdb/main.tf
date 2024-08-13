@@ -25,11 +25,6 @@ resource "azurerm_cosmosdb_account" "default" {
   }
 
   tags = var.resource_tags
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
 
 resource "azurerm_cosmosdb_sql_database" "default" {
