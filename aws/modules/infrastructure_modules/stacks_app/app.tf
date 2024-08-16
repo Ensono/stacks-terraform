@@ -36,6 +36,6 @@ module "topic" {
   name   = var.queue_name
   tags   = var.tags
 
-  create_sqs_subscription    = true
+  create_sqs_subscription    = var.enable_queue
   subscription_sqs_queue_arn = module.queue.sqs_queue_arn
 }
