@@ -19,7 +19,7 @@ resource "azurerm_dns_a_record" "default" {
   # e.g. dev-api.nonprod.stacks.ensono.com is the intended CDN endpoint,
   # dev-api-appgw.nonprod.stacks.ensono.com is the Alias record for the App GW
   # public IP
-  name                = var.create_dns_record && var.create_cdn_endpoint && var.dns_enable_alias_record ? "${var.dns_record}-appgw" : var.dns_record
+  name                = local.create_cdn_alias_dns ? "${var.dns_record}-appgw" : var.dns_record
   zone_name           = var.dns_zone_name
   resource_group_name = var.dns_zone_resource_group
   ttl                 = var.dns_ttl
@@ -30,12 +30,6 @@ resource "azurerm_dns_a_record" "default" {
   records            = var.dns_enable_alias_record ? null : var.dns_a_records
 
   tags = var.resource_tags
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
 
 module "cosmosdb" {
@@ -65,6 +59,7 @@ resource "azurerm_redis_cache" "default" {
   sku_name            = var.cache_sku_name
   enable_non_ssl_port = var.cach_enable_non_ssl_port
   minimum_tls_version = var.cache_minimum_tls_version
+
   redis_configuration {
     enable_authentication = var.cache_redis_enable_authentication
     maxmemory_reserved    = var.cache_redis_maxmemory_reserved
@@ -73,10 +68,4 @@ resource "azurerm_redis_cache" "default" {
   }
 
   tags = var.resource_tags
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }

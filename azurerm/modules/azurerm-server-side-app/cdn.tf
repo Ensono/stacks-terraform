@@ -74,6 +74,8 @@ resource "azurerm_dns_cname_record" "default" {
 }
 
 resource "azurerm_cdn_endpoint_custom_domain" "default" {
+  count = var.create_cdn_endpoint ? 1 : 0
+
   name            = var.resource_namer
   cdn_endpoint_id = azurerm_cdn_endpoint.default.0.id
   host_name       = trimsuffix(azurerm_dns_cname_record.default.0.fqdn, ".")
