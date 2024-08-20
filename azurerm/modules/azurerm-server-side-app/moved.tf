@@ -4,6 +4,6 @@ moved {
 }
 
 moved {
-  from = module.app.module.cosmosdb
-  to   = module.app.module.cosmosdb[0]
+  from = module.cosmosdb
+  to   = module.cosmosdb[0]
 }
