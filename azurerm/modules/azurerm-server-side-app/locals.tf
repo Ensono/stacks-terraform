@@ -1,5 +1,5 @@
 locals {
-  create_resource_group = var.create_cosmosdb || var.create_cache || var.create_cdn_endpoint
+  create_resource_group = var.create_resource_group || var.create_cosmosdb || var.create_cache || var.create_cdn_endpoint
 
   create_cdn_alias_dns = var.create_dns_record && var.create_cdn_endpoint && var.dns_enable_alias_record
 
