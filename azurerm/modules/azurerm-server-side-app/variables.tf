@@ -34,6 +34,13 @@ variable "subscription_id" {
 ###########################
 # CONDITIONAL SETTINGS
 ##########################
+variable "force_create_resource_group" {
+  type        = bool
+  description = "Force the creation of a resource group for this application"
+
+  default = false
+}
+
 variable "create_cosmosdb" {
   type        = bool
   description = "Whether to create a cosmosdb or not for this application"
