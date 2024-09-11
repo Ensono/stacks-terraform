@@ -34,9 +34,9 @@ variable "subscription_id" {
 ###########################
 # CONDITIONAL SETTINGS
 ##########################
-variable "create_resource_group" {
+variable "force_create_resource_group" {
   type        = bool
-  description = "Whether to create a resource group or not for this application"
+  description = "Force the creation of a resource group for this application"
 
   default = false
 }
