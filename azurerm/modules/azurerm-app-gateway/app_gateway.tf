@@ -121,6 +121,7 @@ resource "azurerm_application_gateway" "network" {
   }
 
   request_routing_rule {
+    priority                   = 1
     name                       = local.request_routing_rule_name
     rule_type                  = "Basic"
     http_listener_name         = local.listener_name
@@ -129,6 +130,7 @@ resource "azurerm_application_gateway" "network" {
   }
 
   request_routing_rule {
+    priority                   = 2
     name                       = local.request_routing_rule_name_ssl
     rule_type                  = "Basic"
     http_listener_name         = local.listener_name_ssl
