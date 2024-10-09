@@ -155,6 +155,18 @@ variable "create_valid_cert" {
   description = "States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false)"
 }
 
+variable "app_gateway_sku" {
+  type        = string
+  default     = "Standard_v2"
+  description = "he Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
+variable "app_gateway_tier" {
+  type        = string
+  default     = "Standard_v2"
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard_v2, WAF_v2"
+}
+
 ###########################
 # MISC SETTINGS
 ##########################

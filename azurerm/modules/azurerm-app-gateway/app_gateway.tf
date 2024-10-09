@@ -47,8 +47,8 @@ resource "azurerm_application_gateway" "network" {
   location = var.resource_group_location
 
   sku {
-    name     = "Standard_Small"
-    tier     = "Standard"
+    name     = var.app_gateway_sku
+    tier     = var.app_gateway_tier
     capacity = 2
   }
 
