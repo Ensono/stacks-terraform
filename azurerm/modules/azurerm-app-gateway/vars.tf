@@ -185,3 +185,15 @@ variable "acme_email" {
   type        = string
   description = "Email for Acme registration, must be a valid email"
 }
+
+variable "pick_host_name_from_backend_http_settings" {
+  type        = bool
+  default     = false
+  description = "Whether the host header should be picked from the backend HTTP settings. Defaults to false."
+}
+
+variable "host_name" {
+  type        = string
+  default     = null
+  description = "Host header to be sent to the backend servers. Cannot be set if pick_host_name_from_backend_address is set to true"
+}
