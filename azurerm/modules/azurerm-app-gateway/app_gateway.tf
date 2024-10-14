@@ -100,14 +100,14 @@ resource "azurerm_application_gateway" "network" {
   }
 
   probe {
-    name                = "k8s-probe"
-    host                = var.pick_host_name_from_backend_http_settings ? null : "127.0.0.1"
-    protocol            = "Http"
-    interval            = 15
-    unhealthy_threshold = 4
-    timeout             = 15
-    path                = "/healthz"
-    pick_host_name_from_backend_http_settings = var.pick_host_name_from_backend_http_settings 
+    name                                      = "k8s-probe"
+    host                                      = var.pick_host_name_from_backend_http_settings ? null : "127.0.0.1"
+    protocol                                  = "Http"
+    interval                                  = 15
+    unhealthy_threshold                       = 4
+    timeout                                   = 15
+    path                                      = "/healthz"
+    pick_host_name_from_backend_http_settings = var.pick_host_name_from_backend_http_settings
     match {
       status_code = ["200"]
     }
