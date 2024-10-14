@@ -18,7 +18,8 @@ resource "azurerm_public_ip" "app_gateway" {
   name                = var.resource_namer
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
+  sku                 = "Standard"
   lifecycle {
     ignore_changes = [
       tags,
@@ -47,8 +48,8 @@ resource "azurerm_application_gateway" "network" {
   location = var.resource_group_location
 
   sku {
-    name     = "Standard_Small"
-    tier     = "Standard"
+    name     = var.app_gateway_sku
+    tier     = var.app_gateway_tier
     capacity = 2
   }
 
@@ -99,13 +100,14 @@ resource "azurerm_application_gateway" "network" {
   }
 
   probe {
-    name                = "k8s-probe"
-    host                = "127.0.0.1"
-    protocol            = "Http"
-    interval            = 15
-    unhealthy_threshold = 4
-    timeout             = 15
-    path                = "/healthz"
+    name                                      = "k8s-probe"
+    host                                      = var.pick_host_name_from_backend_http_settings ? null : "127.0.0.1"
+    protocol                                  = "Http"
+    interval                                  = 15
+    unhealthy_threshold                       = 4
+    timeout                                   = 15
+    path                                      = "/healthz"
+    pick_host_name_from_backend_http_settings = var.pick_host_name_from_backend_http_settings
     match {
       status_code = ["200"]
     }
@@ -118,9 +120,11 @@ resource "azurerm_application_gateway" "network" {
     protocol              = "Http"
     request_timeout       = 10
     probe_name            = "k8s-probe"
+    host_name             = var.host_name
   }
 
   request_routing_rule {
+    priority                   = 1
     name                       = local.request_routing_rule_name
     rule_type                  = "Basic"
     http_listener_name         = local.listener_name
@@ -129,6 +133,7 @@ resource "azurerm_application_gateway" "network" {
   }
 
   request_routing_rule {
+    priority                   = 2
     name                       = local.request_routing_rule_name_ssl
     rule_type                  = "Basic"
     http_listener_name         = local.listener_name_ssl

@@ -155,6 +155,18 @@ variable "create_valid_cert" {
   description = "States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false)"
 }
 
+variable "app_gateway_sku" {
+  type        = string
+  default     = "Standard_v2"
+  description = "he Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
+variable "app_gateway_tier" {
+  type        = string
+  default     = "Standard_v2"
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard_v2, WAF_v2"
+}
+
 ###########################
 # MISC SETTINGS
 ##########################
@@ -172,4 +184,16 @@ variable "pfx_password" {
 variable "acme_email" {
   type        = string
   description = "Email for Acme registration, must be a valid email"
+}
+
+variable "pick_host_name_from_backend_http_settings" {
+  type        = bool
+  default     = false
+  description = "Whether the host header should be picked from the backend HTTP settings. Defaults to false."
+}
+
+variable "host_name" {
+  type        = string
+  default     = null
+  description = "Host header to be sent to the backend servers. Cannot be set if pick_host_name_from_backend_address is set to true"
 }
