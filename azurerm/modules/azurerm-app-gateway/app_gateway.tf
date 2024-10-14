@@ -106,7 +106,7 @@ resource "azurerm_application_gateway" "network" {
     interval                                  = 15
     unhealthy_threshold                       = 4
     timeout                                   = 15
-    path                                      = "/healthz"
+    path                                      = var.probe_path
     pick_host_name_from_backend_http_settings = var.pick_host_name_from_backend_http_settings
     match {
       status_code = ["200"]

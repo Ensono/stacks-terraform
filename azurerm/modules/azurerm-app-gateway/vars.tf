@@ -192,6 +192,12 @@ variable "pick_host_name_from_backend_http_settings" {
   description = "Whether the host header should be picked from the backend HTTP settings. Defaults to false."
 }
 
+variable "probe_path" {
+  type        = string
+  default     = "/healthz"
+  description = "The Path used for this Probe."
+}
+
 variable "host_name" {
   type        = string
   default     = null
