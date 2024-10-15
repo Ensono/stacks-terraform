@@ -40,17 +40,17 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    type                = var.nodepool_type # "VirtualMachineScaleSets" # default
-    enable_auto_scaling = var.enable_auto_scaling
-    max_count           = var.max_nodes
-    min_count           = var.min_nodes
-    name                = "default"
-    os_disk_size_gb     = var.os_disk_size
-    vm_size             = var.vm_size
-    node_count          = var.min_nodes
-    vnet_subnet_id      = azurerm_subnet.default.0.id
+    type                        = var.nodepool_type # "VirtualMachineScaleSets" # default
+    enable_auto_scaling         = var.enable_auto_scaling
+    max_count                   = var.max_nodes
+    min_count                   = var.min_nodes
+    name                        = "default"
+    os_disk_size_gb             = var.os_disk_size
+    vm_size                     = var.vm_size
+    node_count                  = var.min_nodes
+    vnet_subnet_id              = azurerm_subnet.default.0.id
     temporary_name_for_rotation = "default_tmp"
-    zones = var.enable_availability_zones? var.availabilty_zones : null # Only available on provision
+    zones                       = var.enable_availability_zones ? var.availabilty_zones : null # Only available on provision
   }
 
   http_application_routing_enabled  = false

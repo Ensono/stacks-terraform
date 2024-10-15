@@ -308,12 +308,12 @@ variable "node_count" {
 
 variable "aks_node_pools" {
   type = map(object({
-    vm_size      = string,
-    auto_scaling = bool,
-    min_nodes    = number,
-    max_nodes    = number,
+    vm_size                   = string,
+    auto_scaling              = bool,
+    min_nodes                 = number,
+    max_nodes                 = number,
     enable_availability_zones = bool
-    availabilty_zones = list(int)
+    availabilty_zones         = list(int)
   }))
   description = "Additional node pools as required by the platform"
 
