@@ -203,3 +203,8 @@ variable "host_name" {
   default     = null
   description = "Host header to be sent to the backend servers. Cannot be set if pick_host_name_from_backend_address is set to true"
 }
+
+variable "expected_status_codes" {
+  default     = ["200"]
+  description = "The expect status code returned from the health probe"
+}

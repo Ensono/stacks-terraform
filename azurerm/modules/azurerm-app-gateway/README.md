@@ -85,6 +85,7 @@ No modules.
 | <a name="input_disable_complete_propagation"></a> [disable\_complete\_propagation](#input\_disable\_complete\_propagation) | n/a | `bool` | `false` | no |
 | <a name="input_dns_resource_group"></a> [dns\_resource\_group](#input\_dns\_resource\_group) | RG that contains the existing DNS zones, if the zones are not being created here | `string` | `null` | no |
 | <a name="input_dns_zone"></a> [dns\_zone](#input\_dns\_zone) | ########################### # DNS SETTINGS ########################## | `string` | `""` | no |
+| <a name="input_expected_status_codes"></a> [expected\_status\_codes](#input\_expected\_status\_codes) | The expect status code returned from the health probe | `list` | <pre>[<br>  "200"<br>]</pre> | no |
 | <a name="input_host_name"></a> [host\_name](#input\_host\_name) | Host header to be sent to the backend servers. Cannot be set if pick\_host\_name\_from\_backend\_address is set to true | `string` | `null` | no |
 | <a name="input_pfx_password"></a> [pfx\_password](#input\_pfx\_password) | n/a | `string` | `"Password1"` | no |
 | <a name="input_pick_host_name_from_backend_http_settings"></a> [pick\_host\_name\_from\_backend\_http\_settings](#input\_pick\_host\_name\_from\_backend\_http\_settings) | Whether the host header should be picked from the backend HTTP settings. Defaults to false. | `bool` | `false` | no |
