@@ -192,8 +192,19 @@ variable "pick_host_name_from_backend_http_settings" {
   description = "Whether the host header should be picked from the backend HTTP settings. Defaults to false."
 }
 
+variable "probe_path" {
+  type        = string
+  default     = "/healthz"
+  description = "The Path used for this Probe."
+}
+
 variable "host_name" {
   type        = string
   default     = null
   description = "Host header to be sent to the backend servers. Cannot be set if pick_host_name_from_backend_address is set to true"
+}
+
+variable "expected_status_codes" {
+  default     = ["200"]
+  description = "The expect status code returned from the health probe"
 }
