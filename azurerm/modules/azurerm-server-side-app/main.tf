@@ -51,20 +51,20 @@ module "cosmosdb" {
 resource "azurerm_redis_cache" "default" {
   count = var.create_cache ? 1 : 0
 
-  name                = var.resource_namer
-  location            = var.resource_group_location
-  resource_group_name = azurerm_resource_group.default.0.name
-  capacity            = var.cache_capacity
-  family              = var.cache_family
-  sku_name            = var.cache_sku_name
-  non_ssl_port_enabled  = var.cach_enable_non_ssl_port
-  minimum_tls_version = var.cache_minimum_tls_version
+  name                 = var.resource_namer
+  location             = var.resource_group_location
+  resource_group_name  = azurerm_resource_group.default.0.name
+  capacity             = var.cache_capacity
+  family               = var.cache_family
+  sku_name             = var.cache_sku_name
+  non_ssl_port_enabled = var.cach_enable_non_ssl_port
+  minimum_tls_version  = var.cache_minimum_tls_version
 
   redis_configuration {
     authentication_enabled = var.cache_redis_enable_authentication
-    maxmemory_reserved    = var.cache_redis_maxmemory_reserved
-    maxmemory_delta       = var.cache_redis_maxmemory_delta
-    maxmemory_policy      = var.cache_redis_maxmemory_policy
+    maxmemory_reserved     = var.cache_redis_maxmemory_reserved
+    maxmemory_delta        = var.cache_redis_maxmemory_delta
+    maxmemory_policy       = var.cache_redis_maxmemory_policy
   }
 
   tags = var.resource_tags
