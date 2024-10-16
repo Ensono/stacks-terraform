@@ -57,11 +57,11 @@ resource "azurerm_redis_cache" "default" {
   capacity            = var.cache_capacity
   family              = var.cache_family
   sku_name            = var.cache_sku_name
-  enable_non_ssl_port = var.cach_enable_non_ssl_port
+  non_ssl_port_enabled  = var.cach_enable_non_ssl_port
   minimum_tls_version = var.cache_minimum_tls_version
 
   redis_configuration {
-    enable_authentication = var.cache_redis_enable_authentication
+    authentication_enabled = var.cache_redis_enable_authentication
     maxmemory_reserved    = var.cache_redis_maxmemory_reserved
     maxmemory_delta       = var.cache_redis_maxmemory_delta
     maxmemory_policy      = var.cache_redis_maxmemory_policy
