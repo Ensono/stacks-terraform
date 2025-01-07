@@ -8,7 +8,7 @@ resource "aws_networkfirewall_firewall" "firewall" {
   vpc_id              = module.vpc.vpc_id
 
   dynamic "subnet_mapping" {
-    for_each = aws_subnet.network_firewall[*].id
+    for_each = var.firewall_endpoint_per_az ? aws_subnet.network_firewall[*].id : [aws_subnet.network_firewall[0].id]
 
     content {
       subnet_id = subnet_mapping.value
