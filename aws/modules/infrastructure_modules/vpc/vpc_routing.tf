@@ -106,7 +106,7 @@ resource "aws_route" "public_to_firewall_endpoints" {
 
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.public[count.index].id
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = var.firewall_endpoint_per_az ? element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0) : element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[0].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }
@@ -117,7 +117,7 @@ resource "aws_route" "ingress_routes" {
 
   route_table_id         = aws_route_table.ingress_route_table.id
   destination_cidr_block = aws_subnet.public[count.index].cidr_block
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = var.firewall_endpoint_per_az ? element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0) : element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[0].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }
