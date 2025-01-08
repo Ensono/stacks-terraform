@@ -146,6 +146,13 @@ variable "domain_allow_capacity" {
   description = "Capacity for Domain allow rule group"
 }
 
+variable "firewall_endpoint_per_az" {
+  type        = bool
+  description = "Whether to create a firewall endpoint per-AZ or just use one. Note: There are running costs associated with Firewall Endpoints. For Production-like environments this should be true"
+
+  default = true
+}
+
 # Subnet ACLs
 variable "create_public_dedicated_network_acl" {
   description = "Whether to use dedicated network ACL (not default) and custom rules for public subnets"
