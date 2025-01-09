@@ -56,7 +56,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     disk_size = 50
-
+    block_device_mappings = var.block_device_mappings
     placement = {
       tenancy = var.eks_node_tenancy
     }
