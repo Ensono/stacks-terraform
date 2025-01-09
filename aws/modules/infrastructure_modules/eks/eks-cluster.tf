@@ -48,8 +48,8 @@ module "eks" {
   enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
 
   eks_managed_node_group_defaults = {
-    disk_size = 50
-
+    disk_size             = 50
+    block_device_mappings = var.block_device_mappings
     placement = {
       tenancy = var.eks_node_tenancy
     }

@@ -209,3 +209,9 @@ variable "node_security_group_enable_recommended_rules" {
   type        = bool
   default     = true
 }
+
+variable "block_device_mappings" {
+  description = "Specify volumes to attach to the instances. This is useful if you want to increase the volume where the container image layers are stored. Default is 20gb"
+  type        = map(any)
+  default     = {}
+}
