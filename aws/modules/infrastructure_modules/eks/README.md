@@ -86,6 +86,7 @@ and: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/920
 | <a name="input_trusted_role_arn"></a> [trusted\_role\_arn](#input\_trusted\_role\_arn) | IAM role passed to KMS Policy | `string` | `""` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID to use for the Cluster and resources | `string` | n/a | yes |
 | <a name="input_vpc_private_subnets"></a> [vpc\_private\_subnets](#input\_vpc\_private\_subnets) | The VPC Private Subnets to place EKS nodes into | `list(string)` | n/a | yes |
+| <a name="block_device_mappings"></a> [block\_device\_mappings](#input\_block\_device\_mappings) | Specify volumes to attach to the instances. This is useful if you want to increase the volume where the container image layers are stored. Default is 20gb | `map(any)` | n/a | no |
 
 ## Outputs
 
