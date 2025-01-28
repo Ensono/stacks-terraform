@@ -15,38 +15,7 @@ module "ecr" {
   # Managed below in `ecr_registry_scanning_rules`
   manage_registry_scanning_configuration = false
 
-  repository_lifecycle_policy = jsonencode({
-    rules = [
-      {
-        rulePriority = 1
-        description  = "Keep the last '${var.max_untagged_image_count}' untagged images"
-
-        selection = {
-          tagStatus   = "untagged"
-          countType   = "imageCountMoreThan"
-          countNumber = var.max_untagged_image_count
-        }
-
-        action = {
-          type = "expire"
-        }
-      },
-      {
-        rulePriority = 2,
-        description  = "Keep the last '${var.max_tagged_image_count}' tagged images"
-
-        selection = {
-          tagStatus   = "any"
-          countType   = "imageCountMoreThan"
-          countNumber = var.max_tagged_image_count
-        }
-
-        action = {
-          type = "expire"
-        }
-      },
-    ]
-  })
+  repository_lifecycle_policy = var.repository_lifecycle_policy == "default-policy" ? local.repository_lifecycle_default_policy : var.repository_lifecycle_policy
 }
 
 ## Pull Through Cache

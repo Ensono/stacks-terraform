@@ -23,6 +23,8 @@ variable "max_untagged_image_count" {
 variable "max_tagged_image_count" {
   type        = number
   description = "The maximum number of tagged images to keep for each repository"
+
+  default = 100
 }
 
 variable "pull_accounts" {
@@ -63,4 +65,10 @@ variable "pull_through_cache_accounts" {
   type        = list(string)
   description = "A default list of accounts for the Pull Through Cache if not configured in the `pull_through_cache_setup`. Defaults to the calling account root"
   default     = []
+}
+
+variable "repository_lifecycle_policy" {
+  type        = any
+  description = "ECR repository lifestyle policy rules"
+  default     = "default-policy"
 }
