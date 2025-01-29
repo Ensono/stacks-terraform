@@ -65,7 +65,8 @@ locals {
         min_size     = var.eks_minimum_nodes
         max_size     = var.eks_maximum_nodes
         desired_size = var.eks_desired_nodes
-
+        create_iam_role = var.node_iam_assume_role_policy != null ? false : true
+        iam_role_arn = var.node_iam_assume_role_policy != null ? aws_iam_role.this["general-${v}"].arn : null
         subnet_ids = [var.vpc_private_subnets[k]]
 
         instance_types = [var.eks_node_size]
@@ -93,4 +94,29 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
+
+  # If node_iam_assume_role_policy variable is set then we must create an IAM role for the node group, one for each AZ.
+  eks_managed_iam_roles = var.node_iam_assume_role_policy != null ? {
+    for k, v in local.cluster_azs : "general-${v}" => {
+      name = "general-${v}"
+    }
+  } : {}
+
+  iam_role_policy_prefix = "arn:${data.aws_partition.current.partition}:iam::aws:policy"
+
+  # Each IAM role about will be assigned these policies
+  policies = compact([
+    "${local.iam_role_policy_prefix}/AmazonEKSWorkerNodePolicy",
+    "${local.iam_role_policy_prefix}/AmazonEC2ContainerRegistryReadOnly",
+    "${local.iam_role_policy_prefix}/AmazonEKS_CNI_Policy",
+  ])
+
+  role_policy_combinations = flatten([
+    for role in aws_iam_role.this : [
+      for policy in local.policies : {
+        role   = role.name
+        policy = policy
+      }
+    ]
+  ])
 }

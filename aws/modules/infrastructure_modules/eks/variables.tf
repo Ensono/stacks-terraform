@@ -181,3 +181,8 @@ variable "block_device_mappings" {
   description = "Allow you to override the volumes to attach to the instances. This is useful if you want to increase the volume where the container image layers are stored. Default is 20gb"
   default     = {}
 }
+
+variable "node_iam_assume_role_policy" {
+  description = "Allowing you to override the assume role policy assigned to the node group IAM Role. If this is set then this module will create the IAM Role and attach this trust policy to it."
+  default = null
+}
