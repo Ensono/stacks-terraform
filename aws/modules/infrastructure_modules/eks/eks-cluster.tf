@@ -38,10 +38,7 @@ module "eks" {
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]
 
-  cluster_encryption_config = {
-    resources        = ["secrets"]
-    provider_key_arn = module.eks_kms_key.arn
-  }
+  cluster_encryption_config = local.cluster_encryption_config
 
   # OIDC Identity provider
   cluster_identity_providers = {
@@ -55,7 +52,7 @@ module "eks" {
   manage_aws_auth_configmap = false
 
   eks_managed_node_group_defaults = {
-    disk_size = 50
+    disk_size             = 50
     block_device_mappings = var.block_device_mappings
     placement = {
       tenancy = var.eks_node_tenancy
@@ -63,6 +60,8 @@ module "eks" {
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
+  create_iam_role         = local.create_cluster_iam_role ? false : true                       # As we have created the cluster role in this module, we do not want to create it again in the eks module
+  iam_role_arn            = local.create_cluster_iam_role ? aws_iam_role.cluster[0].arn : null # As we have created the cluster role in this module, we should pass the role name
 
   tags = var.tags
 }
