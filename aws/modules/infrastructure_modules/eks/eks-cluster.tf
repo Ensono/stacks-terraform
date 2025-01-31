@@ -42,6 +42,7 @@ module "eks" {
     resources        = ["secrets"]
     provider_key_arn = module.eks_kms_key.arn
   }
+
   # OIDC Identity provider
   cluster_identity_providers = {
     sts = {
