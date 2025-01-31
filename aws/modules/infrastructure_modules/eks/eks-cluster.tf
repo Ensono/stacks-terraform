@@ -60,8 +60,6 @@ module "eks" {
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
-  create_iam_role         = local.create_cluster_iam_role ? false : true                       # As we have created the cluster role in this module, we do not want to create it again in the eks module
-  iam_role_arn            = local.create_cluster_iam_role ? aws_iam_role.cluster[0].arn : null # As we have created the cluster role in this module, we should pass the role name
 
   tags = var.tags
 }
