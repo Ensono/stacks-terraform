@@ -38,8 +38,10 @@ module "eks" {
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]
 
-  cluster_encryption_config = local.cluster_encryption_config
-
+  cluster_encryption_config = {
+    resources        = ["secrets"]
+    provider_key_arn = module.eks_kms_key.arn
+  }
   # OIDC Identity provider
   cluster_identity_providers = {
     sts = {

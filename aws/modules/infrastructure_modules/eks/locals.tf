@@ -94,9 +94,4 @@ locals {
       "Name" = local.logging_bucket_kms_key_name
     })
   )
-
-  cluster_encryption_config = {
-    resources        = ["secrets"]
-    provider_key_arn = module.eks_kms_key.arn
-  }
 }
