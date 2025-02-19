@@ -24,6 +24,7 @@ locals {
   [settings.bootstrap-containers.cis-bootstrap]
   source = "${var.cis_bootstrap_image}"
   mode = "always"
+  %{endif}
 
   [settings.kernel.modules.udf]
   allowed = false
@@ -46,7 +47,8 @@ locals {
   [settings.kubernetes]
   image-gc-high-threshold-percent = "${var.image_gc_high_threshold_percent}"
   image-gc-low-threshold-percent = "${var.image_gc_low_threshold_percent}"
-  %{endif}
+  event-qps = 50
+  rotate-server-certificates = true
   EOT
 
   eks_bottlerocket_base_node_config = {
