@@ -25,5 +25,5 @@ output "private_subnet_cidrs" {
 
 output "public_subnet_cidrs" {
   description = "The IDs of the public subnets created by this module."
-  value       = [for k, v in data.aws_availability_zones.available.names : aws_subnet.public[k].cidr_block]
+  value       = [for k, _ in local.sorted_azs : aws_subnet.public[k].cidr_block]
 }

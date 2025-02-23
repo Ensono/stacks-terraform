@@ -1,46 +1,58 @@
 # --- Route Tables ---
 # --- Public route table ---
 resource "aws_route_table" "public" {
-  count  = length(data.aws_availability_zones.available.names)
+  count  = length(local.sorted_azs)
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-public-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "false"
-    "isPublic"   = "true"
-    "isLambda"   = "false"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
+      isPrivate  = "false"
+      isPublic   = "true"
+      isLambda   = "false"
+      isFirewall = "false"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Firewall route table ---
 resource "aws_route_table" "network_firewall" {
-  count  = length(data.aws_availability_zones.available.names)
+  count  = length(local.sorted_azs)
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-firewall-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "false"
-    "isPublic"   = "true"
-    "isLambda"   = "false"
-    "isFirewall" = "true"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = "${var.vpc_name}-firewall-${local.sorted_azs[count.index]}"
+      isPrivate  = "false"
+      isPublic   = "true"
+      isLambda   = "false"
+      isFirewall = "true"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Ingress route table ---
 resource "aws_route_table" "ingress_route_table" {
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-ingress-route-table"
-    "isPublic"   = "true"
-    "isPrivate"  = "false"
-    "isPam"      = "false"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = try(
+        var.vpc_ingress_route_table_name,
+        "${var.vpc_name}-ingress-route-table",
+      )
+      isPublic   = "true"
+      isPrivate  = "false"
+      isPam      = "false"
+      isFirewall = "false"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Route Table Association ---

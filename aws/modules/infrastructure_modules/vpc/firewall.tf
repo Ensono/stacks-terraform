@@ -17,9 +17,12 @@ resource "aws_networkfirewall_firewall" "firewall" {
 
   delete_protection = var.firewall_deletion_protection
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall"
+    },
+  )
 }
 
 # --- Firewall Logging ---
@@ -29,9 +32,12 @@ resource "aws_cloudwatch_log_group" "firewall_alert_log_group" {
   name              = "/aws/network-firewall/${var.vpc_name}-network-firewall/alert"
   retention_in_days = var.firewall_alert_log_retention
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-alert-logs"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-alert-logs"
+    },
+  )
 }
 
 resource "aws_cloudwatch_log_group" "firewall_flow_log_group" {
@@ -40,9 +46,12 @@ resource "aws_cloudwatch_log_group" "firewall_flow_log_group" {
   name              = "/aws/network-firewall/${var.vpc_name}-network-firewall/flow"
   retention_in_days = var.firewall_flow_log_retention
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-flow-logs"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-flow-logs"
+    },
+  )
 }
 
 resource "aws_networkfirewall_logging_configuration" "firewall_logging_config" {
@@ -100,7 +109,10 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     }
   }
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-policy"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-policy"
+    },
+  )
 }
