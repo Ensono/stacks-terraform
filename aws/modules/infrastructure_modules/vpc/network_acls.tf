@@ -127,14 +127,14 @@ resource "aws_network_acl_rule" "database_inbound" {
 
   egress          = false
   rule_number     = var.database_inbound_acl_rules[count.index]["rule_number"]
-  rule_action     = var.private_inbound_acl_rules[count.index]["rule_action"]
-  protocol        = var.private_inbound_acl_rules[count.index]["protocol"]
-  from_port       = var.private_inbound_acl_rules[count.index]["from_port"]
-  to_port         = var.private_inbound_acl_rules[count.index]["to_port"]
-  cidr_block      = var.private_inbound_acl_rules[count.index]["cidr_block"]
-  icmp_code       = lookup(var.private_inbound_acl_rules[count.index], "icmp_code", null)
-  icmp_type       = lookup(var.private_inbound_acl_rules[count.index], "icmp_type", null)
-  ipv6_cidr_block = lookup(var.private_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
+  rule_action     = var.database_inbound_acl_rules[count.index]["rule_action"]
+  protocol        = var.database_inbound_acl_rules[count.index]["protocol"]
+  from_port       = var.database_inbound_acl_rules[count.index]["from_port"]
+  to_port         = var.database_inbound_acl_rules[count.index]["to_port"]
+  cidr_block      = var.database_inbound_acl_rules[count.index]["cidr_block"]
+  icmp_code       = lookup(var.database_inbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.database_inbound_acl_rules[count.index], "icmp_type", null)
+  ipv6_cidr_block = lookup(var.database_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
 resource "aws_network_acl_rule" "database_outbound" {
