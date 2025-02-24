@@ -11,10 +11,7 @@ resource "aws_network_acl" "public" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-        var.vpc_acl_public_name,
-        "${var.vpc_name}-public-acl",
-      )
+      Name = "${var.vpc_name}-public-acl"
     },
   )
 }
@@ -66,10 +63,7 @@ resource "aws_network_acl" "private" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-        var.vpc_acl_private_name,
-        "${var.vpc_name}-private-acl",
-      )
+      Name = "${var.vpc_name}-private-acl"
     },
   )
 }
@@ -121,10 +115,7 @@ resource "aws_network_acl" "database" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-          var.vpc_acl_database_name,
-          "${var.vpc_name}-database-acl",
-      )
+      Name = "${var.vpc_name}-database-acl"
     },
   )
 }
@@ -176,7 +167,7 @@ resource "aws_network_acl" "lambda" {
   tags = merge(
     var.tags,
     {
-      Name = "${var.vpc_name}-lambda-acl",
+      Name = "${var.vpc_name}-lambda-acl"
     },
   )
 }
@@ -228,10 +219,7 @@ resource "aws_network_acl" "network_firewall" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-        var.vpc_acl_firewall_name,
-        "${var.vpc_name}-network-firewall-acl",
-      )
+      Name = "${var.vpc_name}-network-firewall-acl"
     },
   )
 }

@@ -19,9 +19,6 @@ module "vpc" {
   create_igw             = false
   instance_tenancy       = var.vpc_instance_tenancy
 
-  private_subnet_names = var.vpc_subnet_names_private
-  database_subnet_names = var.vpc_subnet_names_database
-
   private_subnet_suffix  = "private"
   database_subnet_suffix = "database"
 
@@ -94,10 +91,7 @@ resource "aws_subnet" "public" {
   tags = merge(
     var.tags,
     {
-      Name                                    = try(
-        var.vpc_subnet_names_public[count.index],
-        "${var.vpc_name}-public-${local.sorted_azs[count.index]}",
-      )
+      Name                                    = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
       "kubernetes.io/role/internal-elb"       = "0"
       "kubernetes.io/role/elb"                = "1"
       "kubernetes.io/cluster/${var.vpc_name}" = "owned"
@@ -123,10 +117,7 @@ resource "aws_subnet" "lambda" {
   tags = merge(
     var.tags,
     {
-      Name                                    = try(
-        var.vpc_subnet_names_public[count.index],
-        "${var.vpc_name}-public-${local.sorted_azs[count.index]}",
-      )
+      Name                                    = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
       "kubernetes.io/role/internal-elb" = "0"
       "kubernetes.io/role/elb"          = "0"
       isPrivate                         = "true"
@@ -151,10 +142,7 @@ resource "aws_subnet" "network_firewall" {
   tags = merge(
     var.tags,
     {
-      Name                     = try(
-        var.vpc_subnet_names_firewall[count.index],
-        "${var.vpc_name}-firewall-${local.sorted_azs[count.index]}",
-      )
+      Name                     = "${var.vpc_name}-firewall-${local.sorted_azs[count.index]}"
       "kubernetes.io/role/elb" = "0"
       isPrivate                = "false"
       isPublic                 = "true"
@@ -187,10 +175,7 @@ resource "aws_internet_gateway" "igw" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-        var.vpc_internet_gateway_name,
-        "${var.vpc_name}-internet-gateway",
-      )
+      Name =  "${var.vpc_name}-internet-gateway"
     },
   )
 }
@@ -205,10 +190,7 @@ resource "aws_nat_gateway" "public" {
   tags = merge(
     var.tags,
     {
-      Name = try(
-        var.vpc_nat_gateway_names[count.index],
-        "${var.vpc_name}-public-nat-${local.sorted_azs[count.index]}",
-      )
+      Name = "${var.vpc_name}-public-nat-${local.sorted_azs[count.index]}"
     }
   )
 

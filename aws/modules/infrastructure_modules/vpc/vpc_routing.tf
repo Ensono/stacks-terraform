@@ -42,10 +42,7 @@ resource "aws_route_table" "ingress_route_table" {
   tags = merge(
     var.tags,
     {
-      Name       = try(
-        var.vpc_ingress_route_table_name,
-        "${var.vpc_name}-ingress-route-table",
-      )
+      Name       = "${var.vpc_name}-ingress-route-table"
       isPublic   = "true"
       isPrivate  = "false"
       isPam      = "false"

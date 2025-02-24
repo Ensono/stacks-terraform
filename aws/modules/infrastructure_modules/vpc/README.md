@@ -154,22 +154,10 @@ downstream module: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of infrastructure tags. | `map(string)` | n/a | yes |
 | <a name="input_tls_alert_capacity"></a> [tls\_alert\_capacity](#input\_tls\_alert\_capacity) | Capacity for TLS alert rule group | `number` | `100` | no |
-| <a name="input_vpc_acl_database_name"></a> [vpc\_acl\_database\_name](#input\_vpc\_acl\_database\_name) | Name of the Database Network ACL resource | `string` | `null` | no |
-| <a name="input_vpc_acl_firewall_name"></a> [vpc\_acl\_firewall\_name](#input\_vpc\_acl\_firewall\_name) | Name of the Firewall Network ACL resource | `string` | `null` | no |
-| <a name="input_vpc_acl_private_name"></a> [vpc\_acl\_private\_name](#input\_vpc\_acl\_private\_name) | Name of the Private Network ACL resource | `string` | `null` | no |
-| <a name="input_vpc_acl_public_name"></a> [vpc\_acl\_public\_name](#input\_vpc\_acl\_public\_name) | Name of the Public Network ACL resource | `string` | `null` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | The VPC CIDR to create | `string` | n/a | yes |
-| <a name="input_vpc_ingress_route_table_name"></a> [vpc\_ingress\_route\_table\_name](#input\_vpc\_ingress\_route\_table\_name) | Name of the Ingress Route Table resources | `string` | `null` | no |
 | <a name="input_vpc_instance_tenancy"></a> [vpc\_instance\_tenancy](#input\_vpc\_instance\_tenancy) | The default tenancy of instances, either 'default' or 'dedicated' | `string` | `"default"` | no |
-| <a name="input_vpc_internet_gateway_name"></a> [vpc\_internet\_gateway\_name](#input\_vpc\_internet\_gateway\_name) | Name of the Internet Gateway resources | `string` | `null` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of the VPC and resources | `string` | n/a | yes |
-| <a name="input_vpc_nat_gateway_names"></a> [vpc\_nat\_gateway\_names](#input\_vpc\_nat\_gateway\_names) | Names of the Nat Gateway resources | `list(string)` | `[]` | no |
 | <a name="input_vpc_nat_gateway_per_az"></a> [vpc\_nat\_gateway\_per\_az](#input\_vpc\_nat\_gateway\_per\_az) | Whether to spin up a NAT Gateway per-AZ or just use one. Note: There are running costs associated with NAT Gateways. For Production-like environments this should  be true | `bool` | `true` | no |
-| <a name="input_vpc_subnet_names_database"></a> [vpc\_subnet\_names\_database](#input\_vpc\_subnet\_names\_database) | Names of the Database Subnet resources | `list(string)` | `[]` | no |
-| <a name="input_vpc_subnet_names_firewall"></a> [vpc\_subnet\_names\_firewall](#input\_vpc\_subnet\_names\_firewall) | Names of the Firewall Subnet resources | `list(string)` | `[]` | no |
-| <a name="input_vpc_subnet_names_lambda"></a> [vpc\_subnet\_names\_lambda](#input\_vpc\_subnet\_names\_lambda) | Names of the Lambda Subnet resources | `list(string)` | `[]` | no |
-| <a name="input_vpc_subnet_names_private"></a> [vpc\_subnet\_names\_private](#input\_vpc\_subnet\_names\_private) | Names of the Private Subnet resources | `list(string)` | `[]` | no |
-| <a name="input_vpc_subnet_names_public"></a> [vpc\_subnet\_names\_public](#input\_vpc\_subnet\_names\_public) | Names of the Public Subnet resources | `list(string)` | `[]` | no |
 
 ## Outputs
 
