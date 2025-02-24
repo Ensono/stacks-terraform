@@ -4,13 +4,13 @@
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.1.2"
+  version = "~> 5.19.0"
 
   name             = var.vpc_name
   cidr             = var.vpc_cidr
-  azs              = data.aws_availability_zones.available.names
-  private_subnets  = [for k, v in data.aws_availability_zones.available.names : cidrsubnet(var.vpc_cidr, 4, k)]
-  database_subnets = [for k, v in data.aws_availability_zones.available.names : cidrsubnet(var.vpc_cidr, 4, k + 3)]
+  azs              = local.sorted_azs
+  private_subnets  = [for k, _ in local.sorted_azs : cidrsubnet(var.vpc_cidr, 4, k)]
+  database_subnets = [for k, _ in local.sorted_azs : cidrsubnet(var.vpc_cidr, 4, k + 3)]
 
   # NAT
   enable_nat_gateway     = false
@@ -26,135 +26,173 @@ module "vpc" {
   enable_dns_hostnames    = true
   map_public_ip_on_launch = false
 
-  private_subnet_tags = merge(var.tags, {
-    "kubernetes.io/cluster/${var.vpc_name}" = "owned"
-    "kubernetes.io/role/internal-elb"       = "1"
-    "isPrivate"                             = "true"
-    "isPublic"                              = "false"
-    "isLambda"                              = "false"
-    "isFirewall"                            = "false"
-    "isDB"                                  = "false"
-    }, # { "karpenter.sh/discovery" : var.vpc_name }
+  private_subnet_tags = merge(
+    var.tags,
+    {
+      "kubernetes.io/cluster/${var.vpc_name}" = "owned"
+      "kubernetes.io/role/internal-elb"       = "1"
+      "kubernetes.io/role/elb"                = "0"
+      isPrivate                               = "true"
+      isPublic                                = "false"
+      isLambda                                = "false"
+      isFirewall                              = "false"
+      isDB                                    = "false"
+    },
   )
 
-  private_route_table_tags = merge(var.tags, {
-    "isPrivate"  = "true"
-    "isPublic"   = "false"
-    "isLambda"   = "false"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  private_route_table_tags = merge(
+    var.tags,
+    {
+      isPrivate  = "true"
+      isPublic   = "false"
+      isLambda   = "false"
+      isFirewall = "false"
+      isDB       = "false"
+    },
+  )
 
-  database_subnet_tags = merge(var.tags, {
-    "isPrivate"  = "true"
-    "isPublic"   = "false"
-    "isLambda"   = "false"
-    "isFirewall" = "false"
-    "isDB"       = "true"
-  })
+  database_subnet_tags = merge(
+    var.tags,
+    {
+      "kubernetes.io/role/internal-elb" = "0"
+      "kubernetes.io/role/elb"          = "0"
+      isPrivate                         = "true"
+      isPublic                          = "false"
+      isLambda                          = "false"
+      isFirewall                        = "false"
+      isDB                              = "true"
+    },
+  )
 
-  database_route_table_tags = merge(var.tags, {
-    "isPrivate"  = "true"
-    "isPublic"   = "false"
-    "isLambda"   = "false"
-    "isFirewall" = "false"
-    "isDB"       = "true"
-  })
+  database_route_table_tags = merge(
+    var.tags,
+    {
+      isPrivate  = "true"
+      isPublic   = "false"
+      isLambda   = "false"
+      isFirewall = "false"
+      isDB       = "true"
+    },
+  )
 
-  tags = {}
+  tags = var.tags
 }
 
 # --- Public Subnets ---
 resource "aws_subnet" "public" {
-  count                           = length(data.aws_availability_zones.available.zone_ids)
+  count = length(local.sorted_azs)
+
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 4, 6 + count.index)
-  availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]
+  availability_zone_id            = local.sorted_azs[count.index]
   assign_ipv6_address_on_creation = false
   ipv6_cidr_block                 = null
 
-  tags = merge(var.tags, {
-    "Name"                                  = "${var.vpc_name}-public-${data.aws_availability_zones.available.names[count.index]}"
-    "kubernetes.io/role/elb"                = "1"
-    "kubernetes.io/cluster/${var.vpc_name}" = "owned"
-    "isPrivate"                             = "false"
-    "isPublic"                              = "true"
-    "isLambda"                              = "false"
-    "isFirewall"                            = "false"
-    "isDB"                                  = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name                                    = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
+      "kubernetes.io/role/internal-elb"       = "0"
+      "kubernetes.io/role/elb"                = "1"
+      "kubernetes.io/cluster/${var.vpc_name}" = "owned"
+      isPrivate                               = "false"
+      isPublic                                = "true"
+      isLambda                                = "false"
+      isFirewall                              = "false"
+      isDB                                    = "false"
+    },
+  )
 }
 
 # --- Lambda Subnets ---
 resource "aws_subnet" "lambda" {
-  count                           = length(data.aws_availability_zones.available.names)
+  count = length(local.sorted_azs)
+
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 4, 9 + count.index)
-  availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]
+  availability_zone_id            = local.sorted_azs[count.index]
   assign_ipv6_address_on_creation = false
   ipv6_cidr_block                 = null
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-lambda-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "true"
-    "isPublic"   = "false"
-    "isLambda"   = "true"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name                              = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
+      "kubernetes.io/role/internal-elb" = "0"
+      "kubernetes.io/role/elb"          = "0"
+      isPrivate                         = "true"
+      isPublic                          = "false"
+      isLambda                          = "true"
+      isFirewall                        = "false"
+      isDB                              = "false"
+    },
+  )
 }
 
 # --- AWS Network Firewall Subnets ---
 resource "aws_subnet" "network_firewall" {
-  count                           = var.firewall_enabled ? length(data.aws_availability_zones.available.names) : 0
+  count = var.firewall_enabled ? length(local.sorted_azs) : 0
+
   vpc_id                          = module.vpc.vpc_id
   cidr_block                      = cidrsubnet(var.vpc_cidr, 12, 4080 + count.index)
-  availability_zone_id            = data.aws_availability_zones.available.zone_ids[count.index]
+  availability_zone_id            = local.sorted_azs[count.index]
   assign_ipv6_address_on_creation = false
   ipv6_cidr_block                 = null
 
-  tags = merge(var.tags, {
-    "Name"                   = "${var.vpc_name}-network-firewall-${data.aws_availability_zones.available.names[count.index]}"
-    "kubernetes.io/role/elb" = "0"
-    "isPrivate"              = "false"
-    "isPublic"               = "true"
-    "isLambda"               = "false"
-    "isFirewall"             = "true"
-    "isDB"                   = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name                     = "${var.vpc_name}-firewall-${local.sorted_azs[count.index]}"
+      "kubernetes.io/role/elb" = "0"
+      isPrivate                = "false"
+      isPublic                 = "true"
+      isLambda                 = "false"
+      isFirewall               = "true"
+      isDB                     = "false"
+    },
+  )
 }
 
 # --- EIP ---
 resource "aws_eip" "nat" {
-  count = var.vpc_nat_gateway_per_az ? length(data.aws_availability_zones.available.names) : 1
+  count = var.vpc_nat_gateway_per_az ? length(local.sorted_azs) : 1
 
   domain = "vpc"
 
-  tags = merge(var.tags, {
-    "Name" = var.vpc_name,
-    "Tier" = "OUT_NAT"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = var.vpc_name
+      Tier = "OUT_NAT"
+    },
+  )
 }
 
 # --- Internet Gateway ---
 resource "aws_internet_gateway" "igw" {
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-internet-gateway"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-internet-gateway"
+    },
+  )
 }
 
 # --- NAT Gateway ---
 resource "aws_nat_gateway" "public" {
-  count = var.vpc_nat_gateway_per_az ? length(data.aws_availability_zones.available.names) : 1
+  count = var.vpc_nat_gateway_per_az ? length(local.sorted_azs) : 1
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-public-nat-${data.aws_availability_zones.available.names[count.index]}"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-public-nat-${local.sorted_azs[count.index]}"
+    }
+  )
 
   # To ensure proper ordering, it is recommended to add an explicit dependency on the Internet Gateway for the VPC.
   depends_on = [aws_internet_gateway.igw]

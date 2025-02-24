@@ -1,4 +1,4 @@
-# EKS Cluster
+# VPC
 variable "region" {
   description = "AWS region"
   type        = string
@@ -39,48 +39,61 @@ variable "vpc_instance_tenancy" {
 }
 
 # VPC Flow Logs
-# TODO: Fix this when issue is answered: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-bucket/issues/66
-# variable "flow_log_noncurrent_version_expiry_days" {
-#   type        = number
-#   default     = 90
-#   description = "Specifies when noncurrent object versions expire"
-# }
+variable "flow_log_enabled" {
+  type        = bool
+  description = "Whether to enable the VPC Flowlogs, currently false as experimental fixes are applied. See: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-bucket/issues/66"
 
-# variable "flow_log_noncurrent_version_transition_days" {
-#   type        = number
-#   default     = 30
-#   description = "Specifies when noncurrent object versions transitions"
-# }
+  default = false
+}
 
-# variable "flow_log_standard_transition_days" {
-#   type        = number
-#   default     = 30
-#   description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
-# }
+variable "flow_log_noncurrent_version_expiry_days" {
+  type        = number
+  description = "Specifies when noncurrent object versions expire"
 
-# variable "flow_log_glacier_transition_days" {
-#   type        = number
-#   default     = 60
-#   description = "Number of days after which to move the data to the glacier storage tier"
-# }
+  default = 90
+}
 
-# variable "flow_log_expiry_days" {
-#   type        = number
-#   default     = 90
-#   description = "Number of days after which to expunge the objects"
-# }
+variable "flow_log_noncurrent_version_transition_days" {
+  type        = number
+  description = "Specifies when noncurrent object versions transitions"
 
-# variable "flow_log_force_destroy" {
-#   type        = bool
-#   description = "A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
-#   default     = false
-# }
+  default = 30
+}
 
-# variable "flow_log_allow_ssl_requests_only" {
-#   type        = bool
-#   description = "Set to 'true' to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
-#   default     = true
-# }
+variable "flow_log_standard_transition_days" {
+  type        = number
+  description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
+
+  default = 30
+}
+
+variable "flow_log_glacier_transition_days" {
+  type        = number
+  description = "Number of days after which to move the data to the glacier storage tier"
+
+  default = 60
+}
+
+variable "flow_log_expiry_days" {
+  type        = number
+  description = "Number of days after which to expunge the objects"
+
+  default = 90
+}
+
+variable "flow_log_force_destroy" {
+  type        = bool
+  description = "A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
+
+  default = false
+}
+
+variable "flow_log_allow_ssl_requests_only" {
+  type        = bool
+  description = "Set to 'true' to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
+
+  default = true
+}
 
 # Firewall
 variable "firewall_enabled" {
@@ -162,6 +175,7 @@ variable "create_public_dedicated_network_acl" {
 
 variable "public_inbound_acl_rules" {
   description = "Public subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -184,6 +198,7 @@ variable "public_inbound_acl_rules" {
 
 variable "public_outbound_acl_rules" {
   description = "Public subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -212,6 +227,7 @@ variable "create_private_dedicated_network_acl" {
 
 variable "private_inbound_acl_rules" {
   description = "Private subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -234,6 +250,7 @@ variable "private_inbound_acl_rules" {
 
 variable "private_outbound_acl_rules" {
   description = "Private subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -262,6 +279,7 @@ variable "create_database_dedicated_network_acl" {
 
 variable "database_inbound_acl_rules" {
   description = "Database subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -270,6 +288,7 @@ variable "database_inbound_acl_rules" {
     to_port     = optional(number, 0)
     cidr_block  = optional(string, "0.0.0.0/0")
   }))
+
   default = [
     {
       rule_number = 100
@@ -284,6 +303,7 @@ variable "database_inbound_acl_rules" {
 
 variable "database_outbound_acl_rules" {
   description = "Database subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -292,6 +312,61 @@ variable "database_outbound_acl_rules" {
     to_port     = optional(number, 0)
     cidr_block  = optional(string, "0.0.0.0/0")
   }))
+
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "create_lambda_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for lamda subnets"
+  type        = bool
+  default     = false
+}
+
+variable "lambda_inbound_acl_rules" {
+  description = "Lambda subnets inbound network ACLs"
+
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "lambda_outbound_acl_rules" {
+  description = "Lambda subnets outbound network ACLs"
+
+  type = list(object({
+    rule_number = number
+    rule_action = string
+    protocol    = any
+    from_port   = optional(number, 0)
+    to_port     = optional(number, 0)
+    cidr_block  = optional(string, "0.0.0.0/0")
+  }))
+
   default = [
     {
       rule_number = 100
@@ -312,6 +387,7 @@ variable "create_network_firewall_dedicated_network_acl" {
 
 variable "network_firewall_inbound_acl_rules" {
   description = "Network firewall subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -320,6 +396,7 @@ variable "network_firewall_inbound_acl_rules" {
     to_port     = optional(number, 0)
     cidr_block  = optional(string, "0.0.0.0/0")
   }))
+
   default = [
     {
       rule_number = 100
@@ -334,6 +411,7 @@ variable "network_firewall_inbound_acl_rules" {
 
 variable "network_firewall_outbound_acl_rules" {
   description = "Network firewall subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -342,6 +420,7 @@ variable "network_firewall_outbound_acl_rules" {
     to_port     = optional(number, 0)
     cidr_block  = optional(string, "0.0.0.0/0")
   }))
+
   default = [
     {
       rule_number = 100

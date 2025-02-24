@@ -9,8 +9,10 @@ resource "aws_network_acl" "public" {
   subnet_ids = aws_subnet.public[*].id
 
   tags = merge(
-    { "Name" = "${var.vpc_name}-public-acl" },
-    var.tags
+    var.tags,
+    {
+      Name = "${var.vpc_name}-public-acl"
+    },
   )
 }
 
@@ -48,7 +50,6 @@ resource "aws_network_acl_rule" "public_outbound" {
   ipv6_cidr_block = lookup(var.public_outbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
-
 ################################################################################
 # Private Subnet Network ACLs
 ################################################################################
@@ -60,8 +61,10 @@ resource "aws_network_acl" "private" {
   subnet_ids = module.vpc.private_subnets
 
   tags = merge(
-    { "Name" = "${var.vpc_name}-private-acl" },
-    var.tags
+    var.tags,
+    {
+      Name = "${var.vpc_name}-private-acl"
+    },
   )
 }
 
@@ -110,8 +113,10 @@ resource "aws_network_acl" "database" {
   subnet_ids = module.vpc.database_subnets
 
   tags = merge(
-    { "Name" = "${var.vpc_name}-database-acl" },
-    var.tags
+    var.tags,
+    {
+      Name = "${var.vpc_name}-database-acl"
+    },
   )
 }
 
@@ -122,14 +127,14 @@ resource "aws_network_acl_rule" "database_inbound" {
 
   egress          = false
   rule_number     = var.database_inbound_acl_rules[count.index]["rule_number"]
-  rule_action     = var.private_inbound_acl_rules[count.index]["rule_action"]
-  protocol        = var.private_inbound_acl_rules[count.index]["protocol"]
-  from_port       = var.private_inbound_acl_rules[count.index]["from_port"]
-  to_port         = var.private_inbound_acl_rules[count.index]["to_port"]
-  cidr_block      = var.private_inbound_acl_rules[count.index]["cidr_block"]
-  icmp_code       = lookup(var.private_inbound_acl_rules[count.index], "icmp_code", null)
-  icmp_type       = lookup(var.private_inbound_acl_rules[count.index], "icmp_type", null)
-  ipv6_cidr_block = lookup(var.private_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
+  rule_action     = var.database_inbound_acl_rules[count.index]["rule_action"]
+  protocol        = var.database_inbound_acl_rules[count.index]["protocol"]
+  from_port       = var.database_inbound_acl_rules[count.index]["from_port"]
+  to_port         = var.database_inbound_acl_rules[count.index]["to_port"]
+  cidr_block      = var.database_inbound_acl_rules[count.index]["cidr_block"]
+  icmp_code       = lookup(var.database_inbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.database_inbound_acl_rules[count.index], "icmp_type", null)
+  ipv6_cidr_block = lookup(var.database_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
 resource "aws_network_acl_rule" "database_outbound" {
@@ -149,6 +154,57 @@ resource "aws_network_acl_rule" "database_outbound" {
   ipv6_cidr_block = lookup(var.database_outbound_acl_rules[count.index], "ipv6_cidr_block", null)
 }
 
+################################################################################
+# Lambda Subnet Network ACLs
+################################################################################
+
+resource "aws_network_acl" "lambda" {
+  count = var.create_lambda_dedicated_network_acl ? 1 : 0
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = aws_subnet.lambda[*].id
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-lambda-acl"
+    },
+  )
+}
+
+resource "aws_network_acl_rule" "lambda_inbound" {
+  count = var.create_lambda_dedicated_network_acl ? length(var.lambda_inbound_acl_rules) : 0
+
+  network_acl_id = aws_network_acl.lambda[0].id
+
+  egress          = false
+  rule_number     = var.lambda_inbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.lambda_inbound_acl_rules[count.index]["rule_action"]
+  protocol        = var.lambda_inbound_acl_rules[count.index]["protocol"]
+  from_port       = var.lambda_inbound_acl_rules[count.index]["from_port"]
+  to_port         = var.lambda_inbound_acl_rules[count.index]["to_port"]
+  cidr_block      = var.lambda_inbound_acl_rules[count.index]["cidr_block"]
+  icmp_code       = lookup(var.lambda_inbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.lambda_inbound_acl_rules[count.index], "icmp_type", null)
+  ipv6_cidr_block = lookup(var.lambda_inbound_acl_rules[count.index], "ipv6_cidr_block", null)
+}
+
+resource "aws_network_acl_rule" "lambda_outbound" {
+  count = var.create_lambda_dedicated_network_acl ? length(var.lambda_outbound_acl_rules) : 0
+
+  network_acl_id = aws_network_acl.lambda[0].id
+
+  egress          = true
+  rule_number     = var.lambda_outbound_acl_rules[count.index]["rule_number"]
+  rule_action     = var.lambda_outbound_acl_rules[count.index]["rule_action"]
+  protocol        = var.lambda_outbound_acl_rules[count.index]["protocol"]
+  from_port       = var.lambda_outbound_acl_rules[count.index]["from_port"]
+  to_port         = var.lambda_outbound_acl_rules[count.index]["to_port"]
+  cidr_block      = var.lambda_outbound_acl_rules[count.index]["cidr_block"]
+  icmp_code       = lookup(var.lambda_outbound_acl_rules[count.index], "icmp_code", null)
+  icmp_type       = lookup(var.lambda_outbound_acl_rules[count.index], "icmp_type", null)
+  ipv6_cidr_block = lookup(var.lambda_outbound_acl_rules[count.index], "ipv6_cidr_block", null)
+}
 
 ################################################################################
 # Network Firewall Subnet Network ACLs
@@ -161,8 +217,10 @@ resource "aws_network_acl" "network_firewall" {
   subnet_ids = aws_subnet.network_firewall[*].id
 
   tags = merge(
-    { "Name" = "${var.vpc_name}-network-firewall-acl" },
-    var.tags
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-acl"
+    },
   )
 }
 

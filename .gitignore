@@ -7,6 +7,9 @@
 *.terraform.lock.hcl
 plan
 
+# Taskctl
+.taskctl/
+
 # Crash log files
 crash.log
 

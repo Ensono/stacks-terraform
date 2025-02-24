@@ -1,5 +1,5 @@
 module "amido_stacks_infra" {
-  source = "../"
+  source = "../../"
 
   # Deployment Region
   region = "eu-west-1"
@@ -8,6 +8,8 @@ module "amido_stacks_infra" {
   vpc_name = "example-vpc"
 
   firewall_deletion_protection = false
+
+  flow_log_enabled = false
 
   tags = {}
 }
