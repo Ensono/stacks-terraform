@@ -175,6 +175,7 @@ variable "create_public_dedicated_network_acl" {
 
 variable "public_inbound_acl_rules" {
   description = "Public subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -197,6 +198,7 @@ variable "public_inbound_acl_rules" {
 
 variable "public_outbound_acl_rules" {
   description = "Public subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -225,6 +227,7 @@ variable "create_private_dedicated_network_acl" {
 
 variable "private_inbound_acl_rules" {
   description = "Private subnets inbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -247,6 +250,7 @@ variable "private_inbound_acl_rules" {
 
 variable "private_outbound_acl_rules" {
   description = "Private subnets outbound network ACLs"
+
   type = list(object({
     rule_number = number
     rule_action = string
@@ -275,7 +279,8 @@ variable "create_database_dedicated_network_acl" {
 
 variable "database_inbound_acl_rules" {
   description = "Database subnets inbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any
@@ -298,7 +303,8 @@ variable "database_inbound_acl_rules" {
 
 variable "database_outbound_acl_rules" {
   description = "Database subnets outbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any
@@ -327,7 +333,8 @@ variable "create_lambda_dedicated_network_acl" {
 
 variable "lambda_inbound_acl_rules" {
   description = "Lambda subnets inbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any
@@ -350,7 +357,8 @@ variable "lambda_inbound_acl_rules" {
 
 variable "lambda_outbound_acl_rules" {
   description = "Lambda subnets outbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any
@@ -379,7 +387,8 @@ variable "create_network_firewall_dedicated_network_acl" {
 
 variable "network_firewall_inbound_acl_rules" {
   description = "Network firewall subnets inbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any
@@ -402,7 +411,8 @@ variable "network_firewall_inbound_acl_rules" {
 
 variable "network_firewall_outbound_acl_rules" {
   description = "Network firewall subnets outbound network ACLs"
-  type        = list(object({
+
+  type = list(object({
     rule_number = number
     rule_action = string
     protocol    = any

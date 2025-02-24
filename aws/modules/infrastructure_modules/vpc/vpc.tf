@@ -117,7 +117,7 @@ resource "aws_subnet" "lambda" {
   tags = merge(
     var.tags,
     {
-      Name                                    = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
+      Name                              = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
       "kubernetes.io/role/internal-elb" = "0"
       "kubernetes.io/role/elb"          = "0"
       isPrivate                         = "true"
@@ -175,7 +175,7 @@ resource "aws_internet_gateway" "igw" {
   tags = merge(
     var.tags,
     {
-      Name =  "${var.vpc_name}-internet-gateway"
+      Name = "${var.vpc_name}-internet-gateway"
     },
   )
 }
