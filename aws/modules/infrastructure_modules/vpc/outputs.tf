@@ -13,19 +13,49 @@ output "public_subnet_ids" {
   value       = aws_subnet.public.*.id
 }
 
+output "database_subnet_ids" {
+  description = "The IDs of the database subnets created by this module."
+  value       = module.vpc.database_subnets
+}
+
+output "lambda_subnet_ids" {
+  description = "The IDs of the Lambda subnets created by this module."
+  value       = aws_subnet.lambda.*.id
+}
+
+output "firewall_subnet_ids" {
+  description = "The IDs of the Network Firewall subnets created by this module."
+  value       = aws_subnet.network_firewall.*.id
+}
+
 output "private_route_table_ids" {
   description = "The IDs of the private routing tables"
   value       = module.vpc.private_route_table_ids
 }
 
 output "private_subnet_cidrs" {
-  description = "The IDs of the public subnets created by this module."
+  description = "The CIDR blocks of the public subnets created by this module."
   value       = module.vpc.private_subnets_cidr_blocks
 }
 
 output "public_subnet_cidrs" {
-  description = "The IDs of the public subnets created by this module."
-  value       = [for k, _ in local.sorted_azs : aws_subnet.public[k].cidr_block]
+  description = "The CIDR blocks of the public subnets created by this module."
+  value       = aws_subnet.public.*.cidr_block
+}
+
+output "database_subnet_cidrs" {
+  description = "The CIDR blocks of the database subnets created by this module."
+  value       = module.vpc.private_subnets_cidr_blocks
+}
+
+output "lambda_subnet_cidrs" {
+  description = "The CIDR blocks of the lambda subnets created by this module."
+  value       = aws_subnet.lambda.*.cidr_block
+}
+
+output "firewall_subnet_cidrs" {
+  description = "The CIDR blocks of the Network Firewall subnets created by this module."
+  value       = aws_subnet.network_firewall.*.cidr_block
 }
 
 output "sorted_vpc_zone_ids" {
