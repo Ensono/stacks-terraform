@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "additional_eks" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_registry_scanning"></a> [enable\_registry\_scanning](#input\_enable\_registry\_scanning) | Whether to enable continuous registry scanning | `bool` | n/a | yes |
-| <a name="input_max_tagged_image_count"></a> [max\_tagged\_image\_count](#input\_max\_tagged\_image\_count) | The maximum number of tagged images to keep for each repository | `number` | n/a | yes |
+| <a name="input_max_tagged_image_count"></a> [max\_tagged\_image\_count](#input\_max\_tagged\_image\_count) | The maximum number of tagged images to keep for each repository | `number` | `100` | no |
 | <a name="input_max_untagged_image_count"></a> [max\_untagged\_image\_count](#input\_max\_untagged\_image\_count) | The maximum number of untagged images to keep for each repository | `number` | `1` | no |
 | <a name="input_pull_accounts"></a> [pull\_accounts](#input\_pull\_accounts) | List of accounts that can pull | `list(string)` | n/a | yes |
 | <a name="input_pull_and_push_accounts"></a> [pull\_and\_push\_accounts](#input\_pull\_and\_push\_accounts) | List of accounts that can pull and push | `list(string)` | n/a | yes |
