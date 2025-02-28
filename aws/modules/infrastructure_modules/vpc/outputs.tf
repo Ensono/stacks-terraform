@@ -48,6 +48,12 @@ output "database_subnet_cidrs" {
   value       = module.vpc.private_subnets_cidr_blocks
 }
 
+output "database_subnet_group_name" {
+  description = "RDS Database subnet name. This is the name of the RDS subnet which includes the VPC subnets"
+  value       = module.vpc.database_subnet_group_name
+}
+
+
 output "lambda_subnet_cidrs" {
   description = "The CIDR blocks of the lambda subnets created by this module."
   value       = aws_subnet.lambda.*.cidr_block
