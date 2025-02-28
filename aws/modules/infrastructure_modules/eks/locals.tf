@@ -65,7 +65,7 @@ locals {
         min_size        = var.eks_minimum_nodes
         max_size        = var.eks_maximum_nodes
         desired_size    = var.eks_desired_nodes
-        create_iam_role = local.create_node_iam_role ? false : true # As we have created the nodegroup role in this module, we do not want to create it again in the eks module
+        create_iam_role = local.create_node_iam_role ? false : true                                 # As we have created the nodegroup role in this module, we do not want to create it again in the eks module
         iam_role_arn    = local.create_node_iam_role ? aws_iam_role.node["general-${v}"].arn : null # As we have created the nodegroup role in this module, we should pass the role name
         subnet_ids      = [var.vpc_private_subnets[k]]
 
