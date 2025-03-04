@@ -27,7 +27,7 @@ module "vpc" {
   map_public_ip_on_launch = false
 
   private_subnet_tags = merge(
-    var.tags,
+    local.tags_no_name,
     {
       "kubernetes.io/cluster/${var.vpc_name}" = "owned"
       "kubernetes.io/role/internal-elb"       = "1"
@@ -41,7 +41,7 @@ module "vpc" {
   )
 
   private_route_table_tags = merge(
-    var.tags,
+    local.tags_no_name,
     {
       isPrivate  = "true"
       isPublic   = "false"
@@ -52,7 +52,7 @@ module "vpc" {
   )
 
   database_subnet_tags = merge(
-    var.tags,
+    local.tags_no_name,
     {
       "kubernetes.io/role/internal-elb" = "0"
       "kubernetes.io/role/elb"          = "0"
@@ -65,7 +65,7 @@ module "vpc" {
   )
 
   database_route_table_tags = merge(
-    var.tags,
+    local.tags_no_name,
     {
       isPrivate  = "true"
       isPublic   = "false"
@@ -75,7 +75,7 @@ module "vpc" {
     },
   )
 
-  tags = var.tags
+  tags = local.tags_no_name
 }
 
 # --- Public Subnets ---

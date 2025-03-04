@@ -19,7 +19,8 @@ resource "aws_route_table" "public" {
 
 # --- Firewall route table ---
 resource "aws_route_table" "network_firewall" {
-  count  = length(local.sorted_azs)
+  count = var.firewall_enabled ? length(aws_subnet.network_firewall) : 0
+
   vpc_id = module.vpc.vpc_id
 
   tags = merge(
@@ -102,12 +103,13 @@ resource "aws_route" "firewall_to_internet_gw" {
 
 # Default route towards Internet Gateway for Public if Firewall is disabled
 resource "aws_route" "public_to_internet_gw" {
-  count = var.firewall_enabled == false ? length(aws_subnet.public) : 0
+  count = var.firewall_enabled ? length(aws_subnet.public) : 0
 
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
   route_table_id         = aws_route_table.public[count.index].id
 }
+
 
 # Default route towards firewall for public subnets
 resource "aws_route" "public_to_firewall_endpoints" {

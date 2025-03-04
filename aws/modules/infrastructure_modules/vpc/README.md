@@ -163,10 +163,19 @@ downstream module: https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-
 
 | Name | Description |
 |------|-------------|
+| <a name="output_database_subnet_cidrs"></a> [database\_subnet\_cidrs](#output\_database\_subnet\_cidrs) | The CIDR blocks of the database subnets created by this module. |
+| <a name="output_database_subnet_group_name"></a> [database\_subnet\_group\_name](#output\_database\_subnet\_group\_name) | RDS Database subnet name. This is the name of the RDS subnet which includes the VPC subnets |
+| <a name="output_database_subnet_ids"></a> [database\_subnet\_ids](#output\_database\_subnet\_ids) | The IDs of the database subnets created by this module. |
+| <a name="output_firewall_subnet_cidrs"></a> [firewall\_subnet\_cidrs](#output\_firewall\_subnet\_cidrs) | The CIDR blocks of the Network Firewall subnets created by this module. |
+| <a name="output_firewall_subnet_ids"></a> [firewall\_subnet\_ids](#output\_firewall\_subnet\_ids) | The IDs of the Network Firewall subnets created by this module. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the VPC Created by this module. |
+| <a name="output_lambda_subnet_cidrs"></a> [lambda\_subnet\_cidrs](#output\_lambda\_subnet\_cidrs) | The CIDR blocks of the lambda subnets created by this module. |
+| <a name="output_lambda_subnet_ids"></a> [lambda\_subnet\_ids](#output\_lambda\_subnet\_ids) | The IDs of the Lambda subnets created by this module. |
 | <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | The IDs of the private routing tables |
-| <a name="output_private_subnet_cidrs"></a> [private\_subnet\_cidrs](#output\_private\_subnet\_cidrs) | The IDs of the public subnets created by this module. |
+| <a name="output_private_subnet_cidrs"></a> [private\_subnet\_cidrs](#output\_private\_subnet\_cidrs) | The CIDR blocks of the public subnets created by this module. |
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | The IDs of the private subnets created by this module. |
-| <a name="output_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#output\_public\_subnet\_cidrs) | The IDs of the public subnets created by this module. |
+| <a name="output_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#output\_public\_subnet\_cidrs) | The CIDR blocks of the public subnets created by this module. |
 | <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | The IDs of the public subnets created by this module. |
+| <a name="output_sorted_vpc_zone_ids"></a> [sorted\_vpc\_zone\_ids](#output\_sorted\_vpc\_zone\_ids) | The sorted AZ Zone IDs |
+| <a name="output_sorted_vpc_zone_ids_map"></a> [sorted\_vpc\_zone\_ids\_map](#output\_sorted\_vpc\_zone\_ids\_map) | The sorted AZ Zone IDs as a map |
 <!-- END_TF_DOCS -->

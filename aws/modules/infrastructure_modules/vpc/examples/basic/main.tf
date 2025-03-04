@@ -11,7 +11,9 @@ module "amido_stacks_infra" {
 
   flow_log_enabled = false
 
-  tags = {}
+  tags = {
+    Name = "example-vpc"
+  }
 }
 
 provider "aws" {

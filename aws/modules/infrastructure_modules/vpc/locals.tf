@@ -1,4 +1,9 @@
 locals {
+  # Resources passed into the AWS VPC module try to name themselves and passing
+  # in a tag called Name means they use that instead. This breaks naming when
+  # there's multiple resources, so unset it here.
+  tags_no_name = { for k, v in var.tags : k => v if !contains(["Name"], k) }
+
   # Note this won't work if a region has 10+ AZs, but none do currently,
   # besdies this module is designed for 3 AZs anyway...
   sorted_azs = sort(data.aws_availability_zones.available.zone_ids)
