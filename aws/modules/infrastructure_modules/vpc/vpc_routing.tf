@@ -103,7 +103,7 @@ resource "aws_route" "firewall_to_internet_gw" {
 
 # Default route towards Internet Gateway for Public if Firewall is disabled
 resource "aws_route" "public_to_internet_gw" {
-  count = var.firewall_enabled ? length(aws_subnet.public) : 0
+  count = var.firewall_enabled == false ? length(aws_subnet.public) : 0
 
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
