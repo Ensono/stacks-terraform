@@ -3,6 +3,11 @@ variable "region" {
   description = "The name of the region to use"
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Map of infrastructure tags"
+}
+
 variable "enable_registry_scanning" {
   type        = bool
   description = "Whether to enable continuous registry scanning"

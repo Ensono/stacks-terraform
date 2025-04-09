@@ -6,7 +6,7 @@ variable "region" {
 
 variable "tags" {
   type        = map(string)
-  description = "Map of infrastructure tags."
+  description = "Map of infrastructure tags"
 }
 
 variable "vpc_cidr" {

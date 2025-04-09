@@ -47,6 +47,8 @@ module "ecr" {
       },
     ]
   })
+
+  tags = var.tags
 }
 
 ## Pull Through Cache
@@ -92,6 +94,8 @@ module "ecr_pull_through_cache" {
       upstream_registry_url = v.upstream_registry_url
     }
   }
+
+  tags = var.tags
 }
 
 ## ECR Registry Scanning Rules
@@ -112,4 +116,6 @@ module "ecr_registry_scanning_rules" {
       filter_type    = "WILDCARD"
     }
   ]
+
+  tags = var.tags
 }
