@@ -215,3 +215,8 @@ variable "block_device_mappings" {
   type        = map(any)
   default     = {}
 }
+
+variable "node_iam_assume_role_policy" {
+  description = "Allowing you to override the assume role policy assigned to the node group IAM Role. If this is set then this module will create the IAM Role and attach this trust policy to it."
+  default     = null
+}
