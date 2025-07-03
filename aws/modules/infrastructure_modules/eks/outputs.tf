@@ -56,3 +56,13 @@ output "cluster_oidc_issuer_url" {
   description = "The URL on the EKS cluster for the OpenID Connect identity provider"
   value       = module.eks.cluster_oidc_issuer_url
 }
+
+####################
+# Nodegroup IAM Role
+####################
+
+output "node_iam_role_arn" {
+  description = "IAM Role ARN for EKS node group"
+  value       = aws_iam_role.node[0].arn
+  condition   = var.node_iam_assume_role_policy != null
+}
