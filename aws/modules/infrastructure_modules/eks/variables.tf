@@ -215,3 +215,9 @@ variable "block_device_mappings" {
   type        = map(any)
   default     = {}
 }
+
+variable "node_iam_assume_role_policy" {
+  description = "IAM assume role policy document to use for EKS node group IAM roles"
+  type        = string
+  default     = null
+}
