@@ -221,3 +221,9 @@ variable "node_iam_assume_role_policy" {
   type        = string
   default     = null
 }
+
+variable "create_container_registry" {
+  description = "determine if a container registry should be created"
+  type        = bool
+  default     = true
+}
