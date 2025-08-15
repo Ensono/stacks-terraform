@@ -145,7 +145,7 @@ module "logging_bucket" {
   count = var.flow_log_enabled ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "4.6.0"
+  version = "5.4.0"
 
   bucket                                = local.logging_bucket_name
   acl                                   = "private"

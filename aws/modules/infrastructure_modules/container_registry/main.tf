@@ -3,7 +3,7 @@ module "ecr" {
   for_each = toset(concat(var.repositories, flatten([for k, v in var.pull_through_cache_setup : [for v in v.images : "${k}/${v}"]])))
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.0.0"
 
   create_repository = true
 
@@ -81,7 +81,7 @@ module "ecr_pull_through_cache" {
   count = length(var.pull_through_cache_setup) > 0 ? 1 : 0
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.0.0"
 
   create_repository = false
 
@@ -103,7 +103,7 @@ module "ecr_registry_scanning_rules" {
   count = var.enable_registry_scanning ? 1 : 0
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.0.0"
 
   create_repository = false
 
@@ -112,8 +112,13 @@ module "ecr_registry_scanning_rules" {
   registry_scan_rules = [
     {
       scan_frequency = "CONTINUOUS_SCAN"
-      filter         = "*"
-      filter_type    = "WILDCARD"
+
+      filter = [
+        {
+          filter      = "*"
+          filter_type = "WILDCARD"
+        },
+      ]
     }
   ]
 
