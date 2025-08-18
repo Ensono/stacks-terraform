@@ -11,7 +11,19 @@ locals {
     )
   } : {}
 
-  cluster_addons = merge(local.cluster_container_insights_addon)
+  cluster_addons = merge(
+    {
+      coredns = {}
+      eks-pod-identity-agent = {
+        before_compute = true
+      }
+      kube-proxy = {}
+      vpc-cni = {
+        before_compute = true
+      }
+    },
+    local.cluster_container_insights_addon,
+  )
 
   eks_bootstrap_extra_args = <<-EOT
   [settings.kernel]
@@ -51,7 +63,6 @@ locals {
 
   eks_bottlerocket_base_node_config = {
     ami_type        = "BOTTLEROCKET_x86_64"
-    platform        = "bottlerocket"
     use_name_prefix = true
     ebs_optimized   = true
 
@@ -78,6 +89,14 @@ locals {
         create_iam_role = local.create_node_iam_role ? false : true                                 # As we have created the nodegroup role in this module, we do not want to create it again in the eks module
         iam_role_arn    = local.create_node_iam_role ? aws_iam_role.node["general-${v}"].arn : null # As
         subnet_ids      = [var.vpc_private_subnets[k]]
+
+        # `disk_size` is ignored by Bottlerocket at this time...
+        # disk_size             = 50
+        block_device_mappings = var.block_device_mappings
+
+        placement = {
+          tenancy = var.eks_node_tenancy
+        }
 
         instance_types = [var.eks_node_size]
       }

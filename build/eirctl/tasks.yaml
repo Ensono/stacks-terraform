@@ -1,5 +1,4 @@
 tasks:
-
   terraform:format:
     context: powershell
     description: Check Terraform Formatting
@@ -10,7 +9,7 @@ tasks:
     context: powershell
     description: Ensure that the environment is configured correctly
     command:
-      - Confirm-Environment -Path /app/build/config/stage_envvars.yml
+      - Confirm-Environment -Path /eirctl/build/config/stage_envvars.yml
 
   publish:github:
     context: powershell

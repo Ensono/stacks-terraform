@@ -17,43 +17,35 @@ module "eks_kms_key" {
 #############
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.19"
+  version = "~> 21.0.9"
 
-  vpc_id                          = var.vpc_id
-  subnet_ids                      = var.vpc_private_subnets
-  cluster_name                    = var.cluster_name
-  cluster_version                 = var.cluster_version
-  enable_irsa                     = true
-  cluster_endpoint_private_access = var.cluster_endpoint_private_access
-  cluster_endpoint_public_access  = var.cluster_endpoint_public_access
+  vpc_id                  = var.vpc_id
+  subnet_ids              = var.vpc_private_subnets
+  name                    = var.cluster_name
+  kubernetes_version      = var.cluster_version
+  enable_irsa             = true
+  endpoint_private_access = var.cluster_endpoint_private_access
+  endpoint_public_access  = var.cluster_endpoint_public_access
 
-  cluster_security_group_additional_rules = var.cluster_security_group_additional_rules
+  security_group_additional_rules = var.cluster_security_group_additional_rules
 
   node_security_group_additional_rules         = var.node_security_group_additional_rules
   node_security_group_enable_recommended_rules = var.node_security_group_enable_recommended_rules
 
-  cluster_enabled_log_types = var.cluster_enabled_log_types
+  enabled_log_types = var.cluster_enabled_log_types
 
-  cluster_addons = local.cluster_addons
+  addons = local.cluster_addons
 
   create_kms_key         = var.create_kms_key
   kms_key_administrators = var.trusted_role_arn == "" ? [] : ["${data.aws_caller_identity.this.arn}", "${var.trusted_role_arn}"]
 
-  cluster_encryption_config = {
+  encryption_config = {
     resources        = ["secrets"]
     provider_key_arn = module.eks_kms_key.arn
   }
 
   authentication_mode                      = "API_AND_CONFIG_MAP"
   enable_cluster_creator_admin_permissions = var.cluster_creator_admin_permissions
-
-  eks_managed_node_group_defaults = {
-    disk_size             = 50
-    block_device_mappings = var.block_device_mappings
-    placement = {
-      tenancy = var.eks_node_tenancy
-    }
-  }
 
   eks_managed_node_groups = local.eks_managed_node_groups
 

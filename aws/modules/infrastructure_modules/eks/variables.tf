@@ -29,7 +29,7 @@ variable "cluster_version" {
   type        = string
   description = "Cluster Kubernetes Version"
 
-  default = 1.30
+  default = 1.32
 }
 
 variable "cluster_endpoint_private_access" {
@@ -73,7 +73,7 @@ variable "cluster_addon_container_insights_config" {
   description = "The configuration for the Container Insights Addon 'amazon-cloudwatch-observability'. Addon version is is tied to the Kubernetes Version. See: `aws eks describe-addon-versions --kubernetes-version <version> --addon-name 'amazon-cloudwatch-observability'` for available versions"
 
   default = {
-    addon_version = "v1.8.0-eksbuild.1"
+    addon_version = "v4.3.0-eksbuild.1"
   }
 }
 

@@ -22,4 +22,6 @@ module "ecr_repositories" {
   max_tagged_image_count = 100
 
   enable_registry_scanning = true
+
+  tags = {}
 }

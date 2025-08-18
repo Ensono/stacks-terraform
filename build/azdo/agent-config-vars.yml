@@ -1,5 +1,6 @@
 variables:
   - name: pool_vm_image
-    value: ubuntu-22.04
-  - name: TaskctlVersion
-    value: 1.5.1
+    value: ubuntu-24.04
+
+  - name: EirctlVersion
+    value: 0.7.6
