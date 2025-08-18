@@ -1,7 +1,4 @@
-
-# Set the build name which will define the Build Number
 name: 8.0$(Rev:.r)
-
 pr:
   - master
 
@@ -77,7 +74,7 @@ stages:
           inputs:
             targetType: inline
             script: |
-              eirctlctl release
+              eirctl release
           env:
             STAGE: "release"
             PUBLISH_RELEASE: "true"
