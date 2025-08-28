@@ -73,3 +73,18 @@ output "sorted_vpc_zone_ids_map" {
   description = "The sorted AZ Zone IDs as a map"
   value       = local.sorted_azs_map
 }
+
+output "nat_gateway_public_ips" {
+  description = "NAT Gateway public IPs"
+  value       = [for val in aws_nat_gateway.public : val.public_ip]
+}
+
+output "nat_gateway_private_ips" {
+  description = "NAT Gateway private IPs"
+  value       = [for val in aws_nat_gateway.public : val.private_ip]
+}
+
+output "nat_gateway_allocation_ids" {
+  description = "NAT Gateway EIP allocation IDs"
+  value       = [for val in aws_nat_gateway.public : val.allocation_id]
+}
