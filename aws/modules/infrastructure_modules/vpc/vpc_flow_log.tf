@@ -170,15 +170,11 @@ module "logging_bucket" {
   }
 }
 
-# TODO: Revert back to cloudposse's version when this issue is answered:
-# https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3-bucket/issues/66
 module "vpc_flow_logs" {
   count = var.flow_log_enabled ? 1 : 0
 
-  source = "git::https://github.com/ElvenSpellmaker/terraform-aws-vpc-flow-logs-s3-bucket?ref=fix/1.3.0"
-
-  # source  = "cloudposse/vpc-flow-logs-s3-bucket/aws"
-  # version = "1.3.0"
+  source  = "cloudposse/vpc-flow-logs-s3-bucket/aws"
+  version = "1.3.1"
 
   name = "${var.vpc_name}-vpc-flow-logs"
 
