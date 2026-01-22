@@ -33,6 +33,7 @@ resource "azurerm_application_insights" "default" {
   resource_group_name = azurerm_resource_group.default.name
   location            = var.resource_group_location
   application_type    = var.log_application_type
+  workspace_id        = azurerm_log_analytics_workspace.default.id
   depends_on          = [azurerm_resource_group.default]
   lifecycle {
     ignore_changes = [
