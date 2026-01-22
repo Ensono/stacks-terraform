@@ -40,15 +40,17 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    type                = var.nodepool_type # "VirtualMachineScaleSets" # default
-    enable_auto_scaling = var.enable_auto_scaling
-    max_count           = var.max_nodes
-    min_count           = var.min_nodes
-    name                = "default"
-    os_disk_size_gb     = var.os_disk_size
-    vm_size             = var.vm_size
-    node_count          = var.min_nodes
-    vnet_subnet_id      = azurerm_subnet.default.0.id
+    type                        = var.nodepool_type # "VirtualMachineScaleSets" # default
+    enable_auto_scaling         = var.enable_auto_scaling
+    max_count                   = var.max_nodes
+    min_count                   = var.min_nodes
+    name                        = "default"
+    os_disk_size_gb             = var.os_disk_size
+    vm_size                     = var.vm_size
+    node_count                  = var.min_nodes
+    vnet_subnet_id              = azurerm_subnet.default.0.id
+    temporary_name_for_rotation = "default_tmp"
+    zones                       = var.enable_availability_zones ? var.availabilty_zones : null # Only available on provision
   }
 
   http_application_routing_enabled  = false
@@ -93,12 +95,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   name                  = each.key
   kubernetes_cluster_id = azurerm_kubernetes_cluster.default[0].id
   vm_size               = each.value.vm_size
-
-  enable_auto_scaling = each.value.auto_scaling
-  min_count           = each.value.min_nodes
-  max_count           = each.value.max_nodes
-  node_count          = each.value.min_nodes
-  vnet_subnet_id      = azurerm_subnet.default.0.id
+  enable_auto_scaling   = each.value.auto_scaling
+  min_count             = each.value.min_nodes
+  max_count             = each.value.max_nodes
+  node_count            = each.value.min_nodes
+  vnet_subnet_id        = azurerm_subnet.default.0.id
+  zones                 = each.value.enable_availability_zones ? each.value.availabilty_zones : null # Only available on provision
 }
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR
