@@ -379,6 +379,13 @@ variable "private_cluster_enabled" {
   default = false
 }
 
+variable "oidc_issuer_enabled" {
+  type        = bool
+  description = "Enable OIDC issuer for the AKS cluster to support workload identity federation. Required for Azure AD Workload Identity integration; set to false only if you do not plan to use workload identity federation with this cluster."
+
+  default = true
+}
+
 ###########################
 # MISC SETTINGS
 ###########################

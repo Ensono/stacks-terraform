@@ -30,6 +30,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   kubernetes_version      = var.cluster_version
   sku_tier                = var.cluster_sku_tier
   private_cluster_enabled = var.private_cluster_enabled
+  oidc_issuer_enabled     = var.oidc_issuer_enabled
 
   linux_profile {
     admin_username = var.admin_username
