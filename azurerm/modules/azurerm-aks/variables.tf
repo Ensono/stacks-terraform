@@ -379,6 +379,13 @@ variable "private_cluster_enabled" {
   default = false
 }
 
+variable "oidc_issuer_enabled" {
+  type        = bool
+  description = "Enable OIDC issuer for the AKS cluster"
+
+  default = true
+}
+
 ###########################
 # MISC SETTINGS
 ###########################
