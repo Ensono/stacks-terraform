@@ -45,7 +45,7 @@ output "public_subnet_cidrs" {
 
 output "database_subnet_cidrs" {
   description = "The CIDR blocks of the database subnets created by this module."
-  value       = module.vpc.private_subnets_cidr_blocks
+  value       = module.vpc.database_subnets_cidr_blocks
 }
 
 output "database_subnet_group_name" {
