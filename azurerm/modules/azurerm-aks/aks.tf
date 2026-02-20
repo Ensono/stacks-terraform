@@ -42,7 +42,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   default_node_pool {
     # TODO: variablise below:
     type                = var.nodepool_type # "VirtualMachineScaleSets" # default
-    enable_auto_scaling = var.enable_auto_scaling
+    auto_scaling_enabled = var.auto_scaling_enabled
     max_count           = var.max_nodes
     min_count           = var.min_nodes
     name                = "default"
@@ -95,7 +95,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.default[0].id
   vm_size               = each.value.vm_size
 
-  enable_auto_scaling = each.value.auto_scaling
+  auto_scaling_enabled = each.value.auto_scaling
   min_count           = each.value.min_nodes
   max_count           = each.value.max_nodes
   node_count          = each.value.min_nodes
