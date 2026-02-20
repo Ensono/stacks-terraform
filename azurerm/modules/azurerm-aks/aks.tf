@@ -41,15 +41,15 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     # TODO: variablise below:
-    type                = var.nodepool_type # "VirtualMachineScaleSets" # default
+    type                 = var.nodepool_type # "VirtualMachineScaleSets" # default
     auto_scaling_enabled = var.auto_scaling_enabled
-    max_count           = var.max_nodes
-    min_count           = var.min_nodes
-    name                = "default"
-    os_disk_size_gb     = var.os_disk_size
-    vm_size             = var.vm_size
-    node_count          = var.min_nodes
-    vnet_subnet_id      = azurerm_subnet.default.0.id
+    max_count            = var.max_nodes
+    min_count            = var.min_nodes
+    name                 = "default"
+    os_disk_size_gb      = var.os_disk_size
+    vm_size              = var.vm_size
+    node_count           = var.min_nodes
+    vnet_subnet_id       = azurerm_subnet.default.0.id
   }
 
   http_application_routing_enabled  = false
@@ -96,10 +96,10 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   vm_size               = each.value.vm_size
 
   auto_scaling_enabled = each.value.auto_scaling
-  min_count           = each.value.min_nodes
-  max_count           = each.value.max_nodes
-  node_count          = each.value.min_nodes
-  vnet_subnet_id      = azurerm_subnet.default.0.id
+  min_count            = each.value.min_nodes
+  max_count            = each.value.max_nodes
+  node_count           = each.value.min_nodes
+  vnet_subnet_id       = azurerm_subnet.default.0.id
 }
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR
