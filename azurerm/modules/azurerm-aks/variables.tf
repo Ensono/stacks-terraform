@@ -276,7 +276,7 @@ variable "nodepool_type" {
   default = "VirtualMachineScaleSets"
 }
 
-variable "enable_auto_scaling" {
+variable "auto_scaling_enabled" {
   type = bool
 
   default = false
