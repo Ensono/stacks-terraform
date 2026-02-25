@@ -365,6 +365,12 @@ variable "vm_size" {
   default = "Standard_DS2_v2"
 }
 
+variable "temporary_name_for_rotation" {
+  description = "Temporary name for node pool rotation. Required when updating sensitive default node pool properties (name, vm_size, os_disk_size_gb, zones, kubelet_config, kubelet_disk_type, linux_os_config, max_pods, only_critical_addons_enabled, os_disk_type, pod_subnet_id, snapshot_id, ultra_ssd_enabled, vnet_subnet_id, host_encryption_enabled, node_public_ip_enabled, fips_enabled). Azure uses this to create a temporary node pool during the update process."
+  type        = string
+  default     = ""
+}
+
 variable "is_cluster_private" {
   type        = bool
   description = "Whether or not expose the Ingress over internet"

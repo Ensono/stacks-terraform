@@ -49,6 +49,11 @@ output "acr_registry_name" {
   depends_on  = [azurerm_resource_group.default]
 }
 
+output "temporary_name_for_rotation" {
+  description = "The temporary node pool name used for rotation operations"
+  value       = var.temporary_name_for_rotation
+}
+
 output "aks_node_resource_group" {
   value = azurerm_kubernetes_cluster.default.0.node_resource_group
 }
