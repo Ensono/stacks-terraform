@@ -73,7 +73,7 @@ variable "resource_group_tags" {
 # IDENTITY SETTINGS
 ###########################
 variable "create_user_identity" {
-  description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
+  description = "Creates a User Managed Identity - which can be used subsequently with AAD pod identity extensions"
   type        = bool
 
   default = true
@@ -175,7 +175,7 @@ variable "dns_parent_resource_group" {
 
 variable "dns_parent_zone" {
   type        = string
-  description = "Dns zone name for the parnet - e.g. domain.com. NOTE: you need control over this domain to add the records here"
+  description = "Dns zone name for the parent - e.g. domain.com. NOTE: you need control over this domain to add the records here"
 
   default = null
 }
@@ -369,6 +369,11 @@ variable "temporary_name_for_rotation" {
   description = "Temporary name for node pool rotation. Required when updating sensitive default node pool properties (name, vm_size, os_disk_size_gb, zones, kubelet_config, kubelet_disk_type, linux_os_config, max_pods, only_critical_addons_enabled, os_disk_type, pod_subnet_id, snapshot_id, ultra_ssd_enabled, vnet_subnet_id, host_encryption_enabled, node_public_ip_enabled, fips_enabled). Azure uses this to create a temporary node pool during the update process."
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.temporary_name_for_rotation == "" || can(regex("^[a-z][a-z0-9]{0,11}$", var.temporary_name_for_rotation))
+    error_message = "temporary_name_for_rotation must be empty or a valid AKS node pool name: 1-12 characters, start with a lowercase letter, and contain only lowercase alphanumeric characters."
+  }
 }
 
 variable "is_cluster_private" {
@@ -416,7 +421,7 @@ variable "log_application_type" {
 }
 
 variable "key_vault_name" {
-  description = "Key Vault name - if not specificied will default to computed naming convention"
+  description = "Key Vault name - if not specified will default to computed naming convention"
   type        = string
 
   default = ""
