@@ -52,6 +52,12 @@ variable "dns_resource_group" {
   default     = null
 }
 
+variable "azure_subscription_id" {
+  type        = string
+  description = "Optional subscription ID used by ACME azuredns challenge for DNS zone service discovery"
+  default     = null
+}
+
 ###########################
 # CONDITIONAL SETTINGS
 ##########################

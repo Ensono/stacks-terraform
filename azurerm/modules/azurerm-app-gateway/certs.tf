@@ -65,11 +65,16 @@ resource "acme_certificate" "default" {
   disable_complete_propagation = var.disable_complete_propagation
 
   dns_challenge {
-    provider = "azure"
-    config = {
-      AZURE_RESOURCE_GROUP = local.dns_resource_group
-    }
+    provider = "azuredns"
+    config = merge(
+      {
+        AZURE_RESOURCE_GROUP         = local.dns_resource_group
+        LEGO_AZUREDNS_RESOURCE_GROUP = local.dns_resource_group
+      },
+      var.azure_subscription_id != null ? {
+        AZURE_SUBSCRIPTION_ID         = var.azure_subscription_id
+        LEGO_AZUREDNS_SUBSCRIPTION_ID = var.azure_subscription_id
+      } : {}
+    )
   }
 }
-
-
