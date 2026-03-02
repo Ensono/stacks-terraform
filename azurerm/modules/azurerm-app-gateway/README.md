@@ -1,21 +1,33 @@
 # SSL APP GATEWAY
 
-DESCRIPTION:
----
+## DESCRIPTION
 
+## PRE_REQUISITES
 
-
-PRE_REQUISITES:
----
 NB: below only qualifies if you have run the [amido-stacks-cli](https://amido.github.io/stacks/docs/getting_started_demo) to create your component repo
-NB: Because AzureDNS is not a supported LetsEncrypt plugin to authenticate an SSL certificate
-As such you must first run the infrastructure once with a sample selfsigned cert included in the repo
+This module now uses the LEGO `azuredns` DNS provider for ACME DNS-01 challenges.
+
+Migration note:
+
+- Deprecated LEGO `azure` provider support has been removed from this module configuration.
+- `LEGO_AZURE_BYPASS_DEPRECATION` is no longer required.
+- Existing Azure authentication environment variables remain supported via ACME provider aliases:
+  - `ARM_CLIENT_ID` -> `AZURE_CLIENT_ID`
+  - `ARM_CLIENT_SECRET` -> `AZURE_CLIENT_SECRET`
+  - `ARM_TENANT_ID` -> `AZURE_TENANT_ID`
+  - `ARM_SUBSCRIPTION_ID` -> `AZURE_SUBSCRIPTION_ID`
+
+For DNS zone discovery/scoping:
+
+- `dns_resource_group` maps to `AZURE_RESOURCE_GROUP`
+- optional `azure_subscription_id` maps to `AZURE_SUBSCRIPTION_ID`
 
 Once complete please run the cert creation process for your domain:
-```
+
+```bash
 cd $CreatedProjectDir
 $ docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
-docker: $ cd /usr/data && chmod +x certbot.sh 
+docker: $ cd /usr/data && chmod +x certbot.sh
 docker: $ ./certbot.sh your.domain.com email@domain.com pfxPassword1 # password is optional if ommitted will default to Password1
 ```
 
@@ -23,14 +35,17 @@ Use only the subdomain as is - the script will add the wildcard so your certific
 
 PS: ensure your directory you bind to on container is as per above `/usr/data`
 
-Follow the onscreen instructions as this process has to be manual for `AzureDNS` 
-Ensure your Azure created subdomain NS records have been correctly referenced by the APEX domain registrar (speak to your network admins to ensure this is the case if you are not able to do this yourself) 
+Follow the onscreen instructions as this process has to be manual for `AzureDNS`
+Ensure your Azure created subdomain NS records have been correctly referenced
+by the APEX domain registrar (speak to your network admins to ensure this is
+the case if you are not able to do this yourself)
 
 Create the TXT record as instructed
 
 ```bash
-$ dig TXT _acme-challenge.nonprod.amidostacks.com
+dig TXT _acme-challenge.nonprod.amidostacks.com
 ```
+
 If all successful
 
 ## Requirements
@@ -79,6 +94,7 @@ No modules.
 | <a name="input_app_gateway_sku"></a> [app\_gateway\_sku](#input\_app\_gateway\_sku) | he Name of the SKU to use for this Application Gateway. Possible values are Standard\_Small, Standard\_Medium, Standard\_Large, Standard\_v2, WAF\_Medium, WAF\_Large, and WAF\_v2 | `string` | `"Standard_v2"` | no |
 | <a name="input_app_gateway_tier"></a> [app\_gateway\_tier](#input\_app\_gateway\_tier) | The Tier of the SKU to use for this Application Gateway. Possible values are Standard\_v2, WAF\_v2 | `string` | `"Standard_v2"` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | n/a | `list` | `[]` | no |
+| <a name="input_azure_subscription_id"></a> [azure\_subscription\_id](#input\_azure\_subscription\_id) | Optional subscription ID used by ACME azuredns challenge for DNS zone service discovery | `string` | `null` | no |
 | <a name="input_cert_name"></a> [cert\_name](#input\_cert\_name) | Certificate name stored under certs/ locally, to be used for SSL appgateway | `string` | `"sample.cert.pfx"` | no |
 | <a name="input_create_ssl_cert"></a> [create\_ssl\_cert](#input\_create\_ssl\_cert) | ########################## CONDITIONAL SETTINGS ######################### | `bool` | `true` | no |
 | <a name="input_create_valid_cert"></a> [create\_valid\_cert](#input\_create\_valid\_cert) | States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false) | `bool` | `true` | no |
