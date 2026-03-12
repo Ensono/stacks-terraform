@@ -14,3 +14,6 @@ pipelines:
     - task: publish:github
       depends_on:
         - setup:environment
+
+  doc:terraform:generate:
+    - task: doc:terraform:generate

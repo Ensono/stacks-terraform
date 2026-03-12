@@ -15,4 +15,13 @@ tasks:
     context: powershell
     description: Publish Release to GitHub
     command:
-      - Publish-GitHubRelease -GenerateReleaseNotes $true -UploadArtifacts $false 
+      - Publish-GitHubRelease -GenerateReleaseNotes $true -UploadArtifacts $false
+
+  doc:terraform:generate:
+    context: powershell
+    description: Generates Doc for a module. Must supply a TF_DIR environment variable.
+    command:
+      - terraform-docs --output-file README.md markdown ${env:TF_DIR}
+    required:
+      env:
+        - TF_DIR
