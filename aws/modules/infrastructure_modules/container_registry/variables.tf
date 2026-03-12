@@ -30,6 +30,55 @@ variable "max_tagged_image_count" {
   description = "The maximum number of tagged images to keep for each repository"
 }
 
+variable "additional_lifecycle_rules" {
+  description = <<-EOT
+    Optional additional ECR lifecycle rules to insert before the default catch-all
+    tagged image rule. Use this to give specific tag prefixes their own independent
+    retention counter.
+
+    Rules are automatically assigned rulePriority values:
+      - Priority 1        : default untagged rule
+      - Priority 2..N+1   : your additional rules (in list order)
+      - Priority N+2      : default catch-all tagged rule
+
+    This means more specific prefix rules are always evaluated before the
+    catch-all, which is required by AWS ECR.
+
+    Example — keep 100 main-* images separately:
+    additional_lifecycle_rules = [
+      {
+        description = "Keep last 100 'main-*' tagged images"
+
+        selection = {
+          tagStatus     = "tagged"
+          tagPrefixList = ["main-"]
+          countType     = "imageCountMoreThan"
+          countNumber   = 100
+        }
+
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  EOT
+
+  type = list(object({
+    description = string
+    selection = object({
+      tagStatus     = string
+      tagPrefixList = optional(list(string))
+      countType     = string
+      countNumber   = number
+    })
+    action = object({
+      type = string
+    })
+  }))
+
+  default = []
+}
+
 variable "pull_accounts" {
   type        = list(string)
   description = "List of accounts that can pull"

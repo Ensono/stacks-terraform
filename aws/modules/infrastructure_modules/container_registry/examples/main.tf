@@ -23,5 +23,22 @@ module "ecr_repositories" {
 
   enable_registry_scanning = true
 
+  additional_lifecycle_rules = [
+    {
+      description = "Keep last 100 'main-*' tagged images"
+
+      selection = {
+        tagStatus     = "tagged"
+        tagPrefixList = ["main-"]
+        countType     = "imageCountMoreThan"
+        countNumber   = 100
+      }
+
+      action = {
+        type = "expire"
+      }
+    }
+  ]
+
   tags = {}
 }

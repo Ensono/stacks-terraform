@@ -28,22 +28,22 @@ data "aws_iam_policy_document" "additional_eks" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | > 5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | > 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 1.6.0 |
-| <a name="module_ecr_pull_through_cache"></a> [ecr\_pull\_through\_cache](#module\_ecr\_pull\_through\_cache) | terraform-aws-modules/ecr/aws | 1.6.0 |
-| <a name="module_ecr_registry_scanning_rules"></a> [ecr\_registry\_scanning\_rules](#module\_ecr\_registry\_scanning\_rules) | terraform-aws-modules/ecr/aws | 1.6.0 |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 3.2.0 |
+| <a name="module_ecr_pull_through_cache"></a> [ecr\_pull\_through\_cache](#module\_ecr\_pull\_through\_cache) | terraform-aws-modules/ecr/aws | 3.2.0 |
+| <a name="module_ecr_registry_scanning_rules"></a> [ecr\_registry\_scanning\_rules](#module\_ecr\_registry\_scanning\_rules) | terraform-aws-modules/ecr/aws | 3.2.0 |
 
 ## Resources
 
@@ -56,17 +56,18 @@ data "aws_iam_policy_document" "additional_eks" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_additional_lifecycle_rules"></a> [additional\_lifecycle\_rules](#input\_additional\_lifecycle\_rules) | Optional additional ECR lifecycle rules to insert before the default catch-all<br/>tagged image rule. Use this to give specific tag prefixes their own independent<br/>retention counter.<br/><br/>Rules are automatically assigned rulePriority values:<br/>  - Priority 1        : default untagged rule<br/>  - Priority 2..N+1   : your additional rules (in list order)<br/>  - Priority N+2      : default catch-all tagged rule<br/><br/>This means more specific prefix rules are always evaluated before the<br/>catch-all, which is required by AWS ECR.<br/><br/>Example — keep 100 main-* images separately:<br/>additional\_lifecycle\_rules = [<br/>  {<br/>    description = "Keep last 100 'main-*' tagged images"<br/><br/>    selection = {<br/>      tagStatus     = "tagged"<br/>      tagPrefixList = ["main-"]<br/>      countType     = "imageCountMoreThan"<br/>      countNumber   = 100<br/>    }<br/><br/>    action = {<br/>      type = "expire"<br/>    }<br/>  }<br/>] | <pre>list(object({<br/>    description = string<br/>    selection = object({<br/>      tagStatus     = string<br/>      tagPrefixList = optional(list(string))<br/>      countType     = string<br/>      countNumber   = number<br/>    })<br/>    action = object({<br/>      type = string<br/>    })<br/>  }))</pre> | `[]` | no |
 | <a name="input_enable_registry_scanning"></a> [enable\_registry\_scanning](#input\_enable\_registry\_scanning) | Whether to enable continuous registry scanning | `bool` | n/a | yes |
 | <a name="input_max_tagged_image_count"></a> [max\_tagged\_image\_count](#input\_max\_tagged\_image\_count) | The maximum number of tagged images to keep for each repository | `number` | n/a | yes |
 | <a name="input_max_untagged_image_count"></a> [max\_untagged\_image\_count](#input\_max\_untagged\_image\_count) | The maximum number of untagged images to keep for each repository | `number` | `1` | no |
 | <a name="input_pull_accounts"></a> [pull\_accounts](#input\_pull\_accounts) | List of accounts that can pull | `list(string)` | n/a | yes |
 | <a name="input_pull_and_push_accounts"></a> [pull\_and\_push\_accounts](#input\_pull\_and\_push\_accounts) | List of accounts that can pull and push | `list(string)` | n/a | yes |
 | <a name="input_pull_through_cache_accounts"></a> [pull\_through\_cache\_accounts](#input\_pull\_through\_cache\_accounts) | A default list of accounts for the Pull Through Cache if not configured in the `pull_through_cache_setup`. Defaults to the calling account root | `list(string)` | `[]` | no |
-| <a name="input_pull_through_cache_setup"></a> [pull\_through\_cache\_setup](#input\_pull\_through\_cache\_setup) | The set-up for the Pull Through Cache, an object like {ecr-public = {images = ["foo"] upstream\_registry\_url = "public.ecr.aws"}} | <pre>map(<br>      object({<br>      upstream_registry_url = string<br>      images
-     = list(string)<br>      accounts              = optional(list(string))<br>    })<br>  )</pre> | n/a | yes |
+| <a name="input_pull_through_cache_setup"></a> [pull\_through\_cache\_setup](#input\_pull\_through\_cache\_setup) | The set-up for the Pull Through Cache, an object like {ecr-public = {images = ["foo"] upstream\_registry\_url = "public.ecr.aws"}} | <pre>map(<br/>    object({<br/>      upstream_registry_url = string<br/>      images                = list(string)<br/>      accounts              = optional(list(string))<br/>    })<br/>  )</pre> | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The name of the region to use | `string` | n/a | yes |
 | <a name="input_repositories"></a> [repositories](#input\_repositories) | A list of the repositories to create | `list(string)` | n/a | yes |
 | <a name="input_repository_image_tag_mutability"></a> [repository\_image\_tag\_mutability](#input\_repository\_image\_tag\_mutability) | Whether the repositories are MUTABLE or IMMUTABLE. Best choice is IMMUTABLE | `string` | `"IMMUTABLE"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Map of infrastructure tags | `map(string)` | n/a | yes |
 
 ## Outputs
 
