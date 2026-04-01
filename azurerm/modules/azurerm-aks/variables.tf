@@ -376,18 +376,32 @@ variable "temporary_name_for_rotation" {
   }
 }
 
+variable "internal_ingress_enabled" {
+  type        = bool
+  description = "Preferred input. When true, ingress integrations such as App Gateway should target the internal NGINX ingress IP instead of the public ingress IP."
+
+  default = null
+}
+
 variable "is_cluster_private" {
   type        = bool
-  description = "Whether or not expose the Ingress over internet"
+  description = "Deprecated alias for internal_ingress_enabled. When true, ingress integrations such as App Gateway should target the internal NGINX ingress IP instead of the public ingress IP."
 
-  default = false
+  default = null
+}
+
+variable "aks_private_cluster_enabled" {
+  type        = bool
+  description = "Preferred input. When true, the AKS API server and control plane are private."
+
+  default = null
 }
 
 variable "private_cluster_enabled" {
   type        = bool
-  description = "Set cluster access private"
+  description = "Deprecated alias for aks_private_cluster_enabled. When true, the AKS API server and control plane are private."
 
-  default = false
+  default = null
 }
 
 variable "oidc_issuer_enabled" {

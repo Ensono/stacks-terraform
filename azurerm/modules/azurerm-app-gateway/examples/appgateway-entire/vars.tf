@@ -121,9 +121,15 @@ variable "acr_resource_group" {
   default = ""
 }
 
-variable "is_cluster_private" {
+variable "internal_ingress_enabled" {
   type        = bool
-  description = "Set cluster private - API only accessible over internal network"
+  description = "When true, App Gateway targets the internal NGINX ingress IP instead of the public ingress IP."
+  default     = false
+}
+
+variable "aks_private_cluster_enabled" {
+  type        = bool
+  description = "When true, the AKS API server and control plane are private."
   default     = false
 }
 
