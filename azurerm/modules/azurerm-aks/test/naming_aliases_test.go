@@ -41,7 +41,7 @@ func TestExamplesPreferPreferredNaming(t *testing.T) {
 	appGatewayExampleContents, err := os.ReadFile(filepath.Join("..", "..", "azurerm-app-gateway", "examples", "appgateway-entire", "main.tf"))
 	require.NoError(t, err)
 
-	appGatewayVarsContents, err := os.ReadFile(filepath.Join("..", "..", "azurerm-app-gateway", "examples", "appgateway-entire", "vars.tf"))
+	appGatewayVarsContents, err := os.ReadFile(filepath.Join("..", "..", "azurerm-app-gateway", "examples", "appgateway-entire", "variables.tf"))
 	require.NoError(t, err)
 
 	aksExampleContents, err := os.ReadFile(filepath.Join("..", "examples", "entire-infra", "main.tf"))

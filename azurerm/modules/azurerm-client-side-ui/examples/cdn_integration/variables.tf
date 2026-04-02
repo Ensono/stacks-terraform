@@ -94,7 +94,7 @@ variable "enabled" {
 
 ###########################
 # DNS
-########################### 
+###########################
 
 variable "create_dns_zone" {
   type        = bool

@@ -65,7 +65,7 @@ variable "resource_tags" {
   default     = {}
 }
 
-# Each region must have corresponding a shortend name for resource naming purposes 
+# Each region must have corresponding a shortend name for resource naming purposes
 variable "location_name_map" {
   type = map(string)
 
