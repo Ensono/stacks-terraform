@@ -48,6 +48,11 @@ dig TXT _acme-challenge.nonprod.amidostacks.com
 
 If all successful
 
+If Let's Encrypt has deactivated the ACME account previously used by this module,
+set `acme_account_key_rotation_token` to a new value before re-enabling
+`create_valid_cert`. Changing the token forces Terraform to generate a new ACME
+account key and registration without manual state edits.
+
 ## Requirements
 
 | Name | Version |
@@ -89,6 +94,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_acme_email"></a> [acme\_email](#input\_acme\_email) | Email for Acme registration, must be a valid email | `string` | n/a | yes |
+| <a name="input_acme_account_key_rotation_token"></a> [acme\_account\_key\_rotation\_token](#input\_acme\_account\_key\_rotation\_token) | Optional token used to force recreation of the ACME account key and registration. Change this value to recover from a deactivated ACME account. | `string` | `null` | no |
 | <a name="input_aks_ingress_ip"></a> [aks\_ingress\_ip](#input\_aks\_ingress\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_aks_resource_group"></a> [aks\_resource\_group](#input\_aks\_resource\_group) | n/a | `string` | n/a | yes |
 | <a name="input_app_gateway_sku"></a> [app\_gateway\_sku](#input\_app\_gateway\_sku) | he Name of the SKU to use for this Application Gateway. Possible values are Standard\_Small, Standard\_Medium, Standard\_Large, Standard\_v2, WAF\_Medium, WAF\_Large, and WAF\_v2 | `string` | `"Standard_v2"` | no |

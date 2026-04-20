@@ -192,6 +192,12 @@ variable "acme_email" {
   description = "Email for Acme registration, must be a valid email"
 }
 
+variable "acme_account_key_rotation_token" {
+  type        = string
+  default     = null
+  description = "Optional token used to force recreation of the ACME account key and registration. Change this value to recover from a deactivated ACME account."
+}
+
 variable "pick_host_name_from_backend_http_settings" {
   type        = bool
   default     = false
