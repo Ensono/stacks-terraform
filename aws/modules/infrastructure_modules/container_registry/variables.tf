@@ -66,10 +66,11 @@ variable "additional_lifecycle_rules" {
   type = list(object({
     description = string
     selection = object({
-      tagStatus     = string
-      tagPrefixList = optional(list(string))
-      countType     = string
-      countNumber   = number
+      tagStatus      = string
+      tagPrefixList  = optional(list(string))
+      tagPatternList = optional(list(string))
+      countType      = string
+      countNumber    = number
     })
     action = object({
       type = string
