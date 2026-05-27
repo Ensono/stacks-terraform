@@ -47,6 +47,15 @@ resource "azurerm_application_gateway" "network" {
 
   location = var.resource_group_location
 
+  dynamic "identity" {
+    for_each = local.app_gateway_identity_enabled ? [1] : []
+
+    content {
+      type         = var.identity_type
+      identity_ids = local.app_gateway_identity_ids
+    }
+  }
+
   sku {
     name     = var.app_gateway_sku
     tier     = var.app_gateway_tier
@@ -84,9 +93,10 @@ resource "azurerm_application_gateway" "network" {
   }
 
   ssl_certificate {
-    name     = "frontend"
-    data     = var.create_valid_cert ? acme_certificate.default.0.certificate_p12 : pkcs12_from_pem.self_cert_p12.0.result
-    password = var.pfx_password
+    name                = "frontend"
+    data                = local.inline_certificate_data
+    password            = local.use_key_vault_certificate ? null : var.pfx_password
+    key_vault_secret_id = local.use_key_vault_certificate ? var.key_vault_secret_id : null
   }
 
   frontend_ip_configuration {
@@ -154,5 +164,25 @@ resource "azurerm_application_gateway" "network" {
     ignore_changes = [
       tags,
     ]
+
+    precondition {
+      condition     = local.key_vault_configuration_is_valid
+      error_message = "key_vault_secret_id must be provided when certificate_source is \"key_vault\"."
+    }
+
+    precondition {
+      condition     = local.acme_configuration_is_valid
+      error_message = "acme_email must be provided when certificate_source resolves to \"acme\"."
+    }
+
+    precondition {
+      condition     = local.app_gateway_identity_is_valid
+      error_message = "user_assigned_identity_ids must contain at least one identity ID when identity_type is set."
+    }
+
+    precondition {
+      condition     = local.key_vault_identity_is_valid
+      error_message = "certificate_source = \"key_vault\" requires identity_type = \"UserAssigned\" so Application Gateway can read the Key Vault certificate secret."
+    }
   }
 }
