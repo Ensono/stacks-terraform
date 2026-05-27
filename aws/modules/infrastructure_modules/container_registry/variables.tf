@@ -78,6 +78,24 @@ variable "additional_lifecycle_rules" {
   }))
 
   default = []
+
+  validation {
+    condition = alltrue([
+      for rule in var.additional_lifecycle_rules : contains(["tagged", "untagged", "any"], rule.selection.tagStatus)
+    ])
+    error_message = "Each additional lifecycle rule selection.tagStatus must be one of tagged, untagged, or any."
+  }
+
+  validation {
+    condition = alltrue([
+      for rule in var.additional_lifecycle_rules : rule.selection.tagStatus == "tagged" ? (
+        (length(coalesce(rule.selection.tagPrefixList, [])) > 0 ? 1 : 0) + (length(coalesce(rule.selection.tagPatternList, [])) > 0 ? 1 : 0) == 1
+        ) : (
+        length(coalesce(rule.selection.tagPrefixList, [])) == 0 && length(coalesce(rule.selection.tagPatternList, [])) == 0
+      )
+    ])
+    error_message = "Tagged additional lifecycle rules must set exactly one of tagPrefixList or tagPatternList. Untagged and any rules must not set either field."
+  }
 }
 
 variable "pull_accounts" {
