@@ -1,6 +1,4 @@
 resource "tls_private_key" "reg_key" {
-  count = local.acme_account_key_rotation_enabled ? 0 : 1
-
   algorithm = "RSA"
 }
 
@@ -56,7 +54,7 @@ resource "pkcs12_from_pem" "self_cert_p12" {
 
 resource "acme_registration" "reg" {
   count           = var.create_valid_cert ? 1 : 0
-  account_key_pem = local.acme_account_key_rotation_enabled ? tls_private_key.reg_key_rotated[local.acme_account_key_rotation_token].private_key_pem : tls_private_key.reg_key[0].private_key_pem
+  account_key_pem = local.acme_account_key_rotation_enabled ? tls_private_key.reg_key_rotated[local.acme_account_key_rotation_token].private_key_pem : tls_private_key.reg_key.private_key_pem
   email_address   = var.acme_email
 }
 

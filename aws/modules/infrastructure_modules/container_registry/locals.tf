@@ -19,10 +19,27 @@ locals {
 
   # Custom rules injected in the middle, priorities 2..N+1
   additional_rules_with_priority = [
-    for idx, rule in var.additional_lifecycle_rules : merge(rule, {
+    for idx, rule in var.additional_lifecycle_rules : {
       # Starts at 2, after untagged rule
       rulePriority = idx + 2
-    })
+      description  = rule.description
+
+      selection = merge(
+        {
+          tagStatus   = rule.selection.tagStatus
+          countType   = rule.selection.countType
+          countNumber = rule.selection.countNumber
+        },
+        length(coalesce(rule.selection.tagPrefixList, [])) > 0 ? {
+          tagPrefixList = rule.selection.tagPrefixList
+        } : {},
+        length(coalesce(rule.selection.tagPatternList, [])) > 0 ? {
+          tagPatternList = rule.selection.tagPatternList
+        } : {}
+      )
+
+      action = rule.action
+    }
   ]
 
   # Catch-all tagged rule - always last, priority N+2
