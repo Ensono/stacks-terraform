@@ -67,8 +67,8 @@ variable "additional_lifecycle_rules" {
     description = string
     selection = object({
       tagStatus      = string
-      tagPrefixList  = optional(list(string), [])
-      tagPatternList = optional(list(string), [])
+      tagPrefixList  = optional(list(string))
+      tagPatternList = optional(list(string))
       countType      = string
       countNumber    = number
     })
