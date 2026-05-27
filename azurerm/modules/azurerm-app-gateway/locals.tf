@@ -9,6 +9,9 @@ locals {
   create_self_signed_cert      = local.effective_certificate_source == "self_signed"
   use_key_vault_certificate    = local.effective_certificate_source == "key_vault"
 
+  acme_account_key_rotation_token   = var.acme_account_key_rotation_token == null ? null : nullif(trimspace(var.acme_account_key_rotation_token), "")
+  acme_account_key_rotation_enabled = local.create_acme_certificate && local.acme_account_key_rotation_token != null
+
   inline_certificate_data = local.create_acme_certificate ? acme_certificate.default[0].certificate_p12 : (
     local.create_self_signed_cert ? pkcs12_from_pem.self_cert_p12[0].result : null
   )

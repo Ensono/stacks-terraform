@@ -13,6 +13,13 @@ When `certificate_source` is not set, the module keeps backward-compatible behav
 - `create_valid_cert = true` -> `acme`
 - `create_valid_cert = false` -> `self_signed`
 
+If Let's Encrypt has deactivated the ACME account previously used by this module,
+set `acme_account_key_rotation_token` to a new value before re-enabling
+`create_valid_cert`. Changing the token forces Terraform to generate a new ACME
+account key and registration without manual state edits. Use only a short
+non-secret value such as a date or nonce, because this token will be stored in
+Terraform state and may appear in resource instance keys.
+
 ## Requirements
 
 | Name      | Version  |
@@ -31,6 +38,7 @@ When `certificate_source` is not set, the module keeps backward-compatible behav
 | `create_ssl_cert`            | `bool`         | `true`        | Deprecated compatibility flag. Retained to avoid breaking existing consumers.                                                                                       |
 | `pfx_password`               | `string`       | `"Password1"` | Used only for `acme` and `self_signed` modes. Ignored for `key_vault`.                                                                                              |
 | `acme_email`                 | `string`       | `null`        | Required only when the effective certificate source is `acme`.                                                                                                      |
+| `acme_account_key_rotation_token` | `string`  | `null`        | Optional non-sensitive token used only in `acme` mode to force recreation of the ACME account key and registration.                                                 |
 
 The rest of the networking, probe, and naming inputs are unchanged.
 

@@ -246,6 +246,12 @@ variable "acme_email" {
   description = "Email for ACME registration. Required when certificate_source resolves to acme."
 }
 
+variable "acme_account_key_rotation_token" {
+  type        = string
+  default     = null
+  description = "Optional non-sensitive token used to force recreation of the ACME account key and registration. Change this value to recover from a deactivated ACME account. Use a short non-secret value such as a date or nonce. Do not use passwords, API keys, email addresses, or other sensitive or identifying data, as this value will be stored in Terraform state and may appear in resource instance keys."
+}
+
 variable "pick_host_name_from_backend_http_settings" {
   type        = bool
   default     = false
