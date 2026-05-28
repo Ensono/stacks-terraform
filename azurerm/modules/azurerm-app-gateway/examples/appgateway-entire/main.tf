@@ -1,71 +1,28 @@
-data "azurerm_client_config" "current" {}
-
-module "default_label" {
-  source    = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.25.0"
-  namespace = format("%s-%s", var.name_company, var.name_project)
-  stage     = var.stage
-  # name       = "${lookup(var.location_name_map, var.resource_group_location, "uksouth")}-${var.name_component}"
-  name       = var.name_component
-  attributes = var.attributes
-  delimiter  = "-"
-  tags       = tomap({ CostCenter = var.resource_group_location })
+locals {
+  vnet_cidr = ["10.20.0.0/16"]
 }
 
-# if you do not set the
-# `service_cidr`
-# `dns_service_ip`
-# `docker_bridge_cidr`
-# AKS will default to ==> 10.0.0.0/16
-variable "vnet_cidr" {
-  default = ["10.1.0.0/16"]
-}
+module "key_vault_app_gateway" {
+  source = "../../"
 
-module "aks_bootstrap" {
-  source                      = "../../../azurerm-aks"
-  resource_namer              = module.default_label.id
-  resource_group_location     = var.resource_group_location
-  spn_object_id               = data.azurerm_client_config.current.object_id
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  cluster_version             = var.cluster_version
-  name_environment            = var.name_environment
-  name_project                = var.name_project
-  name_company                = var.name_company
-  name_component              = var.name_component
-  create_dns_zone             = var.create_dns_zone
-  dns_zone                    = var.dns_zone
-  internal_dns_zone           = var.internal_dns_zone
-  create_acr                  = var.create_acr
-  acr_registry_name           = replace(module.default_label.id, "-", "")
-  create_aksvnet              = var.create_aksvnet
-  vnet_name                   = module.default_label.id
-  vnet_cidr                   = var.vnet_cidr
-  subnet_front_end_prefix     = cidrsubnet(var.vnet_cidr.0, 4, 3)
-  subnet_prefixes             = [cidrsubnet(var.vnet_cidr.0, 4, 0)]
-  subnet_names                = ["k8s1"]
-  aks_ingress_private_ip      = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
-  internal_ingress_enabled    = var.internal_ingress_enabled
-  aks_private_cluster_enabled = var.aks_private_cluster_enabled
-  create_user_identity        = var.create_user_identity
-  auto_scaling_enabled        = true
-  log_application_type        = var.log_application_type
-  key_vault_name              = var.key_vault_name
-}
+  resource_namer          = "example-appgw-kv"
+  resource_group_name     = "rg-example-network"
+  resource_group_location = "uksouth"
 
-module "ssl_app_gateway" {
-  source                    = "../../"
-  resource_namer            = module.default_label.id
-  resource_group_name       = module.aks_bootstrap.resource_group_name
-  resource_group_location   = var.resource_group_location
-  create_ssl_cert           = true
-  vnet_name                 = module.aks_bootstrap.vnet_name
-  vnet_cidr                 = var.vnet_cidr
-  dns_zone                  = var.dns_zone
-  azure_subscription_id     = data.azurerm_client_config.current.subscription_id
-  pfx_password              = var.pfx_password
-  aks_resource_group        = module.aks_bootstrap.aks_node_resource_group
-  aks_ingress_ip            = var.internal_ingress_enabled ? module.aks_bootstrap.aks_ingress_private_ip : module.aks_bootstrap.aks_ingress_public_ip
-  subnet_front_end_prefix   = cidrsubnet(var.vnet_cidr.0, 4, 3)
-  subnet_backend_end_prefix = cidrsubnet(var.vnet_cidr.0, 4, 4)
-  subnet_names              = ["k8s1"]
-  acme_email                = var.acme_email
+  vnet_name                 = "vnet-example-network"
+  vnet_cidr                 = local.vnet_cidr
+  subnet_front_end_prefix   = cidrsubnet(local.vnet_cidr[0], 8, 0)
+  subnet_backend_end_prefix = cidrsubnet(local.vnet_cidr[0], 8, 1)
+
+  dns_zone = "apps.example.invalid"
+
+  aks_resource_group = "rg-example-aks"
+  aks_ingress_ip     = "10.20.1.4"
+
+  certificate_source  = "key_vault"
+  key_vault_secret_id = "https://example-kv.vault.azure.net/secrets/app-gateway-tls"
+  identity_type       = "UserAssigned"
+  user_assigned_identity_ids = [
+    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example-identity/providers/Microsoft.ManagedIdentity/userAssignedIdentities/app-gateway-kv-reader"
+  ]
 }

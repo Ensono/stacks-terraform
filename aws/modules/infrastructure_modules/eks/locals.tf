@@ -86,13 +86,15 @@ locals {
         min_size        = var.eks_minimum_nodes
         max_size        = var.eks_maximum_nodes
         desired_size    = var.eks_desired_nodes
-        create_iam_role = local.create_node_iam_role ? false : true                                 # As we have created the nodegroup role in this module, we do not want to create it again in the eks module
-        iam_role_arn    = local.create_node_iam_role ? aws_iam_role.node["general-${v}"].arn : null # As
+        create_iam_role = local.create_node_iam_role ? false : true
+        iam_role_arn    = local.create_node_iam_role ? aws_iam_role.node["general-${v}"].arn : null
         subnet_ids      = [var.vpc_private_subnets[k]]
 
         # `disk_size` is ignored by Bottlerocket at this time...
         # disk_size             = 50
         block_device_mappings = var.block_device_mappings
+
+        capacity_type = var.eks_node_type
 
         placement = {
           tenancy = var.eks_node_tenancy

@@ -1,17 +1,18 @@
 terraform {
-  required_version = ">= 1.5.1"
+  required_version = ">= 1.3"
+
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 4.0"
+      source = "hashicorp/azurerm"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 2.1"
+    acme = {
+      source = "vancluever/acme"
+    }
+    pkcs12 = {
+      source = "chilicat/pkcs12"
     }
     tls = {
-      source  = "hashicorp/tls"
-      version = ">= 4.0"
+      source = "hashicorp/tls"
     }
   }
 }
