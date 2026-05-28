@@ -18,6 +18,17 @@ The `oidc_issuer_test.go` file contains tests for the OIDC issuer enabled featur
 
 5. **TestOidcIssuerVariableDefault**: Validates that the default value of `oidc_issuer_enabled` is `true`.
 
+## Naming Alias Tests
+
+The `naming_aliases_test.go` file contains static tests for the AKS module naming split:
+
+1. **TestNamingAliasesResolveThroughCanonicalLocals**: Verifies that the preferred inputs,
+   deprecated aliases, canonical locals, and conflict validation are all present.
+
+2. **TestExamplesPreferPreferredNaming**: Verifies that the AKS and dependent App Gateway
+   examples use `internal_ingress_enabled` and `aks_private_cluster_enabled` instead of the
+   deprecated names.
+
 ## Prerequisites
 
 - Terraform >= 1.0

@@ -6,7 +6,7 @@ resource "google_dns_managed_zone" "default" {
   dns_name    = "${var.dns_zone}."
   description = "Zone for ${var.stage}"
   # Re-enable tags once issue fixed
-  labels = merge(var.tags, map("managed_by", var.name_company))
+  labels = merge(var.tags, tomap({ managed_by = var.name_company }))
 }
 
 resource "google_compute_global_address" "public" {
@@ -15,7 +15,7 @@ resource "google_compute_global_address" "public" {
   ip_version   = "IPV4"
   address_type = "EXTERNAL"
   # network_tier = "PREMIUM"
-  labels = merge(var.tags, map("ingress", "public"))
+  labels = merge(var.tags, tomap({ ingress = "public" }))
 }
 
 data "google_compute_global_address" "public" {
@@ -23,7 +23,7 @@ data "google_compute_global_address" "public" {
   depends_on = [google_compute_global_address.public]
 }
 
-# INTERNAL IPs - TODO: management of 
+# INTERNAL IPs - TODO: management of
 # resource "google_compute_global_address" "private" {
 #   provider     = google-beta
 #   name         = "${var.resource_namer}-private"

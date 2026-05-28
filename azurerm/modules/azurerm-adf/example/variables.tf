@@ -44,7 +44,7 @@ variable "resource_group_location" {
 }
 
 
-# Each region must have corresponding a shortend name for resource naming purposes 
+# Each region must have corresponding a shortend name for resource naming purposes
 variable "location_name_map" {
   type = map(string)
 
@@ -61,15 +61,12 @@ variable "location_name_map" {
   }
 }
 
-
-variable "contributor_object_ids" {
-  description = "A list of Azure active directory user,group or application object ID's that will have contributor role to the key vault"
-  type        = list(string)
-  default     = []
-}
-
-variable "reader_object_ids" {
-  description = "A list of Azure active directory user,group or application object ID's that will have reader role to the key vault"
-  type        = list(string)
-  default     = []
+variable "git_integration" {
+  type        = string
+  default     = "github"
+  description = "A repositry integration block for ADF integration, can be from null, github or vsts ?"
+  validation {
+    condition     = can(regex("^null$|^github$|^vsts$", var.git_integration))
+    error_message = "Err: integration value is not valid  it can be from null, github, vsts."
+  }
 }

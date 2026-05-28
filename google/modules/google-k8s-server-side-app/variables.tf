@@ -95,4 +95,3 @@ variable "create_apex_record" {
   type        = bool
   default     = false
 }
-

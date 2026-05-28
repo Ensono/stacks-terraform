@@ -2,6 +2,25 @@
 # NAMING
 ############################################
 
+variable "name_company" {
+  description = "Company Name - should/will be used in conventional resource naming"
+  type        = string
+}
+
+variable "name_project" {
+  description = "Project Name - should/will be used in conventional resource naming"
+  type        = string
+}
+
+variable "name_component" {
+  description = "Component Name - should/will be used in conventional resource naming. Typically this will be a logical name for this part of the system i.e. `API` || `middleware` or more generic like `Billing`"
+  type        = string
+}
+
+variable "name_environment" {
+  type = string
+}
+
 variable "stage" {
   type    = string
   default = "dev"
@@ -14,6 +33,33 @@ variable "attributes" {
 
 variable "tags" {
   description = "Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically"
+  type        = map(string)
+  default     = {}
+}
+
+variable "location_name_map" {
+  type = map(string)
+
+  default = {
+    northeurope   = "eun"
+    westeurope    = "euw"
+    uksouth       = "uks"
+    ukwest        = "ukw"
+    eastus        = "use"
+    eastus2       = "use2"
+    westus        = "usw"
+    eastasia      = "ase"
+    southeastasia = "asse"
+  }
+}
+
+variable "resource_namer" {
+  type        = string
+  description = "User defined naming convention applied to all resources created as part of this module"
+}
+
+variable "resource_tags" {
+  description = "Map of tags to be applied to all resources created as part of this module"
   type        = map(string)
   default     = {}
 }
@@ -68,6 +114,3 @@ variable "app_insights_name" {
   default     = ""
   description = "Name of the App Insights Instance to be created."
 }
-
-
-

@@ -37,25 +37,13 @@ variable "ip_configuration_name" {
   description = "Name of the IP Config on the VMs NIC."
 }
 
-variable "tags" {
-  description = "Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically"
-  type        = map(string)
-  default     = {}
-}
-
-variable "resource_tags" {
-  description = "Map of tags to be applied to all resources created as part of this module"
-  type        = map(string)
-  default     = {}
-}
-
 ############################################
 # RESOURCE INFORMATION
 ############################################
 
 variable "vmss_resource_group_location" {
   type        = string
-  default     = "westeurope"
+  default     = "uksouth"
   description = "Location of Resource group"
 }
 
@@ -65,7 +53,7 @@ variable "vmss_resource_group_name" {
   default     = ""
 }
 
-# Each region must have corresponding a shortend name for resource naming purposes 
+# Each region must have corresponding a shortend name for resource naming purposes
 variable "location_name_map" {
   type = map(string)
 
@@ -84,7 +72,7 @@ variable "location_name_map" {
 
 variable "vmss_sku" {
   type        = string
-  default     = "Standard_D2_v3"
+  default     = "Standard_B4ms"
   description = "VM Size"
 }
 
@@ -114,19 +102,19 @@ variable "vmss_disable_password_auth" {
 
 variable "vmss_image_publisher" {
   type        = string
-  default     = "canonical"
+  default     = "Canonical"
   description = "Image Publisher."
 }
 
 variable "vmss_image_offer" {
   type        = string
-  default     = "UbuntuServer"
+  default     = "0001-com-ubuntu-server-jammy"
   description = "Image offer. Eg UbuntuServer"
 }
 
 variable "vmss_image_sku" {
   type        = string
-  default     = "22_04-lts"
+  default     = "22_04-lts-gen2"
   description = "Image SKU."
 }
 
@@ -138,7 +126,7 @@ variable "vmss_image_version" {
 
 variable "vmss_storage_account_type" {
   type        = string
-  default     = "Standard_LRS"
+  default     = "StandardSSD_LRS"
   description = "Storeage type used for VMSS Disk."
 }
 
@@ -148,5 +136,8 @@ variable "vmss_disk_caching" {
   description = "Disk Caching options."
 }
 
-
-
+variable "overprovision" {
+  type        = bool
+  default     = false
+  description = "Bool to set overprovisioning."
+}

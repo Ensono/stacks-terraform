@@ -1,5 +1,4 @@
-
-######################################### Azure resource group variables ######################################### 
+######################################### Azure resource group variables #########################################
 
 variable "resource_group_name" {
   type        = string
@@ -32,27 +31,33 @@ variable "tags" {
   default     = {}
 }
 
-
-######################################### Azure Private DNS variables ######################################### 
+######################################### Azure Private DNS variables #########################################
 
 variable "dns_zone_name" {
-  default     = "mydomaintest.com"
+  default     = ["privatelink.vaultcore.azure.net", "privatelink.azuredatabricks.net", "privatelink.database.windows.net", "privatelink.blob.core.windows.net", "privatelink.dfs.core.windows.net"]
   description = "The name of the Private DNS Zone. Must be a valid domain name. Changing this forces a new resource to be created."
-  type        = string
+  type        = list(string)
+}
+
+variable "link_dns_network" {
+  description = "weather link DNS with vnets"
+  type        = bool
+  default     = false
 }
 
 variable "create_private_dns_zone" {
+  type        = bool
   default     = true
   description = " set value wether to create a private_dns_zone or not"
 }
 
 variable "registration_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
 }
 
-######################################### Azure Firewall variables ######################################### 
+######################################### Azure Firewall variables #########################################
 
 variable "create_hub_fw" {
   description = "weather to create a Azure fierwall in hub network"
@@ -115,7 +120,6 @@ variable "ip_config_name_az_fw" {
 }
 
 #########################################  Azure Vnet and Subnet variables   #########################################
-
 
 variable "network_details" {
   type = map(object({
