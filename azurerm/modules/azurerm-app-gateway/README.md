@@ -1,52 +1,17 @@
-# SSL APP GATEWAY
+# Azure Application Gateway Module
 
-## DESCRIPTION
+This module provisions an Azure Application Gateway with HTTP and HTTPS
+listeners in front of an existing ingress endpoint. It now supports three
+certificate source modes:
 
-## PRE_REQUISITES
+- `key_vault`: reference a versionless Azure Key Vault secret or certificate URI for automatic rotation
+- `acme`: preserve the existing ACME DNS-01 flow and inline PFX upload behavior
+- `self_signed`: preserve the existing self-signed fallback path
 
-NB: below only qualifies if you have run the [amido-stacks-cli](https://amido.github.io/stacks/docs/getting_started_demo) to create your component repo
-This module now uses the LEGO `azuredns` DNS provider for ACME DNS-01 challenges.
+When `certificate_source` is not set, the module keeps backward-compatible behavior by deriving the mode from `create_valid_cert`:
 
-Migration note:
-
-- Deprecated LEGO `azure` provider support has been removed from this module configuration.
-- `LEGO_AZURE_BYPASS_DEPRECATION` is no longer required.
-- Existing Azure authentication environment variables remain supported via ACME provider aliases:
-  - `ARM_CLIENT_ID` -> `AZURE_CLIENT_ID`
-  - `ARM_CLIENT_SECRET` -> `AZURE_CLIENT_SECRET`
-  - `ARM_TENANT_ID` -> `AZURE_TENANT_ID`
-  - `ARM_SUBSCRIPTION_ID` -> `AZURE_SUBSCRIPTION_ID`
-
-For DNS zone discovery/scoping:
-
-- `dns_resource_group` maps to `AZURE_RESOURCE_GROUP`
-- optional `azure_subscription_id` maps to `AZURE_SUBSCRIPTION_ID`
-
-Once complete please run the cert creation process for your domain:
-
-```bash
-cd $CreatedProjectDir
-$ docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.3 /bin/bash
-docker: $ cd /usr/data && chmod +x certbot.sh
-docker: $ ./certbot.sh your.domain.com email@domain.com pfxPassword1 # password is optional if ommitted will default to Password1
-```
-
-Use only the subdomain as is - the script will add the wildcard so your certificate is valid for all values in that subdomain
-
-PS: ensure your directory you bind to on container is as per above `/usr/data`
-
-Follow the onscreen instructions as this process has to be manual for `AzureDNS`
-Ensure your Azure created subdomain NS records have been correctly referenced
-by the APEX domain registrar (speak to your network admins to ensure this is
-the case if you are not able to do this yourself)
-
-Create the TXT record as instructed
-
-```bash
-dig TXT _acme-challenge.nonprod.amidostacks.com
-```
-
-If all successful
+- `create_valid_cert = true` -> `acme`
+- `create_valid_cert = false` -> `self_signed`
 
 If Let's Encrypt has deactivated the ACME account previously used by this module,
 set `acme_account_key_rotation_token` to a new value before re-enabling
@@ -57,85 +22,125 @@ Terraform state and may appear in resource instance keys.
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| Name      | Version  |
+|-----------|----------|
+| Terraform | `>= 1.3` |
 
-## Providers
+## New and updated inputs
 
-| Name | Version |
-|------|---------|
-| <a name="provider_acme"></a> [acme](#provider\_acme) | n/a |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
-| <a name="provider_pkcs12"></a> [pkcs12](#provider\_pkcs12) | n/a |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| Input                        | Type           | Default       | Notes                                                                                                                                                               |
+|------------------------------|----------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certificate_source`         | `string`       | `null`        | Explicit certificate mode. Allowed values are `key_vault`, `acme`, and `self_signed`. When omitted, the module preserves legacy behavior using `create_valid_cert`. |
+| `key_vault_secret_id`        | `string`       | `null`        | Versionless Key Vault secret or certificate URI used when `certificate_source = "key_vault"`.                                                                       |
+| `identity_type`              | `string`       | `null`        | Managed identity type for Application Gateway. The module currently accepts `UserAssigned`.                                                                         |
+| `user_assigned_identity_ids` | `list(string)` | `[]`          | User-assigned managed identity resource IDs attached when `identity_type = "UserAssigned"`.                                                                         |
+| `create_valid_cert`          | `bool`         | `true`        | Deprecated legacy selector. Still used when `certificate_source` is unset.                                                                                          |
+| `create_ssl_cert`            | `bool`         | `true`        | Deprecated compatibility flag. Retained to avoid breaking existing consumers.                                                                                       |
+| `pfx_password`               | `string`       | `"Password1"` | Used only for `acme` and `self_signed` modes. Ignored for `key_vault`.                                                                                              |
+| `acme_email`                 | `string`       | `null`        | Required only when the effective certificate source is `acme`.                                                                                                      |
+| `acme_account_key_rotation_token` | `string`  | `null`        | Optional non-sensitive token used only in `acme` mode to force recreation of the ACME account key and registration.                                                 |
 
-## Modules
+The rest of the networking, probe, and naming inputs are unchanged.
 
-No modules.
+## Validation behavior
 
-## Resources
+The module now fails early when configuration is invalid:
 
-| Name | Type |
-|------|------|
-| [acme_certificate.default](https://registry.terraform.io/providers/vancluever/acme/latest/docs/resources/certificate) | resource |
-| [acme_registration.reg](https://registry.terraform.io/providers/vancluever/acme/latest/docs/resources/registration) | resource |
-| [azurerm_application_gateway.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_gateway) | resource |
-| [azurerm_public_ip.app_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
-| [azurerm_subnet.backend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [azurerm_subnet.frontend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [pkcs12_from_pem.self_cert_p12](https://registry.terraform.io/providers/chilicat/pkcs12/latest/docs/resources/from_pem) | resource |
-| [tls_cert_request.req](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/cert_request) | resource |
-| [tls_private_key.cert_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
-| [tls_private_key.reg_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
-| [tls_private_key.reg_key_rotated](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
-| [tls_self_signed_cert.self_cert](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
-| [azurerm_public_ip.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/public_ip) | data source |
+- `certificate_source = "key_vault"` requires `key_vault_secret_id`
+- `certificate_source = "key_vault"` requires `identity_type = "UserAssigned"`
+- `identity_type = "UserAssigned"` requires at least one value in `user_assigned_identity_ids`
+- `certificate_source = "acme"` requires `acme_email`
+- `key_vault_secret_id` must be a versionless Key Vault secret or certificate URI
 
-## Inputs
+## Legacy ACME example
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_acme_email"></a> [acme\_email](#input\_acme\_email) | Email for Acme registration, must be a valid email | `string` | n/a | yes |
-| <a name="input_acme_account_key_rotation_token"></a> [acme\_account\_key\_rotation\_token](#input\_acme\_account\_key\_rotation\_token) | Optional non-sensitive token used to force recreation of the ACME account key and registration. Change this value to recover from a deactivated ACME account. Use a short non-secret value such as a date or nonce. Do not use passwords, API keys, email addresses, or other sensitive or identifying data, as this value will be stored in Terraform state and may appear in resource instance keys. | `string` | `null` | no |
-| <a name="input_aks_ingress_ip"></a> [aks\_ingress\_ip](#input\_aks\_ingress\_ip) | n/a | `string` | n/a | yes |
-| <a name="input_aks_resource_group"></a> [aks\_resource\_group](#input\_aks\_resource\_group) | n/a | `string` | n/a | yes |
-| <a name="input_app_gateway_sku"></a> [app\_gateway\_sku](#input\_app\_gateway\_sku) | he Name of the SKU to use for this Application Gateway. Possible values are Standard\_Small, Standard\_Medium, Standard\_Large, Standard\_v2, WAF\_Medium, WAF\_Large, and WAF\_v2 | `string` | `"Standard_v2"` | no |
-| <a name="input_app_gateway_tier"></a> [app\_gateway\_tier](#input\_app\_gateway\_tier) | The Tier of the SKU to use for this Application Gateway. Possible values are Standard\_v2, WAF\_v2 | `string` | `"Standard_v2"` | no |
-| <a name="input_attributes"></a> [attributes](#input\_attributes) | n/a | `list` | `[]` | no |
-| <a name="input_azure_subscription_id"></a> [azure\_subscription\_id](#input\_azure\_subscription\_id) | Optional subscription ID used by ACME azuredns challenge for DNS zone service discovery | `string` | `null` | no |
-| <a name="input_cert_name"></a> [cert\_name](#input\_cert\_name) | Certificate name stored under certs/ locally, to be used for SSL appgateway | `string` | `"sample.cert.pfx"` | no |
-| <a name="input_create_ssl_cert"></a> [create\_ssl\_cert](#input\_create\_ssl\_cert) | ########################## CONDITIONAL SETTINGS ######################### | `bool` | `true` | no |
-| <a name="input_create_valid_cert"></a> [create\_valid\_cert](#input\_create\_valid\_cert) | States if a certificate should be requested from LetsEncrypt (true) or a self-signed certificate should be generated (false) | `bool` | `true` | no |
-| <a name="input_disable_complete_propagation"></a> [disable\_complete\_propagation](#input\_disable\_complete\_propagation) | n/a | `bool` | `false` | no |
-| <a name="input_dns_resource_group"></a> [dns\_resource\_group](#input\_dns\_resource\_group) | RG that contains the existing DNS zones, if the zones are not being created here | `string` | `null` | no |
-| <a name="input_dns_zone"></a> [dns\_zone](#input\_dns\_zone) | ########################### # DNS SETTINGS ########################## | `string` | `""` | no |
-| <a name="input_expected_status_codes"></a> [expected\_status\_codes](#input\_expected\_status\_codes) | The expect status code returned from the health probe | `list` | <pre>[<br>  "200"<br>]</pre> | no |
-| <a name="input_host_name"></a> [host\_name](#input\_host\_name) | Host header to be sent to the backend servers. Cannot be set if pick\_host\_name\_from\_backend\_address is set to true | `string` | `null` | no |
-| <a name="input_pfx_password"></a> [pfx\_password](#input\_pfx\_password) | n/a | `string` | `"Password1"` | no |
-| <a name="input_pick_host_name_from_backend_http_settings"></a> [pick\_host\_name\_from\_backend\_http\_settings](#input\_pick\_host\_name\_from\_backend\_http\_settings) | Whether the host header should be picked from the backend HTTP settings. Defaults to false. | `bool` | `false` | no |
-| <a name="input_probe_path"></a> [probe\_path](#input\_probe\_path) | The Path used for this Probe. | `string` | `"/healthz"` | no |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | n/a | `string` | `"uksouth"` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | n/a | `string` | n/a | yes |
-| <a name="input_resource_group_tags"></a> [resource\_group\_tags](#input\_resource\_group\_tags) | n/a | `map(string)` | `{}` | no |
-| <a name="input_resource_namer"></a> [resource\_namer](#input\_resource\_namer) | n/a | `string` | `"genericname"` | no |
-| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy definition, defaults to latest Predefined settings with min protocol of TLSv1.2 | <pre>object(<br>    {<br>      policy_type          = string,<br>      policy_name          = string,<br>      min_protocol_version = optional(string, null),<br>      disabled_protocols   = optional(list(string), null),<br>      cipher_suites        = optional(list(string), null),<br>    }<br>  )</pre> | <pre>{<br>  "policy_name": "AppGwSslPolicy20220101",<br>  "policy_type": "Predefined"<br>}</pre> | no |
-| <a name="input_stage"></a> [stage](#input\_stage) | n/a | `string` | `"dev"` | no |
-| <a name="input_subnet_backend_end_prefix"></a> [subnet\_backend\_end\_prefix](#input\_subnet\_backend\_end\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_subnet_front_end_prefix"></a> [subnet\_front\_end\_prefix](#input\_subnet\_front\_end\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_subnet_names"></a> [subnet\_names](#input\_subnet\_names) | n/a | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
-| <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes) | n/a | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
-| <a name="input_vnet_cidr"></a> [vnet\_cidr](#input\_vnet\_cidr) | n/a | `list(string)` | n/a | yes |
-| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | n/a | `string` | `"changeme"` | no |
+See `examples/appgateway` for a minimal legacy-compatible ACME configuration.
 
-## Outputs
+```hcl
+module "legacy_acme_app_gateway" {
+  source = "../../"
 
-| Name | Description |
-|------|-------------|
-| <a name="output_app_gateway_ip"></a> [app\_gateway\_ip](#output\_app\_gateway\_ip) | Application Gateway public IP. Should be used with DNS provider at a top level. Can have multiple subs pointing to it - e.g. app.sub.domain.com, app-uat.sub.domain.com. App Gateway will perform SSL termination for all |
-| <a name="output_app_gateway_ip_name"></a> [app\_gateway\_ip\_name](#output\_app\_gateway\_ip\_name) | Application Gateway public IP name |
-| <a name="output_app_gateway_name"></a> [app\_gateway\_name](#output\_app\_gateway\_name) | Name of the application gateway |
-| <a name="output_app_gateway_resource_group_name"></a> [app\_gateway\_resource\_group\_name](#output\_app\_gateway\_resource\_group\_name) | Resource group of the application gateway |
-| <a name="output_certificate_pem"></a> [certificate\_pem](#output\_certificate\_pem) | PEM key of certificate, can be used internally |
-| <a name="output_issuer_pem"></a> [issuer\_pem](#output\_issuer\_pem) | PEM key of certificate, can be used internally together certificate to create a full cert |
+  resource_namer          = "example-appgw-acme"
+  resource_group_name     = "rg-example-network"
+  resource_group_location = "uksouth"
+
+  vnet_name                 = "vnet-example-network"
+  vnet_cidr                 = ["10.10.0.0/16"]
+  subnet_front_end_prefix   = "10.10.0.0/24"
+  subnet_backend_end_prefix = "10.10.1.0/24"
+
+  dns_zone              = "apps.example.invalid"
+  dns_resource_group    = "rg-example-dns"
+  azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+  acme_email            = "platform@example.invalid"
+  pfx_password          = "Password1"
+
+  aks_resource_group = "rg-example-aks"
+  aks_ingress_ip     = "10.10.1.4"
+}
+```
+
+## Key Vault example
+
+See `examples/appgateway-entire` for a minimal Key Vault-backed configuration.
+
+```hcl
+module "key_vault_app_gateway" {
+  source = "../../"
+
+  resource_namer          = "example-appgw-kv"
+  resource_group_name     = "rg-example-network"
+  resource_group_location = "uksouth"
+
+  vnet_name                 = "vnet-example-network"
+  vnet_cidr                 = ["10.20.0.0/16"]
+  subnet_front_end_prefix   = "10.20.0.0/24"
+  subnet_backend_end_prefix = "10.20.1.0/24"
+
+  dns_zone = "apps.example.invalid"
+
+  aks_resource_group = "rg-example-aks"
+  aks_ingress_ip     = "10.20.1.4"
+
+  certificate_source         = "key_vault"
+  key_vault_secret_id        = "https://example-kv.vault.azure.net/secrets/app-gateway-tls"
+  identity_type              = "UserAssigned"
+  user_assigned_identity_ids = [
+    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example-identity/providers/Microsoft.ManagedIdentity/userAssignedIdentities/app-gateway-kv-reader"
+  ]
+}
+```
+
+## Migration from ACME or self-signed to Key Vault
+
+1. Create or identify a user-assigned managed identity for Application Gateway.
+2. Grant that identity permission to read the certificate secret from Key Vault. The module does not manage Key Vault RBAC.
+3. Import or issue the TLS certificate into Azure Key Vault and use a versionless secret URI.
+4. Update the module call to set:
+   - `certificate_source = "key_vault"`
+   - `key_vault_secret_id = "https://<vault>.vault.azure.net/secrets/<certificate-name>"`
+   - `identity_type = "UserAssigned"`
+   - `user_assigned_identity_ids = ["<resource-id>"]`
+5. Remove `acme_email` and any downstream ACME-specific automation once the new path is deployed and verified.
+
+## Rotation and RBAC notes
+
+- Use a versionless Key Vault secret URI so Application Gateway can pick up certificate rotations without changing module input values.
+- Consumers are responsible for assigning the correct Key Vault RBAC role or access policy outside this module.
+- Application Gateway must be able to read the Key Vault secret material backing the certificate.
+
+## Outputs for downstream consumers
+
+The module now exposes outputs needed for migration and RBAC wiring:
+
+- `effective_certificate_source`
+- `effective_key_vault_secret_id`
+- `app_gateway_identity`
+- `app_gateway_identity_principal_id`
+- `app_gateway_identity_tenant_id`
+- `app_gateway_identity_type`
+- `app_gateway_user_assigned_identity_ids`
+
+For `acme` and `self_signed` modes, `certificate_pem` and `issuer_pem`
+remain available. In `key_vault` mode those outputs are `null` because
+certificate material is no longer uploaded inline.
