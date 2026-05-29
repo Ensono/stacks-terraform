@@ -51,6 +51,12 @@ resource "azurerm_kubernetes_cluster" "default" {
     node_count                  = var.min_nodes
     vnet_subnet_id              = azurerm_subnet.default.0.id
     temporary_name_for_rotation = var.temporary_name_for_rotation != "" ? var.temporary_name_for_rotation : null
+
+    upgrade_settings {
+      drain_timeout_in_minutes      = 0
+      max_surge                     = "10%"
+      node_soak_duration_in_minutes = 0
+    }
   }
 
   http_application_routing_enabled  = false

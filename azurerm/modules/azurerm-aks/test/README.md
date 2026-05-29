@@ -29,6 +29,10 @@ The `naming_aliases_test.go` file contains static tests for the AKS module namin
    examples use `internal_ingress_enabled` and `aks_private_cluster_enabled` instead of the
    deprecated names.
 
+3. **TestDefaultNodePoolModelsAzureUpgradeSettingsDefaults**: Verifies that the default node
+   pool explicitly models AzureRM v4 `upgrade_settings` defaults so consecutive plans do not
+   drift after Azure reports those defaults back.
+
 ## Prerequisites
 
 - Terraform >= 1.0

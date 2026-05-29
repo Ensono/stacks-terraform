@@ -60,3 +60,17 @@ func TestExamplesPreferPreferredNaming(t *testing.T) {
 	require.Contains(t, aksExample, "internal_ingress_enabled")
 	require.Contains(t, aksExample, "aks_private_cluster_enabled")
 }
+
+func TestDefaultNodePoolModelsAzureUpgradeSettingsDefaults(t *testing.T) {
+	t.Parallel()
+
+	aksContents, err := os.ReadFile(filepath.Join("..", "aks.tf"))
+	require.NoError(t, err)
+
+	aksFile := string(aksContents)
+
+	require.Contains(t, aksFile, "upgrade_settings {")
+	require.Contains(t, aksFile, "drain_timeout_in_minutes      = 0")
+	require.Contains(t, aksFile, "max_surge                     = \"10%\"")
+	require.Contains(t, aksFile, "node_soak_duration_in_minutes = 0")
+}
