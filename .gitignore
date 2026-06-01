@@ -50,3 +50,6 @@ envfile
 .env
 /tmp
 tfplan
+
+# AI
+.pi
