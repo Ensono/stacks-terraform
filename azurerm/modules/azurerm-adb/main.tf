@@ -72,5 +72,3 @@ resource "azurerm_monitor_diagnostic_setting" "databricks_log_analytics" {
   }
 
 }
-
-

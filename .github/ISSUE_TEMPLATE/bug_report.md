@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve Amido Stacks
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 **Repository the bug was found in**

@@ -28,7 +28,7 @@ resource "azurerm_mssql_server" "example" {
   tags = var.resource_tags
 }
 
-#Adding Sql Network Rules 
+#Adding Sql Network Rules
 resource "azurerm_mssql_firewall_rule" "example_fw_rule" {
   for_each         = { for i in var.sql_fw_rules : i.name => i if var.public_network_access_enabled == true }
   name             = each.key

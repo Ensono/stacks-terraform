@@ -74,7 +74,7 @@ Prefer a hard validation that blocks planning/apply. A lifecycle `precondition` 
 The condition should allow:
 
 | OIDC  | Workload Identity | Valid |
-|-------|-------------------|-------|
+| ----- | ----------------- | ----- |
 | true  | true              | yes   |
 | true  | false             | yes   |
 | false | false             | yes   |
@@ -113,7 +113,7 @@ workload_identity_enabled = true
 ## Risks and Mitigations
 
 | Risk                                                      | Mitigation                                     |
-|-----------------------------------------------------------|------------------------------------------------|
+| --------------------------------------------------------- | ---------------------------------------------- |
 | Existing consumers get unexpected cluster feature changes | Default Workload Identity to `false`           |
 | Consumers enable Workload Identity but disable OIDC       | Add hard validation/precondition               |
 | Output references fail when `create_aks = false`          | Match existing conditional output pattern      |
