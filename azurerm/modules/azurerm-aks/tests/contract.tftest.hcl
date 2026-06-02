@@ -58,3 +58,21 @@ run "workload_identity_enabled_with_oidc" {
     error_message = "aks_workload_identity_enabled output should reflect the enabled workload identity"
   }
 }
+
+run "outputs_are_inert_when_aks_not_created" {
+  command = plan
+
+  variables {
+    create_aks = false
+  }
+
+  assert {
+    condition     = output.aks_oidc_issuer_url == ""
+    error_message = "aks_oidc_issuer_url output should be empty when AKS is not created"
+  }
+
+  assert {
+    condition     = output.aks_workload_identity_enabled == false
+    error_message = "aks_workload_identity_enabled output should be false when AKS is not created"
+  }
+}

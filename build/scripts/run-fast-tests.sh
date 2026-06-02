@@ -69,7 +69,8 @@ for module_dir in "${module_dirs[@]}"; do
       terraform -chdir="$module_dir" validate -no-color || module_failed=1
 
     # --- Contract tier: terraform test ---
-    if compgen -G "${module_dir}/tests/*.tftest.hcl" > /dev/null \
+    if compgen -G "${module_dir}/test/*.tftest.hcl" > /dev/null \
+      || compgen -G "${module_dir}/tests/*.tftest.hcl" > /dev/null \
       || compgen -G "${module_dir}/*.tftest.hcl" > /dev/null; then
       run_step "$module_dir" "terraform test" \
         terraform -chdir="$module_dir" test -no-color || module_failed=1

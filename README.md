@@ -1,6 +1,6 @@
 # Infrastructure libs
 
-Holds all the libs used by stacks for insfrastructure bootstrapping and definitions.
+Holds all the libs used by stacks for infrastructure bootstrapping and definitions.
 
 In general it's best to avoid writing bootstrapping modules and prefer Docs sections with clearly described pre-requisites.
 

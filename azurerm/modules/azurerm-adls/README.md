@@ -10,7 +10,7 @@ Pipeline implementation for infrastructure relies on workspaces, you can pass in
 
 ## PREREQUISITES
 
-Azure Subscripion
+Azure Subscription
 
 - SPN
   - Terraform will use this to perform the authentication for the API calls

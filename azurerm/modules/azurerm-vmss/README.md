@@ -12,7 +12,7 @@ Pipeline implementation for infrastructure relies on workspaces, you can pass in
 
 ## PREREQUISITES
 
-Azure Subscripion
+Azure Subscription
 
 - SPN
   - Terraform will use this to perform the authentication for the API calls
@@ -119,4 +119,3 @@ No modules.
 | <a name="output_vmss_admin_password"></a> [vmss\_admin\_password](#output\_vmss\_admin\_password) | n/a |
 | <a name="output_vmss_id"></a> [vmss\_id](#output\_vmss\_id) | n/a |
 <!-- END_TF_DOCS -->
-```

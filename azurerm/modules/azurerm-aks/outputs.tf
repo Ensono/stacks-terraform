@@ -65,12 +65,12 @@ output "temporary_name_for_rotation" {
 }
 
 output "aks_node_resource_group" {
-  value = azurerm_kubernetes_cluster.default.0.node_resource_group
+  value = var.create_aks ? azurerm_kubernetes_cluster.default.0.node_resource_group : ""
 }
 
 ##########azurerm_kubernetes_cluster.default.identity.principal_id
 output "aks_system_identity_principal_id" {
-  value = azurerm_kubernetes_cluster.default.0.identity.0.principal_id
+  value = var.create_aks ? azurerm_kubernetes_cluster.default.0.identity.0.principal_id : ""
 }
 
 #########################################
@@ -94,7 +94,7 @@ output "aks_ingress_private_ip" {
 }
 
 output "aks_ingress_public_ip" {
-  value = azurerm_public_ip.external_ingress.0.ip_address
+  value = var.create_aks ? azurerm_public_ip.external_ingress.0.ip_address : ""
 }
 
 output "key_vault_name" {
@@ -107,18 +107,18 @@ output "key_vault_name" {
 #########################################
 
 output "app_insights_resource_group_name" {
-  value = azurerm_log_analytics_workspace.default.resource_group_name
+  value = azurerm_application_insights.default.resource_group_name
 }
 output "app_insights_name" {
-  value = azurerm_log_analytics_workspace.default.name
+  value = azurerm_application_insights.default.name
 }
 
 output "app_insights_id" {
-  value = azurerm_log_analytics_workspace.default.id
+  value = azurerm_application_insights.default.id
 }
 
 output "app_insights_key" {
-  value     = azurerm_log_analytics_workspace.default.primary_shared_key
+  value     = azurerm_application_insights.default.instrumentation_key
   sensitive = true
 }
 
