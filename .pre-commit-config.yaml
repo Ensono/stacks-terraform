@@ -1,3 +1,4 @@
+---
 # Pre-commit hooks for Ensono Stacks AKS Infrastructure
 # Install: pip install pre-commit && pre-commit install
 # Run manually: pre-commit run --all-files
@@ -45,5 +46,5 @@ repos:
     hooks:
       - id: markdownlint
         args: [--fix, --config, .markdownlint.json]
-        exclude: ^(docs/|deploy/tests/vendor/)
+        exclude: ^(docs/|deploy/tests/vendor/|openspec/)
         files: \.md$
