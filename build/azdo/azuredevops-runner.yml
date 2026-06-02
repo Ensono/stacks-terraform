@@ -57,8 +57,26 @@ stages:
 
           # Static + contract tiers only: no cloud credentials and no billable
           # resources. Live tests are opt-in via TF_RUN_LIVE_TESTS and never run
-          # here. Requires `terraform` on the agent (pre-installed on the hosted
-          # ubuntu image); `go` is not required for the fast tier.
+          # here. Install Terraform explicitly because hosted agent images do not
+          # guarantee that the binary is pre-installed.
+          - task: Bash@3
+            displayName: Install Terraform
+            inputs:
+              targetType: inline
+              script: |
+                set -euo pipefail
+
+                terraform_version='$(TerraformVersion)'
+                terraform_archive="terraform_${terraform_version}_linux_amd64.zip"
+                terraform_url="https://releases.hashicorp.com/terraform/${terraform_version}/${terraform_archive}"
+
+                rm -f /tmp/terraform /tmp/${terraform_archive}
+                wget -q "${terraform_url}" -O "/tmp/${terraform_archive}"
+                unzip -qo "/tmp/${terraform_archive}" -d /tmp
+                chmod u+x /tmp/terraform
+                mv /tmp/terraform /usr/local/bin/terraform
+                terraform version
+
           - task: Bash@3
             displayName: Run Terraform fast test tier
             inputs:
