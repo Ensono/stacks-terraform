@@ -2,7 +2,7 @@
 extends: default
 
 yaml-files:
-  - 'yamllint.conf'
+  - '.yamllint'
   - '*.yml'
   - '*.yaml'
 
@@ -20,5 +20,5 @@ rules:
   truthy: disable
   indentation:
     spaces: 2
-    indent-sequences: whatever
+    indent-sequences: true
     check-multi-line-strings: false

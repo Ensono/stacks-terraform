@@ -1,3 +1,4 @@
+---
 variables:
   - name: VERSION_NUMBER
     value: $(Build.BuildNumber)
@@ -10,5 +11,5 @@ variables:
   - name: ARTIFACTS_DIR
     value: artifacts/
   - group: release-github-credentials
-    # Group should contain:
-      # API_KEY
+  # Group should contain:
+  # API_KEY

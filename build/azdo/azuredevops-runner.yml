@@ -33,70 +33,70 @@ stages:
 
   - stage: Build
     jobs:
-    - job: Format
-      steps:
+      - job: Format
+        steps:
 
-        - template: templates/setup.yaml
-          parameters:
-            EirctlVersion: ${{ variables.EirctlVersion }}
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
 
-        - task: Bash@3
-          displayName: Check Terraform Formatting
-          inputs:
-            targetType: inline
-            script: |
-              eirctl format
+          - task: Bash@3
+            displayName: Check Terraform Formatting
+            inputs:
+              targetType: inline
+              script: |
+                eirctl format
 
-    - job: Test
-      displayName: Terraform Fast Test Tier
-      steps:
+      - job: Test
+        displayName: Terraform Fast Test Tier
+        steps:
 
-        - template: templates/setup.yaml
-          parameters:
-            EirctlVersion: ${{ variables.EirctlVersion }}
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
 
-        # Static + contract tiers only: no cloud credentials and no billable
-        # resources. Live tests are opt-in via TF_RUN_LIVE_TESTS and never run
-        # here. Requires `terraform` on the agent (pre-installed on the hosted
-        # ubuntu image); `go` is not required for the fast tier.
-        - task: Bash@3
-          displayName: Run Terraform fast test tier
-          inputs:
-            targetType: inline
-            script: |
-              eirctl test:fast
+          # Static + contract tiers only: no cloud credentials and no billable
+          # resources. Live tests are opt-in via TF_RUN_LIVE_TESTS and never run
+          # here. Requires `terraform` on the agent (pre-installed on the hosted
+          # ubuntu image); `go` is not required for the fast tier.
+          - task: Bash@3
+            displayName: Run Terraform fast test tier
+            inputs:
+              targetType: inline
+              script: |
+                eirctl test:fast
 
   - stage: Release
     condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.pre_release }}))
     jobs:
-    - job: Publish
-      steps:
-        - template: templates/setup.yaml
-          parameters:
-            EirctlVersion: ${{ variables.EirctlVersion }}
+      - job: Publish
+        steps:
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
 
-        # Publish to GitHub
-        - task: Bash@3
-          displayName: Publish Pre-Release
-          condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
-          inputs:
-            targetType: inline
-            script: |
-              eirctl release
-          env:
-            STAGE: "release"
-            PUBLISH_RELEASE: "true"
-            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
-            PRERELEASE: "true"
+          # Publish to GitHub
+          - task: Bash@3
+            displayName: Publish Pre-Release
+            condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
+            inputs:
+              targetType: inline
+              script: |
+                eirctl release
+            env:
+              STAGE: "release"
+              PUBLISH_RELEASE: "true"
+              VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+              PRERELEASE: "true"
 
-        - task: Bash@3
-          displayName: Publish Release
-          condition: and(succeeded(), eq(${{ parameters.pre_release }}, false))
-          inputs:
-            targetType: inline
-            script: |
-              eirctl release
-          env:
-            STAGE: "release"
-            PUBLISH_RELEASE: "true"
-            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+          - task: Bash@3
+            displayName: Publish Release
+            condition: and(succeeded(), eq(${{ parameters.pre_release }}, false))
+            inputs:
+              targetType: inline
+              script: |
+                eirctl release
+            env:
+              STAGE: "release"
+              PUBLISH_RELEASE: "true"
+              VERSION_NUMBER: $(BUILD_BUILDNUMBER)

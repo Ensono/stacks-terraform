@@ -9,7 +9,6 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
-        args: [-sc=yamllint.conf]
         types: [yaml]
 
   # Terraform formatting and validation
