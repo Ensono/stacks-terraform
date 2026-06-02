@@ -4,7 +4,7 @@ variables:
     value: ubuntu-24.04
 
   - name: EirctlVersion
-    value: 0.7.6
+    value: 0.11.3
 
   - name: TerraformVersion
     value: 1.7.5
