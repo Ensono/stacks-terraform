@@ -37,6 +37,16 @@ output "aks_cluster_name" {
   depends_on  = [azurerm_resource_group.default]
 }
 
+output "aks_oidc_issuer_url" {
+  description = "AKS OIDC issuer URL used by downstream federated identity credential resources."
+  value       = var.create_aks ? azurerm_kubernetes_cluster.default.0.oidc_issuer_url : ""
+}
+
+output "aks_workload_identity_enabled" {
+  description = "Configured Azure Workload Identity enabled state for the AKS cluster."
+  value       = var.create_aks ? var.workload_identity_enabled : false
+}
+
 output "acr_resource_group_name" {
   description = "Created ACR resource group Name"
   value       = var.create_acr ? azurerm_container_registry.registry.0.resource_group_name : var.acr_resource_group
@@ -108,7 +118,8 @@ output "app_insights_id" {
 }
 
 output "app_insights_key" {
-  value = azurerm_log_analytics_workspace.default.primary_shared_key
+  value     = azurerm_log_analytics_workspace.default.primary_shared_key
+  sensitive = true
 }
 
 #########################################

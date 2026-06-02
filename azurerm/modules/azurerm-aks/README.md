@@ -75,6 +75,15 @@ Deprecated compatibility inputs remain available for now:
 
 If both the preferred and deprecated input names are set for the same concern, Terraform requires them to have the same value.
 
+## Workload Identity
+
+Azure Workload Identity is opt-in. Enable the AKS OIDC issuer when enabling Workload Identity because downstream federated identity credentials require the cluster issuer URL.
+
+```hcl
+oidc_issuer_enabled       = true
+workload_identity_enabled = true
+```
+
 | Name    | Version |
 |---------|---------|
 | azurerm | n/a     |
@@ -193,6 +202,7 @@ No modules.
 | <a name="input_vnet_cidr"></a> [vnet_cidr](#input_vnet_cidr)                                                                         | CIDR block notation for VNET                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `list(string)`                                                                                                                | n/a                         |   yes    |
 | <a name="input_vnet_name"></a> [vnet_name](#input_vnet_name)                                                                         | VNET name if create_aks_vnet is false                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string`                                                                                                                      | `""`                        |    no    |
 | <a name="input_vnet_name_resource_group"></a> [vnet_name_resource_group](#input_vnet_name_resource_group)                            | VNET resource group name if user supplying an existing network                                                                                                                                                                                                                                                                                                                                                                                                                          | `string`                                                                                                                      | `""`                        |    no    |
+| <a name="input_workload_identity_enabled"></a> [workload_identity_enabled](#input_workload_identity_enabled)                         | Enable Azure Workload Identity for the AKS cluster. Requires `oidc_issuer_enabled` to be `true`.                                                                                                                                                                                                                                                                                                                                                                                        | `bool`                                                                                                                        | `false`                     |    no    |
 
 ## Outputs
 
@@ -207,8 +217,10 @@ No modules.
 | <a name="output_aks_ingress_private_ip"></a> [aks_ingress_private_ip](#output_aks_ingress_private_ip)                                        | Internal NGINX ingress IP. Use this when `internal_ingress_enabled` is `true`.                                                                                      |
 | <a name="output_aks_ingress_public_ip"></a> [aks_ingress_public_ip](#output_aks_ingress_public_ip)                                           | Public NGINX ingress IP. Use this when `internal_ingress_enabled` is `false`.                                                                                       |
 | <a name="output_aks_node_resource_group"></a> [aks_node_resource_group](#output_aks_node_resource_group)                                     | n/a                                                                                                                                                                 |
+| <a name="output_aks_oidc_issuer_url"></a> [aks_oidc_issuer_url](#output_aks_oidc_issuer_url)                                                 | AKS OIDC issuer URL used by downstream federated identity credential resources.                                                                                     |
 | <a name="output_aks_resource_group_name"></a> [aks_resource_group_name](#output_aks_resource_group_name)                                     | Created AKS resource group Name                                                                                                                                     |
 | <a name="output_aks_system_identity_principal_id"></a> [aks_system_identity_principal_id](#output_aks_system_identity_principal_id)          | #########azurerm_kubernetes_cluster.default.identity.principal_id                                                                                                   |
+| <a name="output_aks_workload_identity_enabled"></a> [aks_workload_identity_enabled](#output_aks_workload_identity_enabled)                   | Configured Azure Workload Identity enabled state for the AKS cluster.                                                                                               |
 | <a name="output_app_insights_id"></a> [app_insights_id](#output_app_insights_id)                                                             | n/a                                                                                                                                                                 |
 | <a name="output_app_insights_key"></a> [app_insights_key](#output_app_insights_key)                                                          | n/a                                                                                                                                                                 |
 | <a name="output_app_insights_name"></a> [app_insights_name](#output_app_insights_name)                                                       | n/a                                                                                                                                                                 |
