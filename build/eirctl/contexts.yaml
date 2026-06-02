@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Ensono/eirctl/refs/heads/main/schemas/schema_v1.json
 
 contexts:
@@ -16,3 +17,14 @@ contexts:
         - PATH
         - SOURCEVERSIONMESSAGE
         - HOME
+
+  # Host context for the Terraform fast test tier (static + contract). Requires
+  # `terraform` (>= 1.7 for mock_provider) on the executing agent. The fast tier
+  # does not run Go suites, so `go` is not required here.
+  terraform-test:
+    executable:
+      bin: /bin/bash
+      args:
+        - -c
+    env:
+      TF_IN_AUTOMATION: "1"

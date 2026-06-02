@@ -1,3 +1,4 @@
+---
 name: 8.0$(Rev:.r)
 
 pr:
@@ -45,6 +46,25 @@ stages:
             targetType: inline
             script: |
               eirctl format
+
+    - job: Test
+      displayName: Terraform Fast Test Tier
+      steps:
+
+        - template: templates/setup.yaml
+          parameters:
+            EirctlVersion: ${{ variables.EirctlVersion }}
+
+        # Static + contract tiers only: no cloud credentials and no billable
+        # resources. Live tests are opt-in via TF_RUN_LIVE_TESTS and never run
+        # here. Requires `terraform` on the agent (pre-installed on the hosted
+        # ubuntu image); `go` is not required for the fast tier.
+        - task: Bash@3
+          displayName: Run Terraform fast test tier
+          inputs:
+            targetType: inline
+            script: |
+              eirctl test:fast
 
   - stage: Release
     condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.pre_release }}))
