@@ -308,10 +308,12 @@ variable "node_count" {
 
 variable "aks_node_pools" {
   type = map(object({
-    vm_size      = string,
-    auto_scaling = bool,
-    min_nodes    = number,
-    max_nodes    = number
+    vm_size                   = string,
+    auto_scaling              = bool,
+    min_nodes                 = number,
+    max_nodes                 = number,
+    enable_availability_zones = bool
+    availabilty_zones         = list(number)
   }))
   description = "Additional node pools as required by the platform"
 
@@ -446,6 +448,20 @@ variable "workload_identity_enabled" {
   description = "Enable Azure Workload Identity for the AKS cluster. Requires oidc_issuer_enabled to be true."
 
   default = false
+}
+
+variable "enable_availability_zones" {
+  type        = bool
+  description = "Enable Availability Zones in the Cluster"
+
+  default = false
+}
+
+variable "availabilty_zones" {
+  description = "Availability Zones requested for Cluster usage"
+  type        = list(number)
+
+  default = [1, 2, 3]
 }
 
 ###########################

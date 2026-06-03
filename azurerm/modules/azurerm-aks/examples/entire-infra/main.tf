@@ -49,6 +49,18 @@ module "example_aks" {
   internal_ingress_enabled          = false
   aks_private_cluster_enabled       = false
   auto_scaling_enabled              = true
-  log_application_type              = "Node.JS"
-  aks_ingress_private_ip            = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
+  enable_availability_zones         = true
+  availabilty_zones                 = [1, 2, 3]
+  aks_node_pools = {
+    user = {
+      vm_size                   = "Standard_DS3_v2"
+      auto_scaling              = true
+      min_nodes                 = 1
+      max_nodes                 = 3
+      enable_availability_zones = true
+      availabilty_zones         = [1, 2, 3]
+    }
+  }
+  log_application_type   = "Node.JS"
+  aks_ingress_private_ip = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
 }
