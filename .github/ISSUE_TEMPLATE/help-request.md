@@ -1,10 +1,9 @@
 ---
 name: Help request
 about: Ask for help
-title: 'Help: *what feature you need help with*'
+title: "Help: *what feature you need help with*"
 labels: kind/help
-assignees: ''
-
+assignees: ""
 ---
 
 **Goal:**

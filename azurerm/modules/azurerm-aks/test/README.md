@@ -1,93 +1,88 @@
 # AKS Module Tests
 
-This directory contains automated tests for the Azure Kubernetes Service (AKS) Terraform module.
+This directory contains the automated tests for the Azure Kubernetes Service
+(AKS) Terraform module. The tests follow the repository
+[Terraform module testing standard](../../../../docs/terraform-module-testing.md)
+and are organised into three tiers: **static**, **contract**, and **live**.
 
-## OIDC Issuer Tests
+## Test tiers
 
-The `oidc_issuer_test.go` file contains tests for the OIDC issuer enabled feature:
+### Static tier (`terraform_execution_test.go`)
 
-### Test Cases
+- **TestModuleInitAndValidate** — runs `terraform init -backend=false` and
+  `terraform validate` for the module. Requires no cloud credentials and
+  creates no resources.
 
-1. **TestOidcIssuerEnabledDefault**: Validates that OIDC issuer is enabled by default when no variable is specified.
+### Contract tier (`../tests/*.tftest.hcl`)
 
-2. **TestOidcIssuerEnabledVariable**: Verifies that OIDC issuer can be explicitly enabled by setting `oidc_issuer_enabled = true`.
+Native `terraform test` files that run `terraform plan` with mocked providers,
+so they execute fully offline and create no billable resources:
 
-3. **TestOidcIssuerDisabledVariable**: Verifies that OIDC issuer can be disabled by setting `oidc_issuer_enabled = false`.
+- **contract.tftest.hcl** — asserts that `oidc_issuer_enabled` and
+  `workload_identity_enabled` wire through to the cluster resource and the
+  `aks_workload_identity_enabled` output for both default and enabled
+  configurations. It also asserts that default node pool `upgrade_settings`
+  explicitly model AzureRM v4 defaults so consecutive plans do not drift after
+  Azure reports those defaults back.
+- **precondition.tftest.hcl** — uses `expect_failures` to assert that enabling
+  workload identity without the OIDC issuer fails the module precondition.
 
-4. **TestOidcIssuerVariableType**: Validates that the `oidc_issuer_enabled` variable is correctly defined as a boolean type.
+### Live tier (`live_test.go`)
 
-5. **TestOidcIssuerVariableDefault**: Validates that the default value of `oidc_issuer_enabled` is `true`.
-
-## Naming Alias Tests
-
-The `naming_aliases_test.go` file contains static tests for the AKS module naming split:
-
-1. **TestNamingAliasesResolveThroughCanonicalLocals**: Verifies that the preferred inputs,
-   deprecated aliases, canonical locals, and conflict validation are all present.
-
-2. **TestExamplesPreferPreferredNaming**: Verifies that the AKS and dependent App Gateway
-   examples use `internal_ingress_enabled` and `aks_private_cluster_enabled` instead of the
-   deprecated names.
-
-3. **TestDefaultNodePoolModelsAzureUpgradeSettingsDefaults**: Verifies that the default node
-   pool explicitly models AzureRM v4 `upgrade_settings` defaults so consecutive plans do not
-   drift after Azure reports those defaults back.
+- **TestExampleApplyWhenLiveTestsEnabled** — performs a real `terraform apply`
+  of the `entire-infra` example and always registers a deferred `destroy`.
+  Skipped unless the opt-in variable is set (see below).
 
 ## Prerequisites
 
-- Terraform >= 1.0
+- Terraform >= 1.7 (for `mock_provider` support in `terraform test`)
 - Go >= 1.21
-- Terratest library
 
-## Running the Tests
+## Running the tests
 
-### Install Dependencies
+### Fast tier (static + contract, no credentials required)
 
 ```bash
+# Static tier
 cd test
-go mod download
+go test ./...
+
+# Contract tier
+cd ..
+terraform init -backend=false
+terraform test
 ```
 
-### Run All Tests
+The repository `eirctl` task runs the same fast-tier checks:
 
 ```bash
+eirctl test:fast
+```
+
+### Live tier (opt-in, incurs cloud cost)
+
+Live tests are skipped by default. Enable them with the single, repository-wide
+opt-in variable and valid Azure authentication:
+
+```bash
+export TF_RUN_LIVE_TESTS=1
+# plus Azure auth, e.g. `az login` or ARM_* service-principal variables
 cd test
-go test -v -timeout 30m
+go test ./... -run TestExampleApplyWhenLiveTestsEnabled -timeout 60m
 ```
 
-### Run Specific Test
+If `TF_RUN_LIVE_TESTS` is unset, or Azure authentication is absent, the live
+test is **skipped** (never a false pass).
 
-```bash
-cd test
-go test -v -run TestOidcIssuerEnabledDefault -timeout 30m
-```
+## Authoring rules
 
-### Run Tests in Parallel
-
-```bash
-cd test
-go test -v -parallel 4 -timeout 30m
-```
-
-## Notes
-
-- Tests are marked as parallel-safe with `t.Parallel()` for faster execution
-- Integration tests that deploy actual infrastructure require proper Azure credentials and may incur costs
-- The `InitAndApplyE` function is used to gracefully handle failures in test environments where Azure credentials may not be available
-- All tests clean up resources with `terraform destroy` via `defer`
-
-## Test Environment Variables
-
-Some tests may require Azure credentials:
-
-```bash
-export ARM_SUBSCRIPTION_ID="<your-subscription-id>"
-export ARM_CLIENT_ID="<your-client-id>"
-export ARM_CLIENT_SECRET="<your-client-secret>"
-export ARM_TENANT_ID="<your-tenant-id>"
-```
+- Assert behaviour through `terraform validate`, `terraform plan`, or
+  `terraform test` — never by string-matching `.tf` source files.
+- Do not re-implement module logic in test code and assert against the copy.
+- Live tests must guarantee cleanup via a deferred `destroy`.
 
 ## References
 
-- [Terratest Documentation](https://terratest.gruntwork.io/)
+- [Terraform module testing standard](../../../../docs/terraform-module-testing.md)
+- [terraform test command](https://developer.hashicorp.com/terraform/language/tests)
 - [OIDC Issuer in Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer)

@@ -127,4 +127,3 @@ resource "azurerm_role_assignment" "storage_role_context" {
   role_definition_name = "Storage Blob Data Owner"
   principal_id         = var.azure_object_id
 }
-

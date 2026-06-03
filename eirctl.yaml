@@ -1,10 +1,14 @@
+---
 import:
-- ./build/eirctl/contexts.yaml
-- ./build/eirctl/tasks.yaml
+  - ./build/eirctl/contexts.yaml
+  - ./build/eirctl/tasks.yaml
 
 pipelines:
   format:
     - task: terraform:format
+
+  test:fast:
+    - task: terraform:test
 
   release:
     - task: terraform:format

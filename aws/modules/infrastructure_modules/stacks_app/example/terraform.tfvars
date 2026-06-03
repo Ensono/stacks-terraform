@@ -16,7 +16,7 @@ attribute_type  = "S"
 enable_queue = true
 queue_name   = "menu"
 
-# Tags 
+# Tags
 tags = {
   Owner = "terraform"
 }

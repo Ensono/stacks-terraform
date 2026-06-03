@@ -29,11 +29,11 @@ pwsh
 # Install Azure CLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-# Install Python 
+# Install Python
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
 sudo pip install databricks-cli
 
-# Install JDK 
+# Install JDK
 sudo apt-get update
 sudo apt-get install -y openjdk-11-jdk

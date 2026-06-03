@@ -1,3 +1,4 @@
+---
 parameters:
   - name: EirctlVersion
     type: string

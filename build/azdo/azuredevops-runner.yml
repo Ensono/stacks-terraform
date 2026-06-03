@@ -1,3 +1,4 @@
+---
 name: 8.0$(Rev:.r)
 
 pr:
@@ -32,51 +33,88 @@ stages:
 
   - stage: Build
     jobs:
-    - job: Format
-      steps:
+      - job: Format
+        steps:
 
-        - template: templates/setup.yaml
-          parameters:
-            EirctlVersion: ${{ variables.EirctlVersion }}
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
 
-        - task: Bash@3
-          displayName: Check Terraform Formatting
-          inputs:
-            targetType: inline
-            script: |
-              eirctl format
+          - task: Bash@3
+            displayName: Check Terraform Formatting
+            inputs:
+              targetType: inline
+              script: |
+                eirctl format
+
+      - job: Test
+        displayName: Terraform Fast Test Tier
+        steps:
+
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
+
+          # Static + contract tiers only: no cloud credentials and no billable
+          # resources. Live tests are opt-in via TF_RUN_LIVE_TESTS and never run
+          # here. Install Terraform explicitly because hosted agent images do not
+          # guarantee that the binary is pre-installed.
+          - task: Bash@3
+            displayName: Install Terraform
+            inputs:
+              targetType: inline
+              script: |
+                set -euo pipefail
+
+                terraform_version='$(TerraformVersion)'
+                terraform_archive="terraform_${terraform_version}_linux_amd64.zip"
+                terraform_url="https://releases.hashicorp.com/terraform/${terraform_version}/${terraform_archive}"
+
+                rm -f /tmp/terraform /tmp/${terraform_archive}
+                wget -q "${terraform_url}" -O "/tmp/${terraform_archive}"
+                unzip -qo "/tmp/${terraform_archive}" -d /tmp
+                chmod u+x /tmp/terraform
+                mv /tmp/terraform /usr/local/bin/terraform
+                terraform version
+
+          - task: Bash@3
+            displayName: Run Terraform fast test tier
+            inputs:
+              targetType: inline
+              script: |
+                eirctl test:fast
 
   - stage: Release
     condition: and(succeeded(), or(${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}, ${{ parameters.pre_release }}))
     jobs:
-    - job: Publish
-      steps:
-        - template: templates/setup.yaml
-          parameters:
-            EirctlVersion: ${{ variables.EirctlVersion }}
+      - job: Publish
+        steps:
+          - template: templates/setup.yaml
+            parameters:
+              EirctlVersion: ${{ variables.EirctlVersion }}
 
-        # Publish to GitHub
-        - task: Bash@3
-          displayName: Publish Pre-Release
-          condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
-          inputs:
-            targetType: inline
-            script: |
-              eirctl release
-          env:
-            STAGE: "release"
-            PUBLISH_RELEASE: "true"
-            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
-            PRERELEASE: "true"
+          # Publish to GitHub
+          - task: Bash@3
+            displayName: Publish Pre-Release
+            condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
+            inputs:
+              targetType: inline
+              script: |
+                eirctl release
+            env:
+              STAGE: "release"
+              PUBLISH_RELEASE: "true"
+              VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+              PRERELEASE: "true"
 
-        - task: Bash@3
-          displayName: Publish Release
-          condition: and(succeeded(), eq(${{ parameters.pre_release }}, false))
-          inputs:
-            targetType: inline
-            script: |
-              eirctl release
-          env:
-            STAGE: "release"
-            PUBLISH_RELEASE: "true"
-            VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+          - task: Bash@3
+            displayName: Publish Release
+            condition: and(succeeded(), eq(${{ parameters.pre_release }}, false))
+            inputs:
+              targetType: inline
+              script: |
+                eirctl release
+            env:
+              STAGE: "release"
+              PUBLISH_RELEASE: "true"
+              VERSION_NUMBER: $(BUILD_BUILDNUMBER)

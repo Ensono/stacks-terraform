@@ -23,22 +23,22 @@ Terraform state and may appear in resource instance keys.
 ## Requirements
 
 | Name      | Version  |
-|-----------|----------|
+| --------- | -------- |
 | Terraform | `>= 1.3` |
 
 ## New and updated inputs
 
-| Input                        | Type           | Default       | Notes                                                                                                                                                               |
-|------------------------------|----------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `certificate_source`         | `string`       | `null`        | Explicit certificate mode. Allowed values are `key_vault`, `acme`, and `self_signed`. When omitted, the module preserves legacy behavior using `create_valid_cert`. |
-| `key_vault_secret_id`        | `string`       | `null`        | Versionless Key Vault secret or certificate URI used when `certificate_source = "key_vault"`.                                                                       |
-| `identity_type`              | `string`       | `null`        | Managed identity type for Application Gateway. The module currently accepts `UserAssigned`.                                                                         |
-| `user_assigned_identity_ids` | `list(string)` | `[]`          | User-assigned managed identity resource IDs attached when `identity_type = "UserAssigned"`.                                                                         |
-| `create_valid_cert`          | `bool`         | `true`        | Deprecated legacy selector. Still used when `certificate_source` is unset.                                                                                          |
-| `create_ssl_cert`            | `bool`         | `true`        | Deprecated compatibility flag. Retained to avoid breaking existing consumers.                                                                                       |
-| `pfx_password`               | `string`       | `"Password1"` | Used only for `acme` and `self_signed` modes. Ignored for `key_vault`.                                                                                              |
-| `acme_email`                 | `string`       | `null`        | Required only when the effective certificate source is `acme`.                                                                                                      |
-| `acme_account_key_rotation_token` | `string`  | `null`        | Optional non-sensitive token used only in `acme` mode to force recreation of the ACME account key and registration.                                                 |
+| Input                             | Type           | Default       | Notes                                                                                                                                                               |
+| --------------------------------- | -------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `certificate_source`              | `string`       | `null`        | Explicit certificate mode. Allowed values are `key_vault`, `acme`, and `self_signed`. When omitted, the module preserves legacy behavior using `create_valid_cert`. |
+| `key_vault_secret_id`             | `string`       | `null`        | Versionless Key Vault secret or certificate URI used when `certificate_source = "key_vault"`.                                                                       |
+| `identity_type`                   | `string`       | `null`        | Managed identity type for Application Gateway. The module currently accepts `UserAssigned`.                                                                         |
+| `user_assigned_identity_ids`      | `list(string)` | `[]`          | User-assigned managed identity resource IDs attached when `identity_type = "UserAssigned"`.                                                                         |
+| `create_valid_cert`               | `bool`         | `true`        | Deprecated legacy selector. Still used when `certificate_source` is unset.                                                                                          |
+| `create_ssl_cert`                 | `bool`         | `true`        | Deprecated compatibility flag. Retained to avoid breaking existing consumers.                                                                                       |
+| `pfx_password`                    | `string`       | `"Password1"` | Used only for `acme` and `self_signed` modes. Ignored for `key_vault`.                                                                                              |
+| `acme_email`                      | `string`       | `null`        | Required only when the effective certificate source is `acme`.                                                                                                      |
+| `acme_account_key_rotation_token` | `string`       | `null`        | Optional non-sensitive token used only in `acme` mode to force recreation of the ACME account key and registration.                                                 |
 
 The rest of the networking, probe, and naming inputs are unchanged.
 
@@ -117,10 +117,10 @@ module "key_vault_app_gateway" {
 2. Grant that identity permission to read the certificate secret from Key Vault. The module does not manage Key Vault RBAC.
 3. Import or issue the TLS certificate into Azure Key Vault and use a versionless secret URI.
 4. Update the module call to set:
-   - `certificate_source = "key_vault"`
-   - `key_vault_secret_id = "https://<vault>.vault.azure.net/secrets/<certificate-name>"`
-   - `identity_type = "UserAssigned"`
-   - `user_assigned_identity_ids = ["<resource-id>"]`
+    - `certificate_source = "key_vault"`
+    - `key_vault_secret_id = "https://<vault>.vault.azure.net/secrets/<certificate-name>"`
+    - `identity_type = "UserAssigned"`
+    - `user_assigned_identity_ids = ["<resource-id>"]`
 5. Remove `acme_email` and any downstream ACME-specific automation once the new path is deployed and verified.
 
 ## Rotation and RBAC notes
