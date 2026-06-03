@@ -74,6 +74,33 @@ run "workload_identity_enabled_with_oidc" {
   }
 }
 
+run "default_node_pool_upgrade_settings_can_be_overridden" {
+  command = plan
+
+  variables {
+    default_node_pool_upgrade_settings = {
+      drain_timeout_in_minutes      = 30
+      max_surge                     = "25%"
+      node_soak_duration_in_minutes = 5
+    }
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].drain_timeout_in_minutes == 30
+    error_message = "default node pool drain_timeout_in_minutes should be configurable"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].max_surge == "25%"
+    error_message = "default node pool max_surge should be configurable"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].node_soak_duration_in_minutes == 5
+    error_message = "default node pool node_soak_duration_in_minutes should be configurable"
+  }
+}
+
 run "outputs_are_inert_when_aks_not_created" {
   command = plan
 

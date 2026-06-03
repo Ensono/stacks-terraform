@@ -376,6 +376,36 @@ variable "temporary_name_for_rotation" {
   }
 }
 
+variable "default_node_pool_upgrade_settings" {
+  description = "Upgrade settings for the AKS default node pool. max_surge accepts a fixed node count or percentage string supported by Azure, for example `1` or `10%`."
+  type = object({
+    drain_timeout_in_minutes      = number
+    max_surge                     = string
+    node_soak_duration_in_minutes = number
+  })
+
+  default = {
+    drain_timeout_in_minutes      = 0
+    max_surge                     = "10%"
+    node_soak_duration_in_minutes = 0
+  }
+
+  validation {
+    condition     = var.default_node_pool_upgrade_settings.drain_timeout_in_minutes >= 0 && var.default_node_pool_upgrade_settings.drain_timeout_in_minutes <= 1440
+    error_message = "default_node_pool_upgrade_settings.drain_timeout_in_minutes must be between 0 and 1440."
+  }
+
+  validation {
+    condition     = can(regex("^([1-9][0-9]*|[1-9][0-9]?%|100%)$", var.default_node_pool_upgrade_settings.max_surge))
+    error_message = "default_node_pool_upgrade_settings.max_surge must be a positive whole number or a percentage from 1% to 100%."
+  }
+
+  validation {
+    condition     = var.default_node_pool_upgrade_settings.node_soak_duration_in_minutes >= 0 && var.default_node_pool_upgrade_settings.node_soak_duration_in_minutes <= 30
+    error_message = "default_node_pool_upgrade_settings.node_soak_duration_in_minutes must be between 0 and 30."
+  }
+}
+
 variable "internal_ingress_enabled" {
   type        = bool
   description = "Preferred input. When true, ingress integrations such as App Gateway should target the internal NGINX ingress IP instead of the public ingress IP."
