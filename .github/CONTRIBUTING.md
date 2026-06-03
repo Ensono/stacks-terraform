@@ -8,9 +8,9 @@ Following these guidelines helps you communicate and participate with the develo
 - How to raise a PR
 - How to suggest a new feature
 
-## Contributing to Amido Stacks
+## Contributing to Ensono Stacks
 
-We love to receive contributions. There are many ways in which you can experience the warm fuzzies of open source contribution, from improving the documentation, writing tutorials or blog posts, submitting issues and feature requests, or writing code which can be incorporated into Amido Stacks.
+We love to receive contributions. There are many ways in which you can experience the warm fuzzies of open source contribution, from improving the documentation, writing tutorials or blog posts, submitting issues and feature requests, or writing code which can be incorporated into Ensono Stacks.
 
 However, we have a few baselines worth noting:
 
@@ -19,7 +19,7 @@ However, we have a few baselines worth noting:
 - Not everything will be fixed.
 - Did we mention we love tests?
 
-Please, don't use the issue tracker if your problem is not strictly Amido Stacks specific. Stack Overflow or other sources are worth considering.
+Please, don't use the issue tracker if your problem is not strictly Ensono Stacks specific. Stack Overflow or other sources are worth considering.
 
 _See the individual [Amido projects](./README.md) for in depth information about environment setup, testing, and code styles._
 
@@ -52,11 +52,11 @@ Alternatively, ask us for help.
 
 ## Open Development
 
-All work on Amido Stacks is on GitHub. Both Amido maintainers and external contributors send pull requests which go through the same review process. We are using [Azure Pipelines](https://azure.microsoft.com/en-gb/services/devops/pipelines/) as our CI/CD tool of choice. Every PR will invoke a series of steps to build, test, and deploy.
+All work on Ensono Stacks is on GitHub. Both Ensono maintainers and external contributors send pull requests which go through the same review process. We are using [Azure Pipelines](https://azure.microsoft.com/en-gb/services/devops/pipelines/) as our CI/CD tool of choice. Every PR will invoke a series of steps to build, test, and deploy.
 
 ## Code changes happen through pull requests
 
-We use Github for hosting and supporting our open source Stack projects. The Amido internal maintainers team will be monitoring Github for pull requests (PRs) and issues.
+We use Github for hosting and supporting our open source Stack projects. The Ensono internal maintainers team will be monitoring Github for pull requests (PRs) and issues.
 
 We actively welcome your pull requests:
 
@@ -103,7 +103,7 @@ Code styling and practices depend on the project. Check the project repo for mor
 
 ## Community
 
-If you are interested in talking with Amido on how accelerate your cloud adoption using Amido Stacks then please reach out at [Amido](mailto:london@amido.com).
+If you are interested in talking with Ensono on how accelerate your cloud adoption using Ensono Stacks then please reach out at [Ensono](mailto:stacks@ensono.com).
 
 ---
 
