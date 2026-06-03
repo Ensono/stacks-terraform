@@ -21,7 +21,9 @@ so they execute fully offline and create no billable resources:
 - **contract.tftest.hcl** — asserts that `oidc_issuer_enabled` and
   `workload_identity_enabled` wire through to the cluster resource and the
   `aks_workload_identity_enabled` output for both default and enabled
-  configurations.
+  configurations. It also asserts that default node pool `upgrade_settings`
+  explicitly model AzureRM v4 defaults so consecutive plans do not drift after
+  Azure reports those defaults back.
 - **precondition.tftest.hcl** — uses `expect_failures` to assert that enabling
   workload identity without the OIDC issuer fails the module precondition.
 

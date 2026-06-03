@@ -38,6 +38,21 @@ run "defaults_wire_oidc_and_workload_identity" {
     condition     = output.aks_workload_identity_enabled == false
     error_message = "aks_workload_identity_enabled output should be false by default"
   }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].drain_timeout_in_minutes == 0
+    error_message = "default node pool drain_timeout_in_minutes should explicitly model Azure's default of 0"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].max_surge == "10%"
+    error_message = "default node pool max_surge should explicitly model Azure's default of 10%"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].node_soak_duration_in_minutes == 0
+    error_message = "default node pool node_soak_duration_in_minutes should explicitly model Azure's default of 0"
+  }
 }
 
 run "workload_identity_enabled_with_oidc" {
@@ -56,6 +71,33 @@ run "workload_identity_enabled_with_oidc" {
   assert {
     condition     = output.aks_workload_identity_enabled == true
     error_message = "aks_workload_identity_enabled output should reflect the enabled workload identity"
+  }
+}
+
+run "default_node_pool_upgrade_settings_can_be_overridden" {
+  command = plan
+
+  variables {
+    default_node_pool_upgrade_settings = {
+      drain_timeout_in_minutes      = 30
+      max_surge                     = "25%"
+      node_soak_duration_in_minutes = 5
+    }
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].drain_timeout_in_minutes == 30
+    error_message = "default node pool drain_timeout_in_minutes should be configurable"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].max_surge == "25%"
+    error_message = "default node pool max_surge should be configurable"
+  }
+
+  assert {
+    condition     = azurerm_kubernetes_cluster.default[0].default_node_pool[0].upgrade_settings[0].node_soak_duration_in_minutes == 5
+    error_message = "default node pool node_soak_duration_in_minutes should be configurable"
   }
 }
 
