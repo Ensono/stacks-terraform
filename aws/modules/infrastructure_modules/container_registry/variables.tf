@@ -3,6 +3,11 @@ variable "region" {
   description = "The name of the region to use"
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Map of infrastructure tags"
+}
+
 variable "enable_registry_scanning" {
   type        = bool
   description = "Whether to enable continuous registry scanning"
@@ -23,6 +28,74 @@ variable "max_untagged_image_count" {
 variable "max_tagged_image_count" {
   type        = number
   description = "The maximum number of tagged images to keep for each repository"
+}
+
+variable "additional_lifecycle_rules" {
+  description = <<-EOT
+    Optional additional ECR lifecycle rules to insert before the default catch-all
+    tagged image rule. Use this to give specific tag prefixes their own independent
+    retention counter.
+
+    Rules are automatically assigned rulePriority values:
+      - Priority 1        : default untagged rule
+      - Priority 2..N+1   : your additional rules (in list order)
+      - Priority N+2      : default catch-all tagged rule
+
+    This means more specific prefix rules are always evaluated before the
+    catch-all, which is required by AWS ECR.
+
+    Example — keep 100 main-* images separately:
+    additional_lifecycle_rules = [
+      {
+        description = "Keep last 100 'main-*' tagged images"
+
+        selection = {
+          tagStatus     = "tagged"
+          tagPrefixList = ["main-"]
+          countType     = "imageCountMoreThan"
+          countNumber   = 100
+        }
+
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  EOT
+
+  type = list(object({
+    description = string
+    selection = object({
+      tagStatus      = string
+      tagPrefixList  = optional(list(string))
+      tagPatternList = optional(list(string))
+      countType      = string
+      countNumber    = number
+    })
+    action = object({
+      type = string
+    })
+  }))
+
+  default = []
+
+  validation {
+    condition = alltrue([
+      for rule in var.additional_lifecycle_rules : contains(["tagged", "untagged", "any"], rule.selection.tagStatus)
+    ])
+    error_message = "Each additional lifecycle rule selection.tagStatus must be one of tagged, untagged, or any."
+  }
+
+  validation {
+    condition = alltrue([
+      for rule in var.additional_lifecycle_rules : rule.selection.tagStatus == "tagged" ? (
+        (length(coalesce(rule.selection.tagPrefixList, [])) > 0 ? 1 : 0) + (length(coalesce(rule.selection.tagPatternList, [])) > 0 ? 1 : 0) == 1
+        ) : (
+        length(coalesce(rule.selection.tagPrefixList, [])) == 0 && length(coalesce(rule.selection.tagPatternList, [])) == 0
+      )
+    ])
+    error_message = "Tagged additional lifecycle rules must set exactly one of tagPrefixList or tagPatternList. Untagged and any rules must not set either field."
+  }
 }
 
 variable "pull_accounts" {

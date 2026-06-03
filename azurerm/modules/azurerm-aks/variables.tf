@@ -73,7 +73,7 @@ variable "resource_group_tags" {
 # IDENTITY SETTINGS
 ###########################
 variable "create_user_identity" {
-  description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
+  description = "Creates a User Managed Identity - which can be used subsequently with AAD pod identity extensions"
   type        = bool
 
   default = true
@@ -175,7 +175,7 @@ variable "dns_parent_resource_group" {
 
 variable "dns_parent_zone" {
   type        = string
-  description = "Dns zone name for the parnet - e.g. domain.com. NOTE: you need control over this domain to add the records here"
+  description = "Dns zone name for the parent - e.g. domain.com. NOTE: you need control over this domain to add the records here"
 
   default = null
 }
@@ -276,7 +276,7 @@ variable "nodepool_type" {
   default = "VirtualMachineScaleSets"
 }
 
-variable "enable_auto_scaling" {
+variable "auto_scaling_enabled" {
   type = bool
 
   default = false
@@ -313,7 +313,7 @@ variable "aks_node_pools" {
     min_nodes                 = number,
     max_nodes                 = number,
     enable_availability_zones = bool
-    availabilty_zones         = list(int)
+    availabilty_zones         = list(number)
   }))
   description = "Additional node pools as required by the platform"
 
@@ -367,16 +367,85 @@ variable "vm_size" {
   default = "Standard_DS2_v2"
 }
 
+variable "temporary_name_for_rotation" {
+  description = "Temporary name for node pool rotation. Required when updating sensitive default node pool properties (name, vm_size, os_disk_size_gb, zones, kubelet_config, kubelet_disk_type, linux_os_config, max_pods, only_critical_addons_enabled, os_disk_type, pod_subnet_id, snapshot_id, ultra_ssd_enabled, vnet_subnet_id, host_encryption_enabled, node_public_ip_enabled, fips_enabled). Azure uses this to create a temporary node pool during the update process."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.temporary_name_for_rotation == "" || can(regex("^[a-z][a-z0-9]{0,11}$", var.temporary_name_for_rotation))
+    error_message = "temporary_name_for_rotation must be empty or a valid AKS node pool name: 1-12 characters, start with a lowercase letter, and contain only lowercase alphanumeric characters."
+  }
+}
+
+variable "default_node_pool_upgrade_settings" {
+  description = "Upgrade settings for the AKS default node pool. max_surge accepts a fixed node count or percentage string supported by Azure, for example `1` or `10%`."
+  type = object({
+    drain_timeout_in_minutes      = number
+    max_surge                     = string
+    node_soak_duration_in_minutes = number
+  })
+
+  default = {
+    drain_timeout_in_minutes      = 0
+    max_surge                     = "10%"
+    node_soak_duration_in_minutes = 0
+  }
+
+  validation {
+    condition     = var.default_node_pool_upgrade_settings.drain_timeout_in_minutes >= 0 && var.default_node_pool_upgrade_settings.drain_timeout_in_minutes <= 1440
+    error_message = "default_node_pool_upgrade_settings.drain_timeout_in_minutes must be between 0 and 1440."
+  }
+
+  validation {
+    condition     = can(regex("^([1-9][0-9]*|[1-9][0-9]?%|100%)$", var.default_node_pool_upgrade_settings.max_surge))
+    error_message = "default_node_pool_upgrade_settings.max_surge must be a positive whole number or a percentage from 1% to 100%."
+  }
+
+  validation {
+    condition     = var.default_node_pool_upgrade_settings.node_soak_duration_in_minutes >= 0 && var.default_node_pool_upgrade_settings.node_soak_duration_in_minutes <= 30
+    error_message = "default_node_pool_upgrade_settings.node_soak_duration_in_minutes must be between 0 and 30."
+  }
+}
+
+variable "internal_ingress_enabled" {
+  type        = bool
+  description = "Preferred input. When true, ingress integrations such as App Gateway should target the internal NGINX ingress IP instead of the public ingress IP."
+
+  default = null
+}
+
 variable "is_cluster_private" {
   type        = bool
-  description = "Whether or not expose the Ingress over internet"
+  description = "Deprecated alias for internal_ingress_enabled. When true, ingress integrations such as App Gateway should target the internal NGINX ingress IP instead of the public ingress IP."
 
-  default = false
+  default = null
+}
+
+variable "aks_private_cluster_enabled" {
+  type        = bool
+  description = "Preferred input. When true, the AKS API server and control plane are private."
+
+  default = null
 }
 
 variable "private_cluster_enabled" {
   type        = bool
-  description = "Set cluster access private"
+  description = "Deprecated alias for aks_private_cluster_enabled. When true, the AKS API server and control plane are private."
+
+  default = null
+}
+
+variable "oidc_issuer_enabled" {
+  type        = bool
+  description = "Enable OIDC issuer for the AKS cluster to support workload identity federation. Required for Azure AD Workload Identity integration; set to false only if you do not plan to use workload identity federation with this cluster."
+
+  default = true
+}
+
+variable "workload_identity_enabled" {
+  type        = bool
+  description = "Enable Azure Workload Identity for the AKS cluster. Requires oidc_issuer_enabled to be true."
 
   default = false
 }
@@ -390,7 +459,7 @@ variable "enable_availability_zones" {
 
 variable "availabilty_zones" {
   description = "Availability Zones requested for Cluster usage"
-  type        = list(int)
+  type        = list(number)
 
   default = [1, 2, 3]
 }
@@ -419,7 +488,7 @@ variable "log_application_type" {
 }
 
 variable "key_vault_name" {
-  description = "Key Vault name - if not specificied will default to computed naming convention"
+  description = "Key Vault name - if not specified will default to computed naming convention"
   type        = string
 
   default = ""

@@ -1,0 +1,23 @@
+---
+import:
+  - ./build/eirctl/contexts.yaml
+  - ./build/eirctl/tasks.yaml
+
+pipelines:
+  format:
+    - task: terraform:format
+
+  test:fast:
+    - task: terraform:test
+
+  release:
+    - task: terraform:format
+    - task: setup:environment
+      depends_on:
+        - terraform:format
+    - task: publish:github
+      depends_on:
+        - setup:environment
+
+  doc:terraform:generate:
+    - task: doc:terraform:generate

@@ -3,7 +3,7 @@ module "ecr" {
   for_each = toset(concat(var.repositories, flatten([for k, v in var.pull_through_cache_setup : [for v in v.images : "${k}/${v}"]])))
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.2.0"
 
   create_repository = true
 
@@ -15,38 +15,9 @@ module "ecr" {
   # Managed below in `ecr_registry_scanning_rules`
   manage_registry_scanning_configuration = false
 
-  repository_lifecycle_policy = jsonencode({
-    rules = [
-      {
-        rulePriority = 1
-        description  = "Keep the last '${var.max_untagged_image_count}' untagged images"
+  repository_lifecycle_policy = local.repository_lifecycle_policy
 
-        selection = {
-          tagStatus   = "untagged"
-          countType   = "imageCountMoreThan"
-          countNumber = var.max_untagged_image_count
-        }
-
-        action = {
-          type = "expire"
-        }
-      },
-      {
-        rulePriority = 2,
-        description  = "Keep the last '${var.max_tagged_image_count}' tagged images"
-
-        selection = {
-          tagStatus   = "any"
-          countType   = "imageCountMoreThan"
-          countNumber = var.max_tagged_image_count
-        }
-
-        action = {
-          type = "expire"
-        }
-      },
-    ]
-  })
+  tags = var.tags
 }
 
 ## Pull Through Cache
@@ -79,7 +50,7 @@ module "ecr_pull_through_cache" {
   count = length(var.pull_through_cache_setup) > 0 ? 1 : 0
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.2.0"
 
   create_repository = false
 
@@ -92,6 +63,8 @@ module "ecr_pull_through_cache" {
       upstream_registry_url = v.upstream_registry_url
     }
   }
+
+  tags = var.tags
 }
 
 ## ECR Registry Scanning Rules
@@ -99,7 +72,7 @@ module "ecr_registry_scanning_rules" {
   count = var.enable_registry_scanning ? 1 : 0
 
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "3.2.0"
 
   create_repository = false
 
@@ -108,8 +81,15 @@ module "ecr_registry_scanning_rules" {
   registry_scan_rules = [
     {
       scan_frequency = "CONTINUOUS_SCAN"
-      filter         = "*"
-      filter_type    = "WILDCARD"
+
+      filter = [
+        {
+          filter      = "*"
+          filter_type = "WILDCARD"
+        },
+      ]
     }
   ]
+
+  tags = var.tags
 }

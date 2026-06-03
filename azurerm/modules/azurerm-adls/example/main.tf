@@ -25,6 +25,7 @@ module "adls_default" {
   resource_namer               = module.default_label.id
   resource_group_name          = azurerm_resource_group.default.name
   resource_group_location      = azurerm_resource_group.default.location
+  azure_object_id              = data.azurerm_client_config.current.object_id
   storage_account_details      = var.storage_account_details
   container_access_type        = var.container_access_type
   resource_tags                = module.default_label.tags

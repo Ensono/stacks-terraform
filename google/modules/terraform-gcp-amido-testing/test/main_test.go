@@ -19,13 +19,13 @@ func TestTerrafromGcpStorageBucket(t *testing.T) {
 
 	// Get the Project Id to use
   projectId := gcp.GetGoogleProjectIDFromEnvVar(t)
-  
+
   // Set the location to us
   location := "EU"
 
 	// Give the example bucket a unique name so we can distinguish it from any other bucket in your GCP account
   expectedBucketName := fmt.Sprintf("example_test_results-%s", strings.ToLower(random.UniqueId()))
-  
+
 	// website::tag::1::Configure Terraform setting path to Terraform code, bucket name, and instance name.
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -44,7 +44,7 @@ func TestTerrafromGcpStorageBucket(t *testing.T) {
 
 	// website::tag::2::This will run `terraform init` and `terraform apply` and fail the test if there are any errors
   terraform.InitAndApply(t, terraformOptions)
-  
+
   // Demo purposes: put in a delay to see the storage container created in GCP Console
   delay := 30 * time.Second
   time.Sleep(delay)

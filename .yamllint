@@ -1,0 +1,24 @@
+---
+extends: default
+
+yaml-files:
+  - '.yamllint'
+  - '*.yml'
+  - '*.yaml'
+
+ignore: |
+  .terraform/
+  .eirctl/
+  local/
+  outputs/
+  tmp/
+  openspec/
+
+
+rules:
+  line-length: disable
+  truthy: disable
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false

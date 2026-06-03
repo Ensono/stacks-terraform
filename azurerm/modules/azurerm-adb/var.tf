@@ -41,7 +41,7 @@ variable "databricks_sku" {
 
 
 ############################################
-# Resource Diagnostic Setting 
+# Resource Diagnostic Setting
 ############################################
 
 variable "enable_databricksws_diagnostic" {
@@ -63,7 +63,7 @@ variable "data_platform_log_analytics_workspace_id" {
 }
 
 ############################################
-# Resource Databricks workspace setting 
+# Resource Databricks workspace setting
 ############################################
 
 variable "public_network_access_enabled" {

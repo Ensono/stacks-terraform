@@ -46,7 +46,21 @@ module "example_aks" {
   subnet_front_end_prefix           = cidrsubnet(var.vnet_cidr.0, 4, 3)
   subnet_prefixes                   = ["${cidrsubnet(var.vnet_cidr.0, 4, 0)}", "${cidrsubnet(var.vnet_cidr.0, 4, 1)}", "${cidrsubnet(var.vnet_cidr.0, 4, 2)}"]
   subnet_names                      = ["k8s1", "k8s2", "k8s3"]
-  enable_auto_scaling               = true
-  log_application_type              = "Node.JS"
-  aks_ingress_private_ip            = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
+  internal_ingress_enabled          = false
+  aks_private_cluster_enabled       = false
+  auto_scaling_enabled              = true
+  enable_availability_zones         = true
+  availabilty_zones                 = [1, 2, 3]
+  aks_node_pools = {
+    user = {
+      vm_size                   = "Standard_DS3_v2"
+      auto_scaling              = true
+      min_nodes                 = 1
+      max_nodes                 = 3
+      enable_availability_zones = true
+      availabilty_zones         = [1, 2, 3]
+    }
+  }
+  log_application_type   = "Node.JS"
+  aks_ingress_private_ip = cidrhost(cidrsubnet(var.vnet_cidr.0, 4, 0), -3)
 }

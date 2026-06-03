@@ -1,0 +1,34 @@
+---
+tasks:
+  terraform:format:
+    context: powershell
+    description: Check Terraform Formatting
+    command:
+      - Invoke-Terraform -Format
+
+  terraform:test:
+    context: terraform-test
+    description: Run the fast test tier (static + contract) for modules that ship tests
+    command:
+      - ./build/scripts/run-fast-tests.sh
+
+  setup:environment:
+    context: powershell
+    description: Ensure that the environment is configured correctly
+    command:
+      - Confirm-Environment -Path /eirctl/build/config/stage_envvars.yml
+
+  publish:github:
+    context: powershell
+    description: Publish Release to GitHub
+    command:
+      - Publish-GitHubRelease -GenerateReleaseNotes $true -UploadArtifacts $false
+
+  doc:terraform:generate:
+    context: powershell
+    description: Generates Doc for a module. Must supply a TF_DIR environment variable.
+    command:
+      - terraform-docs --output-file README.md markdown ${env:TF_DIR}
+    required:
+      env:
+        - TF_DIR

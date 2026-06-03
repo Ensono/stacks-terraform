@@ -29,7 +29,7 @@ variable "cluster_version" {
   type        = string
   description = "Cluster Kubernetes Version"
 
-  default = 1.30
+  default = 1.34
 }
 
 variable "cluster_endpoint_private_access" {
@@ -73,7 +73,7 @@ variable "cluster_addon_container_insights_config" {
   description = "The configuration for the Container Insights Addon 'amazon-cloudwatch-observability'. Addon version is is tied to the Kubernetes Version. See: `aws eks describe-addon-versions --kubernetes-version <version> --addon-name 'amazon-cloudwatch-observability'` for available versions"
 
   default = {
-    addon_version = "v1.8.0-eksbuild.1"
+    addon_version = "v5.3.1-eksbuild.1"
   }
 }
 
@@ -102,7 +102,7 @@ variable "eks_node_size" {
   type        = string
   description = "Configure desired no of nodes for the cluster"
 
-  default = "t3.small"
+  default = "t3.medium"
 }
 
 variable "eks_node_type" {
@@ -113,7 +113,7 @@ variable "eks_node_type" {
 
   validation {
     condition     = contains(["ON_DEMAND", "SPOT"], var.eks_node_type)
-    error_message = "Value must be one of ON_DEMAND, or SPOT."
+    error_message = "Value must be one of 'ON_DEMAND', or 'SPOT'."
   }
 }
 
@@ -208,4 +208,15 @@ variable "node_security_group_enable_recommended_rules" {
   description = "Determines whether to enable recommended security group rules for the node security group created. This includes node-to-node TCP ingress on ephemeral ports and allows all egress traffic"
   type        = bool
   default     = true
+}
+
+variable "block_device_mappings" {
+  description = "Specify volumes to attach to the instances. This is useful if you want to increase the volume where the container image layers are stored. Default is 20gb"
+  type        = map(any)
+  default     = {}
+}
+
+variable "node_iam_assume_role_policy" {
+  description = "Allowing you to override the assume role policy assigned to the node group IAM Role. If this is set then this module will create the IAM Role and attach this trust policy to it."
+  default     = null
 }

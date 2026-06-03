@@ -1,46 +1,56 @@
 # --- Route Tables ---
 # --- Public route table ---
 resource "aws_route_table" "public" {
-  count  = length(data.aws_availability_zones.available.names)
+  count  = length(local.sorted_azs)
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-public-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "false"
-    "isPublic"   = "true"
-    "isLambda"   = "false"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = "${var.vpc_name}-public-${local.sorted_azs[count.index]}"
+      isPrivate  = "false"
+      isPublic   = "true"
+      isLambda   = "false"
+      isFirewall = "false"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Firewall route table ---
 resource "aws_route_table" "network_firewall" {
-  count  = length(data.aws_availability_zones.available.names)
+  count = var.firewall_enabled ? length(aws_subnet.network_firewall) : 0
+
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-firewall-${data.aws_availability_zones.available.names[count.index]}"
-    "isPrivate"  = "false"
-    "isPublic"   = "true"
-    "isLambda"   = "false"
-    "isFirewall" = "true"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = "${var.vpc_name}-firewall-${local.sorted_azs[count.index]}"
+      isPrivate  = "false"
+      isPublic   = "true"
+      isLambda   = "false"
+      isFirewall = "true"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Ingress route table ---
 resource "aws_route_table" "ingress_route_table" {
   vpc_id = module.vpc.vpc_id
 
-  tags = merge(var.tags, {
-    "Name"       = "${var.vpc_name}-ingress-route-table"
-    "isPublic"   = "true"
-    "isPrivate"  = "false"
-    "isPam"      = "false"
-    "isFirewall" = "false"
-    "isDB"       = "false"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name       = "${var.vpc_name}-ingress-route-table"
+      isPublic   = "true"
+      isPrivate  = "false"
+      isPam      = "false"
+      isFirewall = "false"
+      isDB       = "false"
+    },
+  )
 }
 
 # --- Route Table Association ---
@@ -100,13 +110,14 @@ resource "aws_route" "public_to_internet_gw" {
   route_table_id         = aws_route_table.public[count.index].id
 }
 
+
 # Default route towards firewall for public subnets
 resource "aws_route" "public_to_firewall_endpoints" {
   count = var.firewall_enabled ? length(aws_subnet.public) : 0
 
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.public[count.index].id
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = var.firewall_endpoint_per_az ? element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0) : element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[0].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }
@@ -117,7 +128,7 @@ resource "aws_route" "ingress_routes" {
 
   route_table_id         = aws_route_table.ingress_route_table.id
   destination_cidr_block = aws_subnet.public[count.index].cidr_block
-  vpc_endpoint_id        = element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0)
+  vpc_endpoint_id        = var.firewall_endpoint_per_az ? element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[count.index].id], 0) : element([for ep in tolist(aws_networkfirewall_firewall.firewall.0.firewall_status[0].sync_states) : ep.attachment[0].endpoint_id if ep.attachment[0].subnet_id == aws_subnet.network_firewall[0].id], 0)
 
   depends_on = [aws_route_table.ingress_route_table]
 }

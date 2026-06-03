@@ -7,6 +7,9 @@
 *.terraform.lock.hcl
 plan
 
+# Taskctl
+.taskctl/
+
 # Crash log files
 crash.log
 
@@ -47,3 +50,6 @@ envfile
 .env
 /tmp
 tfplan
+
+# AI
+.pi

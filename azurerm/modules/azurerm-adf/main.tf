@@ -6,7 +6,7 @@ resource "azurerm_data_factory" "example" {
   public_network_enabled          = var.public_network_enabled
   managed_virtual_network_enabled = var.managed_virtual_network_enabled
 
-  # optional block Adf identity 
+  # optional block Adf identity
   dynamic "identity" {
 
     for_each = var.adf_idenity ? toset([1]) : toset([0])
@@ -17,7 +17,7 @@ resource "azurerm_data_factory" "example" {
   }
 
 
-  #git configuration 
+  #git configuration
   dynamic "github_configuration" {
 
     for_each = var.git_integration == "github" ? toset([1]) : toset([])
@@ -30,7 +30,7 @@ resource "azurerm_data_factory" "example" {
     }
   }
 
-  #vsts configuration 
+  #vsts configuration
   dynamic "vsts_configuration" {
 
     for_each = var.git_integration == "vsts" ? toset([1]) : toset([])
@@ -45,7 +45,7 @@ resource "azurerm_data_factory" "example" {
   }
 
 
-  #global parameter configuration 
+  #global parameter configuration
   dynamic "global_parameter" {
 
     for_each = { for i in var.global_parameter : i.name => i }
@@ -77,8 +77,8 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01"
   resource_id = azurerm_data_factory_integration_runtime_azure.example[0].id
   action      = "enableInteractiveQuery"
-  body = jsonencode({
+  body = {
     autoTerminationMinutes = 10
-  })
+  }
   depends_on = [azurerm_data_factory_integration_runtime_azure.example]
 }

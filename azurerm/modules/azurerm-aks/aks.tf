@@ -22,14 +22,16 @@ resource "tls_private_key" "ssh_key" {
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
-  count                   = var.create_aks ? 1 : 0
-  name                    = var.resource_namer
-  location                = var.resource_group_location
-  resource_group_name     = azurerm_resource_group.default.name
-  dns_prefix              = var.dns_prefix
-  kubernetes_version      = var.cluster_version
-  sku_tier                = var.cluster_sku_tier
-  private_cluster_enabled = var.private_cluster_enabled
+  count                     = var.create_aks ? 1 : 0
+  name                      = var.resource_namer
+  location                  = var.resource_group_location
+  resource_group_name       = azurerm_resource_group.default.name
+  dns_prefix                = var.dns_prefix
+  kubernetes_version        = var.cluster_version
+  sku_tier                  = var.cluster_sku_tier
+  private_cluster_enabled   = local.resolved_aks_private_cluster_enabled
+  oidc_issuer_enabled       = var.oidc_issuer_enabled
+  workload_identity_enabled = var.workload_identity_enabled
 
   linux_profile {
     admin_username = var.admin_username
@@ -41,7 +43,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   default_node_pool {
     # TODO: variablise below:
     type                        = var.nodepool_type # "VirtualMachineScaleSets" # default
-    enable_auto_scaling         = var.enable_auto_scaling
+    auto_scaling_enabled        = var.auto_scaling_enabled
     max_count                   = var.max_nodes
     min_count                   = var.min_nodes
     name                        = "default"
@@ -49,8 +51,14 @@ resource "azurerm_kubernetes_cluster" "default" {
     vm_size                     = var.vm_size
     node_count                  = var.min_nodes
     vnet_subnet_id              = azurerm_subnet.default.0.id
-    temporary_name_for_rotation = "default_tmp"
+    temporary_name_for_rotation = var.temporary_name_for_rotation != "" ? var.temporary_name_for_rotation : null
     zones                       = var.enable_availability_zones ? var.availabilty_zones : null # Only available on provision
+
+    upgrade_settings {
+      drain_timeout_in_minutes      = var.default_node_pool_upgrade_settings.drain_timeout_in_minutes
+      max_surge                     = var.default_node_pool_upgrade_settings.max_surge
+      node_soak_duration_in_minutes = var.default_node_pool_upgrade_settings.node_soak_duration_in_minutes
+    }
   }
 
   http_application_routing_enabled  = false
@@ -77,6 +85,11 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
 
   lifecycle {
+    precondition {
+      condition     = !var.workload_identity_enabled || var.oidc_issuer_enabled
+      error_message = "workload_identity_enabled requires oidc_issuer_enabled to be true."
+    }
+
     ignore_changes = [
       default_node_pool.0.node_count,
       windows_profile,
@@ -95,12 +108,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   name                  = each.key
   kubernetes_cluster_id = azurerm_kubernetes_cluster.default[0].id
   vm_size               = each.value.vm_size
-  enable_auto_scaling   = each.value.auto_scaling
-  min_count             = each.value.min_nodes
-  max_count             = each.value.max_nodes
-  node_count            = each.value.min_nodes
-  vnet_subnet_id        = azurerm_subnet.default.0.id
-  zones                 = each.value.enable_availability_zones ? each.value.availabilty_zones : null # Only available on provision
+
+  auto_scaling_enabled = each.value.auto_scaling
+  min_count            = each.value.min_nodes
+  max_count            = each.value.max_nodes
+  node_count           = each.value.min_nodes
+  vnet_subnet_id       = azurerm_subnet.default.0.id
+  zones                = each.value.enable_availability_zones ? each.value.availabilty_zones : null # Only available on provision
 }
 
 # perform lookup on existing ACR for stages where we don't want to create an ACR
@@ -114,6 +128,7 @@ data "azurerm_container_registry" "acr_registry" {
 }
 
 resource "azurerm_role_assignment" "acr" {
+  count                = var.create_aks ? 1 : 0
   scope                = var.create_acr ? azurerm_container_registry.registry.0.id : data.azurerm_container_registry.acr_registry.0.id
   role_definition_name = "Contributor"
   principal_id         = azurerm_kubernetes_cluster.default.0.identity.0.principal_id
@@ -123,13 +138,15 @@ resource "azurerm_role_assignment" "acr" {
 }
 
 data "azurerm_resource_group" "aks_rg_id" {
-  name = azurerm_kubernetes_cluster.default.0.node_resource_group
+  count = var.create_aks ? 1 : 0
+  name  = azurerm_kubernetes_cluster.default.0.node_resource_group
   depends_on = [
     azurerm_kubernetes_cluster.default
   ]
 }
 
 data "azurerm_user_assigned_identity" "aks_rg_id" {
+  count               = var.create_aks ? 1 : 0
   name                = "${var.resource_namer}-agentpool"
   resource_group_name = azurerm_kubernetes_cluster.default.0.node_resource_group
   depends_on = [
@@ -138,9 +155,10 @@ data "azurerm_user_assigned_identity" "aks_rg_id" {
 }
 
 resource "azurerm_role_assignment" "acr2" {
+  count                            = var.create_aks ? 1 : 0
   scope                            = var.create_acr ? azurerm_container_registry.registry.0.id : data.azurerm_container_registry.acr_registry.0.id
   role_definition_name             = "Contributor"
-  principal_id                     = data.azurerm_user_assigned_identity.aks_rg_id.principal_id
+  principal_id                     = data.azurerm_user_assigned_identity.aks_rg_id.0.principal_id
   skip_service_principal_aad_check = true
   depends_on = [
     azurerm_kubernetes_cluster.default
@@ -153,6 +171,7 @@ resource "azurerm_role_assignment" "acr2" {
 # MSI must have permissions to create subnets
 # Ensure if using private networks
 resource "azurerm_role_assignment" "network" {
+  count                = var.create_aks ? 1 : 0
   scope                = local.vnet_id
   role_definition_name = "Contributor"
   principal_id         = azurerm_kubernetes_cluster.default.0.identity.0.principal_id
@@ -162,7 +181,7 @@ resource "azurerm_role_assignment" "network" {
 }
 
 resource "azurerm_public_ip" "external_ingress" {
-  count               = 1
+  count               = var.create_aks ? 1 : 0
   name                = format("${var.resource_namer}-%d", count.index)
   location            = var.resource_group_location
   resource_group_name = azurerm_kubernetes_cluster.default.0.node_resource_group

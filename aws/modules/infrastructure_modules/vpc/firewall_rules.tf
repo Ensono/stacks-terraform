@@ -32,9 +32,12 @@ resource "aws_networkfirewall_rule_group" "icmp_alert_fw_rule_group" {
     }
   }
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-rule-group-alert-icmp"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-rule-group-alert-icmp"
+    },
+  )
 }
 
 # This Rule is used to catch SNI names from the alert log-group
@@ -71,9 +74,12 @@ resource "aws_networkfirewall_rule_group" "tls_alert_fw_rule_group" {
     }
   }
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-rule-group-alert-tls"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-rule-group-alert-tls"
+    },
+  )
 }
 
 # This rule allows traffic to flow only for the allowed domain list.
@@ -95,7 +101,10 @@ resource "aws_networkfirewall_rule_group" "domain_allow_fw_rule_group" {
     }
   }
 
-  tags = merge(var.tags, {
-    "Name" = "${var.vpc_name}-network-firewall-rule-group-allow-domainlist"
-  })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.vpc_name}-network-firewall-rule-group-allow-domainlist"
+    },
+  )
 }
