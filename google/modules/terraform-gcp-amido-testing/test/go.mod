@@ -65,7 +65,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
 	github.com/tmccombs/hcl2json v0.6.4 // indirect
-	github.com/ulikunitz/xz v0.5.10 // indirect
+	github.com/ulikunitz/xz v0.5.14 // indirect
 	github.com/vbatts/tar-split v0.11.3 // indirect
 	github.com/zclconf/go-cty v1.15.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
