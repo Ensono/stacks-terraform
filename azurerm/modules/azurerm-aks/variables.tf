@@ -411,6 +411,13 @@ variable "oidc_issuer_enabled" {
   default = true
 }
 
+variable "workload_identity_enabled" {
+  type        = bool
+  description = "Enable Azure Workload Identity for the AKS cluster. Requires oidc_issuer_enabled to be true."
+
+  default = false
+}
+
 ###########################
 # MISC SETTINGS
 ###########################

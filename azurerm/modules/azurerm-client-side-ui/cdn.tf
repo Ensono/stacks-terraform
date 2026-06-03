@@ -105,4 +105,3 @@ resource "null_resource" "custom_domain_ssl" {
     ]
   }
 }
-

@@ -1,4 +1,3 @@
 # K8s app infra
 
-Application layer infrastructure definition 
-
+Application layer infrastructure definition

@@ -1,0 +1,132 @@
+---
+version: 2
+
+updates:
+  - package-ecosystem: terraform
+    directories:
+      - /aws/modules/infrastructure_modules/container_registry
+      - /aws/modules/infrastructure_modules/container_registry/examples
+      - /aws/modules/infrastructure_modules/eks
+      - /aws/modules/infrastructure_modules/eks/examples
+      - /aws/modules/infrastructure_modules/eks_irsa
+      - /aws/modules/infrastructure_modules/eks_irsa/examples
+      - /aws/modules/infrastructure_modules/secret_manager
+      - /aws/modules/infrastructure_modules/secret_manager/example
+      - /aws/modules/infrastructure_modules/stacks_app
+      - /aws/modules/infrastructure_modules/stacks_app/example
+      - /aws/modules/infrastructure_modules/terraform_remote_backend
+      - /aws/modules/infrastructure_modules/vpc
+      - /aws/modules/infrastructure_modules/vpc/examples/basic
+      - /aws/modules/resource_modules/application_integration/sns
+      - /aws/modules/resource_modules/application_integration/sqs
+      - /aws/modules/resource_modules/database/dynamodb
+      - /aws/modules/resource_modules/identity/kms_key
+      - /aws/modules/resource_modules/storage/s3
+      - /azurerm/modules/azurerm-adb
+      - /azurerm/modules/azurerm-adb/example
+      - /azurerm/modules/azurerm-adf
+      - /azurerm/modules/azurerm-adf/example
+      - /azurerm/modules/azurerm-adls
+      - /azurerm/modules/azurerm-adls/example
+      - /azurerm/modules/azurerm-aks
+      - /azurerm/modules/azurerm-aks/examples/entire-infra
+      - /azurerm/modules/azurerm-app-gateway
+      - /azurerm/modules/azurerm-app-gateway/examples/appgateway
+      - /azurerm/modules/azurerm-app-gateway/examples/appgateway-entire
+      - /azurerm/modules/azurerm-client-side-ui
+      - /azurerm/modules/azurerm-client-side-ui/examples/cdn_integration
+      - /azurerm/modules/azurerm-cosmosdb
+      - /azurerm/modules/azurerm-cosmosdb/examples/existing-rg-cosmosdb
+      - /azurerm/modules/azurerm-hub-spoke
+      - /azurerm/modules/azurerm-hub-spoke/example
+      - /azurerm/modules/azurerm-kv
+      - /azurerm/modules/azurerm-kv/example
+      - /azurerm/modules/azurerm-observability
+      - /azurerm/modules/azurerm-observability/example
+      - /azurerm/modules/azurerm-server-side-app
+      - /azurerm/modules/azurerm-server-side-app/examples/cdn
+      - /azurerm/modules/azurerm-server-side-app/examples/cosmosdb
+      - /azurerm/modules/azurerm-server-side-app/examples/dns
+      - /azurerm/modules/azurerm-server-side-app/examples/redis
+      - /azurerm/modules/azurerm-sql
+      - /azurerm/modules/azurerm-sql/example
+      - /azurerm/modules/azurerm-vmss
+      - /azurerm/modules/azurerm-vmss/example
+      - /google/modules/google-gke
+      - /google/modules/google-gke/examples/gke-private
+      - /google/modules/google-gke/examples/gke-public
+      - /google/modules/google-k8s-server-side-app
+      - /google/modules/google-k8s-server-side-app/examples/gke-app
+      - /google/modules/terraform-gcp-amido-testing
+      - /google/modules/terraform-gcp-amido-testing/examples
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/London
+    cooldown:
+      default-days: 5
+    groups:
+      low-risk-terraform:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore(deps)
+      include: scope
+    reviewers:
+      - Ensono/stacks-maintainers
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: gomod
+    directories:
+      - /azurerm/modules/azurerm-aks/test
+      - /google/modules/terraform-gcp-amido-testing/test
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:15"
+      timezone: Europe/London
+    cooldown:
+      default-days: 5
+    groups:
+      low-risk-go:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore(deps)
+      include: scope
+    reviewers:
+      - Ensono/stacks-maintainers
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/London
+    cooldown:
+      default-days: 5
+    groups:
+      low-risk-pre-commit:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore(deps)
+      include: scope
+    reviewers:
+      - Ensono/stacks-maintainers
+    open-pull-requests-limit: 5

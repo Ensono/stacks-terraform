@@ -1,0 +1,50 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "YAMLLint",
+          "type": "shell",
+          "command": "yamllint",
+          "args": ["."],
+          "options": {
+              "cwd": "${workspaceFolder}"
+          },
+          "problemMatcher": {
+              "owner": "yaml",
+              "fileLocation": ["relative", "${workspaceFolder}"],
+              "pattern": [
+                  {
+                      "regexp": "^(\\./.+)$",
+                      "file": 1
+                  },
+                  {
+                      "regexp": "^\\s+(\\d+):(\\d+)\\s+(error|warning)\\s+(.+)$",
+                      "line": 1,
+                      "column": 2,
+                      "severity": 3,
+                      "message": 4
+                  }
+              ]
+          }
+      },
+      {
+          "label": "Pre-commit: Run All",
+          "type": "shell",
+          "command": "pre-commit",
+          "args": ["run", "--all"],
+          "options": {
+              "cwd": "${workspaceFolder}"
+          },
+          "problemMatcher": []
+      },
+      {
+          "label": "Prettier: Markdown",
+          "type": "shell",
+          "command": "git ls-files '*.md' ':!.github/skills/openspec-explore/**' | xargs -r npx --yes prettier --write",
+          "options": {
+              "cwd": "${workspaceFolder}"
+          },
+          "problemMatcher": []
+      }
+  ]
+}

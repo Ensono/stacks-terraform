@@ -1,5 +1,5 @@
 ###################
-# AWS SQS resource 
+# AWS SQS resource
 ###################
 
 resource "aws_sqs_queue" "queue" {

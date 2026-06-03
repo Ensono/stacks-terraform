@@ -7,6 +7,13 @@ Adhere to the purest form of refactoring, ensuring that all changes are behavior
 - Modifications made to the code should not alter its external behavior or functionality.
 - Improve the internal structure of the code without affecting how it interacts with users or other systems.
 - Objectively assess the need for a `moved` block in Terraform / OpenTofu.
+- When assessing Terraform / OpenTofu `moved` blocks, always compare the current branch against the target base using
+  `git diff <base>...HEAD` before making conclusions. Do not infer address changes from the current file alone.
+- For each changed resource or module block, verify whether `count`, `for_each`, resource names, module names, or module
+  nesting changed between the base and `HEAD`.
+- Only add `moved` blocks for managed resource or module address changes. Do not add them for data sources.
+- If `count` changes from `1` to a conditional expression, verify whether the address remains indexed before adding a
+  `moved` block.
 
 ## II. Code Quality
 
@@ -43,3 +50,10 @@ Commit to continuous improvement by regularly reviewing and updating this consti
 - Periodically assess the effectiveness of the guidelines and make adjustments based on feedback and evolving best practices.
 - Prompt the user when a change is made that violates the constitution, providing clear guidance on how to correct the issue.
 - As new best practices and tools emerge through use, update this constitution to reflect the evolving nature of engineering.
+
+## VI. Tool Use
+
+If a tool returns no output, then use `get_terminal_output` to check for any error messages or logs that may provide insight into the issue. This will help identify and resolve any problems with the tool's execution.
+
+- If terminal output is missing or unclear during a diff-based review, immediately use `get_terminal_output` or rerun the
+  command in a retrievable form before proceeding.

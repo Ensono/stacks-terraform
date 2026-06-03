@@ -143,4 +143,3 @@ resource "azurerm_key_vault_access_policy" "reader_access_policy" {
     "ListIssuers"
   ]
 }
-

@@ -1,9 +1,16 @@
+---
 tasks:
   terraform:format:
     context: powershell
     description: Check Terraform Formatting
     command:
       - Invoke-Terraform -Format
+
+  terraform:test:
+    context: terraform-test
+    description: Run the fast test tier (static + contract) for modules that ship tests
+    command:
+      - ./build/scripts/run-fast-tests.sh
 
   setup:environment:
     context: powershell

@@ -2,7 +2,7 @@
 extends: default
 
 yaml-files:
-  - 'yamllint.conf'
+  - '.yamllint'
   - '*.yml'
   - '*.yaml'
 
@@ -12,6 +12,7 @@ ignore: |
   local/
   outputs/
   tmp/
+  openspec/
 
 
 rules:
@@ -19,5 +20,5 @@ rules:
   truthy: disable
   indentation:
     spaces: 2
-    indent-sequences: consistent
+    indent-sequences: true
     check-multi-line-strings: false
