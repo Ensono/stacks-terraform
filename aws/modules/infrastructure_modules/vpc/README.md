@@ -12,9 +12,8 @@ AWS gives different underlying zones to each account mapped to common names.
 This means each account could have a different AZ for the same Zone Name.
 AWS Recommends for consistency you map by Zone ID in order.
 
-Creates a VPC and a set of opinionated Subnets. Currently this module assumes
-no more than 3 Availability Zones and sets up all networks (except Firewall) as
-the same size.
+Creates a VPC and a set of opinionated Subnets. Currently this module assumes 3
+Availability Zones and sets up all networks (except Firewall) as the same size.
 This sets up a firewall with all domains allowed by default. This should be
 tightened up as you know which domains pods will communicate with outside of the
 network.

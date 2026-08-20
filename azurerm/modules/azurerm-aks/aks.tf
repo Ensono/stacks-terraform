@@ -78,6 +78,10 @@ resource "azurerm_kubernetes_cluster" "default" {
     #   outbound_ip_address_ids = azurerm_public_ip.default[*].id
     # }
   }
+  node_provisioning_profile {
+    mode = "Manual"
+  }
+
   # TODO: this should be changed to UserAssigned once available
   # SPN should be removed once out of preview
   identity {
