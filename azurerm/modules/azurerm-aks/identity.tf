@@ -9,9 +9,8 @@ resource "azurerm_key_vault" "default" {
   resource_group_name         = azurerm_resource_group.default.name
   enabled_for_disk_encryption = true
   # current RG owner tenant ID
-  tenant_id = var.tenant_id
-  # soft_delete_enabled         = true
-  # purge_protection_enabled    = false
+  tenant_id                  = var.tenant_id
+  rbac_authorization_enabled = true
 
   sku_name = "standard"
 
