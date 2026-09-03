@@ -55,7 +55,7 @@ Commit to continuous improvement by regularly reviewing and updating this consti
 
 Use `eirctl` tasks and contexts for all interactions with external tooling. Do not invoke Terraform, OpenTofu, formatters, linters, test runners, or release tooling directly. If no suitable task or context exists, add or extend the `eirctl` configuration rather than bypassing it.
 
-`eirctl` supports Docker, Podman, and nerdctl container runtimes. Prefer Podman when it is available; otherwise use Docker or nerdctl as appropriate. Configure the selected runtime for `eirctl` rather than bypassing its contexts.
+`eirctl` supports Docker, Podman, and nerdctl container runtimes. Use whichever runtime is available and functional in the developer's environment, and configure it for `eirctl` rather than bypassing its contexts.
 
 If a tool returns no output, then use `get_terminal_output` to check for any error messages or logs that may provide insight into the issue. This will help identify and resolve any problems with the tool's execution.
 
