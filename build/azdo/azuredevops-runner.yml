@@ -93,19 +93,25 @@ stages:
             parameters:
               EirctlVersion: ${{ variables.EirctlVersion }}
 
-          # Publish to GitHub
+          # Mint a short-lived GitHub App installation token for this process
+          # only. Publish-GitHubRelease continues to consume it as API_KEY.
           - task: Bash@3
             displayName: Publish Pre-Release
             condition: and(succeeded(), eq(${{ parameters.pre_release }}, true))
             inputs:
               targetType: inline
               script: |
-                eirctl release
+                set -euo pipefail
+                github_token="$(./build/scripts/create-github-app-installation-token.sh)"
+                API_KEY="$github_token" eirctl release
             env:
               STAGE: "release"
               PUBLISH_RELEASE: "true"
               VERSION_NUMBER: $(BUILD_BUILDNUMBER)
               PRERELEASE: "true"
+              GITHUB_APP_ID: $(GITHUB_APP_ID)
+              GITHUB_APP_INSTALLATION_ID: $(GITHUB_APP_INSTALLATION_ID)
+              GITHUB_APP_PRIVATE_KEY_BASE64: $(GITHUB_APP_PRIVATE_KEY_BASE64)
 
           - task: Bash@3
             displayName: Publish Release
@@ -113,8 +119,13 @@ stages:
             inputs:
               targetType: inline
               script: |
-                eirctl release
+                set -euo pipefail
+                github_token="$(./build/scripts/create-github-app-installation-token.sh)"
+                API_KEY="$github_token" eirctl release
             env:
               STAGE: "release"
               PUBLISH_RELEASE: "true"
               VERSION_NUMBER: $(BUILD_BUILDNUMBER)
+              GITHUB_APP_ID: $(GITHUB_APP_ID)
+              GITHUB_APP_INSTALLATION_ID: $(GITHUB_APP_INSTALLATION_ID)
+              GITHUB_APP_PRIVATE_KEY_BASE64: $(GITHUB_APP_PRIVATE_KEY_BASE64)

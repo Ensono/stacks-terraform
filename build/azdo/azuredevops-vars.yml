@@ -12,4 +12,6 @@ variables:
     value: artifacts/
   - group: release-github-credentials
   # Group should contain:
-  # API_KEY
+  # GITHUB_APP_ID
+  # GITHUB_APP_INSTALLATION_ID
+  # GITHUB_APP_PRIVATE_KEY_BASE64 (secret; base64-encoded PEM private key)
