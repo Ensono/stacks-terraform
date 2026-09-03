@@ -7,7 +7,9 @@ stages:
   - name: release
     variables:
       - name: OWNER
-      - name: API_KEY
+      - name: GITHUB_APP_ID
+      - name: GITHUB_APP_INSTALLATION_ID
+      - name: GITHUB_APP_PRIVATE_KEY_BASE64
       - name: PUBLISH_RELEASE
       - name: COMMIT_ID
       - name: VERSION_NUMBER
