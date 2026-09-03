@@ -17,12 +17,11 @@ e.g.: `terraform-docs markdown table path/to/my/module`
 
 ### Local testing
 
-Install [mise](https://mise.jdx.dev/) and activate it in your shell, then install the project-pinned Terraform version. This keeps local Terraform checks aligned with the Azure DevOps pipeline.
+Run and test changes locally with `eirctl`, which supplies the configured external tooling through its contexts and tasks.
 
 ```bash
-mise install
-mise exec -- terraform version
-mise exec -- pre-commit run --all-files
+eirctl format
+eirctl test:fast
 ```
 
 Alternatively, run and test changes in the existing container:

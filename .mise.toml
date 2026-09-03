@@ -1,3 +1,0 @@
-[tools]
-# Keep local Terraform checks aligned with the Azure DevOps pipeline.
-terraform = "1.7.5"

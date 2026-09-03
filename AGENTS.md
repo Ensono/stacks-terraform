@@ -41,7 +41,7 @@ Maintain consistent text formatting across all documentation and code comments:
 
 - Use clear and concise language to enhance readability.
 - Adhere to the `.editorconfig` settings for consistent formatting across different editors and IDEs.
-- Use tools to automatically format code and documentation according to the project's style guidelines, i.e. Prettier, Black, or `tf fmt`.
+- Use tools to automatically format code and documentation according to the project's style guidelines, such as Prettier, Black, or the appropriate `eirctl` task for Terraform.
 
 ## V. Continuous Improvement
 
@@ -52,6 +52,8 @@ Commit to continuous improvement by regularly reviewing and updating this consti
 - As new best practices and tools emerge through use, update this constitution to reflect the evolving nature of engineering.
 
 ## VI. Tool Use
+
+Use `eirctl` tasks and contexts for all interactions with external tooling. Do not invoke Terraform, OpenTofu, formatters, linters, test runners, or release tooling directly. If no suitable task or context exists, add or extend the `eirctl` configuration rather than bypassing it.
 
 If a tool returns no output, then use `get_terminal_output` to check for any error messages or logs that may provide insight into the issue. This will help identify and resolve any problems with the tool's execution.
 
