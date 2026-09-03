@@ -1,7 +1,7 @@
 # terraform-module-testing Specification
 
 ## Purpose
-TBD - created by archiving change establish-terraform-test-strategy. Update Purpose after archive.
+Define a cloud-agnostic, three-tier Terraform module testing standard and a deterministic fast-tier CI gate.
 ## Requirements
 ### Requirement: Tiered test taxonomy for Terraform modules
 

@@ -1,7 +1,7 @@
 # aks-workload-identity Specification
 
 ## Purpose
-TBD - created by archiving change add-aks-workload-identity. Update Purpose after archive.
+Define opt-in Azure AKS Workload Identity configuration, including its OIDC issuer dependency and outputs for downstream federation.
 ## Requirements
 ### Requirement: Opt-in Workload Identity input
 
