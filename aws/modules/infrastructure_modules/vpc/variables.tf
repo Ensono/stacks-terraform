@@ -14,6 +14,18 @@ variable "vpc_cidr" {
   description = "The VPC CIDR to create"
 }
 
+variable "availability_zone_ids" {
+  type        = list(string)
+  description = <<-EOT
+    Optional explicit ordering of AWS Availability Zone IDs (e.g. ["euw2-az2", "euw2-az3", "euw2-az1"]) used to
+    place subnets. Zone IDs are stable per account (unlike AZ names). Leave empty (default) to use the standard
+    behaviour of sorting by Zone ID. Set this to the EXISTING physical AZ order of a brownfield environment so an
+    upgrade preserves the current subnet-to-AZ layout instead of destroying and recreating every subnet. Only the
+    first 3 entries are used, and each value must be a valid Zone ID in the target region.
+  EOT
+  default     = []
+}
+
 variable "vpc_name" {
   type        = string
   description = "Name of the VPC and resources"
