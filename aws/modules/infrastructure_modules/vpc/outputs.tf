@@ -65,12 +65,12 @@ output "firewall_subnet_cidrs" {
 }
 
 output "sorted_vpc_zone_ids" {
-  description = "The sorted AZ Zone IDs"
+  description = "The AZ Zone IDs used to place subnets, in placement order (sorted by Zone ID by default; the caller's order when availability_zone_ids is set)"
   value       = local.sorted_azs
 }
 
 output "sorted_vpc_zone_ids_map" {
-  description = "The sorted AZ Zone IDs as a map"
+  description = "A map of AZ Zone ID to AZ name for the zones used to place subnets. A Terraform map is unordered; use sorted_vpc_zone_ids for the positional placement order."
   value       = local.sorted_azs_map
 }
 

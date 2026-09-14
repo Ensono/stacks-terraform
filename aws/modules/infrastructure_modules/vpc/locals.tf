@@ -5,7 +5,9 @@ locals {
   tags_no_name = { for k, v in var.tags : k => v if !contains(["Name"], k) }
 
   # This module is designed for exactly 3 AZs; slice to 3 even if the region has more.
-  sorted_azs = slice(sort(data.aws_availability_zones.available.zone_ids), 0, 3)
+  # When availability_zone_ids is provided, use that explicit order (preserves an existing/brownfield subnet
+  # layout and avoids a destructive re-lay); otherwise default to sorting by Zone ID.
+  sorted_azs = length(var.availability_zone_ids) > 0 ? slice(var.availability_zone_ids, 0, 3) : slice(sort(data.aws_availability_zones.available.zone_ids), 0, 3)
 
   # Generates a reverse map of sorted azs to their names: e.g. { "euw2-az1" => "eu-west-2a" }
   sorted_azs_map = { for az in local.sorted_azs : az => data.aws_availability_zones.available.names[index(data.aws_availability_zones.available.zone_ids, az)] }
