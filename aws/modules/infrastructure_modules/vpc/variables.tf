@@ -24,6 +24,14 @@ variable "availability_zone_ids" {
     first 3 entries are used, and each value must be a valid Zone ID in the target region.
   EOT
   default     = []
+
+  validation {
+    condition = length(var.availability_zone_ids) == 0 || (
+      length(var.availability_zone_ids) >= 3 &&
+      length(distinct(var.availability_zone_ids)) == length(var.availability_zone_ids)
+    )
+    error_message = "availability_zone_ids must be empty (use the default Zone ID sort) or contain at least 3 distinct Zone IDs; only the first 3 are used to place subnets."
+  }
 }
 
 variable "vpc_name" {
