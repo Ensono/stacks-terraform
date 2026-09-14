@@ -180,6 +180,6 @@ downstream module: <https://github.com/cloudposse/terraform-aws-vpc-flow-logs-s3
 | <a name="output_public_subnet_cidrs"></a> [public_subnet_cidrs](#output_public_subnet_cidrs)                      | The CIDR blocks of the public subnets created by this module.                               |
 | <a name="output_public_subnet_ids"></a> [public_subnet_ids](#output_public_subnet_ids)                            | The IDs of the public subnets created by this module.                                       |
 | <a name="output_sorted_vpc_zone_ids"></a> [sorted_vpc_zone_ids](#output_sorted_vpc_zone_ids)                      | The AZ Zone IDs used to place subnets, in placement order (sorted by Zone ID by default; the caller's order when availability_zone_ids is set)                                                             |
-| <a name="output_sorted_vpc_zone_ids_map"></a> [sorted_vpc_zone_ids_map](#output_sorted_vpc_zone_ids_map)          | The AZ Zone IDs used to place subnets, as a map of Zone ID to AZ name (same order as sorted_vpc_zone_ids)                                                             |
+| <a name="output_sorted_vpc_zone_ids_map"></a> [sorted_vpc_zone_ids_map](#output_sorted_vpc_zone_ids_map)          | A map of AZ Zone ID to AZ name for the zones used to place subnets. A Terraform map is unordered; use sorted_vpc_zone_ids for the positional placement order.                                                             |
 
 <!-- END_TF_DOCS -->

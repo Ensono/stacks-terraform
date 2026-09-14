@@ -70,7 +70,7 @@ output "sorted_vpc_zone_ids" {
 }
 
 output "sorted_vpc_zone_ids_map" {
-  description = "The AZ Zone IDs used to place subnets, as a map of Zone ID to AZ name (same order as sorted_vpc_zone_ids)"
+  description = "A map of AZ Zone ID to AZ name for the zones used to place subnets. A Terraform map is unordered; use sorted_vpc_zone_ids for the positional placement order."
   value       = local.sorted_azs_map
 }
 
