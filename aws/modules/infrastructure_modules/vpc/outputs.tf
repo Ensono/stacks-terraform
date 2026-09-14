@@ -65,12 +65,12 @@ output "firewall_subnet_cidrs" {
 }
 
 output "sorted_vpc_zone_ids" {
-  description = "The sorted AZ Zone IDs"
+  description = "The AZ Zone IDs used to place subnets, in placement order (sorted by Zone ID by default; the caller's order when availability_zone_ids is set)"
   value       = local.sorted_azs
 }
 
 output "sorted_vpc_zone_ids_map" {
-  description = "The sorted AZ Zone IDs as a map"
+  description = "The AZ Zone IDs used to place subnets, as a map of Zone ID to AZ name (same order as sorted_vpc_zone_ids)"
   value       = local.sorted_azs_map
 }
 
