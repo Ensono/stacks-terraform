@@ -1,6 +1,8 @@
 locals {
   ## Cluster
-  cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : data.aws_availability_zones.available.names
+  # The region may expose more AZs than the VPC lays private subnets for (the VPC module caps at 3). Cap the per-AZ
+  # node-group list to the number of private subnets so the node-group loop never indexes past var.vpc_private_subnets.
+  cluster_azs = var.cluster_single_az ? [data.aws_availability_zones.available.names[0]] : slice(data.aws_availability_zones.available.names, 0, length(var.vpc_private_subnets))
 
   cluster_container_insights_addon = var.cluster_addon_enable_container_insights ? {
     amazon-cloudwatch-observability = merge(
