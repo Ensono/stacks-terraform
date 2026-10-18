@@ -7,6 +7,11 @@ stages:
   - name: release
     variables:
       - name: OWNER
+      - name: GITHUB_APP_ID
+      - name: GITHUB_APP_INSTALLATION_ID
+      - name: GITHUB_APP_PRIVATE_KEY_BASE64
+      # The release task supplies this as a short-lived GitHub App installation
+      # token; manual callers must provide it explicitly.
       - name: API_KEY
       - name: PUBLISH_RELEASE
       - name: COMMIT_ID

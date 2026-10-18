@@ -17,7 +17,14 @@ e.g.: `terraform-docs markdown table path/to/my/module`
 
 ### Local testing
 
-run and test any changes locally
+Run and test changes locally with `eirctl`, which supplies the configured external tooling through its contexts and tasks.
+
+```bash
+eirctl format
+eirctl test:fast
+```
+
+Alternatively, run and test changes in the existing container:
 
 ```bash
 docker run -v $(pwd):/usr/data --rm -it amidostacks/ci-tf:0.0.4 /bin/bash
